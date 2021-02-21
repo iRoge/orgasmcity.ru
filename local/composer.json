@@ -1,0 +1,16 @@
+{
+    "require": {
+        "cosenary/instagram": "^2.3",
+        "rappasoft/laravel-helpers": "^1.0.2",
+        "vlucas/phpdotenv": "^3.4",
+        "phpoffice/phpspreadsheet": "^1.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Qsoft\\": "php_interface/include/qsoft/lib/Qsoft"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.3"
+    }
+}
