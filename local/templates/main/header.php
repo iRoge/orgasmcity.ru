@@ -155,8 +155,6 @@
         <div id="mango-callback" class="mango-callback" data-settings='{"type":"", "id": "MTAwMTMwODY=","autoDial" : "0", "lang" : "ru-ru", "host":"widgets.mango-office.ru/", "errorMessage": "В данный момент наблюдаются технические проблемы и совершение звонка невозможно"}'></div>
     <? endif; ?>
     <!-- End Mango -->
-    <!-- RetailRocket TrackerCode -->
-    <? $GLOBALS['USER_SHOWCASE'] = $LOCATION->getUserShowcase();?>
     <script type="text/javascript" data-skip-moving="true" async>
         // Импровизированный обсервер
         function prettify (num) {

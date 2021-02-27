@@ -7,7 +7,7 @@ class RegisterPopup20180216170708 extends Version {
 
     protected $description = "";
 
-    public function up(){
+    public function up() {
         $helper = new HelperManager();
 
         $iblockId1 = $helper->Iblock()->addIblockIfNotExists([

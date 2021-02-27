@@ -1,0 +1,11 @@
+.js-profile-input-lk {
+    font-family: 'firaregular';
+    padding: 12px 20px;
+    background: white;
+    outline: 0;
+    margin-top: 20px;
+    border: 1px solid rgba(200, 200, 200, 0.5);
+}
+.js-profile-regions-lk {
+    background: #F8F8F8;
+}

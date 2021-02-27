@@ -2,12 +2,61 @@
 
 namespace Qsoft\Helpers;
 
+use Bitrix\Main\Application;
+use Bitrix\Main\Loader;
 use \CIBlockElement;
 use \CIBlockSection;
 use \CIBlockProperty;
 
 class IBlockHelper
 {
+    /**
+     * @var string Папка с кэшем
+     */
+    private static string $sCacheDir = '/iblock_list/';
+    /**
+     * @var array Инфоблоки
+     */
+    private static ?array $arIBlocks = null;
+
+    /**
+     * Возвращает id инфоблока по его коду
+     *
+     * todo возможна ситуация когда будет два инфоблока с одинаковым кодом, надо добавить проверку через тип инфоблока
+     *
+     * @param string $sCode CODE инфоблока
+     * @return int Id инфоблока
+     * @throws \Exception
+     */
+    public static function getIBlockId($sCode)
+    {
+        $obCache = Application::getInstance()->getCache();
+
+        if (is_null(self::$arIBlocks)) {
+            $arIBlocks = array();
+
+            if ($obCache->initCache(604800, 'iblock_list', self::$sCacheDir)) {
+                $arIBlocks = $obCache->getVars();
+            } elseif (Loader::includeModule('iblock')) {
+                $rsIBlocks = \CIBlock::GetList([], ['ACTIVE' => 'Y', 'CHECK_PERMISSIONS' => 'N']);
+
+                while ($arIBlock = $rsIBlocks->Fetch())
+                    $arIBlocks[$arIBlock['CODE']] = $arIBlock['ID'];
+
+                if ($obCache->startDataCache())
+                    $obCache->endDataCache($arIBlocks);
+            }
+
+            self::$arIBlocks = $arIBlocks;
+        }
+
+        if (!array_key_exists($sCode, self::$arIBlocks)) {
+            throw new \Exception("IBlock $sCode not found");
+        }
+
+        return self::$arIBlocks[$sCode];
+    }
+
     public static function getElementIds(int $iblockID, array $elementFilter = []): array
     {
         $elementFilter['IBLOCK_ID'] = $iblockID;

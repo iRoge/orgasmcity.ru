@@ -2,3 +2,4 @@
 bitrix
 upload
 local/vendor
+local/php_interface/.env

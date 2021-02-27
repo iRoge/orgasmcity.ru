@@ -4,7 +4,7 @@ namespace Qsoft\Helpers;
 
 class TextHelper
 {
-    public function restoreText($str)
+    public static function restoreText($str): string
     {
         $str = mb_strtolower($str);
         $keyWrongMap = array(
@@ -50,7 +50,7 @@ class TextHelper
         return strtr($str, $keyWrongMap);
     }
 
-    public function myTranslit($str, $lang, $params = array())
+    public function myTranslit($str, $lang, $params = array()): string
     {
         $search = array();
 

@@ -1,6 +1,6 @@
 <?
 
-namespace Qsoft;
+namespace Qsoft\Location;
 
 use Bitrix\Main\Loader;
 use Bitrix\Sale\Location\LocationTable;
@@ -12,8 +12,10 @@ class Location
     // константы
     private const LOCATION_TYPE = 5;
     // значения по умолчанию
-    private $DEFAULT_LOCATION; // местоположение
-    public $isStranger = false; // флаг нового пользователя
+    // местоположение
+    private $DEFAULT_LOCATION;
+    // флаг нового пользователя
+    public $isStranger = false;
     // название местоположения (город)
     private $name = false;
     // регион
@@ -236,7 +238,7 @@ class Location
         $this->cache = new CPHPCache();
     }
 
-    public function getParentCodes($code = false, $addFilter = array())
+    public function getParentCodes($code = false, $addFilter = array()): array
     {
         if (!$code) {
             $code = $this->code;
@@ -270,7 +272,7 @@ class Location
     }
 
     // получаем название города
-    public function getName()
+    public function getName(): string
     {
         if (!$this->name) {
             $this->getLocationCode();
@@ -279,7 +281,7 @@ class Location
     }
 
     // получаем название страны
-    public function getCountry()
+    public function getCountry(): string
     {
         if (!$this->country) {
             $this->initLocationParent();
@@ -356,5 +358,95 @@ class Location
         ])->fetch();
 
         return $arRes;
+    }
+
+    public function getDadataStandartRegionNameFromLocation(): string
+    {
+        $region = $this->getRegion();
+        $city = $this->getName();
+        $vocRegion = [
+            'Республика Саха (Якутия)' => 'Саха /Якутия/',
+            'Ханты-Мансийский автономный округ' => 'Ханты-Мансийский Автономный округ - Югра',
+            'Чувашская Республика' => 'Чувашская республика',
+            'Республика Северная Осетия-Алания' => 'Северная Осетия - Алания',
+            'Кемеровская область' => 'Кемеровская область - Кузбасс',
+        ];
+        $exepCity = [
+            'Севастополь' => 'Севастополь',
+            'Инкерман' => 'Севастополь',
+            'Санкт-Петербург' => 'Санкт-Петербург',
+            'Зеленогорск' => 'Санкт-Петербург',
+            'Кронштадт' => 'Санкт-Петербург',
+            'Красное Село' => 'Санкт-Петербург',
+            'Колпино' => 'Санкт-Петербург',
+            'Сестрорецк' => 'Санкт-Петербург',
+            'Павловск' => 'Санкт-Петербург',
+            'Петергоф' => 'Санкт-Петербург',
+            'Ломоносов' => 'Санкт-Петербург',
+            'Пушкин' => 'Санкт-Петербург',
+        ];
+        $newMoscowCities = [
+            'Московский',
+            'Троицк',
+            'Зеленоград',
+            'Щербинка',
+        ];
+        if ($region == 'Московская область') {
+            if (in_array($city, $newMoscowCities)) {
+                return 'Москва';
+            }
+        }
+        if (key_exists($region, $vocRegion)) {
+            return $vocRegion[$region];
+        }
+        if (key_exists($city, $exepCity)) {
+            return $exepCity[$city];
+        }
+        $region = str_ireplace('автономная область', '', $region);
+        $region = str_ireplace('автономный округ', '', $region);
+        $region = str_ireplace('Республика', '', $region);
+        $region = str_ireplace('область', '', $region);
+        $region = str_ireplace('край', '', $region);
+        $region = trim($region);
+        return $region;
+    }
+
+    public function getDadataStandartCityNameFromLocation()
+    {
+        $city = $this->getName();
+        $vocCity = [
+            'Железнодорожный' => 'Балашиха',
+            'Юбилейный' => 'Королев',
+            'Городской округ Черноголовка' => 'Черноголовка',
+            'Снегири' => 'Истра',
+            'Ожерелье' => 'Кашира',
+            'Урус-Мартан' => '',
+            'Алупка' => 'Ялта',
+        ];
+        if (key_exists($city, $vocCity)) {
+            return $vocCity[$city];
+        }
+        return $city;
+    }
+
+    public function getDadataStatus()
+    {
+        $ch = curl_init('https://dadata.ru/api/v2/stat/daily');
+        $headers = array('Authorization: Token ' . DADATA_TOKEN, 'X-Secret: ' . DADATA_SECRET_TOKEN);
+
+        curl_setopt($ch, CURLOPT_URL, 'https://dadata.ru/api/v2/stat/daily');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        if ($result) {
+            $arStatus = json_decode($result);
+            if ((DADATA_MAX_REQUESTS - $arStatus->services->suggestions) > 50 && !isset($arStatus->detail)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }
