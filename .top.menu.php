@@ -22,8 +22,7 @@ $aMenuLinks = Array(
 //		Array(), 
 //		"" 
 //	),
-//	Array(
-//		"Услуги", 
+//	Array(//		"Услуги",
 //		"services/", 
 //		Array(), 
 //		Array(), 
