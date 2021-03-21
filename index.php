@@ -1,7 +1,6 @@
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetPageProperty("title", "Брендовая женская и мужская обувь: продажа модной обуви в интернет-магазине Respect");
 $APPLICATION->SetTitle("Главная страница");
-\Likee\Site\Helper::addBodyClass('page--index');
 global $arrFilterBanners;
 $arrFilterBanners = array(
     [

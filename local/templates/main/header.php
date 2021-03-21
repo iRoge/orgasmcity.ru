@@ -298,7 +298,7 @@ if (\Bitrix\Main\Loader::includeModule('likee.site') && !$USER->IsAuthorized() &
     \Likee\Site\Helper::addBodyClass('body--auth');
 }
 ?>
-<body class="<? $APPLICATION->ShowProperty('BODY_CLASS'); ?>" style="background: #fff url(https://upload.wikimedia.org/wikipedia/commons/a/a1/LGBT_flag_logo.png) fixed center center repeat;">
+<body class="<? $APPLICATION->ShowProperty('BODY_CLASS'); ?>">
 <div id="panel"><? $APPLICATION->ShowPanel(); ?></div>
 <? if ($USER->IsAuthorized()) : ?>
     <div class="i-flocktory" data-fl-user-name="<?= $USER->GetFullName() ?>"
