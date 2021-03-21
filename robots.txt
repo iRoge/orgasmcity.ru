@@ -2,7 +2,6 @@ User-agent: *
 Disallow: /bitrix/
 Disallow: /upload/
 Disallow: /search/
-Allow: /search/map.php
 Disallow: /club/search/
 Disallow: /club/group/search/
 Disallow: /club/forum/search/
@@ -53,5 +52,4 @@ Disallow: /*mmid=*
 Disallow: /*sz=*
 Disallow: /*index.php$
 Disallow: /.regions/
-Host: https://respect-shoes.ru
-Sitemap: https://respect-shoes.ru/sitemap.xml
+Host: https://orgasmcity.ru
