@@ -105,49 +105,8 @@
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
 
-
+var_dump(SITE_TEMPLATE_PATH);
     ?>
-    <script type="text/javascript" src="https://api.flocktory.com/v2/loader.js?site_id=2648" async="async"></script>
-    <? $GLOBALS["PAGE"] = explode("/", $APPLICATION->GetCurPage()); ?>
-    <script src="//code.jivosite.com/widget.js" data-jv-id="FMFMyqUjFN" async></script>
-    <!-- Facebook Pixel Code -->
-    <script type="text/javascript" async>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window,document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2100287560266846');
-        <?php if (!empty($_SESSION['SUC_REG']) && $_SESSION['SUC_REG'] == "Y") :?>
-        fbq('track', 'CompleteRegistration');
-        <?php unset($_SESSION['SUC_REG']);
-        endif;?>
-        fbq('track', 'PageView');
-    </script>
-    <noscript>
-        <img height="1" width="1"
-             src="https://www.facebook.com/tr?id=2100287560266846&ev=PageView
-        &noscript=1"/>
-    </noscript>
-    <!-- End Facebook Pixel Code -->
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-PZ4KNJF');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZ4KNJF"
-                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <!-- VK Pixel Code -->
-    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?167",t.onload=function(){VK.Retargeting.Init("VK-RTRG-467195-3biag"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script>
-    <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-467195-3biag" style="position:fixed; left:-999px;" alt=""/></noscript>
-    <!-- End VK Pixel Code-->
     <!-- Mango -->
     <? $mangoShow = COption::GetOptionString('respect', 'mango_show');
     if ($mangoShow) : ?>
@@ -155,155 +114,14 @@
         <div id="mango-callback" class="mango-callback" data-settings='{"type":"", "id": "MTAwMTMwODY=","autoDial" : "0", "lang" : "ru-ru", "host":"widgets.mango-office.ru/", "errorMessage": "В данный момент наблюдаются технические проблемы и совершение звонка невозможно"}'></div>
     <? endif; ?>
     <!-- End Mango -->
-    <script type="text/javascript" data-skip-moving="true" async>
-        // Импровизированный обсервер
-        function prettify (num) {
-            let n = num.toString();
-            let separator = " ";
-            return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + separator);
-        }
-        let locker1 = 0;
-        const intervalID1 = setInterval(function () {
-            let rrItemsBlocks = document.querySelectorAll('div.js-retail-rocket-recommendation div.rr-item__wrap');
-            if (rrItemsBlocks.length) {
-                let productsIds = [];
-                rrItemsBlocks.forEach(function (elem) {
-                    productsIds.push(elem.getAttribute('data-group-id'))
-                });
-                BX.ajax.post('/local/ajax/get_product_prices.php', 'PRODUCT_IDS=' + productsIds.join(','), function (response) {
-                    let data = JSON.parse(response);
-                    rrItemsBlocks.forEach(function (elem) {
-                        let productId = elem.getAttribute('data-group-id');
-                        let arPrice = data[productId];
-                        if (arPrice) {
-                            if (arPrice.SEGMENT === 'Red') {
-                                let html = '<div class="rr-item__price-wrap">' +
-                                    '<div class="rr-item__price-top">' +
-                                    '<span class="rr-item__price" style="color: #cd1030">' + prettify(arPrice.PRICE) + ' р.' + '</span>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__discount">' + '-' + arPrice.PERCENT + '%' + '</span>' : '') +
-                                    '</div>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__price-old">' + prettify(arPrice.OLD_PRICE) + ' р.' + '</span>' : '') +
-                                    '</div>';
-                                let infoBlock = elem.querySelector('.rr-item__info');
-                                infoBlock.innerHTML = html;
-                            } else if (arPrice.SEGMENT === 'White') {
-                                let html = '<div class="rr-item__price-wrap">' +
-                                    '<div class="rr-item__price-top">' +
-                                    '<span class="rr-item__price">' + prettify(arPrice.PRICE) + ' р.' + '</span>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__discount">' + '-' + arPrice.PERCENT + '%' + '</span>' : '') +
-                                    '</div>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__price-old">' + prettify(arPrice.OLD_PRICE) + ' р.' + '</span>' : '') +
-                                    '</div>';
-                                let infoBlock = elem.querySelector('.rr-item__info');
-                                infoBlock.innerHTML = html;
-                            } else if (arPrice.SEGMENT === 'Yellow') {
-                                let html = '<div class="rr-item__price-wrap">' +
-                                    '<div class="rr-item__price-top">' +
-                                    '<span class="rr-item__price" style="color: #e28400">' + prettify(arPrice.PRICE) + ' р.' + '</span>' +
-                                    '</div>' +
-                                    '</div>';
-                                let infoBlock = elem.querySelector('.rr-item__info');
-                                infoBlock.innerHTML = html;
-                            }
-                        }
-                    });
-                });
-                clearInterval(intervalID1);
-            } else {
-                locker1++;
-                if (locker1 > 25) {
-                    clearInterval(intervalID1);
-                }
-            }
-        }, 100);
-        let locker2 = 0;
-        const intervalID2 = setInterval(function () {
-            let rrItemsBlocks = document.querySelectorAll('div.js-retail-rocket-recommendation2 div.rr-item__wrap');
-            if (rrItemsBlocks.length) {
-                let productsIds = [];
-                rrItemsBlocks.forEach(function (elem) {
-                    productsIds.push(elem.getAttribute('data-group-id'))
-                });
-                BX.ajax.post('/local/ajax/get_product_prices.php', 'PRODUCT_IDS=' + productsIds.join(','), function (response) {
-                    let data = JSON.parse(response);
-                    rrItemsBlocks.forEach(function (elem) {
-                        let productId = elem.getAttribute('data-group-id');
-                        let arPrice = data[productId];
-                        if (arPrice) {
-                            if (arPrice.SEGMENT === 'Red') {
-                                let html = '<div class="rr-item__price-wrap">' +
-                                    '<div class="rr-item__price-top">' +
-                                    '<span class="rr-item__price" style="color: #cd1030">' + prettify(arPrice.PRICE) + ' р.' + '</span>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__discount">' + '-' + arPrice.PERCENT + '%' + '</span>' : '') +
-                                    '</div>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__price-old">' + prettify(arPrice.OLD_PRICE) + ' р.' + '</span>' : '') +
-                                    '</div>';
-                                let infoBlock = elem.querySelector('.rr-item__info');
-                                infoBlock.innerHTML = html;
-                            } else if (arPrice.SEGMENT === 'White') {
-                                let html = '<div class="rr-item__price-wrap">' +
-                                    '<div class="rr-item__price-top">' +
-                                    '<span class="rr-item__price">' + prettify(arPrice.PRICE) + ' р.' + '</span>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__discount">' + '-' + arPrice.PERCENT + '%' + '</span>' : '') +
-                                    '</div>' +
-                                    (arPrice.PERCENT ? '<span class="rr-item__price-old">' + prettify(arPrice.OLD_PRICE) + ' р.' + '</span>' : '') +
-                                    '</div>';
-                                let infoBlock = elem.querySelector('.rr-item__info');
-                                infoBlock.innerHTML = html;
-                            } else if (arPrice.SEGMENT === 'Yellow') {
-                                let html = '<div class="rr-item__price-wrap">' +
-                                    '<div class="rr-item__price-top">' +
-                                    '<span class="rr-item__price" style="color: #e28400">' + prettify(arPrice.PRICE) + ' р.' + '</span>' +
-                                    '</div>' +
-                                    '</div>';
-                                let infoBlock = elem.querySelector('.rr-item__info');
-                                infoBlock.innerHTML = html;
-                            }
-                        }
-                    });
-                });
-                clearInterval(intervalID2);
-            } else {
-                locker2++;
-                if (locker2 > 25) {
-                    clearInterval(intervalID2);
-                }
-            }
-        }, 100);
-        var rrPartnerId = "5eaac61097a5251ce0bd49bb";
-        var userShowcase = '<?=$GLOBALS['USER_SHOWCASE']?>';
-        var rrApi = {};
-        var rrApiOnReady = rrApiOnReady || [];
-        rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view =
-            rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
-        (function (d) {
-            var ref = d.getElementsByTagName('script')[0];
-            var apiJs, apiJsId = 'rrApi-jssdk';
-            if (d.getElementById(apiJsId)) return;
-            apiJs = d.createElement('script');
-            apiJs.id = apiJsId;
-            apiJs.async = true;
-            apiJs.src = "//cdn.retailrocket.ru/content/javascript/tracking.js";
-            ref.parentNode.insertBefore(apiJs, ref);
-        }(document));
-    </script>
-    <!-- End RetailRocket TrackerCode -->
 </head>
 
 <?
 $bShowRegister = !empty($_POST['REGISTER']) && is_array($_POST['REGISTER']) && !empty($_REQUEST['HEADER_FORM']);
 $bShowAuth = isset($_POST['AUTH_FORM']) && $_POST['AUTH_FORM'] == 'Y' && !empty($_REQUEST['HEADER_FORM']);
-
-if (\Bitrix\Main\Loader::includeModule('likee.site') && !$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
-    \Likee\Site\Helper::addBodyClass('body--auth');
-}
 ?>
 <body class="<? $APPLICATION->ShowProperty('BODY_CLASS'); ?>">
 <div id="panel"><? $APPLICATION->ShowPanel(); ?></div>
-<? if ($USER->IsAuthorized()) : ?>
-    <div class="i-flocktory" data-fl-user-name="<?= $USER->GetFullName() ?>"
-         data-fl-user-email="<?= $USER->GetEmail() ?>"></div>
-<? endif; ?>
 <div class="podlozhka"></div>
 <?
 if (Functions::checkMobileDevice()) {
@@ -342,17 +160,17 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     'CACHE_TIME' => 31536000,
                 )
             ); ?>
-            <?php $phone = $GLOBALS['LOCATION']->getRegionPhone()?>
+
             <div class="col-xs-4 pull-right phone-xs">
                 <p class="header-container">
                     <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
-                    <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
+                    <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', SUPPORT_PHONE)?>"></a>
                 </p>
 
             </div>
 
             <div class="col-sm-4 hidden-xs phone-top">
-                <p>Интернет-магазин: <span><?=$phone?></span>
+                <p>Интернет-магазин: <span><?=SUPPORT_PHONE?></span>
                     <? /*<span class="order-info__btn">Статус заказ</span></p>
                     <div class="order-info">
                         <div class="order-info__modal">
@@ -388,7 +206,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
 
             <div class="col-sm-5 hidden-xs phone-top-mob">
-                <p>Телефон: <span style="font-family: 'firaregular'; color: #4e4e4e;">+7 495 212-12-33</span></p>
+                <p>Телефон: <span style="font-family: 'firaregular'; color: #4e4e4e;"><?=SUPPORT_PHONE?></span></p>
             </div>
         </div>
         <div class="col-md-4 col-sm-3 col-xs-12 right-block-top">
