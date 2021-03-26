@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+
+    <symbol id="book" viewBox="0 0 43.94 31.24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2px"
+              d="M4.24 55.52s14.81-3.33 18.14 0c3.41-3.41 18 0 18 0V31.58s-18.08-4.51-18.08 0c0-4.51-18.08 0-18.08 0z"
+              transform="translate(-.35 -28.57)"/>
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2px"
+              d="M21.97 3.01v23.64m18.08-21.2h2.89v24.79H1V5.45h2.89"/>
+    </symbol>
+
+    <symbol id="plus" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" stroke="currentColor"
+              d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/>
+    </symbol>
+
+    <symbol id="minus" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" stroke="currentColor"
+              d="M0 11v1h23v-1h-23z"/>
+    </symbol>
+
+    <symbol id="close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" stroke="currentColor"
+                d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z"/>
+    </symbol>
+
+
+</svg>

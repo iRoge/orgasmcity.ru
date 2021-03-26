@@ -1,0 +1,135 @@
+.slider .slides.slides--with-video {
+    padding-top: 0;
+}
+.slider .slides.slides--with-video .slick-list,
+.slider .slides.slides--with-video .slick-track {
+    position: static;
+}
+
+.slides-item--video {
+    position: relative;
+    display: block;
+    height: 0 !important;
+    padding: 0 0 50%;
+    overflow: hidden;
+}
+.slides-item__video {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /*height: 100%;*/
+    border: 0;
+}
+.slides-item__video-play {
+    display:block;
+    width:128px;
+    height:128px;
+    margin:-64px 0 0 -64px;
+    cursor:pointer;
+    background:url('images/ico_play.png');
+    position:absolute;
+    left:50%;
+    top:50%;
+}
+.slides-item__video-play.stop {
+    display:none;
+}
+
+.slides-item--video.mob-ver {
+    display:none;
+}
+
+@media (max-width: 768px){
+    .slider {
+        margin-bottom:-1px;
+    }
+    .slides-item--video.mob-ver {
+        display:block;
+    }
+    .slides-item--video.comp-ver {
+        display:none;
+    }
+}
+.slider {
+    position: relative;
+    box-sizing: border-box;
+    z-index: 1;
+    margin-bottom: -1px !important;
+}
+.page--index .slider {
+    position: relative;
+}
+.slick-slider {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.slick-slider.slick--no-inline {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.slick-slider > .slick-list {
+    width: 100%;
+}
+
+.slick-slider > .slick-arrow {
+    width: 7.5%;
+    font-size: 0;
+    background: none;
+    border: none;
+    display: block;
+}
+
+.slick-slider > .slick-arrow:after {
+    font-size: 1rem;
+    color: #000;
+}
+
+.slick-slider > .slick-arrow:focus {
+    outline: none;
+}
+
+.slick-slider > .slick-arrow.slick-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.slick-slider > .slick-arrow.slick-prev:after {
+    content: "";
+}
+
+.slick-slider > .slick-arrow.slick-next:after {
+    content: "";
+}
+
+.slick-slider > .slick-arrow:not(.slick--no-inline) .slick-slider > .slick-arrow + .slick-list {
+    width: 85%;
+}
+
+
+
+
+
+
+/*.slider .slides {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 39.725%;
+}
+.slider .slides .slick-list, .slider .slides .slick-track {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.slick-slider > .slick-list {
+    width: 100%;
+}*/

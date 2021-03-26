@@ -105,7 +105,6 @@
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
 
-var_dump(SITE_TEMPLATE_PATH);
     ?>
     <!-- Mango -->
     <? $mangoShow = COption::GetOptionString('respect', 'mango_show');
