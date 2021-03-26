@@ -10,8 +10,7 @@ CHTTP::SetStatus('404 Not Found');
 require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 
 $APPLICATION->SetTitle('404 Not Found');
-\Likee\Site\Helper::addBodyClass('page--404')
-
+\Qsoft\Helpers\SiteHelper::addBodyClass('page--404');
 ?>
 
     <div class="page-content">

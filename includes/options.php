@@ -10,8 +10,8 @@ $respectOptions['POPUP_BANNER_PATH'] = [];
 $respectOptions['POPUP_BANNER_UTM'] = COption::GetOptionString("likee", "popup_b_utm", '');
 
 
-try{
-    $bannerIblockId = \Likee\Site\Helpers\IBlock::getIBlockId('POPUP_ADS');
+try {
+    $bannerIblockId = \Qsoft\Helpers\IBlockHelper::getIBlockId('POPUP_ADS');
 
     $obCache = \Bitrix\Main\Application::getInstance()->getCache();
     $sCacheDir = '/likee/site/';

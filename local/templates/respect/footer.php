@@ -1,16 +1,8 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
-} ?>
-<?/*
-if (!defined("INC_SEGMENTO") || INC_SEGMENTO != true) {
-    // Include Segmento
-    \Bitrix\Main\Page\Asset::getInstance()->addString('<script type="text/javascript">
-        var _rutarget = window._rutarget || [];
-        _rutarget.push({"event": "otherPage"});
-        </script>', false, \Bitrix\Main\Page\AssetLocation::AFTER_JS);
 }
-*/
 ?>
+
 <? if (in_array($GLOBALS["PAGE"][1], array('personal', 'refund'))) : ?>
     </div>
 <? endif; ?>
@@ -22,8 +14,6 @@ if (!defined("INC_SEGMENTO") || INC_SEGMENTO != true) {
 
 <? if (!CSite::InDir(SITE_DIR . 'index.php') && !CSite::InDir(SITE_DIR . 'cart')) : ?>
     <? $APPLICATION->ShowViewContent('under_instagram'); ?>
-
-
 <? endif; ?>
 
 <div class="footer col-xs-12">
@@ -95,7 +85,7 @@ if (!defined("INC_SEGMENTO") || INC_SEGMENTO != true) {
             <div class="col-md-6 col-sm-4 right-footer-div">
                 <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
                     <div class="col-sm-12">
-                        <h3><?=$GLOBALS['LOCATION']->getRegionPhone()?></h3>
+                        <h3><?=SUPPORT_PHONE?></h3>
                         <p>Интернет-магазин</p>
                         <?php $arWork = explode("/", COption::GetOptionString('likee', 'work_time_tablet', '')); ?>
                         <p class="worktime-title-footer"><?=$arWork[0]?><br><?=$arWork[1]?></p>

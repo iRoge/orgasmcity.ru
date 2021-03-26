@@ -1,17 +1,8 @@
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetPageProperty("title", "Брендовая женская и мужская обувь: продажа модной обуви в интернет-магазине Respect");
 $APPLICATION->SetTitle("Главная страница");
-global $arrFilterBanners;
-$arrFilterBanners = array(
-    [
-        'LOGIC' => 'OR',
-        ['PROPERTY_LOCATION' => false],
-        ['PROPERTY_LOCATION' => ''],
-        ['=PROPERTY_LOCATION' => $LOCATION->getName()],
-        ['=PROPERTY_LOCATION' => $LOCATION->getRegion()],
-        ['=PROPERTY_LOCATION' => $LOCATION->getCountry()],
-    ]
-);
+
+global $LOCATION;
 ?>
 
 <div class="front-blocks">

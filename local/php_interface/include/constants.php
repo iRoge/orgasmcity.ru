@@ -26,3 +26,6 @@ define('HOST_USE_TP', true);
 define('DADATA_TOKEN', '5d7f5ca931710f1ee0da45fa0627f84378149d4b'); // Token dadata
 define('DADATA_SECRET_TOKEN', 'fff4fdba3305081a999a5334e73ed7b00a11e9e0'); // Secret token dadata
 define('DADATA_MAX_REQUESTS', 10000); // Максимальное количество запросов в дадату в день
+
+// Телефон поддержки
+define('SUPPORT_PHONE', '+7(999)999-99-99'); // Путь к файлу с политикой конфиденциальности
