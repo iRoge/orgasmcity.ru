@@ -1,0 +1,60 @@
+<?php
+$aMenuLinks = Array(
+    Array(
+        'Магазины',
+        '/shops/',
+        array(),
+        array("itemclass" => "forcart"),
+        ''
+    ),
+    Array(
+        "О компании",
+        "/company_about/",
+        Array(),
+        Array("itemclass"=>"hideincart"),
+        ""
+    ),
+    Array(
+        "Бренды",
+        "/brands/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Новости",
+        "/events/news/",
+        Array(),
+        Array("itemclass"=>"hideincart"),
+        ""
+    ),
+    Array(
+        "Вакансии",
+        "/company_vacancies/",
+        Array(),
+        Array("itemclass"=>"hideincart"),
+        ""
+    ),
+    Array(
+        "Контакты",
+        "/company_contacts/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Статьи",
+        "/articles/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        'Карта сайта',
+        '/search/map.php',
+        array(),
+        array("itemclass" => "hideincart"),
+        ''
+    ),
+);
+?>

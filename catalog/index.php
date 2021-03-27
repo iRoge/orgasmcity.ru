@@ -1,16 +1,34 @@
 <?
+use Likee\Site\Helpers\Catalog;
+
 define("HIDE_TITLE", true);
 if (strpos($_SERVER["REQUEST_URI"], "/catalog/ajax/") !== false) {
     define("NO_KEEP_STATISTIC", true);
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+
+$arLocation = \Likee\Location\Location::getCurrent();
+
+if ('Y' == $APPLICATION->GetProperty('NO_SHOPPING', 'N')) {
+    $arStores = Catalog::getStoresForFiltration(false);
+    \Likee\Site\Helper::addBodyClass('no-shoping');
+} else {
+    $arStores = Catalog::getSelectedStoresForFiltration();
+    $GLOBALS['f']['>PROPERTY_MINIMUM_PRICE'] = 0;
+}
+
+if (!empty($arStores)) {
+    $GLOBALS['f']['OFFERS']['PROPERTY_' . Catalog::PROPERTY_STORES_ID] = $arStores;
+}
+$GLOBALS['f']['!DETAIL_PICTURE'] = false;
 ?>
 
 <? $APPLICATION->IncludeComponent(
     "bitrix:catalog",
     ".default",
     array(
+        'CITY_CODE' => $arLocation['CODE'], //что-бы кеш зависил от города
         "IBLOCK_TYPE" => "test",
         "IBLOCK_ID" => IBLOCK_CATALOG,
         "ACTIONS_IBLOCK_ID" => "15",
