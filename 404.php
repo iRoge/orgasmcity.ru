@@ -8,7 +8,6 @@ CHTTP::SetStatus('404 Not Found');
 @define('HIDE_TITLE', true);
 
 require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
-
 $APPLICATION->SetTitle('404 Not Found');
 \Qsoft\Helpers\SiteHelper::addBodyClass('page--404');
 ?>

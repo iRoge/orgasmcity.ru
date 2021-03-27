@@ -13,117 +13,177 @@
     <meta charset="UTF-8">
     <title><? $APPLICATION->ShowTitle(); ?></title>
 
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?
-//    \Bitrix\Main\Loader::includeModule('likee.site');
-//    \Bitrix\Main\Loader::includeModule('likee.location');
+    \Bitrix\Main\Loader::includeModule('likee.site');
+    \Bitrix\Main\Loader::includeModule('likee.location');
 
     global $LOCATION;
 
-//    $arLocation = \Likee\Location\Location::getCurrent();
-//
-//    $APPLICATION->ShowHead();
-//    $bFranchise = $APPLICATION->GetCurDir() == '/franchise/';
-//    CJSCore::Init(['ajax']);
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.css');
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
-//    !$bFranchise ? \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/lib/fancybox/jquery.fancybox.css') : '' ;
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.css');
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.css');
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.css');
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/fixes.css');
-//    !$bFranchise ? \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/swiper.css') : '' ;
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-3.3.1.min.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/bootstrap.min.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/slick.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-ui.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.zoom.min.js');
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/underscore.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/index.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/microplugin.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/sifter.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/selectize.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/wNumb.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/nouislider.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inputmask.bundle.min.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.validate.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.zoom.min.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/messages_ru.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/slick.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tooltipster.bundle.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/bowser.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/clipboard.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tinycolor.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inview.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/swiper.js');
-//
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/ajax.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/popup.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/tabs.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/subscribe.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/shop-list.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/vacancy.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/dropdown.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/to-top.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/map.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart-item.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/toggle.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product-gallery.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/animate-scroll.js');
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/toggle.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/counter.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/clearable.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/phone.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/datetime.js');
-//    !$bFranchise ? \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/jquery.maskedinput.min.js') : '' ;
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/size.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/sku.js');
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/_default.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/index.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/product.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/cart.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/shop.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/order-pickup.js');
-//    //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/bonuses.js');
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/application.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/show-more.js');
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/device.min.js');
-//    !$bFranchise ? \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/fancybox/jquery.fancybox.js') : '' ;
-//
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
+    $APPLICATION->ShowHead();
+    $bMainPage = $APPLICATION->GetCurDir() == '/';
+    CJSCore::Init(['ajax']);
+
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.css');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/lib/fancybox/jquery.fancybox.css');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.css');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.css');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.css');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/fixes.css');
+    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/swiper.css');
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-3.3.1.min.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/bootstrap.min.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/slick.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-ui.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.zoom.min.js');
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/underscore.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/index.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/microplugin.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/sifter.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/selectize.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/wNumb.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/nouislider.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inputmask.bundle.min.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.validate.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.zoom.min.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/messages_ru.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/slick.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tooltipster.bundle.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/bowser.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/clipboard.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tinycolor.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inview.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/swiper.js');
+
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/ajax.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/popup.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/tabs.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/subscribe.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/shop-list.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/vacancy.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/dropdown.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/to-top.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/map.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart-item.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/toggle.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product-gallery.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/animate-scroll.js');
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/toggle.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/counter.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/clearable.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/phone.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/datetime.js');
+    !$bFranchise ? \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/jquery.maskedinput.min.js') : '' ;
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/size.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/sku.js');
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/_default.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/index.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/product.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/cart.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/shop.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/order-pickup.js');
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/bonuses.js');
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/application.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/show-more.js');
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/device.min.js');
+    !$bFranchise ? \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/fancybox/jquery.fancybox.js') : '' ;
+
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
+    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
+
 
     ?>
-    <!-- Mango -->
-    <? $mangoShow = COption::GetOptionString('respect', 'mango_show');
-    if ($mangoShow) : ?>
-        <button class="mango-false-button"></button>
-        <div id="mango-callback" class="mango-callback" data-settings='{"type":"", "id": "MTAwMTMwODY=","autoDial" : "0", "lang" : "ru-ru", "host":"widgets.mango-office.ru/", "errorMessage": "В данный момент наблюдаются технические проблемы и совершение звонка невозможно"}'></div>
-    <? endif; ?>
-    <!-- End Mango -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBS2jmmM_gqSotmatW-pvrDne7xSWDBhRw&callback=initMap"
+            async defer></script>
+    <script type="text/javascript" src="https://api.flocktory.com/v2/loader.js?site_id=2648" async="async"></script>
+    <script type="text/javascript" data-skip-moving="true" >
+        function getCookie(name) {
+            var matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+
+        function setCookie(name,value,days) {
+            let expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+
+        function setAttr(prmName, val) {
+            var res = '';
+            var d = location.href.split("#")[0].split("?");
+            var base = d[0];
+            var query = d[1];
+            if (query) {
+                var params = query.split("&");
+                for (var i = 0; i < params.length; i++) {
+                    var keyval = params[i].split("=");
+                    if (keyval[0] != prmName) {
+                        res += params[i] + '&';
+                    }
+                }
+            }
+            res += prmName + '=' + val;
+            return base + '?' + res;
+        }
+
+        let seller_id = getCookie('seller_id');
+
+        if (seller_id !== undefined) {
+            let url = setAttr('utm_source', 'prodavec');
+            history.pushState(null, null, url);
+        }
+    </script>
+    <script data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/device.js' ?>"></script>
+    <script data-skip-moving="true">
+        let phpDeviceType = '<?= $GLOBALS['device_type'] ?>';
+        let targetDeviceType = '';
+        if (device.tablet() === true) {
+            targetDeviceType = 'tablet';
+        } else if (device.mobile() === true) {
+            targetDeviceType = 'mobile';
+        } else {
+            targetDeviceType = 'pc';
+        }
+        setCookie('device_type', targetDeviceType);
+        if (phpDeviceType !== targetDeviceType) {
+            document.location.reload();
+        }
+    </script>
+    <? $GLOBALS["PAGE"] = explode("/", $APPLICATION->GetCurPage()); ?>
 </head>
 
 <?
 $bShowRegister = !empty($_POST['REGISTER']) && is_array($_POST['REGISTER']) && !empty($_REQUEST['HEADER_FORM']);
 $bShowAuth = isset($_POST['AUTH_FORM']) && $_POST['AUTH_FORM'] == 'Y' && !empty($_REQUEST['HEADER_FORM']);
+
+if (!$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
+    \Qsoft\Helpers\SiteHelper::addBodyClass('body--auth');
+}
 ?>
 <body class="<? $APPLICATION->ShowProperty('BODY_CLASS'); ?>">
 <div id="panel"><? $APPLICATION->ShowPanel(); ?></div>
 <div class="podlozhka"></div>
 <?
-if (Functions::checkMobileDevice()) {
     $APPLICATION->IncludeComponent(
         'bitrix:menu',
         'mobile',
@@ -142,7 +202,7 @@ if (Functions::checkMobileDevice()) {
             'MAIN_MENU' => 'Y'
         )
     );
-}?>
+    ?>
 
 <?php
 $APPLICATION->ShowViewContent('geolocation_popup');
@@ -159,17 +219,23 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     'CACHE_TIME' => 31536000,
                 )
             ); ?>
-
+            <?php $phone = SUPPORT_PHONE?>
             <div class="col-xs-4 pull-right phone-xs">
                 <p class="header-container">
                     <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
-                    <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', SUPPORT_PHONE)?>"></a>
+                    <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
                 </p>
 
             </div>
-
-            <div class="col-sm-4 hidden-xs phone-top">
-                <p>Интернет-магазин: <span><?=SUPPORT_PHONE?></span>
+            <div class="col-sm-3 hidden-xs phone-top">
+                <p class="phone-top-first">
+                    <span>Единая справочная: </span>
+                    <span><a class="phone-top-link" href="tel:88005555292">8 800 555-52-92</a></span>
+                </p>
+                <p class="phone-top-second">
+                    <span>Интернет-магазин: </span>
+                    <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
+                </p>
                     <? /*<span class="order-info__btn">Статус заказ</span></p>
                     <div class="order-info">
                         <div class="order-info__modal">
@@ -205,13 +271,13 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
 
             <div class="col-sm-5 hidden-xs phone-top-mob">
-                <p>Телефон: <span style="font-family: 'firaregular'; color: #4e4e4e;"><?=SUPPORT_PHONE?></span></p>
+                <p>Телефон: <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span></p>
             </div>
         </div>
         <div class="col-md-4 col-sm-3 col-xs-12 right-block-top">
             <div class="col-md-6 col-sm-6 hidden-xs auth">
                 <?php
-                $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
+                    $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
                 ?>
             </div>
             <div class="col-md-2 col-sm-2 hidden-xs mail mail2">
@@ -265,7 +331,6 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 </div>
                 <div class="col-md-8 menu-div">
                     <?
-                    if (!Functions::checkMobileDevice()) {
                         $APPLICATION->IncludeComponent(
                             'bitrix:menu',
                             'top',
@@ -284,7 +349,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                                 'MAIN_MENU' => 'Y'
                             )
                         );
-                    }?>
+                        ?>
                 </div>
                 <div class="col-md-2 col-sm-9 col-xs-8 pull-right search-div header__search" style="padding-left: 0px">
                     <? $APPLICATION->IncludeComponent(
@@ -310,7 +375,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                                 <a href="/personal/bonuses/">Бонусы</a><br />
                                 <a href="/personal/">Личные данные</a><br />
                                 <a href="/personal/subscribe/">Управление рассылкой</a><br />
-                                <a href="<?= $APPLICATION->GetCurPage() ?>?logout=yes">Выйти</a><br />
+                                <a href="<?= $APPLICATION->GetCurPage() ?>?logout=yes" id="logout-btn">Выйти</a><br />
                             </div>
                         <? endif; ?>
                     </div>
@@ -344,7 +409,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
     </div>
 </div>
 <?
-if (Functions::checkMobileDevice()) {
+if (in_array($GLOBALS['device_type'], ['mobile', 'tablet']) && $bMainPage) {
     $APPLICATION->IncludeComponent(
         'bitrix:menu',
         'mobile_menu_top',
@@ -389,54 +454,53 @@ $bContentContainer = $bShowTitle && !CSite::InDir(SITE_DIR . 'personal/') && !CS
     </div>
 </div>
 
-<? if ($bContentContainer) :
-?>
+    <? if ($bContentContainer) :
+        ?>
 <div class="<?= !$bFranchise ? 'col-xs-12 after-st padding-o' : '' ?>" style="<?= !$bFranchise ? 'margin-top: -20px;' : '' ?>">
     <div class="<?= !$bFranchise ? 'main' : '' ?>">
         <div class="<?= !$bFranchise ? 'col-md-8 col-md-offset-2' : '' ?>">
-            <? elseif ('N' != $APPLICATION->GetProperty('MAIN_WR', 'N')) : ?>
+    <? elseif ('N' != $APPLICATION->GetProperty('MAIN_WR', 'N')) : ?>
             <div class="col-xs-12 after-<?= $APPLICATION->GetProperty('MAIN_WR', ''); ?>">
                 <div class="main">
-                    <? endif; ?>
-                    <? endif; ?>
+    <? endif; ?>
+<? endif; ?>
 
-                    <?php
-                    switch ($GLOBALS['PAGE'][1]) {
-                    case 'company_repayment':
-                        break;
+<?php
+switch ($GLOBALS['PAGE'][1]) {
+    case 'company_repayment':
+        break;
 
-                    case 'personal':
-                    case 'refund':
-                    $menuTemplate = 'horizontal-personal';?>
-                    <div class="after-lk-in col-md-8 col-md-offset-2">
-                        <?php
-                        break;
+    case 'personal':
+        $menuTemplate = 'horizontal-personal';?>
+        <div class="after-lk-in col-md-8 col-md-offset-2">
+        <?php
+        break;
 
-                        default:
-                            $menuTemplate = 'horizontal';
-                            break;
-                        }
+    default:
+        $menuTemplate = 'horizontal';
+        break;
+}
 
-                        if (isset($menuTemplate)) : ?>
-                            <div class="<?= ($menuTemplate == 'horizontal-personal') ? 'desktop-sl' : '' ?>">
-                                <?php
-                                $APPLICATION->IncludeComponent(
-                                    'bitrix:menu',
-                                    $menuTemplate,
-                                    [
-                                        'COMPONENT_TEMPLATE' => '.default',
-                                        'ROOT_MENU_TYPE' => 'left',
-                                        'MENU_CACHE_TYPE' => 'Y',
-                                        'MENU_CACHE_TIME' => '604800',
-                                        'MENU_CACHE_USE_GROUPS' => 'Y',
-                                        'MENU_CACHE_GET_VARS' => array(),
-                                        'MAX_LEVEL' => '1',
-                                        'CHILD_MENU_TYPE' => 'left',
-                                        'USE_EXT' => 'N',
-                                        'DELAY' => 'N',
-                                        'ALLOW_MULTI_SELECT' => 'N'
-                                    ]
-                                );
-                                ?>
-                            </div>
-                        <?php endif; ?>
+if (isset($menuTemplate)) : ?>
+    <div class="<?= ($menuTemplate == 'horizontal-personal') ? 'desktop-sl' : '' ?>">
+        <?php
+        $APPLICATION->IncludeComponent(
+            'bitrix:menu',
+            $menuTemplate,
+            [
+                'COMPONENT_TEMPLATE' => '.default',
+                'ROOT_MENU_TYPE' => 'left',
+                'MENU_CACHE_TYPE' => 'Y',
+                'MENU_CACHE_TIME' => '604800',
+                'MENU_CACHE_USE_GROUPS' => 'Y',
+                'MENU_CACHE_GET_VARS' => array(),
+                'MAX_LEVEL' => '1',
+                'CHILD_MENU_TYPE' => 'left',
+                'USE_EXT' => 'N',
+                'DELAY' => 'N',
+                'ALLOW_MULTI_SELECT' => 'N'
+            ]
+        );
+        ?>
+    </div>
+<?php endif; ?>

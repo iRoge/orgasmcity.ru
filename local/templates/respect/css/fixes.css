@@ -549,7 +549,7 @@ body.with--popup:after {
 }
 @media (min-width: 700px) {
   .product-preorder__article {
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 }
 @media (min-width: 700px) {
@@ -828,7 +828,7 @@ body.with--popup:after {
   min-width: inherit;
   text-transform: uppercase;
   text-align: center;
-  width: 60%;
+  width: 163px;
   border-radius: 3px;
   outline: none;
   height: 30px;

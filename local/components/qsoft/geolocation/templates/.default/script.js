@@ -53,7 +53,7 @@ geoForm.submit(function() {
 
 okButton.click(function() {
     $("#geo_location_search").next("span").find(".select2-selection").removeClass("red_border");
-    let code = $("#geo_location_code").val();
+    code = $("#geo_location_code").val();
     if (code) {
         updateUserLocality(code);
     } else {
@@ -69,13 +69,36 @@ function updateUserLocality(localityCode) {
         url: '/local/ajax/update_user_locality.php',
         data: {
             'location_code': localityCode,
+            'pathname': document.location.pathname
         },
         success:function(data) {
             var parsed = JSON.parse(data);
             switch (parsed.status) {
                 case 'success':
-                    $("#select2-geo_location_search-container").html(parsed.NAME_RU);
-                    $('#geo_location_code').val(parsed.CODE);
+                    if (localityCode == "auto") {
+                        $("#select2-geo_location_search-container").html(parsed.NAME_RU);
+                        $('#geo_location_code').val(parsed.CODE);
+                    } else {
+                        let oPush = {
+                            'event':'MTRENDO',
+                            'eventCategory': 'changeCity',
+                            'cityName': parsed.cityName,              // город, выбранный пользователем
+                        };
+
+                        //Если пользователь авторизован:
+                        if (parsed.user) {
+                            oPush['userId'] = parsed.user.id;              // уникальный идентификатор пользователя
+                            oPush['userAuth'] = parsed.user.userAuth; 		     // признак авторизации пользователя
+                            oPush['userStatus'] = parsed.user.userStatus;  // Статус клиента в программе лояльности
+                        }
+
+                        window.dataLayer = window.dataLayer || [];
+                        dataLayer.push(oPush);
+
+                        $(window).scrollTop(0);
+                        popup.css('top', '');
+                        document.location.href = parsed.url;
+                    }
                     break;
                 case 'fail':
                     $('.geoposition__heading').after('<p id="geoposition_error">Не удалось изменить регион доставки</p>');

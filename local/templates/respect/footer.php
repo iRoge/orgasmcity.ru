@@ -1,8 +1,6 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
-}
-?>
-
+} ?>
 <? if (in_array($GLOBALS["PAGE"][1], array('personal', 'refund'))) : ?>
     </div>
 <? endif; ?>
@@ -14,6 +12,8 @@
 
 <? if (!CSite::InDir(SITE_DIR . 'index.php') && !CSite::InDir(SITE_DIR . 'cart')) : ?>
     <? $APPLICATION->ShowViewContent('under_instagram'); ?>
+
+
 <? endif; ?>
 
 <div class="footer col-xs-12">
@@ -84,22 +84,25 @@
             </div>
             <div class="col-md-6 col-sm-4 right-footer-div">
                 <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
-                    <div class="col-sm-12">
-                        <h3><?=SUPPORT_PHONE?></h3>
+                    <div class="col-sm-12 col-xs-6 num1">
+                        <h3><a href="tel:88005555292">8 800 555-52-92</a></h3>
+                        <p>Единая справочная</p>
+                    </div>
+                    <div class="col-sm-12 col-xs-6 num2">
+                        <h3><a href="tel:<?=$GLOBALS['LOCATION']->getRegionPhone()?>"><?=$GLOBALS['LOCATION']->getRegionPhone()?></a></h3>
                         <p>Интернет-магазин</p>
-                        <?php $arWork = explode("/", COption::GetOptionString('likee', 'work_time_tablet', '')); ?>
-                        <p class="worktime-title-footer"><?=$arWork[0]?><br><?=$arWork[1]?></p>
                     </div>
                     <div class="col-xs-12 social">
                         <? $APPLICATION->IncludeComponent(
                             "likee:social",
                             "footer",
                             array(
-                                "FACEBOOK_LINK" => "https://www.facebook.com/respectbelarus/",
-                                "INSTAGRAM_LINK" => "https://www.instagram.com/respect_belarus/",
-                                "VK_LINK" => "https://vk.com/respect.belarus",
-                                "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCZhItgoSohm81b1IP744Qdg",
-                                "OK_LINK" => "https://ok.ru/group/59329262977086",
+                                "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
+                                "INSTAGRAM_LINK" => "https://www.instagram.com/respectshoes/",
+                                "VK_LINK" => "https://vk.com/respectshoess",
+                                "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
+                                "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
+                                "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
                                 "COMPONENT_TEMPLATE" => "footer",
                             ),
                             false
@@ -126,123 +129,21 @@
                 false
             ); ?>
         </div>
-        <!--        <div class="col-sm-12 bottom-mob">-->
-        <!--            <p class="copy-shop-mob">-->
-        <!--                2012---><?//= date('Y'); ?><!-- ©Интернет-магазин обуви и аксессуаров Respect. Все права защищены.-->
-        <!--            </p>-->
-        <!--            <p class="copy-razrab-mob">-->
-        <!--                <a href="https://qsoft.ru/" target="_blank">Поддержка и развитие в QSOFT</a>-->
-        <!--            </p>-->
-        <!--        </div>-->
-        <div class="col-sm-12 bottom-mob bottom-mob_context_footer">
-            <ul class="payment-partners-list footer__payment-partners">
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_visa">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/visa.png" alt="VISA" width="91" height="29">
-                    </span>
-                </li>
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_visa-verified">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/visa-verified.png" alt="Verified by VISA" width="107" height="54">
-                    </span>
-                </li>
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_mastercard">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/mastercard.png" alt="Mastercard Secure Code" width="248" height="56">
-                    </span>
-                </li>
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_belcart">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/belcart.png" alt="БЕЛКАРТ" width="56" height="62">
-                    </span>
-                </li>
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_belcart-net-pass">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/belcart-net-pass.png" alt="БЕЛКАРТ ИнтернетПароль" width="230" height="54">
-                    </span>
-                </li>
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_bepaid">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/bepaid.png" alt="bePaid" width="117" height="29">
-                    </span>
-                </li>
-                <li class="payment-partners-list__item">
-                    <span class="payment-partner__partner payment-partners-list__partner_mt-bank">
-                        <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/mt-bank.png" alt="МТБанк" width="221" height="72">
-                    </span>
-                </li>
-            </ul>
-            <div class="bottom-mob__inner">
-                <p class="seller-info">
-                    Интернет-магазин «Респект», ООО «Эрикана»<br>
-                    Юридический адрес: 220005, Республика Беларусь, г. Минск, пр-т Независимости, 58в, пом.104<br>
-                    Свидетельство о государственной регистрации №191310345 от 01.09.2010 г. выдано Мингорисполкомом<br>
-                    Дата регистрации в торговом реестре Республики Беларусь - 19.08.2019 г.<br>
-                    Режим работы: с 9.00 - 18.00 СБ, ВС - выходной<br>
-                </p>
-            </div>
+        <div class="col-sm-12 bottom-mob">
+            <p class="copy-shop-mob">
+                2012-<?= date('Y'); ?> ©Интернет-магазин обуви и аксессуаров Respect. Все права защищены.
+            </p>
         </div>
+
     </div>
 </div>
 
 
 <div class="col-xs-12 bottom">
-
-    <!--    <div class="main">-->
-    <!--        <p class="copy-shop col-xs-8">-->
-    <!--            2012---><?//= date('Y'); ?><!-- ©Интернет-магазин обуви и аксессуаров Respect. Все права защищены.-->
-    <!--        </p>-->
-    <!--        <p class="copy-razrab col-xs-4">-->
-    <!--            <a href="https://qsoft.ru/" target="_blank">Поддержка и развитие в <img src="/local/templates/respect/images/qsoft_gray.png"></a>-->
-    <!--        </p>-->
-    <!--    </div>-->
-    <div class="main main_context_footer">
-        <ul class="payment-partners-list footer__payment-partners">
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_visa">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/visa.png" alt="VISA" width="91" height="29">
-                </span>
-            </li>
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_visa-verified">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/visa-verified.png" alt="Verified by VISA" width="107" height="54">
-                </span>
-            </li>
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_mastercard">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/mastercard.png" alt="Mastercard Secure Code" width="248" height="56">
-                </span>
-            </li>
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_belcart">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/belcart.png" alt="БЕЛКАРТ" width="56" height="62">
-                </span>
-            </li>
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_belcart-net-pass">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/belcart-net-pass.png" alt="БЕЛКАРТ ИнтернетПароль" width="230" height="54">
-                </span>
-            </li>
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_bepaid">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/bepaid.png" alt="bePaid" width="117" height="29">
-                </span>
-            </li>
-            <li class="payment-partners-list__item">
-                <span class="payment-partner__partner payment-partners-list__partner_mt-bank">
-                    <img class="payment-partners-list__logo" src="/local/templates/respect/images/payment-partners/mt-bank.png" alt="МТБанк" width="221" height="72">
-                </span>
-            </li>
-        </ul>
-        <div class="main__inner">
-            <p class="seller-info">
-                Интернет-магазин «Респект», ООО «Эрикана»<br>
-                Юридический адрес: 220005, Республика Беларусь, г. Минск, пр-т Независимости, 58в, пом.104<br>
-                Свидетельство о государственной регистрации №191310345 от 01.09.2010 г. выдано Мингорисполкомом<br>
-                Дата регистрации в торговом реестре Республики Беларусь - 19.08.2019 г.<br>
-                Режим работы: с 9.00 - 18.00 СБ, ВС - выходной<br>
-            </p>
-        </div>
+    <div class="main">
+        <p class="copy-shop col-xs-8">
+            2012-<?= date('Y'); ?> ©Интернет-магазин обуви и аксессуаров Respect. Все права защищены.
+        </p>
     </div>
 </div>
 
@@ -255,47 +156,45 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 
 
 <?php if ($waAllowShow) : ?>
-    <a href="<?= "https://wa.me/$waPhone?text=$waProlog" ?>" class="whatsap-call-btn js-whatsapp" aria-label="Напишите нам в WhatSap"></a>
+<a href="<?= "https://wa.me/$waPhone?text=$waProlog" ?>" class="whatsap-call-btn js-whatsapp" aria-label="Напишите нам в WhatSap"></a>
 
 <?php endif; ?>
 
 <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
 <? if (env("useMetric", true)) : ?>
     <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/counters.php"), false);?>
-    <? /* ?>
     <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/criteo.php"), false);?>
-    <? */ ?>
 <? endif ?>
 
 <script>
-    (function () {
-        let regForm   = $('#reg-form'),
-            authForm  = $('#auth-form'),
-            regInput  = $('#vkl20'),
-            authInput = $('#vkl10');
+(function () {
+    let regForm   = $('#reg-form-popup'),
+        authForm  = $('#auth-form'),
+        regInput  = $('#vkl20'),
+        authInput = $('#vkl10');
 
-        $('.reg').click(function() {
-            regInput.not(':checked').prop("checked", true);
-            regForm.show();
-        });
-        $('.ent').click(function() {
-            authInput.not(':checked').prop("checked", true);
-            authForm.show();
-        });
-        $('.cls-mail-div, .podlozhka').click(function() {
-            regForm.hide();
-            authForm.hide();
-        })
-        regInput.click(function() {
-            authForm.hide();
-            regForm.show();
-        });
-        authInput.click(function() {
-            authForm.show();
-            regForm.hide();
-        });
+    $('.reg').click(function() {
+        regInput.not(':checked').prop("checked", true);
+        regForm.show();
+    });
+    $('.ent').click(function() {
+        authInput.not(':checked').prop("checked", true);
+        authForm.show();
+    });
+    $('.cls-mail-div, .podlozhka').click(function() {
+        regForm.hide();
+        authForm.hide();
+    })
+    regInput.click(function() {
+        authForm.hide();
+        regForm.show();
+    });
+    authInput.click(function() {
+        authForm.show();
+        regForm.hide();
+    });
 
-    })();
+})();
 </script>
 <div class="auth-div-full">
     <div class="cls-mail-div"></div>
@@ -313,50 +212,50 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
     <? $APPLICATION->IncludeComponent("bitrix:system.auth.form", "modal", array(), false); ?>
     <? $APPLICATION->IncludeComponent(
         "bitrix:main.register",
-        "registr",
+        "registr-popup",
         array(
-            "AUTH" => "Y",
-            "REQUIRED_FIELDS" => array(
-                0 => "NAME",
-                1 => "PERSONAL_BIRTHDAY",
-                2 => "PERSONAL_PHONE",
-            ),
-            "SET_TITLE" => "N",
-            "SHOW_FIELDS" => array(
-                0 => "EMAIL",
-                1 => "NAME",
-                2 => "SECOND_NAME",
-                3 => "LAST_NAME",
-                4 => "PERSONAL_GENDER",
-                5 => "PERSONAL_BIRTHDAY",
-                6 => "PERSONAL_PHONE",
-            ),
-            "SUCCESS_PAGE" => "",
-            "USER_PROPERTY" => array(
-            ),
-            "USE_BACKURL" => "Y",
-            "COMPONENT_TEMPLATE" => "registr",
-            "USER_PROPERTY_NAME" => ""
+        "AUTH" => "Y",
+        "REQUIRED_FIELDS" => array(
+            0 => "NAME",
+            1 => "PERSONAL_PHONE",
+        ),
+        "SET_TITLE" => "N",
+        "SHOW_FIELDS" => array(
+            0 => "EMAIL",
+            1 => "NAME",
+            2 => "SECOND_NAME",
+            3 => "LAST_NAME",
+            4 => "PERSONAL_GENDER",
+            5 => "PERSONAL_BIRTHDAY",
+            6 => "PERSONAL_PHONE",
+        ),
+        "SUCCESS_PAGE" => "",
+        "USER_PROPERTY" => array(
+        ),
+        "USE_BACKURL" => "Y",
+        "COMPONENT_TEMPLATE" => "registr-popup",
+        "USER_PROPERTY_NAME" => "",
+        "POPUP_FORM" => "Y",
         ),
         false
-    ); ?>
+); ?>
 
     <!-- <style>
         @media (min-width: 767px) {
             .pod-auth p:nth-of-type(1) {
                 display: inline-block;
             }
-
+    
             .pod-auth p:nth-of-type(2) {
                 display: none;
             }
         }
-
+    
         @media (max-width: 767px) {
             .pod-auth p:nth-of-type(1) {
                 display: none;
             }
-
+    
             .pod-auth p:nth-of-type(2) {
                 display: inline-block;
             }
@@ -406,5 +305,30 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         ?>
     </div>
 </div>
+<? setPoddomenSeoTags(); //проверяет наличие seo мета-тегов в ИБ Поддомены и устанавливает их?>
+
+<? if ($_COOKIE['seller_id']) {
+    $APPLICATION->IncludeComponent(
+        "rdevs:sellers",
+        "",
+        array(
+            "CACHE_TIME" => "3600000",
+            "CACHE_TYPE" => "A",
+        )
+    );
+}
+
+$mangoShow = COption::GetOptionString('respect', 'mango_show');
+if ($mangoShow) : ?>
+<script>
+    (function(w, d, u, i, o, s, p) {
+        if (d.getElementById(i)) { return; } w['MangoObject'] = o;
+        w[o] = w[o] || function() { (w[o].q = w[o].q || []).push(arguments) }; w[o].u = u; w[o].t = 1 * new Date();
+        s = d.createElement('script'); s.async = 1; s.id = i; s.src = u; s.charset = 'utf-8';
+        p = d.getElementsByTagName('script')[0]; p.parentNode.insertBefore(s, p);
+    }(window, document, '//widgets.mango-office.ru/widgets/mango.js', 'mango-js', 'mgo'));
+    mgo({multichannel: {id: 9223}});
+</script>
+<? endif; ?>
 </body>
 </html>

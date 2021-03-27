@@ -2556,11 +2556,15 @@
 				to = referencePosition + visibleOnSides + 1 < this.getTotalSlides() - 1 ? referencePosition + visibleOnSides + 1 : this.getTotalSlides() - 1,
 
 				// Get all the slides that need to be checked
-				slidesToCheck = this.slidesOrder.slice( from, to + 1 );
+				slidesToCheck = this.slidesOrder.slice( from, to + 1 ),
+				currentSlide = this.selectedSlideIndex;
 
 			// Loop through the selected slides and if the slide is not marked as having
 			// been loaded yet, loop through its images and load them.
 			$.each( slidesToCheck, function( index, element ) {
+				if(currentSlide !== element){
+					return;
+				}
 				var slide = that.slides[ element ],
 					$slide = slide.$slide;
 

@@ -1,0 +1,18 @@
+.err-block {
+	color:#ff0000;
+	margin:0 0 15px;
+}
+
+table tr.err-row td {
+	border-color:#FF0000;
+}
+
+.r-text {
+	color:#FF0000;
+}
+
+.err-message {
+	margin:25px 0;
+	color:#FF0000;
+	font-weight:bold;
+}

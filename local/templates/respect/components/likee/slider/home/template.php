@@ -19,10 +19,17 @@ $this->setFrameMode(true);
     <div class="slider">
         <div class="main">
             <div id="main-slider<?= $arParams['CUSTOM_NUMBER'] ?>" class="slides<? !empty($arResult['ITEMS'][0]['VIDEO']) and print ' slides--with-video' ?>"<? !empty($arResult['SLICK']) and print " data-slick='".json_encode($arResult['SLICK'])."'"; ?>>
-                <? foreach ($arResult['ITEMS'] as $arItem) :
+                <? $counter = 1;
+                foreach ($arResult['ITEMS'] as $arItem) :
+                    $dataProps = 'data-rblock-id="' . $arItem['ID'] .'" '; // id баннера
+                    $dataProps .= 'data-rblock-name="' . $arParams['BANNER_TYPE'] . '" ';  // Тип баннера
+                    //$dataProps .= 'data-prod-brand="Respect" ';  // Бренд баннера
+                    $dataProps .= 'data-prod-creative="' . $arItem['NAME'] . ' | ' . $arItem['ACTIVE_FROM'] . '" ';  // Название и начало активности баннера
+                    $dataProps .= 'data-prod-position="' . $counter . '" ';  // Номер баннера
+
                     if (!empty($arItem['VIDEO'])) :
                         ?>
-                    <div class="slides-item slides-item--video">
+                    <div class="slides-item slides-item--video banner_item" <?= $dataProps?>>
                         <div class="comp-ver">
                             <video class="slides-item__video" loop="loop" <? if ($arItem['PROPS']['AUTOPLAY']['VALUE']) :
                                 ?> autoplay data-play="yes" <?
@@ -55,13 +62,24 @@ $this->setFrameMode(true);
                         $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], CIBlock::GetArrayByID($arItem['IBLOCK_ID'], 'ELEMENT_EDIT'));
                         $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array('CONFIRM' => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
                         ?>
-
-                        <? if (!empty($arItem['LINK'])) : ?>
-                            <a href="<?= $arItem['LINK']; ?>" id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" data-mob-bg="<?=$arItem['MOBILE_SRC']?>" data-mob-link="<?=$arItem['PROPS']['MOBILE_LINK']['VALUE']?>" data-title="<?= $arItem['NAME']; ?>"><?= $bannerImg ?></a>
+                        <? if ($arItem['PROPS']['ACTIVE_MULTIPLY_LINKS']['VALUE'] == 'Y') : ?>
+                        <div class="cards__banner stock-banner stock-banner--internal banner_item" <?= $dataProps?>>
+                            <div class="stock-banner__wrapper">
+                                <img class="stock-banner__img" src="<?= $arItem['PREVIEW_PICTURE']['SRC'] ?>"
+                                     alt="">
+                                <? foreach ($arItem['BANNER']['MULTIPLY_LINKS'] as $arLink) : ?>
+                                    <a class="stock-banner__link" href="<?= $arLink['LINK'] ?>"
+                                       style="<?= $arLink['STYLE'] ?>; outline: none" ></a>
+                                <? endforeach ?>
+                            </div>
+                        </div>
+                        <? elseif (!empty($arItem['LINK'])) : ?>
+                            <a href="<?= $arItem['LINK']; ?>" id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" <?= $dataProps?> data-mob-bg="<?=$arItem['MOBILE_SRC']?>" data-mob-link="<?=$arItem['PROPS']['MOBILE_LINK']['VALUE']?>" data-title="<?= $arItem['NAME']; ?>"><?= $bannerImg ?></a>
                         <? else : ?>
-                            <div id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" data-mob-bg="<?=$arItem['MOBILE_SRC']?>"><?= $bannerImg ?></div>
+                            <div id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" <?= $dataProps?> data-mob-bg="<?=$arItem['MOBILE_SRC']?>"><?= $bannerImg ?></div>
                         <? endif; ?>
                     <? endif; ?>
+                    <? $counter++; ?>
                 <? endforeach; ?>
             </div>
         </div>

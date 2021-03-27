@@ -1,0 +1,105 @@
+.lis__media {
+    margin: 6px;
+    padding-top: 100%;
+    position: relative;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+}
+.column-2 .lis__media {
+    margin: 0;
+}
+.lis__caption {
+    display: none;
+}
+.lis__media-info {
+    font-size: 25px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10%;
+    transform: translateY(100%);
+    color: #fff;
+    will-change: opacity, transform;
+    transition: opacity .7s ease, transform .5s ease;
+}
+.lis__media:hover .lis__media-info {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.lis__media-account {
+    overflow: hidden;
+    width: 100%;
+    line-height: normal;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+.lis__media-value-wrapper {
+    display: flex;
+    margin: .4em 0;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+.lis__media-value {
+    display: flex;
+    align-items: center;
+}
+.lis__media-value:before {
+    content: '';
+    display: inline-block;
+    height: 1em;
+    margin-right: 0.5em;
+    width: 1em;
+    font-size: inherit;
+    background-position: center;
+    background-size: contain;
+}
+
+.lis__media-value--likes:before {
+    background-image: url('img/favorite.svg');
+}
+.lis__media-value--comment:before {
+    background-image: url('img/comment-bubble.svg');
+}
+.lis__media-value--buy:before {
+    background-image: url('img/bag2.svg');
+    height: 60px;
+    margin: 0 auto;
+    width: 60px;
+}
+
+.lis-full__img {
+    margin-right: 15px;
+    padding-bottom: 100%;
+    background-position: center;
+    background-size: cover;
+}
+.lis-full__item {
+    display: flex;
+    margin-bottom: 1em;
+    justify-content: space-between;
+}
+.lis-full__name {
+    margin-right: 1rem;
+    font-size: 1.45rem;
+    font-weight: 500;
+    line-height: 2.5rem;
+}
+.lis-full__caption {
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+.lis-full__tag {
+    color: #0083AE;
+}

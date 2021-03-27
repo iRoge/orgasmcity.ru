@@ -1,0 +1,16 @@
+#subscribe-form > .error {
+    margin: 0 0 10px 0;
+}
+input#EMAIL.red_border_sub {
+    border: 1px solid red !important;
+}
+#subscribe-message {
+    pointer-events: auto;
+}
+#subscribe-message a {
+    color: #fd7778;
+    transition: opacity 300ms;
+}
+#subscribe-message a:hover {
+    opacity: 0.8;
+}

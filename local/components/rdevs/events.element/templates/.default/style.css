@@ -1,0 +1,29 @@
+.event-content{
+    width: 850px;
+    margin: auto;
+}
+.event-content img{
+    width: 100%;
+}
+
+.events-link-btn{
+    display: block;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #034078;
+    margin: 10px auto;
+    width: max-content;
+    white-space: nowrap;
+}
+.events-link-btn:hover{
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .event-content{
+        width: 100%;
+    }
+}

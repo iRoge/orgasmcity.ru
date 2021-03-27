@@ -19,6 +19,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/Functions
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/qsoft/superDebug.php');
 // composer autoloader
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
+// likeee autoloader
+require_once($_SERVER['DOCUMENT_ROOT'] . '/local/modules/likee.site/include.php');
 
 // создаем экземпляр класса, который будем везде использовать
 $LOCATION = new \Qsoft\Location\Location;

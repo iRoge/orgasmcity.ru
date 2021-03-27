@@ -81,7 +81,7 @@ $(window).resize(function() {
 	$('.hide-menu').css('height', 'auto').each(function() {
         let heightLeftHide = $('.left-hide-menu', this).outerHeight(true);
         let heightRightHide = $('.right-hide-menu', this).outerHeight(true);
-		
+
 		if(heightLeftHide > heightRightHide) {
 			$(this).css('height', heightLeftHide);
 		} else {
@@ -104,7 +104,7 @@ $(function() {
   $('.menu-ul-li:not(.js-has-children)').hover(function(){
     $('.hide-menu').hide()
   });
-	
+
 	$('.hide-menu').hover(function() {
 		$(this).show();
 		$(this).prev('.menu-ul-li').find('.menu-ul-li-a').toggleClass('active-menu');
@@ -501,6 +501,28 @@ $(function() {
 
 });*/
 
+
+  $('.banner_item').on('click', function () {
+    let bannerElem = $(this);
+    let oGTMPush = {
+      'event': 'MTRENDO',
+      'eventCategory': 'EEC',
+      'eventAction': 'view_promotion',
+      'eventLabel': bannerElem.data('rblockName'),  // название баннера/акции
+      'ecommerce': {
+        'promoView': {
+          'promotions': [{
+            'name': bannerElem.data('rblockName'),  // название баннера/акции
+            'id': bannerElem.data('rblockId'),   // id баннера, если есть
+            'creative': bannerElem.data('prodCreative'),  // место размещения баннера
+            'position': bannerElem.data('prodPosition') //позиция в блоке
+          }]
+        }
+      }
+    };
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push(oGTMPush);
+  });
 
 
 $(function() {
@@ -933,26 +955,60 @@ $(function() {
   })
 });
 
+function onlinePayment(elem) {
+  if (!elem.hasClass('isDisabled')) {
+    elem.addClass('isDisabled');
+    elem.text('Перенаправление...');
+
+    $.ajax({
+      method: "POST",
+      url: "/local/ajax/sberbank_payment.php",
+      data: {'orderId': elem.attr('data-order-id')},
+      success: function (data) {
+        console.log(data);
+        elem.text('Переход');
+        window.location.replace(data);
+      },
+      error: function (data) {
+        console.log('Ошибка перехода к онлайн оплате');
+      }
+    });
+  }
+}
+
+$('a.pay-button').on('click', function (){
+  onlinePayment($(this));
+})
+
 
 
 
   $(function() {
     $('.blue-menu').click(function() {
       $('.blue-menu-div').animate({"margin-left": "0px"}, 300);
-      $('.podlozhka').toggle(0);
+      $('.podlozhka').fadeIn(600);
       $('.cls-blue-menu').css('display', 'inline-block');
       $('.blue-menu').css('display', 'none');
     });
 
     $('.podlozhka').click(function() {
-      $('.blue-menu-div').animate({"margin-left": "-320px"}, 300);
-      $('.podlozhka').toggle(0);
-      $('.cls-blue-menu').css('display', 'none');
-      $('.blue-menu').css('display', 'inline-block');
-      $('.vou2').hide();
-      $('.cls-blue-menu2').hide();
-      $('.mail-div').hide();
-      $('.auth-div-full').hide(0);
+      if ($('.menu-div').css('display') === 'none') {
+        let menuAnimateWidth;
+        let windowsWidth = $(window).width();
+        if (windowsWidth > 767) {
+          menuAnimateWidth = '-320px';
+        } else {
+          menuAnimateWidth = '-100%';
+        }
+        $('.blue-menu-div').animate({"margin-left": menuAnimateWidth}, 300);
+        $('.podlozhka').fadeOut(600);
+        $('.cls-blue-menu').css('display', 'none');
+        $('.blue-menu').css('display', 'inline-block');
+        $('.vou2').hide();
+        $('.cls-blue-menu2').hide();
+        $('.mail-div').hide();
+        $('.auth-div-full').hide(0);
+      }
     });
 
 
@@ -966,8 +1022,15 @@ $(function() {
     })
 
     $('.cls-blue-menu').click(function() {
-      $('.blue-menu-div').animate({"margin-left": "-320px"}, 300);
-      $('.podlozhka').hide(0);
+      let menuAnimateWidth;
+      let windowsWidth = $(window).width();
+      if (windowsWidth > 767) {
+        menuAnimateWidth = '-320px';
+      } else {
+        menuAnimateWidth = '-100%';
+      }
+      $('.blue-menu-div').animate({"margin-left": menuAnimateWidth}, 300);
+      $('.podlozhka').fadeOut(600);
       $('.cls-blue-menu').css('display', 'none');
       $('.blue-menu').css('display', 'inline-block');
     });
@@ -1015,25 +1078,36 @@ $(function() {
   });
 
   $(function() {
-    let that = $(this);
-    $('.one-zkz').click(function() {
 
+    $('.order-info-grid').click(function() {
+      let that = $(this);
+      let basketBlock = that.next('.order-basket-items');
+      let oneZkzBlock = that.parent('.one-zkz');
       if(that.css('background-color') != 'rgb(243, 243, 243)')
       {
-        //$(this).css('background-color', '#f3f3f3');
-        //$(this).css('background-image', 'url("img/up-arrow.png")');
-        that.css('background-position', 'calc(100% + 1px) 24px');
+        oneZkzBlock.css('border-color', 'gray');
+        that.css('background-color', '#f3f3f3');
+        that.css('background-image', 'url("/img/up-arrow.png")');
+        that.css('background-position', 'calc(100% - 20px) 37px');
+        basketBlock.slideDown();
         that.removeClass('opn');
       }
       else{
-        //$(this).css('background-color', '#fff');
-        //$(this).css('background-image', 'url("img/down-arrow.png")');
-        that.css('background-position', 'calc(100% + 1px) 45%');
+        that.css('background-color', '#fff');
+        that.css('background-image', 'url("/img/down-arrow.png")');
+        that.css('background-position', 'calc(100% - 20px) 37px');
+        basketBlock.slideUp({complete: function(){ // callback
+            oneZkzBlock.css('border-color', 'rgba(200,200,200, .5)');
+          }
+        });
         that.addClass('opn');
       }
-
-      that.find('.in-one-zkz').toggle();
     });
+
+    $('.pay-lk-button').on('click', function (event) {
+      event.stopPropagation();
+      onlinePayment($(this));
+    })
 
 
 
@@ -1247,41 +1321,60 @@ $(document).ready(function () {
   $(document).on('click', '.favorites_header', function () {
     sendYandexMetrkiaGoal('open_favorites');
   });
-});
 
-//кнопка обратного звонка Mango
-$(document).on('click', '.mango-false-button', function () {
-  // Функция обратного вызова при загрузке скрипта Mango
-  let mangoCallback = function() {
-    $('.mango-false-button').css('display', 'none');
-    $('.button-widget-open').click();
-    if (window.matchMedia('(max-width: 767px)').matches) {
-      let mangoButtonElement = document.querySelector('.mng-wgt');
-      if (mangoButtonElement) {
-        let mangoButton = new StickyButton(mangoButtonElement, 4, null, true);
-        mangoButton.init();
-      }
-    }
-    window.StickyButton.update();
-    if (window.matchMedia('(max-width: 767px)').matches) {
-      $('.widget-wrapper__center').attr('style', 'top: 150px');
-      $('.close-popup').attr('style', 'top: 175px');
-      $('.currentCountry').attr('style', 'margin: 0px!important;margin-bottom: 20px !important;');
-      $('.text-widget').attr('style', 'font-size: 20px!important');
-      $('.title-widget').attr('style', 'font-size: 35px!important');
-    }
+  //TODO дикая дичь. Попробовать переделать.
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    let mgoObs = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (e) {
+          let m = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mu) {
+              mu.addedNodes.forEach(function (ee) {
+                let mgoCallBtn = ee.querySelector('.mgo-mcw__button_cb');
+                let mgoCallBtnSt = new StickyButton(mgoCallBtn, 3);
+                mgoCallBtnSt.init();
 
-    mangoWatchClick.disconnect();
-  };
-  // Следим за кликом и загрузкой кнопки обратного звонка
-  let mangoWatchClick = new MutationObserver(mangoCallback);
-  mangoWatchClick.observe(document.getElementById('mango-callback'), {childList: true});
-  // Скрипт Mango
-  !function(t) {function e(){i=document.querySelectorAll(".button-widget-open");for(var e=0;e<i.length;e++) "true"!=i[e].getAttribute("init")&&(options=JSON.parse(i[e].closest('.'+t).getAttribute("data-settings")),i[e].setAttribute("onclick","alert('"+options.errorMessage+"(0000)'); return false;"))}function o(t,e,o,n,i,r){var s=document.createElement(t);for(var a in e)s.setAttribute(a,e[a]);s.readyState?s.onreadystatechange=o:(s.onload=n,s.onerror=i),r(s)}function n(){for(var t=0;t<i.length;t++){var e=i[t];if("true"!=e.getAttribute("init")){options=JSON.parse(e.getAttribute("data-settings"));var o=new MangoWidget({host:window.location.protocol+'//'+options.host,id:options.id,elem:e,message:options.errorMessage});o.initWidget(),e.setAttribute("init","true"),i[t].setAttribute("onclick","")}}}host=window.location.protocol+"//widgets.mango-office.ru/";var i=document.getElementsByClassName(t);o("link",{rel:"stylesheet",type:"text/css",href:host+"css/widget-button.css"},function(){},function(){},e,function(t){var headTag=document.querySelector('head');headTag.insertBefore(t,headTag.firstChild)}),o("script",{type:"text/javascript",src:host+"widgets/mango-callback.js"},function(){("complete"==this.readyState||"loaded"==this.readyState)&&n()},n,e,function(t){document.documentElement.appendChild(t);})}("mango-callback");
+                mgoCallBtn = ee.querySelector('.mgo-mcw__group-buttons');
+                mgoCallBtnSt = new StickyButton(mgoCallBtn, 3);
+                mgoCallBtnSt.init();
+
+                window.StickyButton.update();
+
+                m.disconnect();
+                mgoObs.disconnect();
+
+                const obs = new MutationObserver(function (mutations) {
+                  mutations.forEach(function (mutation) {
+                    mutation.addedNodes.forEach(function (e) {
+                      if (e.classList.contains('mgo-mcw__button')) {
+                        if (window.matchMedia('(max-width: 767px)').matches) {
+                          let mgoCallBtn = document.querySelector('.mgo-mcw__button_cb');
+                          let mgoCallBtnSt = new StickyButton(mgoCallBtn, 3);
+                          mgoCallBtnSt.init();
+
+                          window.StickyButton.update();
+                        }
+                      }
+                    });
+                  });
+                });
+
+                obs.observe(document.querySelector('#mgo-mcw-callback'), {childList: true});
+              })
+            })
+          });
+
+          m.observe(e.lastChild, {childList: true})
+        });
+      });
+    });
+
+    mgoObs.observe(document.querySelector('body'), {childList: true});
+  }
 });
 
 //Прикрепление маски на поле ввода телефона
-function phoneMaskCreate(phoneInput) {
+function phoneMaskCreate(phoneInput, needStar = true) {
     phoneInput.mask('+7 (999) 999-99-99', {autoclear: false
     }).click(function() {
         let that = $(this);
@@ -1292,7 +1385,8 @@ function phoneMaskCreate(phoneInput) {
     }).mouseover(function () {
         $(this).attr('placeholder', '+7 (___) ___-__-__');
     }).mouseout(function () {
-        $(this).attr('placeholder', '*Телефон');
+        let phoneString = (needStar ? '*' : '') + 'Телефон';
+        $(this).attr('placeholder', phoneString);
     }).keydown(function (e) {
       let that = $(this);
       if(that.val() == '+7 (___) ___-__-__'){
@@ -1320,7 +1414,7 @@ function phoneMaskCreate(phoneInput) {
             e.stopPropagation();
         }
     });
-};
+}
 
 //Retail Rocket
 // $('.form--subscribe').submit(function (e) {
@@ -1373,8 +1467,6 @@ function rrAddToBasket(productId) {
       if (data.status == "ok") {
         fbq('track', 'AddToCart');
         updateSmallBasket(data.text);
-        let _rutarget = window._rutarget || [];
-        _rutarget.push({'event': 'addToCart'});
       } else {
         console.log('Ошибка добавления в корзину RR');
       }
@@ -1384,4 +1476,4 @@ function rrAddToBasket(productId) {
     }
   });
   sendYandexMetrkiaGoal('click_product_cart');
-};
+}

@@ -490,6 +490,7 @@ label.radio > span .input__color,
 .page--index #main-slider ul.slick-dots,
 .page--index #main-slider2 ul.slick-dots {
   position: relative;
+  width: auto;
 }
 
 .page--index #main-slider .slick-dots,
@@ -793,8 +794,8 @@ label.radio > span .input__color,
   -ms-flex-pack: center;
       justify-content: center;
   padding: 0 30px;
-  font-size: 1.154rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 600;
   line-height: 1.923rem;
   z-index: 2;
   overflow: hidden;
@@ -809,7 +810,7 @@ label.radio > span .input__color,
     -ms-flex: 1;
         flex: 1;
     height: 22rem;
-    font-size: 2rem;
+    font-size: 1.9rem;
     line-height: 2.462rem;
     padding: 0 7rem;
     color: #0a01c0;
@@ -839,6 +840,22 @@ label.radio > span .input__color,
   -ms-transform: translate(-30%, -50%);
       transform: translate(-30%, -50%);
   z-index: 1;
+}
+
+.bonus-be-part__block-content .bonus-image {
+  position: absolute;
+  width: 80%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bonus-be-part__block-content.disable-before:before {
+  content: unset;
+}
+
+.bonus-be-part__block-content > section > span > a {
+  color: #0a01c0;
 }
 
 @media (min-width: 600px) {
@@ -947,7 +964,7 @@ label.radio > span .input__color,
 
 .bonus-slider.bonus-slider--special .bonus-slider-item {
   color: #ffffff;
-  height: 24rem;
+  height: 20rem;
 }
 
 @media (min-width: 600px) {
@@ -1056,9 +1073,9 @@ label.radio > span .input__color,
 }
 
 .bonus-slider-item p {
-  font-size: 1.154rem;
+  font-size: 1.5rem;
   line-height: 1.923rem;
-  font-weight: 300;
+  font-weight: 600;
   max-width: 100%;
   color: #0a01c0;
 }
@@ -1070,7 +1087,7 @@ label.radio > span .input__color,
 @media (min-width: 600px) {
   .bonus-slider-item p {
     margin-top: 1.5rem;
-    font-size: 1.2rem;
+    font-size: 1.9rem;
     line-height: 2rem;
   }
 }
@@ -2223,6 +2240,7 @@ body > .popup--message .popup__wrapper {
 .bonus-top {
   background: #0a01c0;
   padding-top: 40px;
+  padding-bottom: 25px;
 }
 .bonus-bottom {
   background: #f187b7;
@@ -2240,6 +2258,7 @@ body > .popup--message .popup__wrapper {
   font-weight: 700;
   color: #0a01c0;
   padding: 15px;
+  padding-bottom: 0px;
   background: #fff;
   text-transform: uppercase;
 }
@@ -2324,10 +2343,10 @@ body > .popup--message .popup__wrapper {
 
 /* two block */
 .stairway__item--second .stairs__percent:after {
-  right: 23px;
+  right: 64px;
 }
 .stairway__item--third .stairs__percent:after {
-  right: 20px;
+  right: 64px;
 }
 .stairs__percent {
   font-size: 200px;
@@ -2346,7 +2365,7 @@ body > .popup--message .popup__wrapper {
   display: block;
   font-size: 30px;
   position: absolute;
-  right: -5px;
+  right: 64px;
   top: 24px;
   padding: 6px;
   border-radius: 100%;
@@ -2377,6 +2396,11 @@ body > .popup--message .popup__wrapper {
   padding: 3px 0px 10px 43px;
   width: 90%;
   margin: 0 auto;
+}
+@media (max-width: 991px) {
+  .stairs__desc {
+    padding: 3px 0px 10px 0px;
+  }
 }
 .stairway__item--first {
   margin-top: 178px;
@@ -2456,6 +2480,15 @@ body > .popup--message .popup__wrapper {
   }
   .stairs__head {
       width: 100%;
+  }
+
+  .bonus-be-part__block-content .bonus-image {
+    width: 40%;
+    left: 50%;
+  }
+
+  .bonus-slider.bonus-slider--special .bonus-slider-item {
+    height: 15rem;
   }
 }
 

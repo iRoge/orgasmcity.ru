@@ -1,0 +1,48 @@
+.tender-text {
+    padding:0;
+    margin:0 0 10px;
+
+}
+.tender-files {
+    padding:0;
+    margin:0;
+}
+.tender-files-each {
+    padding:0;
+    margin:0 0 15px;
+}
+.tender-files-each .ico-file {
+    display:block;
+    float:left;
+    width:50px;
+    height:50px;
+    background-position:0 0;
+    background-repeat:no-repeat;
+    background-size:contain;
+    margin:0 15px 0 0;
+}
+.tender-files-each .ico-jpeg {
+    background-image:url('icos/jpeg_download.png');
+}
+.tender-files-each .ico-jpg {
+    background-image:url('icos/jpeg_download.png');
+}
+.tender-files-each .ico-pdf {
+    background-image:url('icos/pdf_download.png');
+}
+.tender-files-each .ico-docx {
+    background-image:url('icos/word_download.png');
+}
+.tender-files-each .ico-xlsx {
+    background-image:url('icos/xls_download.png');
+}
+
+.tender-files-each .text-file {
+    display:block;
+    padding:20px 0 0;
+
+}
+
+.clear {
+    clear:both;
+}

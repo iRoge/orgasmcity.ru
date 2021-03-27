@@ -1,0 +1,35 @@
+.dropdown-toggle.bold {
+    font-weight:700;
+}
+.tender-list li {
+    padding:3px 0;
+}
+.dropdown-toggle {
+    display: inline-block;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-right: 1.5em;
+    text-decoration: none;
+    color:#000;
+    font-family: 'firaregular',sans-serif;
+}
+.tenders-block{
+    margin-bottom: 70px;
+}
+/*.dropdown-toggle:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: inline-block;
+    font-family: "icon";
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}*/

@@ -1,0 +1,34 @@
+.articles-block {
+    padding:0;
+    margin:0;
+}
+.articles-each {
+    padding:0;
+    margin:0 0 25px;
+}
+.articles-each .name {
+    padding:0;
+    margin:0 0 5px;
+    font-weight:700;
+    font-size:15px;
+}
+.articles-each .name h2 {
+    padding:0;
+    margin:0 0 5px;
+    font-weight:700;
+    font-size:15px;
+    text-align:left;
+}
+.articles-each .name h2 a {
+    text-decoration:underline;
+}
+.articles-each .name h2 a:hover {
+    text-decoration:none;
+}
+.articles-each .text {
+    margin:0 0 5px;
+}
+.articles-each .more {
+    padding:0;
+    margin:0 0 5px;
+}

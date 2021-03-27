@@ -1,0 +1,78 @@
+.contest {
+    margin: 1rem 0 3rem;
+    text-align: center;
+}
+.button.contest__button {
+    font-size: 2rem;
+    height: 4.5rem;
+    line-height: 2;
+}
+.contest__stat {
+    display: none;
+    text-align: center;
+}
+.contest__stat-result {
+    font-size: 1.4rem;
+    line-height: 1.5em;
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+}
+.contest__stat-value {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.contest--closed .button.contest__button {
+    display: none;
+}
+.contest--process .contest__stat {
+    display: block;
+}
+
+.popup.popup--contest {
+    background: transparent;
+    padding: 0;
+}
+.popup.popup--contest .popup__wrapper {
+    padding: 0;
+}
+
+.contest-content__image {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    min-height: 30rem;
+    height: 65vh;
+    background-color: #fff;
+}
+.contest-content__actions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: url('images/buttons.png') no-repeat center;
+    background-size: cover;
+    height: 48px;
+}
+.contest-content__button {
+    display: inline-block;
+    height: 100%;
+    width: 50%;
+    border-width: 0;
+    background-color: transparent;
+    outline: none;
+    text-indent: -9999px;
+}
+.contest-content__button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+@media (min-width: 600px) {
+    .contest-content__actions {
+        height: 77px;
+    }
+}
+@media (min-width: 900px) {
+    .contest-content__actions {
+        height: 115px;
+    }
+}
+  
