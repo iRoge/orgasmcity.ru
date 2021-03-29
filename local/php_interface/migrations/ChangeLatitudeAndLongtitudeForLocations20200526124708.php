@@ -1,10 +1,12 @@
 <?php
 
+#TODO На респекте и городе оргазма разные id. Нужно доработать
+
 namespace Sprint\Migration;
 
 class ChangeLatitudeAndLongtitudeForLocations20200526124708 extends Version
 {
-    protected $description = "Изменяет коорлинаты центров одинаковоназванных городов";
+    protected $description = "Изменяет координаты центров одинаковоназванных городов";
 
     protected $moduleVersion = "3.14.6";
 

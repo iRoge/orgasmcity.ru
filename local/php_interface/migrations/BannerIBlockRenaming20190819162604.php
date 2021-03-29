@@ -1,5 +1,7 @@
 <?php
 
+#TODO: Изменяет название для инфоблока, который возможно понадобится для компонента на главной
+
 namespace Sprint\Migration;
 
 use Bitrix\Iblock\IblockTable;

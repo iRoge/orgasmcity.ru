@@ -36,9 +36,8 @@ class QsoftInfopageComponent extends ComponentHelper
     }
     private function setSeo()
     {
-        global $LOCATION;
         global $APPLICATION;
-        $seo = $LOCATION->getPoddomenSeo() ?: $this->loadSeoElement();
+        $seo = $this->loadSeoElement();
         if ($this->arParams['SET_TITLE'] != 'N') {
             $APPLICATION->SetTitle($seo['ELEMENT_PAGE_TITLE'] ?: $seo['SECTION_PAGE_TITLE']);
         }

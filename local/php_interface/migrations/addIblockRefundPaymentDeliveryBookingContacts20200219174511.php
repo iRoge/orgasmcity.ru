@@ -1,5 +1,7 @@
 <?php
 
+#TODO: проверил, используется для страниц "Оплата", "Возврат" и т.д. ... Удалить лишнее и можно юзать
+
 namespace Sprint\Migration;
 
 class addIblockRefundPaymentDeliveryBookingContacts20200219174511 extends Version

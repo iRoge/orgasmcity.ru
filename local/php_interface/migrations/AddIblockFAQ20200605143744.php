@@ -1,6 +1,6 @@
 <?php
 
-
+#TODO: проверил, используется для страницы вопрос-ответ
 namespace Sprint\Migration;
 
 class AddIblockFAQ20200605143744 extends Version
