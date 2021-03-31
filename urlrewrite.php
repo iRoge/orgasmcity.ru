@@ -1,47 +1,23 @@
 <?php
-const ARRAY1 = array(
+$arUrlRewrite = [
     0 =>
-        array(
+        array (
             'CONDITION' => '#^/articles/([a-zA-Z0-9_-]+)(?:/)*(?:[?]+.*)*$#',
             'RULE' => 'article_code=$1',
             'ID' => '',
             'PATH' => '/articles/detail.php',
             'SORT' => 100,
         ),
-    1 =>
-        array(
-            'CONDITION' => '#^/tenders/([a-zA-Z0-9_-]+)(?:/)*(?:[?]+.*)*$#',
-            'RULE' => 'tender_code=$1',
-            'ID' => '',
-            'PATH' => '/tenders/detail.php',
-            'SORT' => 100,
-        ),
     2 =>
-        array(
+        array (
             'CONDITION' => '#^/bitrix/services/ymarket/#',
             'RULE' => '',
             'ID' => '',
             'PATH' => '/bitrix/services/ymarket/index.php',
             'SORT' => 100,
         ),
-    13 =>
-        array(
-            'CONDITION' => '#^/lookbook/page-([0-9]+)#',
-            'RULE' => 'page=$1',
-            'ID' => '',
-            'PATH' => '/lookbook/index.php',
-            'SORT' => 100,
-        ),
-    200 =>
-        array(
-            'CONDITION' => '#^/goroskop/page-([0-9]+)#',
-            'RULE' => 'page=$1',
-            'ID' => '',
-            'PATH' => '/goroskop/index.php',
-            'SORT' => 100,
-        ),
     10 =>
-        array(
+        array (
             'CONDITION' => '#^/stssync/calendar/#',
             'RULE' => '',
             'ID' => 'bitrix:stssync.server',
@@ -49,39 +25,47 @@ const ARRAY1 = array(
             'SORT' => 100,
         ),
     4 =>
-        array(
+        array (
             'CONDITION' => '#^/personal/orders/#',
             'RULE' => '',
             'ID' => 'bitrix:sale.personal.order',
             'PATH' => '/personal/orders/index.php',
             'SORT' => 100,
         ),
-    5 =>
-        array(
-            'CONDITION' => '#^/news/#',
+    6 =>
+        array (
+            'CONDITION' => '#^/press_center/#',
             'RULE' => '',
             'ID' => 'bitrix:news',
-            'PATH' => '/events/index.php',
+            'PATH' => '/press_center/index.php',
             'SORT' => 100,
         ),
-    6 =>
-        array(
-            'CONDITION' => '#^/actions/#',
+    15 =>
+        array (
+            'CONDITION' => '#^/webmaster/#',
             'RULE' => '',
-            'ID' => 'bitrix:news',
-            'PATH' => '/events/index.php',
+            'ID' => '',
+            'PATH' => '/webmaster/index.php',
             'SORT' => 100,
         ),
     8 =>
-        array(
-            'CONDITION' => '#^/events/#',
+        array (
+            'CONDITION' => '#^/actions/#',
             'RULE' => '',
             'ID' => 'bitrix:news',
+            'PATH' => '/actions/index.php',
+            'SORT' => 100,
+        ),
+    5 =>
+        array (
+            'CONDITION' => '#^/events/#',
+            'RULE' => '',
+            'ID' => '',
             'PATH' => '/events/index.php',
             'SORT' => 100,
         ),
     7 =>
-        array(
+        array (
             'CONDITION' => '#^/shops/#',
             'RULE' => '',
             'ID' => 'bitrix:catalog.store',
@@ -89,44 +73,27 @@ const ARRAY1 = array(
             'SORT' => 100,
         ),
     9 =>
-        array(
+        array (
             'CONDITION' => '#^/rest/#',
             'RULE' => '',
-            'ID' => null,
+            'ID' => NULL,
             'PATH' => '/bitrix/services/rest/index.php',
             'SORT' => 100,
         ),
-    3 =>
-        array(
-            'CONDITION' => '#^/api/#',
+    16 =>
+        array (
+            'CONDITION' => '#^/blog/#',
             'RULE' => '',
-            'ID' => 'likee:1c.exchange',
-            'PATH' => '/api/index.php',
+            'ID' => '',
+            'PATH' => '/blog/index.php',
             'SORT' => 100,
         ),
     11 =>
-        array(
+        array (
             'CONDITION' => '#^/(.+)#',
             'RULE' => '',
             'ID' => 'bitrix:catalog',
             'PATH' => '/catalog.php',
             'SORT' => 110,
         ),
-    14 =>
-        array(
-            'CONDITION' => '#^/opt/#',
-            'RULE' => '',
-            'ID' => '',
-            'PATH' => '/opt/index.php',
-            'SORT' => 100,
-        ),
-    15 =>
-        array(
-            'CONDITION' => '#^/webmaster/#',
-            'RULE' => '',
-            'ID' => '',
-            'PATH' => '/webmaster/index.php',
-            'SORT' => 100,
-        ),
-);
-$arUrlRewrite= ARRAY1;
+];

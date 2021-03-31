@@ -3,10 +3,8 @@ define('DOMEN_NAME', 'hookahmove.ru');
 define('BX_DISABLE_INDEX_PAGE', true);
 
 // ID инфоблоков
-define('IBLOCK_CATALOG', 16);
-define('IBLOCK_OFFERS', 17);
-define('IBLOCK_GROUPS', 24);
-define('IBLOCK_TAGS', 30);
+define('IBLOCK_CATALOG', 5);
+define('IBLOCK_OFFERS', 6);
 
 define('HL_ARTICLES_SKU', 217);
 define('IBLOCK_FEEDS', 'FEEDS_CONFIG_NEW');

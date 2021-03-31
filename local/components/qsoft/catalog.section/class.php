@@ -22,7 +22,6 @@ class QsoftCatalogSection extends ComponentHelper
     private const TYPE_SEARCH = 'search';
     private const TYPE_NEW = 'new';
     private const TYPE_SALE = 'sale';
-    private const TYPE_PREORDER = 'preorder';
     private const TYPE_FAVORITES = 'favorites';
     private const SORT_PRICE_DESC = 'price_desc';
     private const SORT_PRICE_ASC = 'price';
@@ -259,7 +258,7 @@ class QsoftCatalogSection extends ComponentHelper
             $type = self::TYPE_STORES;
         } elseif ($sectionUrl == '/catalog/search/') {
             $type = self::TYPE_SEARCH;
-            $this->getSearchParam($arParams['SEARCH']);
+            $arParams['SEARCH'] = $this->getSearchParam();
         } elseif ($type !== self::TYPE_SEARCH && !$code) {
             //Остальные типы
             $type = $this->checkGroupOrTag($sectionUrl);
@@ -269,7 +268,6 @@ class QsoftCatalogSection extends ComponentHelper
 
         $arParams['SECTION_TYPE'] = $type;
         $arParams['SECTION_URL'] = $sectionUrl;
-
         $arParams['SECTION_CODE'] = $code;
 
         return $arParams;
@@ -277,8 +275,8 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function checkGroupOrTag(&$sectionUrl)
     {
-        $isGroup = strpos($sectionUrl, 'catalog') !== false;
-        if ($isGroup) {
+        $isSpecial = strpos($sectionUrl, 'catalog') !== false;
+        if ($isSpecial) {
             if (strpos($sectionUrl, '/new/') !== false) {
                 $sectionUrl = str_replace('/catalog/new', '', $sectionUrl);
                 return 'new';
@@ -289,25 +287,9 @@ class QsoftCatalogSection extends ComponentHelper
                 $sectionUrl = str_replace('/catalog/favorites', '', $sectionUrl);
                 return 'favorites';
             }
-        } elseif (strpos($sectionUrl, '/brands/') !== false) {
-            $this->isBrand = true;
-            $brandUrl = explode('/', rtrim($sectionUrl, '/'));
-
-            if (count($brandUrl) == 4) {
-                $this->isBrandTagCode = $brandUrl[3];
-                $sectionUrl = str_replace($brandUrl[3] . '/', '', $sectionUrl);
-            }
-
-            return 'group';
-        } elseif (strpos($sectionUrl, 'predzakaz') !== false) {
-            $this->isPreorder = true;
-            $sectionUrl = str_replace('/predzakaz', '', $sectionUrl);
-
-            return 'preorder';
-        } elseif (strpos($sectionUrl, 'tag_') === false) {
-            return 'section';
         }
-        return $isGroup ? 'group' : 'tag';
+
+        return 'section';
     }
 
     private function getCode($sectionUrl)
@@ -324,18 +306,17 @@ class QsoftCatalogSection extends ComponentHelper
      */
     public function executeComponent()
     {
-        global $LOCATION;
-
         if ($_REQUEST['action'] == 'subscribe') {
             return false;
         }
         $this->init();
-        $this->arResult['BRANCH_ID'] = $LOCATION->getUserShowcase();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
 
-        $this->arResult['FAVORITES'] = $this->getFavoritesId();//загружаем избранное
-
+        $this->arResult['FAVORITES'] = $this->getFavorites(); //загружаем избранное
+        var_dump($this->type);
+        var_dump($this->code);
+        die();
         if ($this->checkActionFavorite()) {
             Functions::exitJson($this->addOrDelFavorite());
         }
@@ -391,19 +372,19 @@ class QsoftCatalogSection extends ComponentHelper
         }
     }
 
-    private function getFavoritesId()
+    private function getFavorites()
     {
-        $arFavoritesId = [];
+        $arFavoritesIds = [];
         global $USER;
         if ($USER->IsAuthorized()) { // Для авторизованного получаем из User
             $arUser = $USER->GetByID($USER->GetID())->Fetch();
-            $arFavoritesId = array_flip($arUser['UF_FAVORITES']);
+            $arFavoritesIds = array_flip($arUser['UF_FAVORITES']);
         } else {
             if (isset($_COOKIE['favorites'])) {
-                $arFavoritesId = unserialize($_COOKIE['favorites']);
+                $arFavoritesIds = unserialize($_COOKIE['favorites']);
             }
         }
-        return $arFavoritesId;
+        return $arFavoritesIds;
     }
 
     private function loadProductsAndOffers()
@@ -448,13 +429,6 @@ class QsoftCatalogSection extends ComponentHelper
                 break;
             case self::TYPE_SALE:
             case self::TYPE_NEW:
-            case self::TYPE_PREORDER:
-                if (!$this->getPromoFilter()) {
-                    return false;
-                };
-                $this->getPromoProducts();
-                $this->getPromoOffers();
-                break;
             case self::TYPE_FAVORITES:
                 if (empty($this->arResult['FAVORITES'])) {
                     $this->getSeo();
@@ -1913,7 +1887,7 @@ class QsoftCatalogSection extends ComponentHelper
         ];
     }
 
-    private function getSearchParam(&$searchParam)
+    private function getSearchParam()
     {
         $query = $this->request->getPostList();
         $searchParam = $query->get('q');
@@ -1921,6 +1895,8 @@ class QsoftCatalogSection extends ComponentHelper
             $query = $this->request->getQueryList();
             $searchParam = $query->get('q');
         }
+
+        return $searchParam;
     }
 
     private function getSearchProducts()
@@ -2498,24 +2474,12 @@ class QsoftCatalogSection extends ComponentHelper
                     $params = explode(',', $params);
                     if (in_array($urlKey, array_keys(self::PRICES))) {
                         $params = intval(array_pop($params));
-                    } elseif ($urlKey === 'stores') {
-                        $params = $this->getStores($params);
                     }
                     $filter[$filterKey] = $params;
                 }
             }
         }
         $this->urlFilter = $filter;
-    }
-
-    private function getStores(array $params)
-    {
-        if (count($params) === 1) {
-            $type = intval(array_pop($params));
-            return ($type === 1 || $type === 2) ? $type : $this->defaultStoresType;
-        }
-
-        return $this->defaultStoresType;
     }
 
     private function filter(array $items, array $filter = []): array

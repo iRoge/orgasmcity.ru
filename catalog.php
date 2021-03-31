@@ -1,11 +1,9 @@
 <?
-
-define("HIDE_TITLE", true);
-if (strpos($_SERVER["REQUEST_URI"], "/catalog/ajax/") !== false) {
-    define("NO_KEEP_STATISTIC", true);
-}
+define('HIDE_TITLE', true);
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+// Редиректы
+require($_SERVER["DOCUMENT_ROOT"] . '/local/php_interface/include/redirect.php');
 
 $APPLICATION->IncludeComponent(
     "bitrix:catalog",
@@ -274,18 +272,18 @@ $APPLICATION->IncludeComponent(
         "DISABLE_INIT_JS_IN_COMPONENT" => "N",
         "DETAIL_SET_VIEWED_IN_COMPONENT" => "N",
         "SEF_URL_TEMPLATES" => array(
-            "sections" => "catalog/",
+            "sections" => 'catalog/',
             "ajax" => "ajax/#ELEMENT_ID#/",
             "search" => "search/",
-            "search_section" => "#SITE_DIR#/search/#SECTION_CODE_PATH#/",
-            "section" => "#SECTION_CODE_PATH#",
-            "element" => "#ELEMENT_CODE#",
+            "search_section" => "search/#SECTION_CODE_PATH#/",
+            "section" => "#SECTION_CODE_PATH#/",
+            "element" => "#ELEMENT_CODE#/",
             "compare" => "compare/",
             "smart_filter" => "#SECTION_CODE#/filter/#SMART_FILTER_PATH#/apply/",
+            "favorites" => "catalog/favorites/"
         )
     ),
     false
 ); ?>
 
-<?
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
