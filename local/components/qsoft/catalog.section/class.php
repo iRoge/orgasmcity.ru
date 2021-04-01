@@ -1,11 +1,9 @@
 <?php
 
-use Bitrix\Main\Application;
-use Bitrix\Main\Web\Cookie;
 use Bitrix\Main\Config\Option;
-use Bitrix\Iblock\InheritedProperty\ElementValues;
 use Bitrix\Iblock\InheritedProperty\SectionValues;
 use Bitrix\Main\FileTable;
+use Bitrix\Main\Loader;
 use Likee\Site\Helper;
 use Likee\Site\Helpers\HL;
 use Qsoft\Helpers\ComponentHelper;
@@ -15,10 +13,8 @@ use Qsoft\Helpers\ComponentHelper;
  */
 class QsoftCatalogSection extends ComponentHelper
 {
-    private const TYPE_STORES = 'stores';
+    private const TYPE_ALL_CATALOG = 'all';
     private const TYPE_SECTION = 'section';
-    private const TYPE_GROUP = 'group';
-    private const TYPE_TAG = 'tag';
     private const TYPE_SEARCH = 'search';
     private const TYPE_NEW = 'new';
     private const TYPE_SALE = 'sale';
@@ -28,6 +24,7 @@ class QsoftCatalogSection extends ComponentHelper
     private const SORT_POPULAR = 'popular';
     private const SORT_NEW = 'new';
     private const SORT_DEFAULT = 'default';
+
     /**
      * свойства, которые для одного продукта могут принимать несколько значений
      */
@@ -35,11 +32,13 @@ class QsoftCatalogSection extends ComponentHelper
         'SIZES',
         'COLORSFILTER',
     ];
+
     private const PROMO_TYPES = [
         'sale' => 'PROPERTY_MRT',
         'new' => 'PROPERTY_MLT',
         'preorder' => 'PROPERTY_PREORDER_VALUE',
     ];
+
     private const PRODUCT_PROPERTIES = [
         'max_price' => 'MAX_PRICE',
         'min_price' => 'MIN_PRICE',
@@ -63,6 +62,7 @@ class QsoftCatalogSection extends ComponentHelper
         'materialstelki' => 'MATERIALSTELKI',
         'vidkabluka' => 'VIDKABLUKA',
     ];
+
     private const PRODUCT_PROPERTIES_MAP = [
         'UPPERMATERIAL' => 'PROPERTY_UPPERMATERIAL_VALUE',
         'LININGMATERIAL' => 'PROPERTY_LININGMATERIAL_VALUE',
@@ -83,10 +83,38 @@ class QsoftCatalogSection extends ComponentHelper
         'VIDKABLUKA' => 'PROPERTY_VIDKABLUKA',
         'MATERIALSTELKI' => 'PROPERTY_MATERIALSTELKI',
     ];
+
     private const PRICES = [
         'max_price' => 'MAX_PRICE',
         'min_price' => 'MIN_PRICE',
     ];
+
+    private const DEFAULT_PRODUCT_FIELDS_TO_SELECT = [
+        "ID",
+        "IBLOCK_ID",
+        "IBLOCK_SECTION_ID",
+        "NAME",
+        "CODE",
+        "DETAIL_PICTURE",
+        "PREVIEW_PICTURE",
+        "SORT",
+        "PROPERTY_ARTICLE",
+        "PROPERTY_DIAMETER",
+        "PROPERTY_LENGTH",
+        "PROPERTY_BESTSELLER",
+        "PROPERTY_VENDOR",
+        "SHOW_COUNTER",
+    ];
+
+    private const DEFAULT_OFFER_FIELDS_TO_SELECT = [
+        "ID",
+        "IBLOCK_ID",
+        "PROPERTY_CML2_LINK",
+        "PROPERTY_SIZE",
+        "PROPERTY_COLOR",
+        "PROPERTY_BASEPRICE",
+    ];
+
     /**
      * порядок вывода фильтра
      */
@@ -118,56 +146,28 @@ class QsoftCatalogSection extends ComponentHelper
         'dlya_muzhchin_sumki' => 4,
         'dlya_muzhchin_aksessuary' => 5,
     ];
-    /**
-     * массив страховки для сбора значений свойств для фильтра
-     */
-    private const ADDITIONAL_PROPERTIES_HL = [
-        'UPPERMATERIAL' => false,
-        'LININGMATERIAL' => false,
-        'SEASON' => false,
-        'RHODEPRODUCT' => false,
-        'BRAND' => false,
-        'SUBTYPEPRODUCT' => false,
-        'TYPEPRODUCT' => false,
-        'COUNTRY' => false,
-        'ZASTEGKA' => false,
-        'VID' => false,
-    ];
-
-    /**
-     * название HL-блока Сортировка сортировок
-     */
-    private const SORTING_HB_NAME = 'Sorting';
-    /**
-     * название HL-блока с иконками свойств
-     */
-    private const ICONS_HB_NAME = 'ShowcasePropsIcons';
 
     protected $relativePath = '/qsoft/catalog.section';
     /**
      * @var string
      */
-    private $type = self::TYPE_SECTION;
+    private string $type = self::TYPE_SECTION;
     /**
      * @var string
      */
-    private $code;
+    private string $code;
     /**
      * @var array
      */
-    private $products;
+    private array $products;
     /**
      * @var array
      */
-    private $offers;
+    private array $offers;
     /**
      * @var array
      */
-    private $items;
-    /**
-     * @var array
-     */
-    private $restTypesIgnoreItems;
+    private array $items;
     /**
      * @var bool|string
      */
@@ -175,12 +175,12 @@ class QsoftCatalogSection extends ComponentHelper
     /**
      * @var array
      */
-    private $group;
+    private array $group;
     /**
      * @var array
      */
-    private $tag;
-    private $section;
+    private array $tag;
+    private array $section;
     /**
      * @var array
      */
@@ -193,10 +193,7 @@ class QsoftCatalogSection extends ComponentHelper
     private $stores;
     private $arStoresSizesRests = []; // массив остатков размеров по складам
     private $arLocalTypeSizesRests = []; // массив остатков по местоположению
-    /**
-     * переменная для хранения сортировки сортировок
-     */
-    private $sortingParams = [];
+
     /**
      * сортировки для сортируемых свойств товара
      */
@@ -209,10 +206,6 @@ class QsoftCatalogSection extends ComponentHelper
      * @var array массив иконок свойств для показа в каталоге в карточках товаров
      */
     private $propsIcons = [];
-    /**
-     * @var array массив иконок для свойств
-     */
-    private $propIconsList = [];
 
     /** @var bool $donorProductExists Флаг, которому присваевается true , если существуют донорские товары в конечном массиве */
     private $donorProductExists = false;
@@ -229,8 +222,6 @@ class QsoftCatalogSection extends ComponentHelper
     private $maxPriceForFilter = 0;
     private $minPriceForFilter = 99999999;
 
-    // по бренду
-    private bool $isBrand = false;
     // тег по бренду
     private $isBrandTagCode = false;
     // по предзаказу
@@ -255,7 +246,7 @@ class QsoftCatalogSection extends ComponentHelper
 
         if ($sectionUrl == '/catalog/') {
             //Ассортимент магазина
-            $type = self::TYPE_STORES;
+            $type = self::TYPE_ALL_CATALOG;
         } elseif ($sectionUrl == '/catalog/search/') {
             $type = self::TYPE_SEARCH;
             $arParams['SEARCH'] = $this->getSearchParam();
@@ -306,20 +297,17 @@ class QsoftCatalogSection extends ComponentHelper
      */
     public function executeComponent()
     {
-        if ($_REQUEST['action'] == 'subscribe') {
-            return false;
-        }
+        Loader::includeModule('highloadblock');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
 
         $this->arResult['FAVORITES'] = $this->getFavorites(); //загружаем избранное
-        var_dump($this->type);
-        var_dump($this->code);
-        die();
+
         if ($this->checkActionFavorite()) {
             Functions::exitJson($this->addOrDelFavorite());
         }
+
         if (!$this->loadProductsAndOffers()) {
             return false;
         }
@@ -340,12 +328,11 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->arResult['SUBSECTIONS'] = ['ID' => $this->section['ID']];
             }
             $this->arResult['SECTION_ID'] = $this->section['ID'];
-        } elseif ($this->type === self::TYPE_STORES) {
+        } elseif ($this->type === self::TYPE_ALL_CATALOG) {
             $this->arResult['SECTION_ID'] = $this->getSecondLevelSections();
             ;
         }
         $this->arResult['SECTION_TYPE'] = $this->type;
-        $this->arResult['PROPS_ICONS'] = $this->propsIcons;
         $this->arResult['PROPS'] = $this->props;
         $this->includeComponentTemplate();
 
@@ -387,7 +374,7 @@ class QsoftCatalogSection extends ComponentHelper
         return $arFavoritesIds;
     }
 
-    private function loadProductsAndOffers()
+    private function loadProductsAndOffers(): bool
     {
         switch ($this->type) {
             case self::TYPE_SECTION:
@@ -396,31 +383,6 @@ class QsoftCatalogSection extends ComponentHelper
                     return Functions::abort404();
                 }
                 $this->loadOffers();
-                if ($this->section['DEPTH_LEVEL'] != 1) {
-                    $this->getSectionTags();
-                }
-                break;
-            case self::TYPE_GROUP:
-                if ($this->isBrand) {
-                    if (!$this->getBrand()) {
-                        return false;
-                    }
-                } else {
-                    if (!$this->getGroup()) {
-                        return false;
-                    }
-                }
-                $this->getGroupFilters();
-                $this->getGroupProducts();
-                $this->getGroupOffers();
-                break;
-            case self::TYPE_TAG:
-                if (!$this->getTag()) {
-                    return false;
-                }
-                $this->getTagFilters();
-                $this->getTagProducts();
-                $this->getTagOffers();
                 break;
             case self::TYPE_SEARCH:
                 $this->getSearchProducts();
@@ -448,16 +410,16 @@ class QsoftCatalogSection extends ComponentHelper
                 break;
         }
 
-        return $this->getDefaultStoresType();
+        return true;
     }
 
     /**
      * load products for current and related sections
-     * products are stored in @var $this ->products
+     * products are stored in @var $this->products
      */
     private function loadProducts($all = false): void
     {
-        if (empty($this->propsList) || empty($this->propSorts) || empty($this->props)) {
+        if (empty($this->props)) {
             $this->loadPropertyValues();
         }
 
@@ -487,49 +449,9 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             }
 
-            $arSelectFields = [
-                "ID",
-                "IBLOCK_ID",
-                "IBLOCK_SECTION_ID",
-                "NAME",
-                "CODE",
-                "DETAIL_PICTURE",
-                "PREVIEW_PICTURE",
-                "PROPERTY_COLLECTION",
-                "PROPERTY_COLLECTION_SORT",
-                "PROPERTY_SEASON",
-                "PROPERTY_UPPERMATERIAL",
-                "PROPERTY_LININGMATERIAL",
-                "PROPERTY_COLORSFILTER",
-                "PROPERTY_COLOR",
-                "PROPERTY_RHODEPRODUCT",
-                "PROPERTY_BRAND",
-                "PROPERTY_ONLINE_TRY_ON",
-                'PROPERTY_HEELHEIGHT',
-                'PROPERTY_SUBTYPEPRODUCT',
-                'PROPERTY_TYPEPRODUCT',
-                'PROPERTY_ARTICLE',
-                'PROPERTY_VID',
-                'PROPERTY_ZASTEGKA',
-                'PROPERTY_COUNTRY',
-                'PROPERTY_STYLE',
-                "PROPERTY_HEELHEIGHT_TYPE",
-                'PROPERTY_VIDKABLUKA',
-                "PROPERTY_MATERIALSTELKI",
-                "PROPERTY_NO_RESERVE",
-                "PROPERTY_DISABLE_DELIVERY",
-                "SORT",
-                "SHOW_COUNTER",
-            ];
-
-            // Добавляем к выборке еще свойства из сортировки сортировок
-            foreach ($this->propsList as $prop => $isSortingEnabled) {
-                array_push($arSelectFields, 'PROPERTY_' . strtoupper($prop));
-            }
-            $arSelectFields = array_unique($arSelectFields);
-
+            $arSelectFields = self::DEFAULT_PRODUCT_FIELDS_TO_SELECT;
             $res = CIBlockElement::GetList(
-                [],
+                ["ID" => "ASC"],
                 $arFilter,
                 false,
                 false,
@@ -552,6 +474,7 @@ class QsoftCatalogSection extends ComponentHelper
     }
 
     /**
+     * @param $code
      * @return array
      */
     private function getCurrentSection($code): array
@@ -655,20 +578,16 @@ class QsoftCatalogSection extends ComponentHelper
         return $arSectionIds;
     }
 
-    private function processProducts($res)
+    private function processProducts($res): array
     {
-        if (empty($this->propSorts) || empty($this->props)) {
+        if (empty($this->props)) {
             $this->loadPropertyValues();
         }
 
-        $arProducts = array();
-        $arImageIds = array();
+        $arProducts = [];
+        $arImageIds = [];
         while ($arItem = $res->Fetch()) {
             if (!$arItem["DETAIL_PICTURE"]) {
-                continue;
-            }
-
-            if (!empty($arItem["PROPERTY_NO_RESERVE_VALUE"]) && !empty($arItem["PROPERTY_DISABLE_DELIVERY_VALUE"])) {
                 continue;
             }
 
@@ -678,28 +597,10 @@ class QsoftCatalogSection extends ComponentHelper
                 "DETAIL_PICTURE" => $arItem["DETAIL_PICTURE"],
                 "PREVIEW_PICTURE" => $arItem["PREVIEW_PICTURE"],
                 "PROPERTY_ARTICLE_VALUE" => $arItem["PROPERTY_ARTICLE_VALUE"],
-                'PROPERTY_VID_VALUE' => $arItem["PROPERTY_VID_VALUE"],
-                "PROPERTY_COLLECTION_VALUE" => $arItem["PROPERTY_COLLECTION_VALUE"],
-                "PROPERTY_COLLECTION_SORT_VALUE" => $arItem["PROPERTY_COLLECTION_SORT_VALUE"],
-                "PROPERTY_SEASON_VALUE" => $arItem["PROPERTY_SEASON_VALUE"],
-                "PROPERTY_UPPERMATERIAL_VALUE" => $arItem["PROPERTY_UPPERMATERIAL_VALUE"],
-                "PROPERTY_LININGMATERIAL_VALUE" => $arItem["PROPERTY_LININGMATERIAL_VALUE"],
-                "PROPERTY_COLORSFILTER_VALUE" => $arItem["PROPERTY_COLORSFILTER_VALUE"],
-                "PROPERTY_COLOR_VALUE" => $arItem["PROPERTY_COLOR_VALUE"],
-                "PROPERTY_SUBTYPEPRODUCT_VALUE" => $arItem["PROPERTY_SUBTYPEPRODUCT_VALUE"],
-                "PROPERTY_TYPEPRODUCT_VALUE" => $arItem["PROPERTY_TYPEPRODUCT_VALUE"],
-                "PROPERTY_ZASTEGKA_VALUE" => $arItem["PROPERTY_ZASTEGKA_VALUE"],
-                "PROPERTY_COUNTRY_VALUE" => $arItem["PROPERTY_COUNTRY_VALUE"],
-                "PROPERTY_RHODEPRODUCT_VALUE" => $arItem["PROPERTY_RHODEPRODUCT_VALUE"],
-                'PROPERTY_HEELHEIGHT_VALUE' => $arItem["PROPERTY_HEELHEIGHT_VALUE"],
-                'PROPERTY_STYLE_VALUE' => $arItem["PROPERTY_STYLE_VALUE"],
-                "PROPERTY_BRAND_VALUE" => $arItem["PROPERTY_BRAND_VALUE"],
-                'PROPERTY_MATERIALSTELKI_VALUE' => $arItem["PROPERTY_MATERIALSTELKI_VALUE"],
-                "PROPERTY_VIDKABLUKA_VALUE" => $arItem["PROPERTY_VIDKABLUKA_VALUE"],
-                "PROPERTY_ONLINE_TRY_ON_VALUE" => $arItem["PROPERTY_ONLINE_TRY_ON_VALUE"] ?? "N",
-                "PROPERTY_HEELHEIGHT_TYPE_VALUE" => $arItem["PROPERTY_HEELHEIGHT_TYPE_VALUE"],
-                "PROPERTY_DISABLE_DELIVERY_VALUE" => $arItem["PROPERTY_DISABLE_DELIVERY_VALUE"],
-                "PROPERTY_NO_RESERVE_VALUE" => $arItem["PROPERTY_NO_RESERVE_VALUE"],
+                "PROPERTY_DIAMETER_VALUE" => $arItem["PROPERTY_DIAMETER_VALUE"],
+                "PROPERTY_LENGTH_VALUE" => $arItem["PROPERTY_LENGTH_VALUE"],
+                "PROPERTY_BESTSELLER_VALUE" => $arItem["PROPERTY_BESTSELLER_VALUE"],
+                "PROPERTY_VENDOR_VALUE" => $arItem["PROPERTY_VENDOR_VALUE"],
                 "SORT" => $arItem["SORT"],
                 "SHOW_COUNTER" => $arItem["SHOW_COUNTER"],
                 "DETAIL_PAGE_URL" => "/" . $arItem["CODE"] . "/",
@@ -707,54 +608,28 @@ class QsoftCatalogSection extends ComponentHelper
                 "RND_SORT" => rand(0, 1),
             ];
 
-            if ($this->propsIcons[$arItem['PROPERTY_UPPERMATERIAL_VALUE']]) {
-                $arProducts[$arItem["ID"]]['PROPERTY_UPPERMATERIAL_ICON'] = $this->propsIcons[$arItem['PROPERTY_UPPERMATERIAL_VALUE']];
-            }
-            if ($this->propsIcons[$arItem['PROPERTY_LININGMATERIAL_VALUE']]) {
-                $arProducts[$arItem["ID"]]['PROPERTY_LININGMATERIAL_ICON'] = $this->propsIcons[$arItem['PROPERTY_LININGMATERIAL_VALUE']];
-            }
-
-            // Добавляем в товар значения сортировок свойств
-            foreach ($this->propsList as $prop => $isSortingEnabled) {
-                if ($isSortingEnabled) {
-                    if (empty($arItem["PROPERTY_" . $prop . "_VALUE"])) {
-                        // если у товара нет сортируемого свойства ставим ему 9999, чтобы оно ушло в конец
-                        $arProducts[$arItem["ID"]][$prop . "_SORT"] = 9999;
-                    } elseif ($prop == "COLORSFILTER" || $prop == "COLOR") {
-                        // обработка значения базового цвета так как оно множественное. берем только первое значение, этого достаточно для заказчика.
-                        $arProducts[$arItem["ID"]][$prop . "_SORT"] = $this->propSorts[$prop][$arItem["PROPERTY_" . $prop . "_VALUE"][0]];
-                    } else {
-                        // просто добавляем сортировки элементам
-                        $arProducts[$arItem["ID"]][$prop . "_SORT"] = $this->propSorts[$prop][$arItem["PROPERTY_" . $prop . "_VALUE"]];
-                    }
-                }
-            }
-
             $arImageIds[] = $arItem["DETAIL_PICTURE"];
             if (!empty($arItem["PREVIEW_PICTURE"])) {
                 $arImageIds[] = $arItem["PREVIEW_PICTURE"];
             }
-
-            if (isset($this->ibFilter['TOP_ARTICLES'][$arItem["PROPERTY_ARTICLE_VALUE"]])) {
-                $arProducts['TOP_ARTICLES'][$arItem["PROPERTY_ARTICLE_VALUE"]] = $arItem["ID"];
-            }
         }
 
         if (!empty($arImageIds)) {
-            $res = FileTable::getList(array(
-                "select" => array(
+            $res = FileTable::getList([
+                "select" => [
                     "ID",
                     "SUBDIR",
                     "FILE_NAME",
                     "WIDTH",
                     "HEIGHT",
                     "CONTENT_TYPE",
-                ),
-                "filter" => array(
+                ],
+                "filter" => [
                     "ID" => $arImageIds,
-                ),
-            ));
-            $arImages = array();
+                ],
+            ]);
+            $arImages = [];
+            $arImagesBig = [];
             while ($arItem = $res->Fetch()) {
                 $resizeSrc = Functions::ResizeImageGet($arItem, $this->srcSize);
                 $resizeSrcBig = Functions::ResizeImageGet($arItem, $this->srcSizeBig);
@@ -791,13 +666,15 @@ class QsoftCatalogSection extends ComponentHelper
     private function loadOffers(): void
     {
         $arOffers = [];
-
+        global $CACHE_MANAGER;
+        $CACHE_MANAGER->clearByTag('catalogAll');
         if ($this->initCache('offers')) {
             $arOffers = $this->getCachedVars('offers');
         } elseif ($this->startCache()) {
             $this->startTagCache();
             $this->registerTag("catalogAll");
 
+            $arSelectFields = self::DEFAULT_OFFER_FIELDS_TO_SELECT;
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_OFFERS,
                 "ACTIVE" => "Y",
@@ -809,12 +686,7 @@ class QsoftCatalogSection extends ComponentHelper
                 $arFilter,
                 false,
                 false,
-                [
-                    "ID",
-                    "IBLOCK_ID",
-                    "PROPERTY_CML2_LINK",
-                    "PROPERTY_SIZE",
-                ]
+                $arSelectFields
             );
 
             $arOffers = $this->processOffers($res);
@@ -827,7 +699,8 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->abortCache();
             }
         }
-
+        pre($arOffers);
+        die();
         $this->offers = $arOffers;
     }
 
@@ -841,6 +714,8 @@ class QsoftCatalogSection extends ComponentHelper
             $arOffers[$arItem["ID"]] = [
                 'PROPERTY_CML2_LINK_VALUE' => $arItem['PROPERTY_CML2_LINK_VALUE'],
                 'PROPERTY_SIZE_VALUE' => $arItem['PROPERTY_SIZE_VALUE'],
+                'PROPERTY_COLOR_VALUE' => $arItem['PROPERTY_COLOR_VALUE'],
+                'PROPERTY_BASEPRICE_VALUE' => $arItem['PROPERTY_BASEPRICE_VALUE'],
             ];
         }
 
@@ -925,141 +800,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
         $this->setFavoritesId(array_intersect_key($this->arResult['FAVORITES'], $arActualProducts));
         return array_intersect_key($this->arResult['FAVORITES'], $arActualProducts);
-    }
-
-
-    private function getSectionTags()
-    {
-        global $LOCATION;
-        if ($this->initCache('tags|' . $LOCATION->getRegion())) {
-            $this->arResult['TAGS'] = $this->getCachedVars('section_tags');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $tags = $this->loadSectionTags();
-
-            $this->endTagCache();
-            $this->saveToCache('section_tags', $tags);
-
-            $this->arResult['TAGS'] = $tags;
-        }
-    }
-
-    private function loadSectionTags()
-    {
-        $tags = [];
-        $section = $this->loadTagsSection();
-
-        if (!empty($section)) {
-            $dbTags = CIBlockElement::GetList(
-                [],
-                [
-                    'IBLOCK_ID' => IBLOCK_TAGS,
-                    'ACTIVE' => 'Y',
-                    'IBLOCK_SECTION_ID' => $section['ID'],
-                ],
-                false,
-                false,
-                [
-                    'ID',
-                    'NAME',
-                    'DETAIL_PAGE_URL',
-                    'SORT',
-                    'PROPERTY_PRICE_FROM',
-                    'PROPERTY_PRICE_TO',
-                    'PROPERTY_OFFERS_SIZE',
-                    'PROPERTY_LININGMATERIAL',
-                    'PROPERTY_UPPERMATERIAL',
-                    'PROPERTY_RHODEPRODUCT',
-                    'PROPERTY_COLOR',
-                    'PROPERTY_SEASON',
-                    'PROPERTY_HEELHEIGHT',
-                    'PROPERTY_HEELHEIGHT_TYPE',
-                    'PROPERTY_SUBTYPEPRODUCT',
-                    'PROPERTY_ARTICLE',
-                    'PROPERTY_COLORSFILTER',
-                    'PROPERTY_STYLE',
-                    'PROPERTY_BRAND',
-                    'PROPERTY_ZASTEGKA',
-                    'PROPERTY_COUNTRY',
-                    'PROPERTY_VIDKABLUKA',
-                ]
-            );
-
-            while ($tag = $dbTags->GetNext(true, false)) {
-                $tags[] = [
-                    'DETAIL_PAGE_URL' => $tag['DETAIL_PAGE_URL'],
-                    'NAME' => $tag['NAME'],
-                    'SORT' => $tag['SORT'],
-                    'PROPERTY_PRICE_FROM_VALUE' => $tag['PROPERTY_PRICE_FROM_VALUE'],
-                    'PROPERTY_PRICE_TO_VALUE' => $tag['PROPERTY_PRICE_TO_VALUE'],
-                    'PROPERTY_SIZES_VALUE' => $tag['PROPERTY_OFFERS_SIZE_VALUE'] ? explode(',', $tag['PROPERTY_OFFERS_SIZE_VALUE']) : array(),
-                    'PROPERTY_LININGMATERIAL_VALUE' => $tag['PROPERTY_LININGMATERIAL_VALUE'],
-                    'PROPERTY_UPPERMATERIAL_VALUE' => $tag['PROPERTY_UPPERMATERIAL_VALUE'],
-                    'PROPERTY_RHODEPRODUCT_VALUE' => $tag['PROPERTY_RHODEPRODUCT_VALUE'],
-                    'PROPERTY_COLOR_VALUE' => $tag['PROPERTY_COLOR_VALUE'],
-                    'PROPERTY_ZASTEGKA_VALUE' => $tag['PROPERTY_ZASTEGKA_VALUE'],
-                    'PROPERTY_SEASON_VALUE' => $tag['PROPERTY_SEASON_VALUE'],
-                    'PROPERTY_HEELHEIGHT_VALUE' => $tag['PROPERTY_HEELHEIGHT_VALUE'],
-                    'PROPERTY_HEELHEIGHT_TYPE_VALUE' => $tag['PROPERTY_HEELHEIGHT_TYPE_VALUE'],
-                    'PROPERTY_SUBTYPEPRODUCT_VALUE' => $tag['PROPERTY_SUBTYPEPRODUCT_VALUE'],
-                    'PROPERTY_TYPEPRODUCT_VALUE' => $tag['PROPERTY_TYPEPRODUCT_VALUE'],
-                    'PROPERTY_ARTICLE_VALUE' => $tag['PROPERTY_ARTICLE_VALUE'] ? explode(',', $tag['PROPERTY_ARTICLE_VALUE']) : array(),
-                    'PROPERTY_COLORSFILTER_VALUE' => $tag['PROPERTY_COLORSFILTER_VALUE'],
-                    'PROPERTY_STYLE_VALUE' => $tag['PROPERTY_STYLE_VALUE'],
-                    'PROPERTY_BRAND_VALUE' => $tag['PROPERTY_BRAND_VALUE'],
-                    'PROPERTY_COUNTRY_VALUE' => $tag['PROPERTY_COUNTRY_VALUE'],
-                    'PROPERTY_VIDKABLUKA_VALUE' => $tag['PROPERTY_VIDKABLUKA_VALUE'],
-                ];
-            }
-        }
-        // Проверяем наличие элементов у тегов здесь
-        $tags = $this->filterEmptyTags($tags);
-        // Сортируем по полю SORT
-        usort($tags, function ($a, $b) {
-            if ($a['SORT'] == $b['SORT']) {
-                return 0;
-            }
-            return ($a['SORT'] > $b['SORT']) ? 1 : -1;
-        });
-
-        return $tags;
-    }
-
-    private function loadTagsSection()
-    {
-        $arSection = [];
-
-        if (empty($this->code)) {
-            return $arSection;
-        }
-
-        if (!empty($this->code)) {
-            $res = CIBlockSection::GetList(
-                [],
-                [
-                    "IBLOCK_ID" => IBLOCK_TAGS,
-                    "CODE" => $this->code,
-                    "ACTIVE" => "Y",
-                ],
-                false,
-                [
-                    "ID",
-                    "SECTION_PAGE_URL",
-                ],
-                false
-            );
-
-            while ($arItem = $res->GetNext()) {
-                if ($this->arParams['SECTION_URL'] == $arItem["SECTION_PAGE_URL"]) {
-                    $arSection = $arItem;
-                    break;
-                }
-            }
-        }
-
-        return $arSection;
     }
 
     private function getGroup()
@@ -1512,10 +1252,6 @@ class QsoftCatalogSection extends ComponentHelper
             "PROPERTY_TYPEPRODUCT",
         ];
 
-        // Добавляем к выборке еще свойства из сортировки сортировок
-        foreach ($this->propsList as $prop => $isSortingEnabled) {
-            array_push($arSelectFields, 'PROPERTY_' . strtoupper($prop));
-        }
 
         $res = CIBlockElement::GetList(
             [],
@@ -2058,28 +1794,6 @@ class QsoftCatalogSection extends ComponentHelper
         $this->offers = $offers;
     }
 
-    public function getDefaultStoresType()
-    {
-        $storesType = false;
-
-        switch ($this->type) {
-            case self::TYPE_GROUP:
-                $filter = [];
-                if (!$this->getGroup()) {
-                    return false;
-                }
-                $this->getGroupFilterStores($filter);
-                $storesType = $filter['RESULT']['STORES'];
-                break;
-            default:
-                break;
-        }
-
-        $this->defaultStoresType = $storesType;
-
-        return true;
-    }
-
     private function prepareCatalogResult(): void
     {
         global $LOCATION;
@@ -2254,16 +1968,6 @@ class QsoftCatalogSection extends ComponentHelper
                     }
                 }
                 $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
-
-                if ($arTypes['DELIVERY'][$offerId] && $this->products[$pid]["PROPERTY_DISABLE_DELIVERY_VALUE"] != 'Да') {
-                    $items[$pid]['CAN_DELIVERY'] = $this->propsIcons['DELIVERY'];
-                    $items[$pid]['SIZES_DELIVERY'][] = $value["PROPERTY_SIZE_VALUE"];
-                }
-
-                if ($arTypes['RESERVATION'][$offerId] && $this->products[$pid]["PROPERTY_NO_RESERVE_VALUE"] != 'Да') {
-                    $items[$pid]['CAN_RESERVATION'] = $this->propsIcons['RESERVATION'];
-                    $items[$pid]['SIZES_RESERVATION'][] = $value["PROPERTY_SIZE_VALUE"];
-                }
 
                 // Достаем остатки поразмерно для складов для фильтрации
                 foreach (array_keys($arTypeIgnoreRests[$offerId]) as $store) {
@@ -2862,20 +2566,14 @@ class QsoftCatalogSection extends ComponentHelper
             case self::SORT_PRICE_ASC:
                 $this->sortByPrice($items);
                 break;
-            case self::SORT_POPULAR:
-                $this->sortByPopular($items);
-                break;
             case self::SORT_NEW:
                 $this->sortByNew($items);
                 break;
+            case self::SORT_POPULAR:
             case self::SORT_DEFAULT:
             default:
-                $this->sortBySortingSort($items);
+                $this->sortByPopular($items);
                 break;
-        }
-
-        if (!empty($items['TOP_ARTICLES'])) {
-            unset($items['TOP_ARTICLES']);
         }
 
         return $items;
@@ -2959,122 +2657,6 @@ class QsoftCatalogSection extends ComponentHelper
         });
     }
 
-    private function sortBySortingSort(array &$items): void
-    {
-        if (empty($this->sortingParams)) {
-            $this->fetchPropsListAndSortingParams();
-        }
-
-        $sortParams = $this->sortingParams;
-
-        uasort($items, function ($a, $b) use ($sortParams) {
-            return $this->compareBySortParams($a, $b, $sortParams);
-        });
-
-        if (!empty($this->ibFilter['TOP_ARTICLES'])) {
-            foreach ($this->ibFilter['TOP_ARTICLES'] as $article => $id) {
-                if (!empty($items[$id])) {
-                    $temp[$id] = $items[$id];
-                    unset($items[$id]);
-                    $items = $temp + $items;
-                }
-            }
-        }
-    }
-
-    private function fetchPropsListAndSortingParams()
-    {
-        $this->sortingParams = [];
-        $this->propsList = [];
-        if ($this->initCache('props_list_and_sorting_params')) {
-            $this->sortingParams = $this->getCachedVars('props_list_and_sorting_params')['sortingParams'];
-            $this->propsList = $this->getCachedVars('props_list_and_sorting_params')['propsList'];
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $obEntity = HL::getEntityClassByHLName(self::SORTING_HB_NAME);
-            if ($obEntity && is_object($obEntity)) {
-                $sClass = $obEntity->getDataClass();
-
-                // UF_HB_NAME - HL-блок свойства товара
-                // UF_SORT    - значение сортировки свойства
-                $rsData = $sClass::getList(
-                    [
-                        'select' => ['UF_HB_NAME', 'UF_ENABLED', 'UF_SORT'],
-                        'order' => ['UF_SORT']
-                    ]
-                );
-
-                // Список специальных полей, которые не являются HB
-                $specialValues = ['SORT'];
-
-                while ($entry = $rsData->fetch()) {
-                    if (!in_array($entry['UF_HB_NAME'], $specialValues)) {
-                        $this->propsList[$entry['UF_HB_NAME']] = !!intval($entry['UF_ENABLED']);
-                    }
-
-                    // Добавляем только сортируемые свойства в $this->sortingParams
-                    if (!!intval($entry['UF_ENABLED'])) {
-                        if (in_array($entry['UF_HB_NAME'], $specialValues)) {
-                            $sortKey = $entry['UF_HB_NAME'];
-                        } else {
-                            $sortKey = $entry['UF_HB_NAME'] . '_SORT';
-                        }
-
-                        $newSortParam = [
-                            'sort_key' => $sortKey,
-                            'sort' => intval($entry['UF_SORT']),
-                            'rnd_sort' => rand(0, 1),
-                            'order' => 'asc' // Ставим по умолчанию направление сортировки "По возрастанию"
-                        ];
-
-                        array_push($this->sortingParams, $newSortParam);
-                    }
-                }
-                $this->propsList += self::ADDITIONAL_PROPERTIES_HL;
-                // Перемешиваем сортировки сортировок с одинаковым приоритетом
-                $this->shuffleSortingParamsWithEqualPriority();
-
-                $this->endTagCache();
-                $this->saveToCache(
-                    'props_list_and_sorting_params',
-                    [
-                        'sortingParams' => $this->sortingParams,
-                        'propsList' => $this->propsList,
-                    ]
-                );
-            } else {
-                // Если не удалось получить сортировку сортировок - ставим сортировку по умолчанию
-                $this->sortingParams = [
-                    [
-                        'sort_key' => 'SORT',
-                        'order' => 'asc'
-                    ],
-                    [
-                        'sort_key' => 'PROPERTY_COLLECTION_SORT_VALUE',
-                        'order' => 'asc'
-                    ],
-                ];
-
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-    }
-
-    private function shuffleSortingParamsWithEqualPriority()
-    {
-        uasort($this->sortingParams, function ($a, $b) {
-            if ($a['sort'] == $b['sort']) {
-                return $a['rnd_sort'] ? 1 : -1;
-            }
-
-            // Направление сортировки "По возрастанию"
-            return $a['sort'] < $b['sort'] ? -1 : 1;
-        });
-    }
-
     private function compareBySortParams(&$a, &$b, &$sortParams)
     {
         $lastNotEqualSortParam = false;
@@ -3099,76 +2681,6 @@ class QsoftCatalogSection extends ComponentHelper
             return (intval($a[$lastNotEqualSortParam['sort_key']]) < intval($b[$lastNotEqualSortParam['sort_key']])) ? -1 : 1;
         }
     }
-
-    private function fetchPropsIcons(): void
-    {
-        $this->propIconsList = [];
-        if ($this->initCache('props_icons_list')) {
-            $this->propIconsList = $this->getCachedVars('props_icons_list')['propsIconsList'];
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $obEntity = HL::getEntityClassByHLName(self::ICONS_HB_NAME);
-            if ($obEntity && is_object($obEntity)) {
-                $sClass = $obEntity->getDataClass();
-
-                // UF_ICON - id иконки
-                // UF_ICON_TOOLTIP - подсказка иконки
-                // UF_ICON_TOOLTIP_ON - показывать подсказку иконки
-                $rsData = $sClass::getList(
-                    [
-                        'select' => ['*'],
-                    ]
-                );
-
-                while ($entry = $rsData->fetch()) {
-                    if ($entry['UF_ICON_DELIVERY']) {
-                        $iconType = 'DELIVERY';
-                    } elseif ($entry['UF_ICON_RESERVATION']) {
-                        $iconType = 'RESERVATION';
-                    } else {
-                        $iconType = $entry['ID'];
-                    }
-                    $this->propIconsList[$iconType]['UF_ICON'] = $entry['UF_ICON'];
-                    $arIcons[$entry['UF_ICON']] = $entry['UF_ICON'];
-                    if (!empty($entry['UF_ICON_TOOLTIP']) && $entry['UF_ICON_TOOLTIP_ON']) {
-                        $this->propIconsList[$iconType]['UF_ICON_TOOLTIP'] = $entry['UF_ICON_TOOLTIP'];
-                    }
-                }
-                $res = FileTable::getList(array(
-                    "select" => array(
-                        "ID",
-                        "SUBDIR",
-                        "FILE_NAME",
-                        "WIDTH",
-                        "HEIGHT",
-                        "CONTENT_TYPE",
-                    ),
-                    "filter" => array(
-                        "ID" => $arIcons,
-                    ),
-                ));
-
-                while ($arItem = $res->Fetch()) {
-                    $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
-                    $arIcons[$arItem['ID']] = $src;
-                }
-                foreach ($this->propIconsList as $id => &$propsIcon) {
-                    $propsIcon['SRC'] = $arIcons[$propsIcon['UF_ICON']];
-                }
-            }
-
-            $this->endTagCache();
-            $this->saveToCache(
-                'props_icons_list',
-                [
-                    'propsIconsList' => $this->propIconsList,
-                ]
-            );
-        }
-    }
-
 
     private function getNavNum(): ?int
     {
@@ -3290,67 +2802,23 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function loadPropertyValues()
     {
-        if (empty($this->propsList)) {
-            $this->fetchPropsListAndSortingParams();
-        }
-
-        if (empty($this->propIconsList)) {
-            $this->fetchPropsIcons();
-        }
-
         if ($this->initCache('HL_properties')) {
             $this->props = $this->getCachedVars('properties')['props'];
-            $this->propSorts = $this->getCachedVars('properties')['sort_props'];
-            $this->propsIcons = $this->getCachedVars('properties')['props_icons'];
         }
 
-        if (empty($this->props) || empty($this->propSorts) || empty($this->propsIcons)) {
+        if (empty($this->props)) {
             $this->startCache();
             $this->startTagCache();
             $this->registerTag("catalogAll");
             $this->props = [];
-            $this->propSorts = [];
-            foreach ($this->propsList as $prop => $isSortingEnabled) {
-                if ($prop == 'COLLECTION') {
-                    $prop = 'COLLECTIONHB';
-                }
-                $obEntity = HL::getEntityClassByHLName($prop);
-                if ($prop == 'COLLECTIONHB') {
-                    $prop = 'COLLECTION';
-                }
-                if ($obEntity && is_object($obEntity)) {
-                    $sClass = $obEntity->getDataClass();
 
-                    $rsData = $sClass::getList(['select' => ['*']]);
-
-                    while ($entry = $rsData->fetch()) {
-                        // Заполняем массив со всеми свойствами из Сортировки сортировок
-                        $this->props[$prop][$entry['UF_XML_ID']] = $entry['UF_NAME'];
-
-                        if (!empty($entry['UF_ICON']) && $entry['UF_ICON_ON']) {
-                            $this->propsIcons[$entry['UF_XML_ID']]['SRC'] = $this->propIconsList[$entry['UF_ICON']]['SRC'];
-                            $this->propsIcons[$entry['UF_XML_ID']]['TOOLTIP'] = $this->propIconsList[$entry['UF_ICON']]['UF_ICON_TOOLTIP'];
-                        }
-                        // Заполняем массив $this->propSorts с сортировками для сортируемых свойств
-                        if ($isSortingEnabled) {
-                            $this->propSorts[$prop][$entry['UF_XML_ID']] = $entry['UF_SORT'];
-                        }
-                    }
-                }
-            }
-
-            $this->propsIcons['DELIVERY']['SRC'] = $this->propIconsList['DELIVERY']['SRC'];
-            $this->propsIcons['DELIVERY']['TOOLTIP'] = $this->propIconsList['DELIVERY']['UF_ICON_TOOLTIP'];
-            $this->propsIcons['RESERVATION']['SRC'] = $this->propIconsList['RESERVATION']['SRC'];
-            $this->propsIcons['RESERVATION']['TOOLTIP'] = $this->propIconsList['RESERVATION']['UF_ICON_TOOLTIP'];
-
+            $this->props['SIZEFILTER'] = $this->getSizesFilter();
             $this->props['COLORSFILTER'] = $this->getColorsFilter();
+            $this->props['BRANDFILTER'] = $this->getBrandsFilter();
 
             $this->endTagCache();
             $this->saveToCache('properties', [
                 'props' => $this->props,
-                'sort_props' => $this->propSorts,
-                'props_icons' => $this->propsIcons,
             ]);
         }
     }
@@ -3377,21 +2845,68 @@ class QsoftCatalogSection extends ComponentHelper
     private function getColorsFilter()
     {
         $arColors = [];
-        $obEntity = HL::getEntityClassByTableName('b_1c_dict_colors_filter');
+        $obEntity = HL::getEntityClassByHLName('Firecolorreference');
 
         if ($obEntity && is_object($obEntity)) {
             $sClass = $obEntity->getDataClass();
-            $rsColors = $sClass::getList(['select' => ['UF_NAME', 'UF_GRBCODE', 'UF_XML_ID']]);
+            $rsColors = $sClass::getList(['select' => ['UF_NAME', 'UF_XML_ID', 'UF_FILE']]);
 
             while ($arColor = $rsColors->fetch()) {
-                $arColor['COLOR'] = Helper::rgb2hex($arColor['UF_GRBCODE']);
+                $arColor['IMG_SRC'] = CFile::GetPath($arColor["UF_FILE"]);
                 $arColors[$arColor['UF_XML_ID']] = $arColor;
                 unset($arColors[$arColor['UF_XML_ID']]['UF_XML_ID']);
-                unset($arColors[$arColor['UF_XML_ID']]['UF_GRBCODE']);
+                unset($arColors[$arColor['UF_XML_ID']]['UF_FILE']);
             }
         }
 
         return $arColors;
+    }
+
+    private function getSizesFilter()
+    {
+        $arSizes = [];
+        $propertyEnums = CIBlockPropertyEnum::GetList(
+            [
+                "SORT" => "ASC"
+            ],
+            [
+                "IBLOCK_ID" => IBLOCK_OFFERS,
+                "CODE" => "size"
+            ]
+        );
+
+        while($arEnum = $propertyEnums->GetNext())
+        {
+            $arSizes[$arEnum['ID']]['VALUE'] = $arEnum['VALUE'];
+        }
+
+        return $arSizes;
+    }
+
+    private function getBrandsFilter()
+    {
+        $arBrands = [];
+        $arFilter = [
+            'IBLOCK_ID' => IBLOCK_BRANDS,
+            'ACTIVE' => 'Y'
+        ];
+
+        $rBrands = CIBlockElement::GetList(
+            [],
+            $arFilter,
+            false,
+            false,
+            [
+                'XML_ID',
+                'NAME',
+            ]
+        );
+
+        while ($arBrand = $rBrands->GetNext()) {
+            $arBrands[$arBrand['XML_ID']]['NAME'] = $arBrand['NAME'];
+        }
+
+        return $arBrands;
     }
 
     private function sortBrands(array &$brands)
@@ -3455,11 +2970,9 @@ class QsoftCatalogSection extends ComponentHelper
     private function getSeo()
     {
         global $APPLICATION;
-        global $LOCATION;
         $seo = [];
-        $poddomen = $LOCATION->getPoddomen(false, true);
         $cache = new CPHPCache();
-        if ($cache->InitCache(86400, 'seo|' . $poddomen . '|' . $APPLICATION->GetCurPage(), 'seo')) {
+        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), 'seo')) {
             $seo = $cache->GetVars()['seo'];
         } elseif ($cache->StartDataCache()) {
             switch ($this->type) {
@@ -3468,25 +2981,6 @@ class QsoftCatalogSection extends ComponentHelper
                     //$seo['DESCRIPTION'] = $this->section['DESCRIPTION'];
                     //TODO Надо избравиться от этого запроса. Сделано временно.
                     $seo['DESCRIPTION'] = CIBlockSection::GetList([], ['ID' => $this->section['ID']], false, ['DESCRIPTION'], false)->Fetch()['DESCRIPTION'];
-                    break;
-                case self::TYPE_GROUP:
-                    if ($this->isBrandTagCode) {
-                        $ipropValues = new ElementValues(Functions::getEnvKey('IBLOCK_BRANDS'), $this->group['TAG_ID']);
-                        $seo['DESCRIPTION'] = $this->group['DETAIL_TEXT'];
-                    } elseif ($this->isBrand) {
-                        $ipropValues = new SectionValues(Functions::getEnvKey('IBLOCK_BRANDS'), $this->group['ID']);
-                        $seo['DESCRIPTION'] = $this->group['DESCRIPTION'];
-                    } else {
-                        $ipropValues = new ElementValues(IBLOCK_GROUPS, $this->group['ID']);
-                        $seo['DESCRIPTION'] = $this->group['DETAIL_TEXT'];
-                    }
-                    break;
-                case self::TYPE_TAG:
-                    $ipropValues = new ElementValues(IBLOCK_TAGS, $this->tag['ID']);
-                    $seo['DESCRIPTION'] = $this->tag['DETAIL_TEXT'];
-                    break;
-                case self::TYPE_STORES:
-                    $seo['SECTION_META_TITLE'] = $seo['SECTION_PAGE_TITLE'] = 'Каталог товаров RESPECT';
                     break;
                 case self::TYPE_SEARCH:
                     $cache->AbortDataCache();
@@ -3499,7 +2993,7 @@ class QsoftCatalogSection extends ComponentHelper
                 default:
                     break;
             }
-            if (!isset($ipropValues) && $this->type != self::TYPE_STORES && $this->type != self::TYPE_SEARCH) {
+            if (!isset($ipropValues) && $this->type != self::TYPE_SEARCH) {
                 $cache->AbortDataCache();
                 return;
             }
@@ -3509,31 +3003,11 @@ class QsoftCatalogSection extends ComponentHelper
 
             if (empty($seo['ELEMENT_PAGE_TITLE'])) {
                 switch ($this->type) {
-                    case self::TYPE_GROUP:
-                        if ($this->isBrandTagCode) {
-                            $seo['ELEMENT_PAGE_TITLE'] = $this->group['TAG_NAME'];
-                        } else {
-                            $seo['ELEMENT_PAGE_TITLE'] = $this->group['NAME'];
-                        }
-                        break;
-                    case self::TYPE_TAG:
-                        $seo['ELEMENT_PAGE_TITLE'] = $this->tag['NAME'];
-                        break;
                     case self::TYPE_SECTION:
                         $seo['ELEMENT_PAGE_TITLE'] = $this->section['NAME'];
                         break;
                     default:
                         break;
-                }
-            }
-            if ($poddomen) {
-                $seo = array_merge($seo, $LOCATION->getPoddomenSeo());
-                if ($this->type == self::TYPE_SEARCH) {
-                    $seo['DESCRIPTION'] = $seo['SECTION_META_TITLE'] = $seo['SECTION_PAGE_TITLE'] = mb_substr(
-                        'Поиск: ' . $this->arParams['SEARCH'],
-                        0,
-                        50
-                    );
                 }
             }
 
@@ -3544,7 +3018,7 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-        if (!empty($seo['SECTION_META_TITLE']) && !$this->isBrandTagCode) {
+        if (!empty($seo['SECTION_META_TITLE'])) {
             $APPLICATION->SetPageProperty('title', $seo['SECTION_META_TITLE']);
         } elseif (!empty($seo['ELEMENT_META_TITLE'])) {
             $APPLICATION->SetPageProperty('title', $seo['ELEMENT_META_TITLE']);
@@ -3552,41 +3026,30 @@ class QsoftCatalogSection extends ComponentHelper
             $APPLICATION->SetPageProperty('title', $seo['ELEMENT_PAGE_TITLE']);
         }
 
-        if (!empty($seo['SECTION_META_KEYWORDS']) && !$this->isBrandTagCode) {
+        if (!empty($seo['SECTION_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['SECTION_META_KEYWORDS']);
         } elseif (!empty($seo['ELEMENT_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['ELEMENT_META_KEYWORDS']);
         }
 
-        if (!empty($seo['SECTION_META_DESCRIPTION']) && !$this->isBrandTagCode) {
+        if (!empty($seo['SECTION_META_DESCRIPTION'])) {
             $APPLICATION->SetPageProperty("description", $seo['SECTION_META_DESCRIPTION']);
         } elseif (!empty($seo['ELEMENT_META_DESCRIPTION'])) {
             $APPLICATION->SetPageProperty("description", $seo['ELEMENT_META_DESCRIPTION']);
         }
 
-        if (!empty($seo['DESCRIPTION']) && $this->type != self::TYPE_SEARCH) {
-            $sDescription = '<div class="catalog-section-description">' . $seo['DESCRIPTION'] . '</div>';
-            $APPLICATION->AddViewContent('under_instagram', $sDescription);
-        }
-
-        if (!empty($seo['SECTION_PAGE_TITLE']) && !$this->isBrandTagCode) {
+        if (!empty($seo['SECTION_PAGE_TITLE'])) {
             $this->arResult['TITLE'] = $seo['SECTION_PAGE_TITLE'];
         } elseif (!empty($seo['ELEMENT_PAGE_TITLE'])) {
             $this->arResult['TITLE'] = $seo['ELEMENT_PAGE_TITLE'];
         }
     }
 
-    private function getStore($id)
-    {
-        global $LOCATION;
-        return $LOCATION->arAvStorages[$id];
-    }
-
     private function buildNavChain()
     {
         global $APPLICATION;
         $chain = [];
-        $cacheTag = 'nav_chain' . ($this->isBrandTagCode ? '_' . $this->isBrandTagCode : '');
+        $cacheTag = 'nav_chain';
         if ($this->initCache($cacheTag)) {
             $chain = $this->getCachedVars('nav_chain');
         } elseif ($this->startCache()) {

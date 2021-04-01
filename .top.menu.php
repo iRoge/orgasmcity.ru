@@ -1,13 +1,6 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Магазины", 
-		"/shops/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
 		"Акции и новости", 
 		"/events/", 
 		Array(), 
@@ -22,4 +15,3 @@ $aMenuLinks = Array(
 		"" 
 	)
 );
-?>

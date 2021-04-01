@@ -5,9 +5,9 @@ define('BX_DISABLE_INDEX_PAGE', true);
 // ID инфоблоков
 define('IBLOCK_CATALOG', 5);
 define('IBLOCK_OFFERS', 6);
+define('IBLOCK_BRANDS', 4);
 
 define('HL_ARTICLES_SKU', 217);
-define('IBLOCK_FEEDS', 'FEEDS_CONFIG_NEW');
 define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'] . '/local/logs/log.log');
 define('BUY_IN_CREDIT', false); //не забудьте активировать платежную систему
 define('ONLINE_STORE_ID', 209); //особенный склад, он не показывается в списке товаров, для него не доступен самовывоз

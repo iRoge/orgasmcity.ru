@@ -51,9 +51,12 @@ if (!function_exists("pre")) {
     {
         global $USER;
         if ($USER->IsAdmin() || $all == true) {
+            ob_start();
+            var_dump($var);
+            $dump = ob_get_clean();
             mb_internal_encoding('utf-8'); ?>
             <font style="text-align: left; font-size: 12px">
-                <pre><? print_r($var) ?></pre>
+                <pre><?=$dump?></pre>
             </font><br>
             <?
         }

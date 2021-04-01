@@ -538,16 +538,16 @@ class Functions
                     $picture = $sourceImage;
                 }
 
-                if (is_array($arFilters)) {
-                    foreach ($arFilters as $arFilter) {
-                        $bNeedCreatePicture |= CFile::ApplyImageFilter($picture, $arFilter, $bHasAlpha);
-                    }
-                }
-
-                if (is_array($arWaterMark)) {
-                    $arWaterMark["name"] = "watermark";
-                    $bNeedCreatePicture |= CFile::ApplyImageFilter($picture, $arWaterMark, $bHasAlpha);
-                }
+//                if (is_array($arFilters)) {
+//                    foreach ($arFilters as $arFilter) {
+//                        $bNeedCreatePicture |= CFile::ApplyImageFilter($picture, $arFilter, $bHasAlpha);
+//                    }
+//                }
+//
+//                if (is_array($arWaterMark)) {
+//                    $arWaterMark["name"] = "watermark";
+//                    $bNeedCreatePicture |= CFile::ApplyImageFilter($picture, $arWaterMark, $bHasAlpha);
+//                }
 
                 if ($bNeedCreatePicture) {
                     if ($io->FileExists($destinationFile)) {
