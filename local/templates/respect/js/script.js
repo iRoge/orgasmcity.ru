@@ -1301,7 +1301,7 @@ $(document).ready(function () {
     if (button.hasClass('rr-heart__btn')) {
       return;
     }
-    BX.ajax.post('catalog/favorites/', 'favorites=Y&ID=' + $(this).data('id'), function (response) {
+    BX.ajax.post('/catalog/favorites/', 'favorites=Y&ID=' + $(this).data('id'), function (response) {
       response = JSON.parse(response);
       if (response.res == 'error') {
         button.toggleClass('active');

@@ -93,20 +93,6 @@ if (!$orderId) {
                 'quantity' => $arProduct['QUANTITY']
             ];
         }
-        ?>
-        <script type="text/javascript">
-            // RetailRocket
-            (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function () {
-                try {
-                    rrApi.order({
-                        "transaction": <?=$orderId?>,
-                        "items": <?= '[' . implode(', ', $arRRItems) . ']'; ?>,
-                    });
-                } catch (e) {
-                }
-            });
-        </script>
-        <?
         if (env("useMetric", true)) {
             unset($_SESSION['NEW_ORDER_ID']);
             // metrika ecommerce

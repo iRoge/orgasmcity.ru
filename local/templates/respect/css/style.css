@@ -8103,7 +8103,7 @@ input::-webkit-inner-spin-button {
 .card__img::before {
   content: "";
   display: block;
-  padding-bottom: 100%;
+  padding-bottom: 125%;
 }
 
 .card__img-box {
@@ -8218,9 +8218,6 @@ input::-webkit-inner-spin-button {
 
 .card__price--discount {
   color: #cd1030;
-}
-.card__price--discount-yellow {
-  color: #e28400;
 }
 
 .card__discount {
@@ -9591,10 +9588,10 @@ input::-webkit-inner-spin-button {
     margin: 5px;
   }
   .heart__btn.active:hover svg {
-    fill:#e6a949!important;
+    fill:red!important;
   }
   .heart__btn:hover svg {
-    fill:#c6c1c1!important;
+    fill:red!important;
   }
 }
 .heart__btn:focus,
@@ -9608,10 +9605,10 @@ input::-webkit-inner-spin-button {
 }
 
 .heart__btn:hover svg {
-  fill: #938d8d;
+  fill: red;
 }
 .heart__btn svg {
-  height: 20px;
+  height: 30px;
   fill: #c6c1c1;
   transition: fill 0.2s;
 }

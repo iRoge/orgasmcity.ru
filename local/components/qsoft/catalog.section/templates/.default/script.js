@@ -710,52 +710,23 @@ function resetHandlers() {
 }
 
 $(document).ready(function() {
-    let params = SmartFilter.prototype.processSearch();
-    params.getFilters = 'Y';
-    BX.ajax.post($(location).attr('href'), params, function (data) {
-        $(SmartFilter.prototype.filter).html($(data).find(SmartFilter.prototype.filter).html());
-        resetHandlers();
-        smartFilter.sortFilterListByActive();
-        smartFilter.setFilterButtonsStyle('new');
-        $('.name-h3').each(function () {
-            if ($(this).hasClass('active-name-h3')) {
-                smartFilter.clickOnSectionFilter(this);
-            }
-        });
-        $('.in-left-catalog').last().addClass('in-left-catalog--last');
-        $('.lds-ring-container-first').css('display', 'none');
-    });
+    // let params = SmartFilter.prototype.processSearch();
+    // params.getFilters = 'Y';
+    // BX.ajax.post($(location).attr('href'), params, function (data) {
+    //     console.log(data);
+    //     $(SmartFilter.prototype.filter).html($(data).find(SmartFilter.prototype.filter).html());
+    //     resetHandlers();
+    //     smartFilter.sortFilterListByActive();
+    //     smartFilter.setFilterButtonsStyle('new');
+    //     $('.name-h3').each(function () {
+    //         if ($(this).hasClass('active-name-h3')) {
+    //             smartFilter.clickOnSectionFilter(this);
+    //         }
+    //     });
+    //     $('.in-left-catalog').last().addClass('in-left-catalog--last');
+    //     $('.lds-ring-container-first').css('display', 'none');
+    // });
 });
-
-$('a[class="card__img"]').on('click', function () {
-    let parent = $(this).parents('.cards__item');
-
-    if (parent) {
-        window.dataLayer = window.dataLayer || [];
-        dataLayer.push({
-            'event':'MTRENDO',
-            'eventCategory': 'EEC',
-            'eventAction':'impressionClick',
-            'eventLabel': parent.data('prod-name'),  // data-prod-name
-            'product-list': parent.data('prod-list'), // data-prod-list
-            'products': [{
-                'name': parent.data('prod-name'),  // data-prod-name
-                'id': parent.data('prod-id'),   // data-prod-id
-                'articul': parent.data('prod-articul'), // data-prod-articul
-                'price': parent.data('prod-price'),  // data-prod-price
-                'category': parent.data('prod-category'), // data-prod-category
-                'list': parent.data('prod-list'), // data-prod-list
-                'variant':  parent.data('prod-variant'), // data-prod-variant
-                'brand': parent.data('prod-brand'),  //  Бренд товара data-prod-brand
-                'top-material': parent.data('prod-top-material'),  //  Материал верха data-prod-top-material
-                'lining-material': parent.data('prod-lining-material'), //Материал подкладки data-prod-lining-material
-                'season': parent.data('prod-season'),  //  Сезон data-prod-season
-                'collection': parent.data('prod-collection'),  //  Коллекция data-prod-collection
-                'position': parent.data('prod-position') // data-prod-position
-            }]
-        });
-    }
-})
 
 $(document).ready(function () {
     $('.props_icon_img').on('click', function () {

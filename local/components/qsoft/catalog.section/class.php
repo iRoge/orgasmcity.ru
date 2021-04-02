@@ -30,7 +30,7 @@ class QsoftCatalogSection extends ComponentHelper
      */
     private const MULTIPLE_VALUE_PROPERTIES = [
         'SIZES',
-        'COLORSFILTER',
+        'COLORS',
     ];
 
     private const PROMO_TYPES = [
@@ -41,52 +41,31 @@ class QsoftCatalogSection extends ComponentHelper
 
     private const PRODUCT_PROPERTIES = [
         'max_price' => 'MAX_PRICE',
+        'max_diameter' => 'MAX_DIAMETER',
+        'max_length' => 'MAX_LENGTH',
         'min_price' => 'MIN_PRICE',
-        'color' => 'COLORSFILTER',
-        'uppermaterial' => 'UPPERMATERIAL',
-        'liningmaterial' => 'LININGMATERIAL',
-        'style' => 'STYLE',
-        'season' => 'SEASON',
-        'stores' => 'STORES',
+        'min_diameter' => 'MIN_DIAMETER',
+        'min_length' => 'MIN_LENGTH',
+        'diameter' => 'DIAMETER',
+        'length' => 'LENGTH',
+        'color' => 'COLORS',
+        'vendor' => 'VENDOR',
         'sizes' => 'SIZES',
-        'rhodeproduct' => 'RHODEPRODUCT',
-        'subtypeproduct' => 'SUBTYPEPRODUCT',
-        'brand' => 'BRAND',
-        'online_try_on' => 'ONLINE_TRY_ON',
-        'heelheight_type' => 'HEELHEIGHT_TYPE',
-        'storages_availability' => 'STORAGES_AVAILABILITY',
-        'sections' => 'IBLOCK_SECTION_ID',
-        'from_default_loc' => 'FROM_DEFAULT_LOC',
-        'zastegka' => 'ZASTEGKA',
-        'country' => 'COUNTRY',
-        'materialstelki' => 'MATERIALSTELKI',
-        'vidkabluka' => 'VIDKABLUKA',
     ];
 
     private const PRODUCT_PROPERTIES_MAP = [
-        'UPPERMATERIAL' => 'PROPERTY_UPPERMATERIAL_VALUE',
-        'LININGMATERIAL' => 'PROPERTY_LININGMATERIAL_VALUE',
-        'SEASON' => 'PROPERTY_SEASON_VALUE',
-        'SUBTYPEPRODUCT' => 'PROPERTY_SUBTYPEPRODUCT_VALUE',
-        'COLORSFILTER' => 'PROPERTY_COLORSFILTER_VALUE',
+        'VENDOR' => 'PROPERTY_VENDOR_VALUE',
+        'COLORS' => 'COLORS',
         'SIZES' => 'SIZES',
-        'RHODEPRODUCT' => 'PROPERTY_RHODEPRODUCT_VALUE',
-        'BRAND' => 'PROPERTY_BRAND_VALUE',
-        'ONLINE_TRY_ON' => 'PROPERTY_ONLINE_TRY_ON_VALUE',
-        'IBLOCK_SECTION_ID' => 'IBLOCK_SECTION_ID',
-        'ZASTEGKA' => 'PROPERTY_ZASTEGKA_VALUE',
-        'COUNTRY' => 'PROPERTY_COUNTRY_VALUE',
-        'STYLE' => 'PROPERTY_STYLE_VALUE',
-        'HEELHEIGHT_TYPE' => 'PROPERTY_HEELHEIGHT_TYPE_VALUE',
-        'STORAGES_AVAILABILITY' => 'STORAGES_AVAILABILITY',
-        'FROM_DEFAULT_LOC' => 'PROPERTY_FROM_DEFAULT_LOC_VALUE',
-        'VIDKABLUKA' => 'PROPERTY_VIDKABLUKA',
-        'MATERIALSTELKI' => 'PROPERTY_MATERIALSTELKI',
     ];
 
-    private const PRICES = [
+    private const NUMBER_FILTERS = [
         'max_price' => 'MAX_PRICE',
+        'max_diameter' => 'MAX_DIAMETER',
+        'max_length' => 'MAX_LENGTH',
         'min_price' => 'MIN_PRICE',
+        'min_diameter' => 'MIN_DIAMETER',
+        'min_length' => 'MIN_LENGTH',
     ];
 
     private const DEFAULT_PRODUCT_FIELDS_TO_SELECT = [
@@ -119,21 +98,12 @@ class QsoftCatalogSection extends ComponentHelper
      * порядок вывода фильтра
      */
     private const FILTER_KEYS = [
-        'FROM_DEFAULT_LOC',
-        'ONLINE_TRY_ON',
-        'SIZES',
-        'SEASON',
-        'COLORSFILTER',
         'PRICE',
-        'UPPERMATERIAL',
-        'LININGMATERIAL',
-        'RHODEPRODUCT',
-        'BRAND',
-        'COUNTRY',
-        'HEELHEIGHT_TYPE',
-        'ZASTEGKA',
-        'STORES',
-        'STORAGES_AVAILABILITY',
+        'DIAMETER',
+        'LENGTH',
+        'SIZES',
+        'COLORS',
+        'VENDOR'
     ];
     /**
      * массив сортировки фильтра типа изделия
@@ -147,7 +117,7 @@ class QsoftCatalogSection extends ComponentHelper
         'dlya_muzhchin_aksessuary' => 5,
     ];
 
-    protected $relativePath = '/qsoft/catalog.section';
+    protected string $relativePath = '/qsoft/catalog.section';
     /**
      * @var string
      */
@@ -191,41 +161,21 @@ class QsoftCatalogSection extends ComponentHelper
     private $disabledOptions;
     private $props = [];
     private $stores;
-    private $arStoresSizesRests = []; // массив остатков размеров по складам
     private $arLocalTypeSizesRests = []; // массив остатков по местоположению
 
-    /**
-     * сортировки для сортируемых свойств товара
-     */
-    private $propSorts = [];
-    /**
-     * список свойств в виде соответствующих HL-блоков
-     */
-    private $propsList = [];
-    /**
-     * @var array массив иконок свойств для показа в каталоге в карточках товаров
-     */
-    private $propsIcons = [];
-
-    /** @var bool $donorProductExists Флаг, которому присваевается true , если существуют донорские товары в конечном массиве */
-    private $donorProductExists = false;
-
-    /** @var bool $needStoresFilter Флаг, требуется ли вывод фильтра доставки/самовывоза */
-    private $needStoresFilter = true;
-
-    /** @var array $activeStorages Массив идентификаторов складов, на которых есть остатки по резерву */
-    private $activeStorages = [];
     private $resultItems;
 
-    private $srcSize = ['width' => 300, 'height' => 300];
-    private $srcSizeBig = ['width' => 600, 'height' => 600];
-    private $maxPriceForFilter = 0;
-    private $minPriceForFilter = 99999999;
+    private $srcSize = ['width' => 300, 'height' => 400];
+    private $srcSizeBig = ['width' => 600, 'height' => 800];
 
-    // тег по бренду
-    private $isBrandTagCode = false;
-    // по предзаказу
-    private bool $isPreorder = false;
+    private $filtersScopes = [
+        'MAX_PRICE' => 0,
+        'MAX_DIAMETER' => 0,
+        'MAX_LENGTH' => 0,
+        'MIN_PRICE' => 9999999,
+        'MIN_DIAMETER' => 9999999,
+        'MIN_LENGTH' => 9999999,
+    ];
 
     /**
      * @param $arParams
@@ -298,12 +248,16 @@ class QsoftCatalogSection extends ComponentHelper
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
+        global $CACHE_MANAGER;
+        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
 
         $this->arResult['FAVORITES'] = $this->getFavorites(); //загружаем избранное
 
+//        var_dump($_REQUEST);
+//        DIE;
         if ($this->checkActionFavorite()) {
             Functions::exitJson($this->addOrDelFavorite());
         }
@@ -314,7 +268,7 @@ class QsoftCatalogSection extends ComponentHelper
         $this->getUserViewSettings();
         $this->prepareCatalogResult();
 
-        if (isset($_REQUEST['getFilters'])) {
+        if (!isset($_REQUEST['getFilters'])) {
             $this->prepareFilterResult();
             $this->includeComponentTemplate();
             return false;
@@ -330,7 +284,6 @@ class QsoftCatalogSection extends ComponentHelper
             $this->arResult['SECTION_ID'] = $this->section['ID'];
         } elseif ($this->type === self::TYPE_ALL_CATALOG) {
             $this->arResult['SECTION_ID'] = $this->getSecondLevelSections();
-            ;
         }
         $this->arResult['SECTION_TYPE'] = $this->type;
         $this->arResult['PROPS'] = $this->props;
@@ -420,7 +373,7 @@ class QsoftCatalogSection extends ComponentHelper
     private function loadProducts($all = false): void
     {
         if (empty($this->props)) {
-            $this->loadPropertyValues();
+            $this->props = $this->getPropertyValues();
         }
 
         $arProducts = [];
@@ -581,7 +534,7 @@ class QsoftCatalogSection extends ComponentHelper
     private function processProducts($res): array
     {
         if (empty($this->props)) {
-            $this->loadPropertyValues();
+            $this->props = $this->getPropertyValues();
         }
 
         $arProducts = [];
@@ -631,8 +584,8 @@ class QsoftCatalogSection extends ComponentHelper
             $arImages = [];
             $arImagesBig = [];
             while ($arItem = $res->Fetch()) {
-                $resizeSrc = Functions::ResizeImageGet($arItem, $this->srcSize);
-                $resizeSrcBig = Functions::ResizeImageGet($arItem, $this->srcSizeBig);
+                $resizeSrc = Functions::ResizeImageGet($arItem, $this->srcSize, BX_RESIZE_IMAGE_EXACT);
+                $resizeSrcBig = Functions::ResizeImageGet($arItem, $this->srcSizeBig, BX_RESIZE_IMAGE_EXACT);
                 $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
                 if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
                     continue;
@@ -666,8 +619,6 @@ class QsoftCatalogSection extends ComponentHelper
     private function loadOffers(): void
     {
         $arOffers = [];
-        global $CACHE_MANAGER;
-        $CACHE_MANAGER->clearByTag('catalogAll');
         if ($this->initCache('offers')) {
             $arOffers = $this->getCachedVars('offers');
         } elseif ($this->startCache()) {
@@ -699,8 +650,7 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->abortCache();
             }
         }
-        pre($arOffers);
-        die();
+
         $this->offers = $arOffers;
     }
 
@@ -744,13 +694,13 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function addOrDelFavorite()
     {
-        $arFavoritesId = $this->arResult['FAVORITES'];
-        if (isset($arFavoritesId[$_REQUEST['ID']])) {
-            unset($arFavoritesId[$_REQUEST['ID']]);
+        $arFavoritesIds = $this->arResult['FAVORITES'];
+        if (isset($arFavoritesIds[$_REQUEST['ID']])) {
+            unset($arFavoritesIds[$_REQUEST['ID']]);
             $response['res'] = 'delete';
-            $this->setFavoritesId($arFavoritesId);
+            $this->setFavorites($arFavoritesIds);
         } else {
-            if (count($arFavoritesId) >= 99) {
+            if (count($arFavoritesIds) >= 99) {
                 $response['text'] = Option::get(
                     "respect",
                     "favorites_max_num_text",
@@ -758,26 +708,26 @@ class QsoftCatalogSection extends ComponentHelper
                 );
                 $response['res'] = 'error';
             } else {
-                $arFavoritesId[$_REQUEST['ID']] = $_REQUEST['ID'];
-                $this->setFavoritesId($arFavoritesId);
+                $arFavoritesIds[$_REQUEST['ID']] = $_REQUEST['ID'];
+                $this->setFavorites($arFavoritesIds);
                 $response['res'] = 'add';
             }
         }
         return $response;
     }
 
-    private function setFavoritesId($arFavoritesId)
+    private function setFavorites($arFavoritesIds)
     {
         global $USER;
 
-        $this->arResult['FAVORITES'] = $arFavoritesId;
+        $this->arResult['FAVORITES'] = $arFavoritesIds;
         if ($USER->IsAuthorized()) { // Для авторизованного пишем в User
-            $arFavoritesId = array_flip($arFavoritesId);
-            $USER->Update($USER->GetID(), array("UF_FAVORITES" => $arFavoritesId));
+            $arFavoritesIds = array_flip($arFavoritesIds);
+            $USER->Update($USER->GetID(), array("UF_FAVORITES" => $arFavoritesIds));
         } else {
-            setcookie("favorites", serialize($arFavoritesId), 0, '/');
+            setcookie("favorites", serialize($arFavoritesIds), 0, '/');
         }
-        setcookie("favorites_count", count($arFavoritesId), 0, '/');
+        setcookie("favorites_count", count($arFavoritesIds), 0, '/');
     }
 
     private function delNonActualFavorites()
@@ -878,7 +828,7 @@ class QsoftCatalogSection extends ComponentHelper
                     'PROPERTY_F_STORES_R',
                     'PROPERTY_IS_ACTION',
                     'PROPERTY_BRAND',
-                    'PROPERTY_COLORSFILTER',
+                    'PROPERTY_COLORS',
                     'PROPERTY_ONLINE_TRY_ON',
                     'PROPERTY_IS_BRAND',
                     'PROPERTY_STYLE',
@@ -1191,8 +1141,8 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $products = [];
 
-        if (empty($this->propSorts) || empty($this->props)) {
-            $this->loadPropertyValues();
+        if (empty($this->props)) {
+            $this->props = $this->getPropertyValues();
         }
         $cacheTag = 'products_group_' . $this->code . ($this->isBrandTagCode ? '_' . $this->isBrandTagCode : '');
         if ($this->initCache($cacheTag)) {
@@ -1237,7 +1187,7 @@ class QsoftCatalogSection extends ComponentHelper
             "PROPERTY_ARTICLE",
             "PROPERTY_RHODEPRODUCT",
             "PROPERTY_BRAND",
-            'PROPERTY_COLORSFILTER',
+            'PROPERTY_COLORS',
             "PROPERTY_ONLINE_TRY_ON",
             'PROPERTY_HEELHEIGHT',
             'PROPERTY_HEELHEIGHT_TYPE',
@@ -1329,7 +1279,7 @@ class QsoftCatalogSection extends ComponentHelper
                         }
                         continue;
                     }
-                    if ($key2 == 'PROPERTY_SIZES_VALUE' || $key2 == 'PROPERTY_COLORSFILTER_VALUE') {
+                    if ($key2 == 'PROPERTY_SIZES_VALUE' || $key2 == 'PROPERTY_COLORS_VALUE') {
                         $checkSizes = false;
                         foreach ($elem[$key2] as $option) {
                             if (in_array($option, $prop)) {
@@ -1459,7 +1409,7 @@ class QsoftCatalogSection extends ComponentHelper
                     'PROPERTY_SEASON',
                     'PROPERTY_COLOR',
                     'PROPERTY_SUBTYPEPRODUCT',
-                    'PROPERTY_COLORSFILTER',
+                    'PROPERTY_COLORS',
                     'PROPERTY_HEELHEIGHT_TYPE',
                     'PROPERTY_COUNTRY',
                     'PROPERTY_ZASTEGKA',
@@ -1542,8 +1492,8 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $products = [];
 
-        if (empty($this->propSorts) || empty($this->props)) {
-            $this->loadPropertyValues();
+        if (empty($this->props)) {
+            $this->props = $this->getPropertyValues();
         }
         if ($this->initCache('tag_products' . $this->code)) {
             $products = $this->getCachedVars('products');
@@ -1639,8 +1589,8 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $products = [];
 
-        if (empty($this->propSorts) || empty($this->props)) {
-            $this->loadPropertyValues();
+        if (empty($this->props)) {
+            $this->props = $this->getPropertyValues();
         }
 
         $this->buildSearchFilter();
@@ -1739,8 +1689,8 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getPromoProducts()
     {
-        if (empty($this->propSorts) || empty($this->props)) {
-            $this->loadPropertyValues();
+        if (empty($this->props)) {
+            $this->props = $this->getPropertyValues();
         }
 
         $currentSection = [];
@@ -1796,21 +1746,18 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function prepareCatalogResult(): void
     {
-        global $LOCATION;
         if (isset($_REQUEST['getFilters'])) {
-            if ($this->initCache('resultItems' . '|' . $LOCATION->getUserShowcase(), 3)) {
+            if ($this->initCache('resultItems')) {
                 $this->items = $this->getCachedVars('items');
-                $this->restTypesIgnoreItems = $this->getCachedVars('restTypesIgnoreItems');
             } else {
                 $this->getResultItems();
             }
         } else {
             $this->getResultItems();
             if (!isset($_POST['set_filter'])) {
-                $this->initCache('resultItems' . '|' . $LOCATION->getUserShowcase(), 3);
+                $this->initCache('resultItems');
                 $this->startCache();
                 $this->saveToCache('items', $this->items);
-                $this->saveToCache('restTypesIgnoreItems', $this->restTypesIgnoreItems);
             }
         }
         $resultItems = $this->items;
@@ -1861,278 +1808,45 @@ class QsoftCatalogSection extends ComponentHelper
      */
     private function getResultItems(): array
     {
-        if (!empty($this->items) && !empty($this->restTypesIgnoreItems)) {
-            return $this->restTypesIgnoreItems;
+        if (!empty($this->items)) {
+            return $this->items;
         }
+
+        $isFavoritesCatalog = false;
         if ($this->type == 'favorites') {
-            $favoritesTrue = true;
+            $isFavoritesCatalog = true;
         }
 
-        global $LOCATION;
-        //Указываем фильтр доставки/самовывоза по умолчанию
-        $restsType = $this->defaultStoresType;
-        //Если задан только один элемент фильтра, то указываем. В остальных случаях это равняется показу всех товаров
-        if (isset($this->urlFilter['STORES']) && $this->urlFilter['STORES'] && !is_array($this->urlFilter['STORES'])) {
-            $restsType = $this->urlFilter['STORES'];
+        $items = [];
+        foreach ($this->offers as $offerId => $value) {
+            $pid = $value["PROPERTY_CML2_LINK_VALUE"];
+
+            if (!$items[$pid]) {
+                $items[$pid] = $this->products[$pid];
+            }
+
+            if ($value["PROPERTY_BASEPRICE_VALUE"]) {
+                $items[$pid]['PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"];
+                $items[$pid]['OLD_PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"];
+                $items[$pid]['PERCENT'] = 100 - $value['PROPERTY_BASEPRICE_VALUE'] * 100 / $value['PROPERTY_BASEPRICE_VALUE'];
+                $items[$pid]['SEGMENT'] = 'red';
+            }
+
+            $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
+            $items[$pid]["COLORS"][] = $value["PROPERTY_COLOR_VALUE"];
+            $items[$pid]["ASSORTMENTS"][] = $value;
+            $this->arLocalTypeSizesRests['ALL'][$pid][] = $value["PROPERTY_SIZE_VALUE"];
         }
-        //Получаем наличие по всем фильтрам доставки/самовывоза
-        $arStoresRests = [];
-        if ($this->isPreorder) {
-            $temp = $LOCATION->getRests(array_keys($this->offers), false, true);
-            $this->needStoresFilter = false;
-            $arNeedleOffers = array_diff_key($this->offers, $temp);
-            $items = [];
-            $restTypesIgnoreItems = [];
-            $delItemWithRests = [];
 
-            foreach ($this->offers as $offerId => $value) {
-                $pid = $value["PROPERTY_CML2_LINK_VALUE"];
-
-                if (!$arNeedleOffers[$offerId]) {
-                    $delItemWithRests[$pid] = $pid;
-                    continue;
-                }
-
-                if (!$items[$pid]) {
-                    $items[$pid] = $this->products[$pid];
-                }
-
-                $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
-            }
-            $items = array_diff_key($items, $delItemWithRests);
-        } else {
-            foreach ([1, 2] as $type) {
-                $arStoresRests[$type] = $LOCATION->getRests(array_keys($this->offers), $type, '', $favoritesTrue);
-                //Если нет товаров по одному из фильтров выставляем флаг, определяющий, что выводить фильтр не нужно
-                if (!$arStoresRests[$type]) {
-                    $this->needStoresFilter = false;
-                }
-            }
-            //Если в обоих вариантах доставки одни и те же товары, то фильтр не нужен
-            if ($this->checkArrayEqual(array_keys($arStoresRests[1]), array_keys($arStoresRests[2]))) {
-                $this->needStoresFilter = false;
-            }
-            $arTypeIgnoreRests = array_replace_recursive($arStoresRests[1], $arStoresRests[2]);
-            //Для текущего фильтра устанавливаем необходимый вариант
-            $arRests = $restsType ? $arStoresRests[$restsType] : $arTypeIgnoreRests;
-
-            $arTypes = $LOCATION->getTypeSizes($arTypeIgnoreRests, array_keys($this->offers));
-            $arTypeSizesDelivery = $arTypes['DELIVERY'];
-
-            //Определяем склады, на которых есть остатки
-            $this->activeStorages = $this->getActiveStorages((array)$arStoresRests[2]);
-            $items = [];
-            $restTypesIgnoreItems = [];
-
-            foreach ($this->offers as $offerId => $value) {
-                $pid = $value["PROPERTY_CML2_LINK_VALUE"];
-
-                if (!empty($this->products[$pid]["PROPERTY_DISABLE_DELIVERY_VALUE"]) && !isset($arStoresRests[2][$offerId])) {
-                    continue;
-                }
-                if (!empty($this->products[$pid]["PROPERTY_NO_RESERVE_VALUE"]) && !isset($arStoresRests[1][$offerId])) {
-                    continue;
-                }
-                if (!empty($this->products[$pid]["PROPERTY_NO_RESERVE_VALUE"]) && $this->urlFilter['STORES'] == 2) {
-                    continue;
-                }
-                if (!empty($this->products[$pid]["PROPERTY_DISABLE_DELIVERY_VALUE"]) && $this->urlFilter['STORES'] == 1) {
-                    continue;
-                }
-                if (!$arTypeIgnoreRests[$offerId]) {
-                    continue;
-                }
-
-                if (!$restTypesIgnoreItems[$pid]) {
-                    $restTypesIgnoreItems[$pid] = $this->products[$pid];
-                }
-
-                foreach ($arTypeIgnoreRests[$offerId] as $storeId => $count) {
-                    if (!in_array($storeId, $restTypesIgnoreItems[$pid]['STORAGES_AVAILABILITY'])) {
-                        $restTypesIgnoreItems[$pid]['STORAGES_AVAILABILITY'][] = $storeId;
-                    }
-                }
-                $restTypesIgnoreItems[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
-
-                if (!$arRests[$offerId]) {
-                    continue;
-                }
-
-                if (!$items[$pid]) {
-                    $items[$pid] = $this->products[$pid];
-                }
-
-                foreach ($arRests[$offerId] as $storeId => $count) {
-                    if (!in_array($storeId, $items[$pid]['STORAGES_AVAILABILITY'])) {
-                        $items[$pid]['STORAGES_AVAILABILITY'][] = $storeId;
-                    }
-                }
-                $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
-
-                // Достаем остатки поразмерно для складов для фильтрации
-                foreach (array_keys($arTypeIgnoreRests[$offerId]) as $store) {
-                    $this->arStoresSizesRests[$store][$pid][] = $value["PROPERTY_SIZE_VALUE"];
-                }
-                // Достаем остатки с типом
-                if ($arTypeSizesDelivery[$offerId]['IS_LOCAL'] === 'Y') {
-                    $this->arLocalTypeSizesRests['LOCAL'][$pid][] = $value["PROPERTY_SIZE_VALUE"];
-                }
-                $this->arLocalTypeSizesRests['ALL'][$pid][] = $value["PROPERTY_SIZE_VALUE"];
-            }
-        }
-        $arPrices = $LOCATION->getProductsPrices(array_keys($items));
-        $defaultStorages = $LOCATION->DEFAULT_STORAGES;
-        $exeptionReg = $LOCATION->exepRegionFlag;
-        $checkIfDonorTarget = $LOCATION->checkIfLocationIsDonorTarget($LOCATION->code);
-        $regionStores = $LOCATION->getStorages(false, true);
-        if ($checkIfDonorTarget) {
-            $arDefaultBranchPrices = $LOCATION->getProductsPrices(array_keys($items), $LOCATION->DEFAULT_BRANCH);
-        }
-        $filterAdd = array_flip($this->ibFilter['ADDITIONAL']);
         foreach ($items as $key => &$item) {
-            $availableDonorStorages = array_intersect($item['STORAGES_AVAILABILITY'], array_keys($defaultStorages));
-            if ($checkIfDonorTarget) {
-                $item = $this->addPropertyFromDefaultLoc($item, count($availableDonorStorages), $exeptionReg);
-                if (empty(array_intersect($item['STORAGES_AVAILABILITY'], array_keys($regionStores))) && !$exeptionReg) {
-                    $arPrice = $arDefaultBranchPrices[$key];
-                    $item['PRICE'] = $arPrice["PRICE"];
-                    $item['OLD_PRICE'] = $arPrice["OLD_PRICE"];
-                    $item['PERCENT'] = $arPrice["PERCENT"];
-                    $item['SEGMENT'] = $arPrice["SEGMENT"];
-                } else {
-                    $arPrice = $arPrices[$key];
-                    $item['PRICE'] = $arPrice["PRICE"];
-                    $item['OLD_PRICE'] = $arPrice["OLD_PRICE"];
-                    $item['PERCENT'] = $arPrice["PERCENT"];
-                    $item['SEGMENT'] = $arPrice["SEGMENT"];
-                }
-            } else {
-                $item = $this->addPropertyFromDefaultLoc($item, count($availableDonorStorages), true);
-                $arPrice = $arPrices[$key];
-                $item['PRICE'] = $arPrice["PRICE"];
-                $item['OLD_PRICE'] = $arPrice["OLD_PRICE"];
-                $item['PERCENT'] = $arPrice["PERCENT"];
-                $item['SEGMENT'] = $arPrice["SEGMENT"];
-            }
-            if (!isset($item['PRICE']) && !$favoritesTrue) {
+            if (!isset($item['PRICE']) && !$isFavoritesCatalog) {
                 unset($items[$key]);
                 continue;
             }
-            if (empty($filterAdd) || !isset($filterAdd[$item['PROPERTY_ARTICLE_VALUE']])) {
-                if (isset($this->ibFilter['RESULT']['MIN_PRICE'])) {
-                    $min_price = $this->ibFilter['RESULT']['MIN_PRICE'];
-                    if ($item['PRICE'] < $min_price) {
-                        unset($items[$key]);
-                        continue;
-                    }
-                }
-                if (isset($this->ibFilter['RESULT']['MAX_PRICE'])) {
-                    $max_price = $this->ibFilter['RESULT']['MAX_PRICE'];
-                    if ($item['PRICE'] > $max_price) {
-                        unset($items[$key]);
-                        continue;
-                    }
-                }
-                if (isset($this->ibFilter['RESULT']['SEGMENT']) && !in_array($arPrice['SEGMENT'], $this->ibFilter['RESULT']['SEGMENT'])) {
-                    unset($items[$key]);
-                    continue;
-                }
-                if (isset($this->ibFilter['RESULT']['SEGMENT_FROM'])) {
-                    $from = $this->ibFilter['RESULT']['SEGMENT_FROM'];
-                    if ($item['PERCENT'] < $from) {
-                        unset($items[$key]);
-                        continue;
-                    }
-                }
-                if (isset($this->ibFilter['RESULT']['SEGMENT_TO'])) {
-                    $to = $this->ibFilter['RESULT']['SEGMENT_TO'];
-                    if ($item['PERCENT'] > $to) {
-                        unset($items[$key]);
-                        continue;
-                    }
-                }
-            }
         }
-        foreach ($restTypesIgnoreItems as $key => &$item) {
-            $availableDonorStorages = array_intersect($item['STORAGES_AVAILABILITY'], array_keys($defaultStorages));
-            if ($checkIfDonorTarget) {
-                $item = $this->addPropertyFromDefaultLoc($item, count($availableDonorStorages), $exeptionReg);
-                if (empty(array_intersect($item['STORAGES_AVAILABILITY'], array_keys($regionStores))) && !$exeptionReg) {
-                    $arPrice = $arDefaultBranchPrices[$key];
-                    $item['PRICE'] = $arPrice["PRICE"];
-                    $item['OLD_PRICE'] = $arPrice["OLD_PRICE"];
-                    $item['PERCENT'] = $arPrice["PERCENT"];
-                    $item['SEGMENT'] = $arPrice["SEGMENT"];
-                } else {
-                    $arPrice = $arPrices[$key];
-                    $item['PRICE'] = $arPrice["PRICE"];
-                    $item['OLD_PRICE'] = $arPrice["OLD_PRICE"];
-                    $item['PERCENT'] = $arPrice["PERCENT"];
-                    $item['SEGMENT'] = $arPrice["SEGMENT"];
-                }
-            } else {
-                $item = $this->addPropertyFromDefaultLoc($item, count($availableDonorStorages), true);
-                $arPrice = $arPrices[$key];
-                $item['PRICE'] = $arPrice["PRICE"];
-                $item['OLD_PRICE'] = $arPrice["OLD_PRICE"];
-                $item['PERCENT'] = $arPrice["PERCENT"];
-                $item['SEGMENT'] = $arPrice["SEGMENT"];
-            }
-            if (!isset($item['PRICE']) && !$favoritesTrue) {
-                unset($restTypesIgnoreItems[$key]);
-                continue;
-            }
-            if (empty($filterAdd) || !isset($filterAdd[$item['PROPERTY_ARTICLE_VALUE']])) {
-                if (isset($this->ibFilter['RESULT']['MIN_PRICE'])) {
-                    $min_price = $this->ibFilter['RESULT']['MIN_PRICE'];
-                    if ($item['PRICE'] < $min_price) {
-                        unset($restTypesIgnoreItems[$key]);
-                        continue;
-                    }
-                }
-                if (isset($this->ibFilter['RESULT']['MAX_PRICE'])) {
-                    $max_price = $this->ibFilter['RESULT']['MAX_PRICE'];
-                    if ($item['PRICE'] > $max_price) {
-                        unset($restTypesIgnoreItems[$key]);
-                        continue;
-                    }
-                }
-                if (isset($this->ibFilter['RESULT']['SEGMENT']) && $arPrice['SEGMENT'] !== $this->ibFilter['RESULT']['SEGMENT']) {
-                    unset($restTypesIgnoreItems[$key]);
-                    continue;
-                }
-                if (empty($filterAdd) || !isset($filterAdd[$item['PROPERTY_ARTICLE_VALUE']])) {
-                    if (isset($this->ibFilter['RESULT']['MIN_PRICE'])) {
-                        $min_price = $this->ibFilter['RESULT']['MIN_PRICE'];
-                        if ($item['PRICE'] < $min_price) {
-                            unset($restTypesIgnoreItems[$key]);
-                            continue;
-                        }
-                    }
-                    if (isset($this->ibFilter['RESULT']['MAX_PRICE'])) {
-                        $max_price = $this->ibFilter['RESULT']['MAX_PRICE'];
-                        if ($item['PRICE'] > $max_price) {
-                            unset($restTypesIgnoreItems[$key]);
-                            continue;
-                        }
-                    }
-                    if (isset($this->ibFilter['RESULT']['SEGMENT']) && !in_array($arPrice['SEGMENT'], $this->ibFilter['RESULT']['SEGMENT'])) {
-                        unset($restTypesIgnoreItems[$key]);
-                        continue;
-                    }
-                }
-                if (isset($this->ibFilter['RESULT']['SEGMENT_TO'])) {
-                    $to = $this->ibFilter['RESULT']['SEGMENT_TO'];
-                    if ($item['PERCENT'] > $to) {
-                        unset($restTypesIgnoreItems[$key]);
-                        continue;
-                    }
-                }
-            }
-        }
+
         $this->items = $items;
-        $this->restTypesIgnoreItems = $restTypesIgnoreItems;
-        return $restTypesIgnoreItems;
+        return $this->items;
     }
 
     /**
@@ -2189,112 +1903,89 @@ class QsoftCatalogSection extends ComponentHelper
     private function filter(array $items, array $filter = []): array
     {
         $arFilter = empty($filter) ? $this->urlFilter : $filter;
-        $arStoresSizesRests = $this->arStoresSizesRests;
-        $arLocalTypeSizesRests = $this->arLocalTypeSizesRests;
-        if ($this->arResult['USER_SETTINGS']['LOCATION_FILTER'] === 'true' && $this->donorProductExists) {
-            $arFilter['FROM_DEFAULT_LOC'][0] = 'N';
-        }
-        $items = array_filter($items, function (&$item) use ($arFilter, $arStoresSizesRests, $arLocalTypeSizesRests) {
+
+        $items = array_filter($items, function (&$item) use ($arFilter) {
             $comp = true;
-            // проверка остатков поразмерно в каждом магазе
-            if (isset($arFilter['STORAGES_AVAILABILITY']) && isset($arFilter['SIZES'])) {
-                if (!empty(array_intersect($arFilter['STORAGES_AVAILABILITY'], $item['STORAGES_AVAILABILITY'])) && !empty(array_intersect($arFilter['SIZES'], $item['SIZES']))) {
-                    foreach ($arFilter['STORAGES_AVAILABILITY'] as $store) {
-                        $comp = $comp && !empty(array_intersect($arFilter['SIZES'], $arStoresSizesRests[$store][$item['ID']]));
-                    }
-                } else {
-                    $comp = false;
-                }
-                if (!$comp) {
-                    return false;
-                }
-            }
-            // проверка остатков размеров по местоположению товара
-            if (isset($arFilter['FROM_DEFAULT_LOC']) && isset($arFilter['SIZES'])) {
-                if (!empty(array_intersect($arFilter['SIZES'], $item['SIZES']))) {
-                    $comp = $comp && !empty(array_intersect($arFilter['SIZES'], $arLocalTypeSizesRests[$arFilter['FROM_DEFAULT_LOC'][0] === 'N' ? 'LOCAL' : 'ALL'][$item['ID']]));
-                } else {
-                    $comp = false;
-                }
-            }
 
-            if (!empty($item["PROPERTY_NO_RESERVE_VALUE"])) {
-                $comp = $comp && !empty($arLocalTypeSizesRests[$arFilter['FROM_DEFAULT_LOC'][0] === 'N' ? 'LOCAL' : 'ALL'][$item['ID']]);
-            }
+//            if (isset($arFilter['IBLOCK_SECTION_ID']) && isset($arFilter['SUBTYPEPRODUCT'])) {
+//                $tempComp = false;
+//                $tempComp1 = false;
+//                for ($i = 0; $i <= count($arFilter['IBLOCK_SECTION_ID']); $i++) {
+//                    $tempComp = $this->applyFilter(array($arFilter['IBLOCK_SECTION_ID'][$i]), $item['IBLOCK_SECTION_ID']);
+//                    if ($tempComp) {
+//                        $tempComp1 = false;
+//                        for ($i1 = 0; $i1 <= count($arFilter['SUBTYPEPRODUCT']); $i1++) {
+//                            if (empty($item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']])) {
+//                                if ($arFilter['SUBTYPEPRODUCT'][$i1] == 'NONAME') {
+//                                    $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']] = 'NONAME';
+//                                } else {
+//                                    return false;
+//                                }
+//                            }
+//                            $tempComp1 = $this->applyFilter(array($arFilter['SUBTYPEPRODUCT'][$i1]), $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']]);
+//
+//                            if ($tempComp1) {
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    if ($tempComp1) {
+//                        break;
+//                    }
+//                }
+//                $comp = $comp && $tempComp && $tempComp1;
+//                unset($arFilter['IBLOCK_SECTION_ID']);
+//                unset($arFilter['SUBTYPEPRODUCT']);
+//                if (!$comp) {
+//                    return false;
+//                }
+//            }
 
-            if (isset($arFilter['IBLOCK_SECTION_ID']) && isset($arFilter['SUBTYPEPRODUCT'])) {
-                $tempComp = false;
-                $tempComp1 = false;
-                for ($i = 0; $i <= count($arFilter['IBLOCK_SECTION_ID']); $i++) {
-                    $tempComp = $this->applyFilter(array($arFilter['IBLOCK_SECTION_ID'][$i]), $item['IBLOCK_SECTION_ID']);
-                    if ($tempComp) {
-                        $tempComp1 = false;
-                        for ($i1 = 0; $i1 <= count($arFilter['SUBTYPEPRODUCT']); $i1++) {
-                            if (empty($item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']])) {
-                                if ($arFilter['SUBTYPEPRODUCT'][$i1] == 'NONAME') {
-                                    $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']] = 'NONAME';
-                                } else {
-                                    return false;
-                                }
-                            }
-                            $tempComp1 = $this->applyFilter(array($arFilter['SUBTYPEPRODUCT'][$i1]), $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']]);
-
-                            if ($tempComp1) {
-                                break;
-                            }
-                        }
-                    }
-                    if ($tempComp1) {
-                        break;
-                    }
-                }
-                $comp = $comp && $tempComp && $tempComp1;
-                unset($arFilter['IBLOCK_SECTION_ID']);
-                unset($arFilter['SUBTYPEPRODUCT']);
-                if (!$comp) {
-                    return false;
-                }
-            }
             if (isset($arFilter['MIN_PRICE'])) {
                 $comp = $comp && $item['PRICE'] >= $arFilter['MIN_PRICE'];
             }
-
             if (isset($arFilter['MAX_PRICE'])) {
                 $comp = $comp && $item['PRICE'] <= $arFilter['MAX_PRICE'];
+            }
+            if (isset($arFilter['MIN_LENGTH'])) {
+                $comp = $comp && $item['PROPERTY_LENGTH_VALUE'] >= $arFilter['MIN_LENGTH'];
+            }
+            if (isset($arFilter['MAX_LENGTH'])) {
+                $comp = $comp && $item['PROPERTY_LENGTH_VALUE'] <= $arFilter['MAX_LENGTH'];
+            }
+            if (isset($arFilter['MIN_DIAMETER'])) {
+                $comp = $comp && $item['PROPERTY_DIAMETER_VALUE'] >= $arFilter['MIN_DIAMETER'];
+            }
+            if (isset($arFilter['MAX_DIAMETER'])) {
+                $comp = $comp && $item['PROPERTY_DIAMETER_VALUE'] <= $arFilter['MAX_DIAMETER'];
             }
 
             foreach ($arFilter as $key => $value) {
                 if (array_key_exists($key, self::PRODUCT_PROPERTIES_MAP)) {
-                    $comp = $comp && $this->applyFilter($value, $item[self::PRODUCT_PROPERTIES_MAP[$key]]);
+                    $comp = $this->applyFilter($value, $item[self::PRODUCT_PROPERTIES_MAP[$key]]);
                 }
                 if (!$comp) {
                     return false;
                 }
             }
 
-            if ($comp) {
-                if ($item['PRICE'] > $this->maxPriceForFilter) {
-                    $this->maxPriceForFilter = $item['PRICE'];
-                }
-                if ($item['PRICE'] < $this->minPriceForFilter) {
-                    $this->minPriceForFilter = $item['PRICE'];
-                }
+            if ($item['PRICE'] > $this->filtersScopes['MAX_PRICE']) {
+                $this->filtersScopes['MAX_PRICE'] = $item['PRICE'];
             }
-
-            if (isset($arFilter['SIZES'])) {
-                if ($item['CAN_DELIVERY']) {
-                    $canDelivery = array_intersect($item['SIZES_DELIVERY'], $arFilter['SIZES']);
-                    $canDelivery ?
-                        $item['CAN_DELIVERY'] = $this->propsIcons['DELIVERY'] :
-                        $item['CAN_DELIVERY'] = false;
-                }
-
-                if ($item['CAN_RESERVATION']) {
-                    $canReservation = array_intersect($item['SIZES_RESERVATION'], $arFilter['SIZES']);
-                    $canReservation ?
-                        $item['CAN_RESERVATION'] = $this->propsIcons['RESERVATION'] :
-                        $item['CAN_RESERVATION'] = false;
-                }
+            if ($item['PRICE'] < $this->filtersScopes['MIN_PRICE']) {
+                $this->filtersScopes['MIN_PRICE'] = $item['PRICE'];
+            }
+            if ($item['PROPERTY_LENGTH_VALUE'] > $this->filtersScopes['MAX_LENGTH']) {
+                $this->filtersScopes['MAX_LENGTH'] = $item['PROPERTY_LENGTH_VALUE'];
+            }
+            if ($item['PROPERTY_LENGTH_VALUE'] < $this->filtersScopes['MIN_LENGTH']) {
+                $this->filtersScopes['MIN_LENGTH'] = $item['PROPERTY_LENGTH_VALUE'];
+            }
+            if ($item['PROPERTY_DIAMETER_VALUE'] > $this->filtersScopes['MAX_DIAMETER']) {
+                $this->filtersScopes['MAX_DIAMETER'] = $item['PROPERTY_DIAMETER_VALUE'];
+            }
+            if ($item['PROPERTY_DIAMETER_VALUE'] < $this->filtersScopes['MIN_DIAMETER']) {
+                $this->filtersScopes['MIN_DIAMETER'] = $item['PROPERTY_DIAMETER_VALUE'];
             }
 
             return $comp;
@@ -2315,18 +2006,8 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $this->getFilterArray();
         $availableOptions = $this->getAvailableFilterOptions();
-
         $filterArray = [];
-        // Преобразуем массив в нужный для фильтров магазинов вид
-        foreach ($this->filterArray as $key => $filter) {
-            if ($key != 'STORAGES_AVAILABILITY') {
-                $filterArray[$key] = $filter;
-            } else {
-                foreach ($filter as $id => $option) {
-                    $filterArray[$key][$id] = $option['ID'];
-                }
-            }
-        }
+
         foreach ($filterArray as $key => $options) {
             if (!array_key_exists($key, $availableOptions)) {
                 $this->disabledOptions[$key] = $options;
@@ -2341,26 +2022,25 @@ class QsoftCatalogSection extends ComponentHelper
 
     public function getFilterArray(): array
     {
-        global $LOCATION;
         if (!empty($this->filterArray)) {
             return $this->filterArray;
         }
 
-        $filter = ['STORES' => $this->defaultStoresType];
+        $filter = [];
         if (empty($this->offers) || empty($this->products)) {
             if (!$this->loadProductsAndOffers()) {
                 return $filter;
             }
         }
         if ($this->type != 'favorites') {
-            if ($this->initCache('filter_array|' . $LOCATION->getName())) {
-                $filter = $this->getCachedVars('filter_array');
+            if ($this->initCache('arFilters')) {
+                $filter = $this->getCachedVars('arFilters');
             } elseif ($this->startCache()) {
                 $this->startTagCache();
                 $this->registerTag("catalogAll");
                 $filter = $this->getFilterList();
                 $this->endTagCache();
-                $this->saveToCache('filter_array', $filter);
+                $this->saveToCache('arFilters', $filter);
             }
         } else {
             $filter = $this->getFilterList();
@@ -2371,10 +2051,11 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getFilterList()
     {
-        if (empty($this->items) || empty($this->restTypesIgnoreItems)) {
+        if (empty($this->items)) {
             $this->getResultItems();
         }
-        $items = $this->restTypesIgnoreItems + $this->items;
+        $filter = [];
+        $items = $this->items;
         foreach ($items as $item) {
             if (!isset($filter['MIN_PRICE'])) {
                 $filter['MIN_PRICE'] = $item['PRICE'];
@@ -2398,8 +2079,11 @@ class QsoftCatalogSection extends ComponentHelper
                 }
 
                 if (in_array($filterKey, self::MULTIPLE_VALUE_PROPERTIES) && isset($item[$itemKey])) {
-                    $filter[$filterKey] = empty($filter[$filterKey]) ?
-                        $item[$itemKey] : array_merge($filter[$filterKey], $item[$itemKey]);
+                    if (empty($filter[$filterKey])) {
+                        $filter[$filterKey] = $item[$itemKey];
+                    } else {
+                        $filter[$filterKey] = array_merge($filter[$filterKey], $item[$itemKey]);
+                    }
                 } else {
                     $filter[$filterKey][] = $item[$itemKey];
                 }
@@ -2416,17 +2100,16 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             }
         }
-        //Добавляем в фильтр склады
-        $filter['STORAGES_AVAILABILITY'] = $this->getStoresAvailabilityFilter();
+
         return $filter;
     }
 
-    public function getAvailableFilterOptions()
+    public function getAvailableFilterOptions(): array
     {
         if (!$this->loadProductsAndOffers()) {
             return [];
         }
-        if (empty($this->items) || empty($this->restTypesIgnoreItems)) {
+        if (empty($this->items)) {
             $this->getResultItems();
         }
         $filter = [];
@@ -2435,27 +2118,13 @@ class QsoftCatalogSection extends ComponentHelper
         $filterOptions = $this->getFilterArray();
         $items = $this->items;
 
-        $restTypesIgnoreItems = $this->restTypesIgnoreItems;
-
         foreach ($filterOptions as $filterKey => $filterArray) {
             foreach ($filterArray as $option) {
                 $tmpFilter = $currentFilter;
                 $tmpFilter[$filterKey] = [];
-                if ($filterKey != 'STORAGES_AVAILABILITY') {
-                    array_push($tmpFilter[$filterKey], $option);
-                } else {
-                    array_push($tmpFilter[$filterKey], $option['ID']);
-                }
-                if ($filterKey == 'IBLOCK_SECTION_ID' || $filterKey == 'SUBTYPEPRODUCT') {
-                    if ($this->checkActiveCheckbox($items, $tmpFilter, true)) {
-                        $filter[$filterKey][] = $option;
-                    }
-                } elseif ($filterKey != 'STORAGES_AVAILABILITY') {
-                    if ($this->checkActiveCheckbox($items, $tmpFilter)) {
-                        $filter[$filterKey][] = $option;
-                    }
-                } elseif ($this->checkActiveCheckbox($restTypesIgnoreItems, $tmpFilter)) {
-                    $filter[$filterKey][] = $option['ID'];
+
+                if ($this->checkActiveCheckbox($items, $tmpFilter)) {
+                    $filter[$filterKey][] = $option;
                 }
             }
         }
@@ -2482,58 +2151,18 @@ class QsoftCatalogSection extends ComponentHelper
         return $filter;
     }
 
-    private function checkActiveCheckbox(array $items, array $filter = [], $uniteTypeproductFilterProps = false)
+    private function checkActiveCheckbox(array $items, array $filter): bool
     {
         $arFilter = empty($filter) ? $this->urlFilter : $filter;
-        $arStoresSizesRests = $this->arStoresSizesRests;
-        $arLocalTypeSizesRests = $this->arLocalTypeSizesRests;
-        if ($this->arResult['USER_SETTINGS']['LOCATION_FILTER'] === 'true' && $this->donorProductExists) {
-            $arFilter['FROM_DEFAULT_LOC'][0] = 'N';
-        }
+
+        $comp = false;
         foreach ($items as $item) {
             $comp = true;
-            // проверка остатков поразмерно в каждом магазе
-            if (isset($arFilter['STORAGES_AVAILABILITY']) && isset($arFilter['SIZES'])) {
-                if (!empty(array_intersect($arFilter['STORAGES_AVAILABILITY'], $item['STORAGES_AVAILABILITY'])) && !empty(array_intersect($arFilter['SIZES'], $item['SIZES']))) {
-                    foreach ($arFilter['STORAGES_AVAILABILITY'] as $store) {
-                        $comp = $comp && !empty(array_intersect($arFilter['SIZES'], $arStoresSizesRests[$store][$item['ID']]));
-                        if (!$comp) {
-                            break;
-                        }
-                    }
-                } else {
-                    $comp = false;
-                }
-            }
-            if (!$comp) {
-                continue;
-            }
-            // проверка остатков размеров по местоположению товара
-            if (isset($arFilter['FROM_DEFAULT_LOC']) && isset($arFilter['SIZES'])) {
-                if (!empty(array_intersect($arFilter['SIZES'], $item['SIZES']))) {
-                    $comp = $comp && !empty(array_intersect($arFilter['SIZES'], $arLocalTypeSizesRests[$arFilter['FROM_DEFAULT_LOC'][0] === 'N' ? 'LOCAL' : 'ALL'][$item['ID']]));
-                } else {
-                    $comp = false;
-                }
-            }
-            if (!$comp) {
-                continue;
-            }
-            if ($uniteTypeproductFilterProps && isset($arFilter['IBLOCK_SECTION_ID']) && isset($arFilter['SUBTYPEPRODUCT'])) {
-                $comp = $comp && ($this->applyFilter($arFilter['IBLOCK_SECTION_ID'], $item['IBLOCK_SECTION_ID']) || $this->applyFilter($arFilter['SUBTYPEPRODUCT'], $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']]));
-                unset($arFilter['IBLOCK_SECTION_ID']);
-                unset($arFilter['SUBTYPEPRODUCT']);
-            }
-            if (!$comp) {
-                continue;
-            }
+
             if (isset($arFilter['MIN_PRICE'])) {
-                $comp = $comp && $item['PRICE'] >= $arFilter['MIN_PRICE'];
+                $comp = $item['PRICE'] >= $arFilter['MIN_PRICE'];
             }
 
-            if (!$comp) {
-                continue;
-            }
             if (isset($arFilter['MAX_PRICE'])) {
                 $comp = $comp && $item['PRICE'] <= $arFilter['MAX_PRICE'];
             }
@@ -2541,9 +2170,10 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$comp) {
                 continue;
             }
+
             foreach ($arFilter as $key => $value) {
                 if (array_key_exists($key, self::PRODUCT_PROPERTIES_MAP)) {
-                    $comp = $comp && $this->applyFilter($value, $item[self::PRODUCT_PROPERTIES_MAP[$key]]);
+                    $comp = $this->applyFilter($value, $item[self::PRODUCT_PROPERTIES_MAP[$key]]);
                     if (!$comp) {
                         break;
                     }
@@ -2553,6 +2183,7 @@ class QsoftCatalogSection extends ComponentHelper
                 break;
             }
         }
+
         return $comp;
     }
 
@@ -2699,15 +2330,14 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function prepareFilterResult()
     {
-        global $LOCATION;
         if (empty($this->props)) {
-            $this->loadPropertyValues();
+            $this->props = $this->getPropertyValues();
         }
         $this->getDisabledOptions();
         $this->prepareFilter();
         $FILTER = [];
         if ($this->type != 'favorites') {
-            if ($this->initCache('filter_result|' . $LOCATION->getName())) {
+            if ($this->initCache('filter_result')) {
                 $FILTER = $this->getCachedVars('filter_result');
             } elseif ($this->startCache()) {
                 $this->startTagCache();
@@ -2721,23 +2351,8 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         // Сортируем цвета в алфавитном порядке
-        uasort($FILTER['COLORSFILTER'], function ($a, $b) {
+        uasort($FILTER['COLORS'], function ($a, $b) {
             return strcmp($a["VALUE"]["UF_NAME"], $b["VALUE"]["UF_NAME"]);
-        });
-        // Сортируем фильтр размера каблука
-        foreach ($FILTER['HEELHEIGHT_TYPE'] as $key => $item) {
-            if ($item["VALUE"] == 'Без каблука') {
-                $FILTER['HEELHEIGHT_TYPE']['Без каблука']['SORT'] = 0;
-            } elseif ($item["VALUE"] == 'Низкий') {
-                $FILTER['HEELHEIGHT_TYPE']['Низкий']['SORT'] = 1;
-            } elseif ($item["VALUE"] == 'Средний') {
-                $FILTER['HEELHEIGHT_TYPE']['Средний']['SORT'] = 2;
-            } elseif ($item["VALUE"] == 'Высокий') {
-                $FILTER['HEELHEIGHT_TYPE']['Высокий']['SORT'] = 3;
-            }
-        }
-        uasort($FILTER['HEELHEIGHT_TYPE'], function ($a, $b) {
-            return $a['SORT'] <=> $b['SORT'];
         });
         $this->arResult['FILTER'] = $FILTER;
         foreach ($this->disabledOptions as $key => $options) {
@@ -2747,41 +2362,42 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $this->getCheckedOptions();
-        $this->arResult['FILTER']['MIN_PRICE'] = $this->minPriceForFilter;
-        $this->arResult['FILTER']['MAX_PRICE'] = $this->maxPriceForFilter;
+        $this->arResult['FILTER']['MIN_PRICE'] = $this->filtersScopes['MIN_PRICE'];
+        $this->arResult['FILTER']['MAX_PRICE'] = $this->filtersScopes['MAX_PRICE'];
+        $this->arResult['FILTER']['MIN_DIAMETER'] = $this->filtersScopes['MIN_DIAMETER'];
+        $this->arResult['FILTER']['MAX_DIAMETER'] = $this->filtersScopes['MAX_DIAMETER'];
+        $this->arResult['FILTER']['MIN_LENGTH'] = $this->filtersScopes['MIN_LENGTH'];
+        $this->arResult['FILTER']['MAX_LENGTH'] = $this->filtersScopes['MAX_LENGTH'];
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
-        $this->arResult['TYPEPRODUCT_FILTER'] = $this->getTypeproductFilter();
+        $this->arResult['SHOW_TYPEPRODUCT_FILTER'] = false;
+//        $this->arResult['TYPEPRODUCT_FILTER'] = $this->getTypeproductFilter();
     }
 
     private function getFilterValues()
     {
+        $arFiltersWithValues = [];
+
         foreach ($this->arResult['FILTER'] as $key => $xml_ids) {
-            if ($key == 'STORAGES_AVAILABILITY') {
-                //Наличие в магазинах не свойство товара, поэтому здесь ничего не делаем
-                $FILTER[$key] = $xml_ids;
-            } elseif (array_key_exists($key, $this->props)) {
+            if (array_key_exists($key, $this->props)) {
                 foreach ($xml_ids as $xml_id) {
                     $value = $this->props[$key][$xml_id];
                     if (!empty($value)) {
-                        $FILTER[$key][$xml_id] = ['VALUE' => $value];
+                        $arFiltersWithValues[$key][$xml_id] = ['VALUE' => $value];
                     }
                 }
             } else {
                 if (is_array($xml_ids)) {
                     foreach ($xml_ids as $index => $xml_id) {
-                        $FILTER[$key][$xml_id] = ['VALUE' => $xml_id];
+                        $arFiltersWithValues[$key][$xml_id] = ['VALUE' => $xml_id];
                     }
                 } else {
-                    $FILTER[$key] = $xml_ids;
+                    $arFiltersWithValues[$key] = $xml_ids;
                 }
             }
         }
 
-        if (is_array($FILTER['BRAND'])) {
-            $this->sortBrands($FILTER['BRAND']);
-        }
-        return $FILTER;
+        return $arFiltersWithValues;
     }
 
     private function prepareFilter()
@@ -2800,46 +2416,28 @@ class QsoftCatalogSection extends ComponentHelper
         sort($this->arResult['FILTER']['SIZES']);
     }
 
-    private function loadPropertyValues()
+    private function getPropertyValues()
     {
-        if ($this->initCache('HL_properties')) {
-            $this->props = $this->getCachedVars('properties')['props'];
+        if ($this->initCache('properties')) {
+            $props = $this->getCachedVars('properties')['props'];
         }
 
-        if (empty($this->props)) {
+        if (empty($props)) {
             $this->startCache();
             $this->startTagCache();
             $this->registerTag("catalogAll");
-            $this->props = [];
+            $props = [];
 
-            $this->props['SIZEFILTER'] = $this->getSizesFilter();
-            $this->props['COLORSFILTER'] = $this->getColorsFilter();
-            $this->props['BRANDFILTER'] = $this->getBrandsFilter();
+            $props['COLORS'] = $this->getColorsFilter();
+            $props['VENDOR'] = $this->getVendorFilter();
 
             $this->endTagCache();
             $this->saveToCache('properties', [
-                'props' => $this->props,
+                'props' => $props,
             ]);
         }
-    }
 
-    /**
-     * Возвращает массив складов в текущем местоположении
-     *
-     * @return array
-     */
-    private function getStoresAvailabilityFilter()
-    {
-        global $LOCATION;
-
-        foreach ($LOCATION->arAvStorages as $arAvStorage) {
-            if (!$this->activeStorages[$arAvStorage['ID']]) {
-                continue;
-            }
-            $arStores[$arAvStorage['ID']] = $arAvStorage;
-        }
-
-        return $arStores;
+        return $props;
     }
 
     private function getColorsFilter()
@@ -2858,36 +2456,14 @@ class QsoftCatalogSection extends ComponentHelper
                 unset($arColors[$arColor['UF_XML_ID']]['UF_FILE']);
             }
         }
-
         return $arColors;
     }
 
-    private function getSizesFilter()
-    {
-        $arSizes = [];
-        $propertyEnums = CIBlockPropertyEnum::GetList(
-            [
-                "SORT" => "ASC"
-            ],
-            [
-                "IBLOCK_ID" => IBLOCK_OFFERS,
-                "CODE" => "size"
-            ]
-        );
-
-        while($arEnum = $propertyEnums->GetNext())
-        {
-            $arSizes[$arEnum['ID']]['VALUE'] = $arEnum['VALUE'];
-        }
-
-        return $arSizes;
-    }
-
-    private function getBrandsFilter()
+    private function getVendorFilter()
     {
         $arBrands = [];
         $arFilter = [
-            'IBLOCK_ID' => IBLOCK_BRANDS,
+            'IBLOCK_ID' => IBLOCK_VENDORS,
             'ACTIVE' => 'Y'
         ];
 
@@ -2903,29 +2479,10 @@ class QsoftCatalogSection extends ComponentHelper
         );
 
         while ($arBrand = $rBrands->GetNext()) {
-            $arBrands[$arBrand['XML_ID']]['NAME'] = $arBrand['NAME'];
+            $arBrands[$arBrand['XML_ID']] = $arBrand['NAME'];
         }
 
         return $arBrands;
-    }
-
-    private function sortBrands(array &$brands)
-    {
-        uasort(
-            $brands,
-            function ($a, $b) {
-                if (trim($a['VALUE']) === 'Respect') {
-                    return -1;
-                }
-
-                if (trim($b['VALUE']) === 'Respect') {
-                    return 1;
-                }
-
-                $encoding = mb_internal_encoding();
-                return strcmp(mb_strtolower($a['VALUE'], $encoding), mb_strtolower($b['VALUE'], $encoding));
-            }
-        );
     }
 
     private function needJson(): bool
@@ -2935,24 +2492,16 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getCheckedOptions()
     {
-        if ($this->needStoresFilter) {
-            $this->arResult['FILTER']['STORES'] = [
-                1 => ['CHECKED' => false],
-                2 => ['CHECKED' => false],
-            ];
-        }
         foreach (self::PRODUCT_PROPERTIES as $urlKey => $filterKey) {
             if ($params = $this->urlFilter[$filterKey]) {
-                if ($urlKey === 'stores') {
-                    $this->arResult['FILTER']['CHECKED']['STORES'] = true;
-                    $store = $this->getStores((array)$params);
-                    if ($store) {
-                        $this->arResult['FILTER']['STORES'] = [
-                            $store => ['CHECKED' => true],
-                        ];
+                if (self::NUMBER_FILTERS[$urlKey]) {
+                    if ($urlKey === 'max_price' || $urlKey === 'min_price') {
+                        $this->arResult['FILTER']['CHECKED']['PRICE'] = true;
+                    } elseif ($urlKey === 'min_diameter' || $urlKey === 'max_diameter') {
+                        $this->arResult['FILTER']['CHECKED']['DIAMETER'] = true;
+                    } elseif ($urlKey === 'min_length' || $urlKey === 'max_length') {
+                        $this->arResult['FILTER']['CHECKED']['LENGTH'] = true;
                     }
-                } elseif (self::PRICES[$urlKey]) {
-                    $this->arResult['FILTER']['CHECKED']['PRICE'] = true;
                     $this->arResult['FILTER']['CHECKED'][$filterKey] = $params;
                 } else {
                     $this->arResult['FILTER']['CHECKED'][$filterKey] = true;
@@ -2961,9 +2510,6 @@ class QsoftCatalogSection extends ComponentHelper
                     }
                 }
             }
-        }
-        if ($this->arResult['USER_SETTINGS']['LOCATION_FILTER'] === 'true' && $this->donorProductExists) {
-            $this->arResult['FILTER']['FROM_DEFAULT_LOC']['N']['CHECKED'] = true;
         }
     }
 
@@ -3075,22 +2621,8 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $chain = [];
         switch ($this->type) {
-            case self::TYPE_GROUP:
-                $group = ['title' => $this->group['NAME']];
-                if ($this->isBrandTagCode) {
-                    $group = $group + ['url' => $this->group['SECTION_PAGE_URL']];
-                }
-                $chain[] = $group;
-                if ($this->isBrandTagCode) {
-                    $chain[] = ['title' => $this->group['TAG_NAME']];
-                }
-                break;
             case self::TYPE_SECTION:
                 $chain = $this->getSectionChain();
-                break;
-            case self::TYPE_TAG:
-                $chain = $this->getSectionChain();
-                $chain[] = ['title' => $this->tag['NAME']];
                 break;
         }
 
@@ -3235,21 +2767,6 @@ class QsoftCatalogSection extends ComponentHelper
         return $result;
     }
 
-    private function addPropertyFromDefaultLoc($item, $countAvailableDonorStorages, $onlyN = false)
-    {
-        if (!$onlyN) {
-            if ($countAvailableDonorStorages && $countAvailableDonorStorages == count($item['STORAGES_AVAILABILITY'])) {
-                $item['PROPERTY_FROM_DEFAULT_LOC_VALUE'] = 'Y';
-                $this->donorProductExists = true;
-            } else {
-                $item['PROPERTY_FROM_DEFAULT_LOC_VALUE'] = 'N';
-            }
-        } else {
-            $item['PROPERTY_FROM_DEFAULT_LOC_VALUE'] = 'N';
-        }
-        return $item;
-    }
-
     private function getBrand()
     {
         $brand = false;
@@ -3344,7 +2861,7 @@ class QsoftCatalogSection extends ComponentHelper
                 'PROPERTY_SEASON',
                 'PROPERTY_COLOR',
                 'PROPERTY_SUBTYPEPRODUCT',
-                'PROPERTY_COLORSFILTER',
+                'PROPERTY_COLORS',
                 'PROPERTY_HEELHEIGHT_TYPE',
                 'PROPERTY_COUNTRY',
                 'PROPERTY_ZASTEGKA',

@@ -1,6 +1,6 @@
 <?
 
-namespace Qsoft\Location;
+namespace Qsoft;
 
 use Bitrix\Main\Loader;
 use Bitrix\Sale\Location\LocationTable;

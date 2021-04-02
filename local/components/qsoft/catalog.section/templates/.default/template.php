@@ -15,15 +15,8 @@
 /** @global CDatabase $DB */
 
 use Bitrix\Main\Page\Asset;
-use Bitrix\Main\Page\AssetLocation;
 
 if (!$arResult['IS_AJAX']) :
-    Asset::getInstance()->addString('<script type="text/javascript">
-    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-        try { rrApi.categoryView(' . $arResult['SECTION_ID'] . '); } catch(e) {}
-    })
-</script>', false, AssetLocation::AFTER_JS);
-
     $curPage = $APPLICATION->GetCurPage(false);
     Asset::getInstance()->addString('<link rel="canonical" href="https://' . SITE_SERVER_NAME . $curPage . '">');
 
@@ -51,30 +44,6 @@ if (!$arResult['IS_AJAX']) :
             $APPLICATION->ShowTitle(false);
             ?>
         </h1>
-
-        <? if (!empty($arResult['TAGS'])) : ?>
-            <div class="tags ">
-                <button class="tags-arrow tags-arrow--next">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9" viewBox="0 0 22 40"><path fill="#FFF" d="M2.098-.035L.009 2.064l17.789 17.883L-.048 37.886l2.089 2.099 19.935-20.038z"/></svg>
-                </button>
-
-                <div class="tags-wrapper swiper-container">
-
-                    <div class="catalog-section-tags swiper-wrapper">
-                        <? foreach ($arResult['TAGS'] as $arTag) : ?>
-                            <a class="tag_btn button--tag swiper-slide"
-                               href="<?= $arTag['DETAIL_PAGE_URL'] ?>"><?= $arTag['NAME'] ?></a>
-                        <? endforeach ?>
-                    </div>
-                    <div class="swiper-scrollbar"></div>
-                </div>
-
-                <button class="tags-arrow tags-arrow--prev">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="20" viewBox="0 0 22 40"><path fill="#FFF" d="M19.83-.035l2.089 2.099L4.13 19.947l17.847 17.939-2.09 2.099L-.048 19.947z"/></svg>
-                </button>
-            </div>
-        <? endif ?>
-
         <!-- catalog -->
         <div class="catalog">
             <? if (!empty($arResult['SUBSECTIONS'])) : ?>
@@ -330,89 +299,48 @@ if (!$arResult['IS_AJAX']) :
                                 </div>
                                 <? endif; ?>
                                 <input id="set_filter" type="hidden" name="set_filter" value="Y">
-                                <? if ('stores' == $arParams['SECTION_TYPE'] && $arParams['STORE_ID']) { ?>
-                                    <input id="store_id" type="hidden" name="store_id" value="<?= $arParams['STORE_ID'] ?>">
-                                <? } ?>
                                 <? foreach ($arResult['FILTER_KEYS'] as $filterKey) : ?>
-                                    <? if ($filterKey == 'ONLINE_TRY_ON' && !empty($arResult['FILTER']['ONLINE_TRY_ON']['Y'])) : ?>
-                                        <div class="in-left-catalog in-left-catalog--no-toggle">
-                                            <div class="name-h3">
-                                                <h3>
-                                                    <input id="online_try_on"
-                                                           class="checkbox_size"
-                                                           type="checkbox"
-                                                           name="online_try_on"
-                                                           value="Y"
-                                                           <?= !empty($arResult['FILTER']['ONLINE_TRY_ON']['Y']['CHECKED']) ? ' checked' : ''; ?>
-                                                           <?= !empty($arResult['FILTER']['ONLINE_TRY_ON']['Y']['DISABLED']) ? ' disabled' : ''; ?>
-                                                           onchange="smartFilter.click(this)">
-                                                    <label for="online_try_on" <?= !empty($arResult['FILTER']['ONLINE_TRY_ON']['Y']['DISABLED']) ? ' class="mydisabled"' : ''; ?>>Примерить онлайн</label>
-                                                </h3>
-                                            </div>
-                                            <div style="clear: both;"></div>
-                                        </div>
-                                        <? continue ?>
-                                    <? endif ?>
-                                    <? if ($filterKey == 'FROM_DEFAULT_LOC' && !empty($arResult['FILTER']['FROM_DEFAULT_LOC']['Y'])) : ?>
-                                        <div class="in-left-catalog in-left-catalog--no-toggle <?=!empty($arResult['FILTER']['FROM_DEFAULT_LOC']['N']['CHECKED']) ? 'in-left-catalog--checked' : ''?>">
-                                            <div class="name-h3 active-name-h3">
-                                                <h3>
-                                                    <input id="from_default_loc"
-                                                           class="checkbox_size"
-                                                           type="checkbox"
-                                                           name="from_default_loc"
-                                                           value="Y"
-                                                            <?= !empty($arResult['FILTER']['FROM_DEFAULT_LOC']['N']['CHECKED']) ? ' checked' : ''; ?>
-                                                            <?= !empty($arResult['FILTER']['FROM_DEFAULT_LOC']['N']['DISABLED']) ? ' disabled' : ''; ?>
-                                                           onchange="smartFilter.click(this)">
-                                                    <label for="from_default_loc" <?= !empty($arResult['FILTER']['FROM_DEFAULT_LOC']['N']['DISABLED']) ? ' class="mydisabled"' : ''; ?>>Убрать ассортимент московского склада</label>
-                                                </h3>
-                                            </div>
-                                            <div style="clear: both;"></div>
-                                        </div>
-                                        <? continue ?>
-                                    <? endif ?>
-                                    <? if ($filterKey === 'PRICE' && !empty($arResult['FILTER']['MAX_PRICE']) && !empty($arResult['FILTER']['MIN_PRICE'])) : ?>
-                                        <div class="in-left-catalog in-left-catalog--price<?= $arResult['FILTER']['CHECKED']['PRICE'] ? ' in-left-catalog--checked' : '' ?>">
-                                            <div class="name-h3<?= $arResult['FILTER']['CHECKED']['PRICE'] ? ' active-name-h3' : '' ?>">
+                                    <? if (in_array($filterKey, ['PRICE', 'DIAMETER', 'LENGTH']) && !empty($arResult['FILTER']['MAX_' . $filterKey]) && !empty($arResult['FILTER']['MIN_' . $filterKey])) : ?>
+                                        <div class="in-left-catalog in-left-catalog--price<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' in-left-catalog--checked' : '' ?>">
+                                            <div class="name-h3<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' active-name-h3' : '' ?>">
                                                 <a href="javascript:void(0);" class="clear-section">
                                                     <svg class="clear-section__icon">
                                                         <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#close"></use>
                                                     </svg>
                                                 </a>
                                                 <h3>
-                                                    Цена
+                                                    <?= GetMessage($filterKey) ?>
                                                 </h3>
-                                                <svg class="minus"<?= $arResult['FILTER']['CHECKED']['PRICE'] ? ' style="display:inline"' : '' ?>>
+                                                <svg class="minus"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:inline"' : '' ?>>
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                                 </svg>
-                                                <svg class="plus"<?= $arResult['FILTER']['CHECKED']['PRICE'] ? ' style="display:none"' : '' ?>>
+                                                <svg class="plus"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:none"' : '' ?>>
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                                 </svg>
                                             </div>
-                                            <div class="in-in-left"<?= $arResult['FILTER']['CHECKED']['PRICE'] ? ' style="display:block"' : '' ?>>
+                                            <div class="in-in-left"<?= true || $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>>
                                                 <div class="from">
                                                     <span>От</span>
-                                                    <input id='min_price' class="js-price-from" type="text" name='min_price'
-                                                           value="<?= $arResult['FILTER']['CHECKED']['MIN_PRICE'] ?>"
+                                                    <input id="min_<?=strtolower($filterKey)?>" class="js-price-from" type="text" name="min_<?=strtolower($filterKey)?>"
+                                                           value="<?= $arResult['FILTER']['CHECKED']['MIN_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
-                                                           placeholder="<?= $arResult['FILTER']['MIN_PRICE'] ?>">
+                                                           placeholder="<?= $arResult['FILTER']['MIN_' . $filterKey] ?>">
                                                 </div>
                                                 <div class="to">
                                                     <span>До</span>
-                                                    <input id="max_price" class="js-price-to" type="text" name="max_price"
-                                                           value="<?= $arResult['FILTER']['CHECKED']['MAX_PRICE'] ?>"
+                                                    <input id="max_<?=strtolower($filterKey)?>" class="js-price-to" type="text" name="max_<?=strtolower($filterKey)?>"
+                                                           value="<?= $arResult['FILTER']['CHECKED']['MAX_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
-                                                           placeholder="<?= $arResult['FILTER']['MAX_PRICE'] ?>">
+                                                           placeholder="<?= $arResult['FILTER']['MAX_' . $filterKey] ?>">
                                                 </div>
                                                 <div style="clear: both"></div>
                                             </div>
                                             <div style="clear: both;"></div>
                                         </div>
-                                        <? continue ?>
-                                    <? endif ?>
+                                        <? continue; ?>
+                                    <? endif; ?>
                                     <? $value = $arResult['FILTER'][$filterKey];
                                     if (empty($value)) {
                                         continue;
@@ -435,21 +363,9 @@ if (!$arResult['IS_AJAX']) :
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
+                                        <div class="in-in-left scrollbar-inner"<?= true || $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
                                              data-filter-name="<?= $jsKey ?>">
-                                            <?if ($filterKey === 'STORES') : ?>
-                                                <input id="stores" type="hidden" name="stores" value="false">
-                                                <input id="f_stores_o_f" class="checkbox_size js-f-stores"
-                                                       type="checkbox"
-                                                       value="1"
-                                                       onchange="smartFilter.click(this)" <?= $arResult['FILTER']['STORES'][1]['CHECKED'] ? 'checked' : '' ?>>
-                                                <label for="f_stores_o_f">КУПИТЬ С ДОСТАВКОЙ<br><span>(дом/работа/пункт выдачи)</span></label>
-                                                <input id="f_stores_r_f" class="checkbox_size js-f-stores"
-                                                       type="checkbox"
-                                                       onchange="smartFilter.click(this)"
-                                                       value="2" <?= $arResult['FILTER']['STORES'][2]['CHECKED'] ? 'checked' : '' ?>>
-                                                <label for="f_stores_r_f">ЗАБРАТЬ В МАГАЗИНЕ<br><span>(резерв в магазине)</span></label>
-                                            <?elseif ($filterKey === 'COLORSFILTER') :?>
+                                            <?if ($filterKey === 'COLORS') :?>
                                                 <? foreach ($value as $xml_id => $color) : ?>
                                                     <div class="outer-color">
                                                         <input id="color_<?= $xml_id ?>"
@@ -465,55 +381,29 @@ if (!$arResult['IS_AJAX']) :
                                                                 disabled
                                                             <? endif; ?>
                                                         />
-                                                        <? if ($color['VALUE']['UF_NAME'] == 'Белый') : ?>
-                                                            <label for="color_<?= $xml_id ?>" class="label-for-color--white <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                                <span class="inner-color"></span><?= $color['VALUE']['UF_NAME']; ?>
-                                                            </label>
-                                                        <? elseif ($color['VALUE']['UF_NAME'] == 'Золотой') : ?>
-                                                            <label for="color_<?= $xml_id ?>" class="label-for-color--gold <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                                <span class="inner-color"></span><?= $color['VALUE']['UF_NAME']; ?>
-                                                            </label>
-                                                        <? elseif ($color['VALUE']['UF_NAME'] == 'Серебряный') : ?>
-                                                            <label for="color_<?= $xml_id ?>" class="label-for-color--silver <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                                <span class="inner-color"></span><?= $color['VALUE']['UF_NAME']; ?>
-                                                            </label>
-                                                        <? elseif ($color['VALUE']['UF_NAME'] == 'Цветной') : ?>
-                                                            <label for="color_<?= $xml_id ?>" class="label-for-color--multicolored <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                                <span class="inner-color"></span><?= $color['VALUE']['UF_NAME']; ?>
-                                                            </label>
-                                                        <? else : ?>
-                                                            <label for="color_<?= $xml_id ?>" class="label-for-color <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                                <span class="inner-color" style="background-color:<?= $color['VALUE']['COLOR'] ?>">
-                                                                </span><?= $color['VALUE']['UF_NAME']; ?>
-                                                            </label>
-                                                        <? endif; ?>
+                                                        <label for="color_<?= $xml_id ?>" class="label-for-color <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
+                                                            <span class="inner-color" style="background-color: red">
+                                                            </span><?= $color['VALUE']['UF_NAME']; ?>
+                                                        </label>
                                                     </div>
                                                 <? endforeach; ?>
-                                            <?elseif ($filterKey === 'STORAGES_AVAILABILITY') :?>
-                                                <input type="text" name="storage_name" placeholder="Найти магазин" class="storage_search">
-                                                <ul class="storages-list">
-                                                    <? foreach ($value as $key => $item) : ?>
-                                                    <li>
-                                                        <input id="<?= $jsKey ?>_<?= $key ?>"
-                                                                class="checkbox_size"
-                                                                type="checkbox"
-                                                                name="<?= $jsKey ?>"
-                                                                value="<?= $key ?>"
-                                                            <? if (!empty($item['CHECKED'])) : ?>
-                                                                checked
-                                                            <? endif; ?>
-                                                            <? if (!empty($item['DISABLED'])) : ?>
-                                                                disabled
-                                                            <? endif; ?>
-                                                                onchange="smartFilter.click(this)">
-                                                        <label for="<?= $jsKey ?>_<?= $key ?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>>
-                                                            <p class="storage-name"><?= $item['TITLE'] ?></p>
-                                                            <p class="storage-address"><?= $item['ADDRESS'] ?></p>
-                                                        </label>
-                                                    </li>
-                                                    <? endforeach; ?>
-                                                </ul>
-                                            <?else :?>
+                                            <? elseif ($filterKey === 'SIZES') :?>
+                                                <? foreach ($value as $key => $item) : ?>
+                                                <input id="<?= $jsKey ?>_<?= $key ?>"
+                                                       class="checkbox_size"
+                                                       type="checkbox"
+                                                       name="<?= $jsKey ?>"
+                                                       value="<?= $key ?>"
+                                                    <? if (!empty($item['CHECKED'])) : ?>
+                                                        checked
+                                                    <? endif; ?>
+                                                    <? if (!empty($item['DISABLED'])) : ?>
+                                                        disabled
+                                                    <? endif; ?>
+                                                       onchange="smartFilter.click(this)">
+                                                <label for="<?= $jsKey ?>_<?= $key ?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?= $item['VALUE'] ?></label>
+                                                <? endforeach; ?>
+                                            <? else :?>
                                                 <? foreach ($value as $key => $item) : ?>
                                                 <input id="<?= $jsKey ?>_<?= $key ?>"
                                                        class="checkbox_size"
@@ -562,18 +452,6 @@ if (!$arResult['IS_AJAX']) :
                     </div>
                     <!-- /filter -->
                     <div class="catalog__content-col catalog__content-col--main col-xs-9" style="display: flex; flex-direction: column">
-                        <? if (!$_GET['set_filter']) :?>
-                            <? if ($arResult['SECTION_TYPE'] === 'section' || $arResult['SECTION_TYPE'] === 'stores') : ?>
-                                <!-- RetailRocket -->
-                                <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfd6797a5250230f3bfb0" data-category-id="<?=is_array($arResult['SECTION_ID']) ? implode(',', $arResult['SECTION_ID']) : $arResult['SECTION_ID']?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>">
-                                </div>
-                                <!-- /RetailRocket -->
-                            <? elseif ($arResult['SECTION_TYPE'] === 'sale') : ?>
-                                <!-- RetailRocket -->
-                                <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfdc797a5250230f3bfce" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>" data-category-ids="<?=is_array($arResult['SECTION_ID']) ? implode(',', $arResult['SECTION_ID']) : $arResult['SECTION_ID']?>"></div>
-                                <!-- /RetailRocket -->
-                            <? endif ?>
-                        <? endif; ?>
                         <!-- cards -->
                         <div class="catalog__cards cards js-cards <?= $arResult['USER_SETTINGS']['GRID'] == 'big' ? 'cards--big' : '' ?>">
                             <div class="cards__box">
@@ -590,39 +468,9 @@ if (!$arResult['IS_AJAX']) :
                                     </div>
                                 <? endif ?>
                                 <? if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
-                                    <? $counter = 0 ?>
                                     <? while ($arItem = $arResult['ITEMS']->Fetch()) : ?>
-                                        <? $counter++;
-                                        $arResult['CATALOG_ELEMENT_IDS'][] = sprintf('%s-%s', $arItem["ID"], $arResult['BRANCH_ID']);?>
-                                        <? if (!empty($arResult['BANNER']['SINGLE']) && !$request->get('load_more') && $counter === 3) : ?>
-                                            <div class="cards__item cards__item--banner card">
-                                                <div class="banner">
-                                                    <img src="<?= $arResult['BANNER']['SINGLE'] ?>" class="banner__img"
-                                                         alt="">
-                                                </div>
-                                            </div>
-                                        <? endif ?>
                                         <!-- card -->
-                                        <?  $propCat = $arResult['PROPS']['RHODEPRODUCT'][$arItem['PROPERTY_RHODEPRODUCT_VALUE']];
-                                            $propCat .= $arResult['PROPS']['VID'][$arItem['PROPERTY_VID_VALUE']] ? '/' . $arResult['PROPS']['VID'][$arItem['PROPERTY_VID_VALUE']] : '';
-                                            $propCat .= $arResult['PROPS']['TYPEPRODUCT'][$arItem['PROPERTY_TYPEPRODUCT_VALUE']] ? '/' . $arResult['PROPS']['TYPEPRODUCT'][$arItem['PROPERTY_TYPEPRODUCT_VALUE']] : '';
-                                            $propCat .= $arResult['PROPS']['SUBTYPEPRODUCT'][$arItem['PROPERTY_SUBTYPEPRODUCT_VALUE']] ? '/' . $arResult['PROPS']['SUBTYPEPRODUCT'][$arItem['PROPERTY_SUBTYPEPRODUCT_VALUE']] : '';
-                                        ?>
-                                        <div class="cards__item "
-                                             data-prod-id="<?= $arItem['ID'] ?>"
-                                             data-prod-articul="<?= $arItem['PROPERTY_ARTICLE_VALUE'] ?>"
-                                             data-prod-name="<?= $arItem['NAME'] . ($arItem['PROPERTY_ARTICLE_VALUE'] ? ' | ' . $arItem['PROPERTY_ARTICLE_VALUE'] : '') ?>"
-                                             data-prod-brand="<?= $arResult['PROPS']['BRAND'][$arItem['PROPERTY_BRAND_VALUE']] ?>"
-                                             data-prod-top-material="<?= $arResult['PROPS']['UPPERMATERIAL'][$arItem['PROPERTY_UPPERMATERIAL_VALUE']] ?>"
-                                             data-prod-lining-material="<?= $arResult['PROPS']['LININGMATERIAL'][$arItem['PROPERTY_LININGMATERIAL_VALUE']] ?>"
-                                             data-prod-season="<?= $arResult['PROPS']['SEASON'][$arItem['PROPERTY_SEASON_VALUE']] ?>"
-                                             data-prod-variant="<?= $arResult['PROPS']['COLORSFILTER'][$arItem['PROPERTY_COLORSFILTER_VALUE'][0]]['UF_NAME'] ?>"
-                                             data-prod-collection="<?= $arResult['PROPS']['COLLECTION'][$arItem['PROPERTY_COLLECTION_VALUE']] ?>"
-                                             data-prod-category="<?= $propCat ?>"
-                                             data-prod-price="<?= number_format($arItem['PRICE'], 0, '', ''); ?>"
-                                             data-prod-list="Каталог Страница <?= $arResult['CURRENT_PAGE_NOM'] ?> | <?= $arResult['TITLE'] ?? $APPLICATION->ShowTitle(false); ?>"
-                                             data-prod-position="<?= $counter ?>"
-                                        >
+                                        <div class="cards__item">
                                         <div class="card">
                                                 <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="card__img" target="_blank">
                                                     <div class="card__img-box">
@@ -634,7 +482,6 @@ if (!$arResult['IS_AJAX']) :
                                                                 <div></div>
                                                             </div>
                                                         </div>
-                                                        <? $hasSecondPic = !empty($arItem['PREVIEW_PICTURE']) ?>
                                                         <img
                                                             <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
                                                                 src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
@@ -643,27 +490,14 @@ if (!$arResult['IS_AJAX']) :
                                                                 src="<?= $arItem['DETAIL_PICTURE'] ;?>"
                                                                 data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
                                                             <? endif; ?>
-                                                            class="card__img-pic <?= ($arResult['USER_SETTINGS']['VIEW'] == 'true' && $hasSecondPic) ? 'pic-hide' : 'pic-active' ?> <?= !$hasSecondPic ? 'pic-one' : '' ?>"
+                                                            class="card__img-pic <?= ($arResult['USER_SETTINGS']['VIEW'] == 'true') ? 'pic-hide' : 'pic-active' ?> pic-one"
                                                             alt="<?= $arItem['NAME'] ?>">
-                                                        <? if ($hasSecondPic) : ?>
-                                                            <img
-                                                                <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
-                                                                    src="<?= $arItem['PREVIEW_PICTURE_BIG'] ;?>"
-                                                                    data-src-small="<?= $arItem['PREVIEW_PICTURE'] ?>"
-                                                                <? else : ?>
-                                                                    src="<?= $arItem['PREVIEW_PICTURE'] ;?>"
-                                                                    data-src-big="<?= $arItem['PREVIEW_PICTURE_BIG'] ?>"
-                                                                <? endif; ?>
-                                                                class="card__img-pic <?= $arResult['USER_SETTINGS']['VIEW'] == 'true' ? 'pic-active' : 'pic-hide' ?>"
-                                                                alt="<?= $arItem['NAME'] ?>">
-                                                        <? endif ?>
                                                     </div>
                                                     <div class="card__info">
                                                         <div class="card__meta">
                                                             <div class="card__prices">
                                                                 <div class="card__prices-top">
-                                                                <span class="card__price<?= $arItem['SEGMENT'] == "Red" ? " card__price--discount" : "" ?>
-                                                                <?= $arItem['SEGMENT'] == "Yellow" ? " card__price--discount-yellow" : "" ?>">
+                                                                <span class="card__price <?= $arItem['PRICE'] < $arItem['OLD_PRICE'] ? " card__price--discount" : "" ?>">
                                                                     <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
                                                                 </span>
                                                                     <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
@@ -679,57 +513,15 @@ if (!$arResult['IS_AJAX']) :
                                                         <span class="card__title"><?= $arItem['NAME'] ?></span>
                                                     </div>
                                                 </a>
-                                                <div class="card__icons">
-                                                    <div class="card__props_icons">
-                                                        <? if ($arItem['PROPERTY_UPPERMATERIAL_ICON']) : ?>
-                                                            <img class='props_icon_img'
-                                                                 src="<?= $arItem['PROPERTY_UPPERMATERIAL_ICON']['SRC'] ?>">
-                                                            <? if ($arItem['PROPERTY_UPPERMATERIAL_ICON']['TOOLTIP']) : ?>
-                                                                <div class="icon__tooltip">
-                                                                    <?= $arItem['PROPERTY_UPPERMATERIAL_ICON']['TOOLTIP'] ?>
-                                                                </div>
-                                                            <? endif ?>
-                                                        <? endif ?>
-                                                        <? if ($arItem['PROPERTY_LININGMATERIAL_ICON']) : ?>
-                                                            <img class='props_icon_img'
-                                                                 src="<?= $arItem['PROPERTY_LININGMATERIAL_ICON']['SRC'] ?>">
-                                                            <? if ($arItem['PROPERTY_LININGMATERIAL_ICON']['TOOLTIP']) : ?>
-                                                                <div class="icon__tooltip">
-                                                                    <?= $arItem['PROPERTY_LININGMATERIAL_ICON']['TOOLTIP'] ?>
-                                                                </div>
-                                                            <? endif ?>
-                                                        <? endif ?>
-                                                    </div>
-                                                    <div class="card__delivery_icons">
-                                                        <? if ($arItem['CAN_RESERVATION']) : ?>
-                                                            <img class='props_icon_img'
-                                                                 src="<?= $arItem['CAN_RESERVATION']['SRC'] ?>">
-                                                            <? if ($arItem['CAN_RESERVATION']['TOOLTIP']) : ?>
-                                                                <div class="icon__tooltip">
-                                                                    <?= $arItem['CAN_RESERVATION']['TOOLTIP'] ?>
-                                                                </div>
-                                                            <? endif ?>
-                                                        <? endif ?>
-                                                        <? if ($arItem['CAN_DELIVERY']) : ?>
-                                                            <img class='props_icon_img'
-                                                                 src="<?= $arItem['CAN_DELIVERY']['SRC'] ?>">
-                                                            <? if ($arItem['CAN_DELIVERY']['TOOLTIP']) : ?>
-                                                                <div class="icon__tooltip">
-                                                                    <?= $arItem['CAN_DELIVERY']['TOOLTIP'] ?>
-                                                                </div>
-                                                            <? endif ?>
-                                                        <? endif ?>
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="heart__btn <?= isset($arResult['FAVORITES'][$arItem['ID']]) ? 'active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
+                                                <button title="" type="button" class="heart__btn <?= isset($arResult['FAVORITES'][$arItem['ID']]) ? 'active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
                                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
-                                                                    <g>
-                                                                        <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
-                                                                               C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
-                                                                               C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
-                                                                               z"/>
-                                                                    </g>
-                                                                    </svg>
+                                                        <g>
+                                                            <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
+                                                                   C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
+                                                                   C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
+                                                                   z"/>
+                                                        </g>
+                                                    </svg>
                                                 </button>
                                             </div>
                                         </div>
@@ -750,18 +542,6 @@ if (!$arResult['IS_AJAX']) :
                                 <? endif ?>
                             </div>
                         </div>
-                        <? if ($arResult['SECTION_TYPE'] === 'search' && $arResult['ITEMS']->nSelectedCount > 0) :?>
-                        <!-- RetailRocket -->
-                        <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfd8a97a5250230f3bfb8" data-search-phrase="<?=$_GET['q']?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>">
-                        </div>
-                        <!-- /RetailRocket -->
-                        <? endif; ?>
-                        <? if ($arResult['SECTION_TYPE'] === 'favorites') :?>
-                            <!-- RetailRocket -->
-                            <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfdd197a5250230f3bfcf" data-favorite="<?=$arResult['FAVORITES_OFFERS_IDS']?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>">
-                            </div>
-                            <!-- /RetailRocket -->
-                        <? endif; ?>
                         <div class="catalog__navigation">
                             <? if (!empty($arResult['NAV_STRING'])) : ?>
                                 <?= $arResult['NAV_STRING'] ?>
@@ -779,16 +559,5 @@ if (!$arResult['IS_AJAX']) :
         </div>
         <!-- /catalog -->
     </div>
-    <? if ($arResult['SECTION_TYPE'] === 'search' && $arResult['ITEMS']->nSelectedCount == 0) :?>
-        <!-- RetailRocket -->
-        <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfd9497a5250230f3bfbc" data-search-phrase="<?=$_GET['q']?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>">
-        </div>
-        <!-- /RetailRocket -->
-    <? endif; ?>
 </div>
 
-
-<? if ($arResult['SECTION_ID']) : ?>
-    <div class="i-flocktory" data-fl-action="track-category-view"
-         data-fl-category-id="<?= $arResult['SECTION_ID'] ?>"></div>
-<? endif; ?>

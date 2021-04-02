@@ -16,10 +16,8 @@ class ComponentHelper extends CBitrixComponent
      * @var CPHPCache
      */
     protected $cache;
-    /**
-     * @var Path
-     */
-    protected $relativePath;
+
+    protected string $relativePath;
     // input
     protected function tryParseInt(&$fld, $default = false, $allowZero = false): void
     {

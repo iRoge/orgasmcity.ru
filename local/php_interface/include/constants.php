@@ -5,7 +5,7 @@ define('BX_DISABLE_INDEX_PAGE', true);
 // ID инфоблоков
 define('IBLOCK_CATALOG', 5);
 define('IBLOCK_OFFERS', 6);
-define('IBLOCK_BRANDS', 4);
+define('IBLOCK_VENDORS', 4);
 
 define('HL_ARTICLES_SKU', 217);
 define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'] . '/local/logs/log.log');

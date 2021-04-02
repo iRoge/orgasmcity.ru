@@ -2,6 +2,8 @@
 use Bitrix\Main\EventManager;
 use Bitrix\Main\Loader;
 
+ini_set('max_execution_time', 0);
+ini_set('ignore_user_abort', 1);
 Loader::includeModule('iblock');
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/constants.php');
@@ -19,7 +21,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/qsoft/sup
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
 
 // создаем экземпляр класса, который будем везде использовать
-$LOCATION = new \Qsoft\Location\Location;
+$LOCATION = new Qsoft\Location;
 global $LOCATION;
 
 // env
