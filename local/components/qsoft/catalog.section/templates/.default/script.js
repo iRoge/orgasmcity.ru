@@ -710,22 +710,22 @@ function resetHandlers() {
 }
 
 $(document).ready(function() {
-    // let params = SmartFilter.prototype.processSearch();
-    // params.getFilters = 'Y';
-    // BX.ajax.post($(location).attr('href'), params, function (data) {
-    //     console.log(data);
-    //     $(SmartFilter.prototype.filter).html($(data).find(SmartFilter.prototype.filter).html());
-    //     resetHandlers();
-    //     smartFilter.sortFilterListByActive();
-    //     smartFilter.setFilterButtonsStyle('new');
-    //     $('.name-h3').each(function () {
-    //         if ($(this).hasClass('active-name-h3')) {
-    //             smartFilter.clickOnSectionFilter(this);
-    //         }
-    //     });
-    //     $('.in-left-catalog').last().addClass('in-left-catalog--last');
-    //     $('.lds-ring-container-first').css('display', 'none');
-    // });
+    let params = SmartFilter.prototype.processSearch();
+    params.getFilters = 'Y';
+    BX.ajax.post($(location).attr('href'), params, function (data) {
+        console.log(data);
+        $(SmartFilter.prototype.filter).html($(data).find(SmartFilter.prototype.filter).html());
+        resetHandlers();
+        smartFilter.sortFilterListByActive();
+        smartFilter.setFilterButtonsStyle('new');
+        $('.name-h3').each(function () {
+            if ($(this).hasClass('active-name-h3')) {
+                smartFilter.clickOnSectionFilter(this);
+            }
+        });
+        $('.in-left-catalog').last().addClass('in-left-catalog--last');
+        $('.lds-ring-container-first').css('display', 'none');
+    });
 });
 
 $(document).ready(function () {

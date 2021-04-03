@@ -318,7 +318,7 @@ if (!$arResult['IS_AJAX']) :
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                                 </svg>
                                             </div>
-                                            <div class="in-in-left"<?= true || $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>>
+                                            <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>>
                                                 <div class="from">
                                                     <span>От</span>
                                                     <input id="min_<?=strtolower($filterKey)?>" class="js-price-from" type="text" name="min_<?=strtolower($filterKey)?>"
@@ -363,7 +363,7 @@ if (!$arResult['IS_AJAX']) :
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner"<?= true || $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
+                                        <div class="in-in-left scrollbar-inner"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
                                              data-filter-name="<?= $jsKey ?>">
                                             <?if ($filterKey === 'COLORS') :?>
                                                 <? foreach ($value as $xml_id => $color) : ?>
@@ -382,8 +382,10 @@ if (!$arResult['IS_AJAX']) :
                                                             <? endif; ?>
                                                         />
                                                         <label for="color_<?= $xml_id ?>" class="label-for-color <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                            <span class="inner-color" style="background-color: red">
-                                                            </span><?= $color['VALUE']['UF_NAME']; ?>
+                                                            <? if ($color['VALUE']['IMG_SRC']) : ?>
+                                                            <img class="inner-color" width="22" height="22" src="<?=$color['VALUE']['IMG_SRC']; ?>" alt="">
+                                                            <? endif; ?>
+                                                            <?=$color['VALUE']['UF_NAME']; ?>
                                                         </label>
                                                     </div>
                                                 <? endforeach; ?>

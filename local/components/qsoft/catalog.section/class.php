@@ -268,7 +268,7 @@ class QsoftCatalogSection extends ComponentHelper
         $this->getUserViewSettings();
         $this->prepareCatalogResult();
 
-        if (!isset($_REQUEST['getFilters'])) {
+        if (isset($_REQUEST['getFilters'])) {
             $this->prepareFilterResult();
             $this->includeComponentTemplate();
             return false;
