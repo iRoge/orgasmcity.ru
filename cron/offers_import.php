@@ -9,7 +9,7 @@ define("BX_CAT_CRON", true);
 define('NO_AGENT_CHECK', true);
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-
+ini_set('memory_limit', '2048M');
 //fda2000 MS
 CModule::IncludeModule('catalog');
 CModule::IncludeModule('fire.main');
