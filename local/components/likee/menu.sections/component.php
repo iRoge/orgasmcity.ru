@@ -190,7 +190,28 @@ if (empty($aMenuLinksNew)) {
 
         $rsSections = CIBlockSection::GetList(
             $arOrder,
-            $arFilter,w
+            $arFilter,
+            false,
+            array(
+                'ID',
+                'DEPTH_LEVEL',
+                'NAME',
+                'SECTION_PAGE_URL',
+            )
+        );
+
+        $rsSections->SetUrlTemplates('', $arParams['SECTION_URL']);
+
+        while ($arSection = $rsSections->GetNext()) {
+            $arResult['SECTIONS'][] = array(
+                'ID' => $arSection['ID'],
+                'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
+                '~NAME' => $arSection['~NAME'],
+                '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
+            );
+            $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();
+        }
+
 
         // Фильтруем секции по массиву $arSectionsIds
         foreach ($arResult['SECTIONS'] as $key => $section) {
