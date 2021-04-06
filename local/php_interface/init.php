@@ -52,8 +52,6 @@ function process404()
 if (!function_exists("pre")) {
     function pre($var)
     {
-        global $APPLICATION;
-        $APPLICATION->RestartBuffer();
         ob_start();
         var_dump($var);
         $dump = ob_get_clean();

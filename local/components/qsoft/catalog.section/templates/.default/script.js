@@ -28,24 +28,13 @@ SmartFilter.prototype.getFormData = function () {
         });
     });
 
-    // Собираем цифренные фильтры
+    // Собираем циферные фильтры
     $('input.js-number-filter').each(function () {
         let filterName = $(this).prop('id');
         if (typeof filterName === 'undefined') {
             return;
         }
         formData[filterName] = $(this).val();
-    });
-
-    // Собираем данные из фильтра по типу изделия
-    $('.filter__main-list [type="checkbox"]:checked:not(.general-all)').each(function() {
-        let name = $(this).data('name');
-        let id = $(this).data('id');
-        if (formData[name] != undefined && formData[name] != '') {
-            formData[name] += ',' + id;
-        } else {
-            formData[name] = id;
-        }
     });
     return formData;
 };
@@ -304,21 +293,17 @@ SmartFilter.prototype.resetFilterSection = function ($filterSection) {
     let $inputs = $filterSection.find('input[type="text"]');
 
     if ($filterSection.hasClass('in-left-catalog--price')) {
-
         $inputs.val('');
         $filterSection.find('.in-in-left').hide();
         $filterSection.find(".plus").show();
         $filterSection.find(".minus").hide();
         $filterSection.find(".name-h3").removeClass('active-name-h3');
-
     } else {
-
         $checkboxes.prop('checked', false);
         $filterSection.find('.in-in-left').hide();
         $filterSection.find(".plus").show();
         $filterSection.find(".minus").hide();
         $filterSection.find(".name-h3").removeClass('active-name-h3');
-
     }
     this.setFilterSectionStyle($filterSection);
     SmartFilter.prototype.doClick(SmartFilter.prototype.getUrl(),'reset');
@@ -613,7 +598,7 @@ $(document).ready(function() {
         smartFilter.sortFilterListByActive();
         smartFilter.setFilterButtonsStyle('new');
         $('.name-h3').each(function () {
-            if ($(this).hasClass('active-name-h3')) {
+            if ($(this).hasClass('active-name-h3') && !$(this).parent().hasClass('subsections-block')) {
                 smartFilter.clickOnSectionFilter(this);
             }
         });

@@ -1072,15 +1072,13 @@ html, body
   margin-top: 13px;
   outline: none;
   overflow: visible;
-  background: #fff url(../../../../img/searchBlue.png) no-repeat;
+  background: #fff url(../../../../img/searchBlue.png) no-repeat 100% 100%;
   background-size: 50px;
-  background-position: 100% 100%;
   border: 2px solid rgba(240,240,240, 1);
 }
 .search-btn-disable {
-  background: #fff url(../../../../img/searchBlueDisable.png) no-repeat;
+  background: #fff url(../../../../img/searchBlueDisable.png) no-repeat 100% 100%;
   background-size: 50px;
-  background-position: 100% 100%;
 }
 .search[placeholder]          {
   font-size: 13px;
@@ -1636,7 +1634,7 @@ html, body
   font-family: 'vollkornsemibold';
   font-size: 45px;
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;

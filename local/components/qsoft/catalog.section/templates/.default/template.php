@@ -15,9 +15,8 @@
 /** @global CDatabase $DB */
 
 use Bitrix\Main\Page\Asset;
-
+$curPage = $APPLICATION->GetCurPage(false);
 if (!$arResult['IS_AJAX']) :
-    $curPage = $APPLICATION->GetCurPage(false);
     Asset::getInstance()->addString('<link rel="canonical" href="https://' . SITE_SERVER_NAME . $curPage . '">');
 
 //    Asset::getInstance()->addCss('/local/components/qsoft/catalog.section/templates/.default/libs/jquery.scrollbar.css');
@@ -46,16 +45,6 @@ if (!$arResult['IS_AJAX']) :
         </h1>
         <!-- catalog -->
         <div class="catalog">
-            <? if (!empty($arResult['SUBSECTIONS'])) : ?>
-                <div class="catalog__subsections clearfix">
-                    <div class="col-xs-12">
-                        <?
-                        $arCurSection['ID'] = $arResult['SUBSECTIONS']['ID'];
-                        require_once $_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/components/bitrix/catalog/.default/subsections.php';
-                        ?>
-                    </div>
-                </div>
-            <? endif ?>
             <!-- banner -->
             <? if ($arResult['BANNER']['SINGLE'] || $arResult['BANNER']['MOBILE']) : ?>
                 <? if ($arResult['BANNER']['SINGLE']) : ?>
@@ -165,7 +154,8 @@ if (!$arResult['IS_AJAX']) :
 <?php endif; ?>
                     <? if ($arResult['IS_AJAX']) {
                         $APPLICATION->RestartBuffer();
-                    } ?>
+                    }
+                    ?>
                 <!-- content -->
                 <div class="catalog__content clearfix">
                     <!-- filter -->
@@ -201,95 +191,34 @@ if (!$arResult['IS_AJAX']) :
                             <div class="cls-blue-menu cls-blue-menu2 js-filter-mobile-close"></div>
                             <form class="form filter__form js-filter-form" name="_form"
                                   action="<?= $curPage ?>" method="get">
-                                <? if ($arResult['SHOW_TYPEPRODUCT_FILTER']) :?>
-                                <div class="in-left-catalog<?= $arResult['FILTER']['CHECKED']['SUBTYPEPRODUCT'] || $arResult['FILTER']['CHECKED']['IBLOCK_SECTION_ID'] ? ' in-left-catalog--checked' : '' ?>">
-                                    <div class="name-h3<?= $arResult['FILTER']['CHECKED']['SUBTYPEPRODUCT'] || $arResult['FILTER']['CHECKED']['IBLOCK_SECTION_ID'] ? ' active-name-h3' : '' ?>">
-                                        <a href="javascript:void(0);" class="clear-section">
-                                            <svg class="clear-section__icon">
-                                                <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#close"></use>
+                                <? if (!empty($arResult['SAME_SECTIONS']) && $arResult['IS_AJAX']) :?>
+                                    <div class="in-left-catalog subsections-block">
+                                        <div class="name-h3 active-name-h3">
+                                            <h3>
+                                                Похожие разделы
+                                            </h3>
+                                            <svg class="minus" style="display: inline; position: absolute">
+                                                <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>
-                                        </a>
-                                        <h3>
-                                            Тип изделия
-                                        </h3>
-                                        <svg class="minus" style="display: none;">
-                                            <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
-                                        </svg>
-                                        <svg class="plus" style="">
-                                            <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
-                                        </svg>
+                                            <svg class="plus" style="display: none;">
+                                                <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" style="display: block;">
+                                            <ul class=" filter__main-list" id="gender-list">
+                                                <div class="filter__vid-elem">
+                                                    <? foreach ($arResult['SAME_SECTIONS'] as $section) :?>
+                                                        <li>
+                                                            <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'firalight'; font-size: 20px; color: #4e4e4e;">
+                                                                <?=$section['NAME']?>
+                                                            </a>
+                                                        </li>
+                                                    <? endforeach; ?>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <div style="clear: both;"></div>
                                     </div>
-                                    <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" style="display: none;">
-                                        <ul class=" filter__main-list" id="gender-list">
-                                            <div class="filter__vid-elem">
-
-                                                <?$i = 1; foreach ($arResult['TYPEPRODUCT_FILTER']['VIDS'] as $level2_section_id => $vid) :?>
-                                                <li>
-                                                    <div class="name-h3">
-                                                        <svg class="minus" style="left: 170px; display: none;">
-                                                            <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
-                                                        </svg>
-                                                        <svg class="plus" style="left: 170px;">
-                                                            <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
-                                                        </svg>
-                                                        <h3>
-                                                        <?=$vid['NAME']?>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="in-in-left js-filter-box type_izd" style="display: none;">
-                                                        <input
-                                                                class="checkbox_size general-all"
-                                                                type="checkbox"
-                                                                id="toggle-<?=$level2_section_id?>"
-                                                        >
-                                                        <label for="toggle-<?=$level2_section_id?>">Выбрать все типы</label>
-                                                        <ul class="filter__type-list">
-                                                            <?foreach ($vid['TYPES'] as $key => $type) : ?>
-                                                            <li class="type-item">
-                                                                <input
-                                                                       type="checkbox"
-                                                                       id="sections-<?=$key?>"
-                                                                       class="checkbox_size all-type"
-                                                                       data-name="sections"
-                                                                       data-id="<?=$key?>"
-                                                                    <?=$arResult['FILTER']['IBLOCK_SECTION_ID'][$key]['CHECKED'] ? 'checked' : ''?>
-                                                                    <?=$arResult['FILTER']['IBLOCK_SECTION_ID'][$key]['DISABLED'] ? 'disabled' : ''?>
-                                                                >
-                                                                <label
-                                                                        for="sections-<?=$key?>"
-                                                                    <?=$arResult['FILTER']['IBLOCK_SECTION_ID'][$key]['DISABLED'] ? ' class="mydisabled"' : ''?>
-                                                                ><?=$type['NAME']?></label>
-                                                                <ul class="filter__product-list">
-                                                                    <? foreach ($type['SUBTYPES'] as $key2 => $subtype) : ?>
-                                                                    <li <?=count($type['SUBTYPES']) < 2 || $subtype['NAME'] === 'NONAME' ? 'hidden' : ''?>>
-                                                                        <input
-                                                                                type="checkbox"
-                                                                                id="subtypeproduct-<?=$i?>"
-                                                                                class="type checkbox_size"
-                                                                                data-name="subtypeproduct"
-                                                                                data-id="<?=$key2?>"
-                                                                                data-section="<?=$key?>"
-                                                                            <?=$arResult['FILTER']['IBLOCK_SECTION_ID'][$key]['CHECKED'] && $arResult['FILTER']['SUBTYPEPRODUCT'][$key2]['CHECKED'] ? 'checked' : ''?>
-                                                                            <?=$arResult['FILTER']['IBLOCK_SECTION_ID'][$key]['DISABLED'] || $arResult['FILTER']['SUBTYPEPRODUCT'][$key2]['DISABLED'] ? 'disabled' : ''?>
-                                                                        >
-                                                                        <label for="subtypeproduct-<?=$i?>"
-                                                                            <?=$arResult['FILTER']['IBLOCK_SECTION_ID'][$key]['DISABLED'] || $arResult['FILTER']['SUBTYPEPRODUCT'][$key2]['DISABLED'] ? ' class="mydisabled"' : ''?>
-                                                                        ><?=$subtype['NAME']?></label>
-                                                                    </li>
-                                                                        <?$i++;
-                                                                    endforeach; ?>
-                                                                </ul>
-                                                            </li>
-                                                            <? endforeach; ?>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                                <? endforeach; ?>
-                                            </div>
-                                        </ul>
-                                    </div>
-                                    <div style="clear: both;"></div>
-                                </div>
                                 <? endif; ?>
                                 <input id="set_filter" type="hidden" name="set_filter" value="Y">
                                 <? foreach ($arResult['FILTER_KEYS'] as $filterKey) : ?>
@@ -384,11 +313,11 @@ if (!$arResult['IS_AJAX']) :
                                                 <? endforeach; ?>
                                             <? else :?>
                                                 <? foreach ($value as $key => $item) : ?>
-                                                <input id="<?= $jsKey ?>_<?= $key ?>"
+                                                <input id="<?=$jsKey ?>_<?=$key ?>"
                                                        class="checkbox_size"
                                                        type="checkbox"
-                                                       name="<?= $jsKey ?>"
-                                                       value="<?= $key ?>"
+                                                       name="<?=$jsKey ?>"
+                                                       value="<?=$key ?>"
                                                     <? if (!empty($item['CHECKED'])) : ?>
                                                         checked
                                                     <? endif; ?>
@@ -396,7 +325,7 @@ if (!$arResult['IS_AJAX']) :
                                                         disabled
                                                     <? endif; ?>
                                                        onchange="smartFilter.click(this)">
-                                                <label for="<?= $jsKey ?>_<?= $key ?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?= $item['VALUE'] ?></label>
+                                                <label for="<?=$jsKey ?>_<?=$key ?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?=$item['VALUE'] ?></label>
                                                 <? endforeach; ?>
                                             <?endif;?>
                                         </div>

@@ -33,12 +33,6 @@ class QsoftCatalogSection extends ComponentHelper
         'COLORS',
     ];
 
-    private const PROMO_TYPES = [
-        'sale' => 'PROPERTY_MRT',
-        'new' => 'PROPERTY_MLT',
-        'preorder' => 'PROPERTY_PREORDER_VALUE',
-    ];
-
     private const PRODUCT_PROPERTIES = [
         'max_price' => 'MAX_PRICE',
         'max_diameter' => 'MAX_DIAMETER',
@@ -105,17 +99,6 @@ class QsoftCatalogSection extends ComponentHelper
         'SIZES',
         'COLORS',
         'VENDOR'
-    ];
-    /**
-     * массив сортировки фильтра типа изделия
-     */
-    private const TYPEPRODUCT_FILTER_SORT = [
-        'dlya_zhenshchin_obuv' => 0,
-        'dlya_muzhchin_obuv' => 1,
-        'dlya_zhenshchin_sumki' => 2,
-        'dlya_zhenshchin_aksessuary' => 3,
-        'dlya_muzhchin_sumki' => 4,
-        'dlya_muzhchin_aksessuary' => 5,
     ];
 
     protected string $relativePath = '/qsoft/catalog.section';
@@ -234,7 +217,8 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getCode($sectionUrl)
     {
-        $code = array_pop(explode('/', $sectionUrl));
+        $arSections = explode('/', $sectionUrl);
+        $code = array_pop($arSections);
         if (strpos($code, 'tag_') !== false) {
             $code = substr($code, 4);
         }
@@ -273,11 +257,7 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->getSeo();
         $this->buildNavChain();
-
         if ($this->type === self::TYPE_SECTION && !empty($this->section['ID'])) {
-            if ($this->section['DEPTH_LEVEL'] == 1) {
-                $this->arResult['SUBSECTIONS'] = ['ID' => $this->section['ID']];
-            }
             $this->arResult['SECTION_ID'] = $this->section['ID'];
         } elseif ($this->type === self::TYPE_ALL_CATALOG) {
             $this->arResult['SECTION_ID'] = $this->getSecondLevelSections();
@@ -368,10 +348,12 @@ class QsoftCatalogSection extends ComponentHelper
      */
     private function loadProducts($all = false): void
     {
+        if (!empty($this->products)) {
+            return;
+        }
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
-
         $arProducts = [];
         if ($this->initCache('products')) {
             if ($all) {
@@ -391,6 +373,7 @@ class QsoftCatalogSection extends ComponentHelper
                 $currentSection = $this->getCurrentSection($this->code);
                 if (!empty($currentSection)) {
                     $this->section = $currentSection;
+                    $this->section['SAME_SECTIONS'] = $this->getSameSections();
                     $relatedSections = $this->loadRelatedSections($currentSection);
                     if (!empty($relatedSections)) {
                         $arFilter['IBLOCK_SECTION_ID'] = $relatedSections;
@@ -449,6 +432,7 @@ class QsoftCatalogSection extends ComponentHelper
                 "DESCRIPTION",
                 "NAME",
                 "DEPTH_LEVEL",
+                "IBLOCK_SECTION_ID"
             ],
             false
         );
@@ -582,14 +566,14 @@ class QsoftCatalogSection extends ComponentHelper
                 $k = $image->getExifData()['COMPUTED']['Width'] / $image->getExifData()['COMPUTED']['Height'];
                 $smallSizes = [
                     'height' => $this->smallImgHeight,
-                    'width' => $k * $this->smallImgHeight,
+                    'width' => $k < 1 ? $k * $this->smallImgHeight : $this->smallImgHeight,
                 ];
                 $bigSizes = [
                     'height' => $this->bigImgHeight,
-                    'width' => $k * $this->bigImgHeight,
+                    'width' => $k < 1 ? $k * $this->bigImgHeight : $this->bigImgHeight,
                 ];
-                $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes, BX_RESIZE_IMAGE_EXACT);
-                $resizeSrcBig = Functions::ResizeImageGet($arItem, $bigSizes, BX_RESIZE_IMAGE_EXACT);
+                $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes);
+                $resizeSrcBig = Functions::ResizeImageGet($arItem, $bigSizes);
                 if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
                     continue;
                 }
@@ -617,6 +601,9 @@ class QsoftCatalogSection extends ComponentHelper
      */
     private function loadOffers(): void
     {
+        if (!empty($this->offers)) {
+            return;
+        }
         $arOffers = [];
         if ($this->initCache('offers')) {
             $arOffers = $this->getCachedVars('offers');
@@ -660,9 +647,11 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$this->products[$arItem["PROPERTY_CML2_LINK_VALUE"]]) {
                 continue;
             }
+            $sizeRes = CIBlockElement::GetProperty(IBLOCK_OFFERS, $arItem["ID"], "sort", "asc", ['CODE' => 'SIZE']);
+            $size = $sizeRes->GetNext();
             $arOffers[$arItem["ID"]] = [
                 'PROPERTY_CML2_LINK_VALUE' => $arItem['PROPERTY_CML2_LINK_VALUE'],
-                'PROPERTY_SIZE_VALUE' => $arItem['PROPERTY_SIZE_VALUE'],
+                'PROPERTY_SIZE_VALUE' => $size['VALUE'],
                 'PROPERTY_COLOR_VALUE' => $arItem['PROPERTY_COLOR_VALUE'],
                 'PROPERTY_BASEPRICE_VALUE' => $arItem['PROPERTY_BASEPRICE_VALUE'],
             ];
@@ -1485,7 +1474,6 @@ class QsoftCatalogSection extends ComponentHelper
                 $items[$pid]['PERCENT'] = (int)(100 - $items[$pid]['PRICE'] * 100 / $items[$pid]['OLD_PRICE']);
                 $items[$pid]['SEGMENT'] = 'red';
             }
-
             $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
             $items[$pid]["COLORS"][] = $value["PROPERTY_COLOR_VALUE"];
             $items[$pid]["ASSORTMENTS"][] = $value;
@@ -1497,6 +1485,8 @@ class QsoftCatalogSection extends ComponentHelper
                 unset($items[$key]);
                 continue;
             }
+            $item["SIZES"] = array_unique($item["SIZES"]);
+            $item["COLORS"] = array_unique($item["COLORS"]);
         }
 
         $this->items = $items;
@@ -1527,40 +1517,6 @@ class QsoftCatalogSection extends ComponentHelper
 
         $items = array_filter($items, function (&$item) use ($arFilter) {
             $comp = true;
-
-//            if (isset($arFilter['IBLOCK_SECTION_ID']) && isset($arFilter['SUBTYPEPRODUCT'])) {
-//                $tempComp = false;
-//                $tempComp1 = false;
-//                for ($i = 0; $i <= count($arFilter['IBLOCK_SECTION_ID']); $i++) {
-//                    $tempComp = $this->applyFilter(array($arFilter['IBLOCK_SECTION_ID'][$i]), $item['IBLOCK_SECTION_ID']);
-//                    if ($tempComp) {
-//                        $tempComp1 = false;
-//                        for ($i1 = 0; $i1 <= count($arFilter['SUBTYPEPRODUCT']); $i1++) {
-//                            if (empty($item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']])) {
-//                                if ($arFilter['SUBTYPEPRODUCT'][$i1] == 'NONAME') {
-//                                    $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']] = 'NONAME';
-//                                } else {
-//                                    return false;
-//                                }
-//                            }
-//                            $tempComp1 = $this->applyFilter(array($arFilter['SUBTYPEPRODUCT'][$i1]), $item[self::PRODUCT_PROPERTIES_MAP['SUBTYPEPRODUCT']]);
-//
-//                            if ($tempComp1) {
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    if ($tempComp1) {
-//                        break;
-//                    }
-//                }
-//                $comp = $comp && $tempComp && $tempComp1;
-//                unset($arFilter['IBLOCK_SECTION_ID']);
-//                unset($arFilter['SUBTYPEPRODUCT']);
-//                if (!$comp) {
-//                    return false;
-//                }
-//            }
 
             if (isset($arFilter['MIN_PRICE'])) {
                 $comp = $comp && $item['PRICE'] >= $arFilter['MIN_PRICE'];
@@ -1625,8 +1581,6 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getDisabledOptions()
     {
-        global $APPLICATION;
-        $APPLICATION->RestartBuffer();
         $availableOptions = $this->getAvailableFilterOptions();
 
         foreach ($this->filterArray as $key => $options) {
@@ -1670,7 +1624,7 @@ class QsoftCatalogSection extends ComponentHelper
         return $filter;
     }
 
-    private function getFilterList()
+    private function getFilterList(): array
     {
         if (empty($this->items)) {
             $this->getResultItems();
@@ -1698,7 +1652,6 @@ class QsoftCatalogSection extends ComponentHelper
                 if (empty($item[$itemKey])) {
                     continue;
                 }
-
                 if (in_array($filterKey, self::MULTIPLE_VALUE_PROPERTIES) && isset($item[$itemKey])) {
                     if (empty($filter[$filterKey])) {
                         $filter[$filterKey] = $item[$itemKey];
@@ -1721,7 +1674,6 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             }
         }
-
         return $filter;
     }
 
@@ -1977,14 +1929,15 @@ class QsoftCatalogSection extends ComponentHelper
         $this->arResult['FILTER']['MAX_LENGTH'] = $this->filtersScopes['MAX_LENGTH'];
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
-        $this->arResult['SHOW_TYPEPRODUCT_FILTER'] = false;
-//        $this->arResult['TYPEPRODUCT_FILTER'] = $this->getTypeproductFilter();
+
+        if ($this->section['DEPTH_LEVEL'] > 1) {
+            $this->arResult['SAME_SECTIONS'] = $this->section['SAME_SECTIONS'];
+        }
     }
 
     private function getFilterValues()
     {
         $arFiltersWithValues = [];
-
         foreach ($this->arResult['FILTER'] as $key => $xml_ids) {
             if (array_key_exists($key, $this->props)) {
                 foreach ($xml_ids as $xml_id) {
@@ -2020,6 +1973,14 @@ class QsoftCatalogSection extends ComponentHelper
             unset($this->arResult['FILTER']['MAX_PRICE']);
             unset($this->arResult['FILTER']['MIN_PRICE']);
         }
+        if ($this->arResult['FILTER']['MAX_DIAMETER'] === $this->arResult['FILTER']['MIN_DIAMETER']) {
+            unset($this->arResult['FILTER']['MAX_DIAMETER']);
+            unset($this->arResult['FILTER']['MIN_DIAMETER']);
+        }
+        if ($this->arResult['FILTER']['MAX_LENGTH'] === $this->arResult['FILTER']['MIN_LENGTH']) {
+            unset($this->arResult['FILTER']['MAX_LENGTH']);
+            unset($this->arResult['FILTER']['MIN_LENGTH']);
+        }
         sort($this->arResult['FILTER']['SIZES']);
     }
 
@@ -2035,6 +1996,7 @@ class QsoftCatalogSection extends ComponentHelper
             $this->registerTag("catalogAll");
             $props = [];
 
+            $props['SIZES'] = $this->getSizesFilter();
             $props['COLORS'] = $this->getColorsFilter();
             $props['VENDOR'] = $this->getVendorFilter();
 
@@ -2090,6 +2052,27 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         return $arBrands;
+    }
+
+    private function getSizesFilter()
+    {
+        $arSizes = [];
+        $propertyEnums = CIBlockPropertyEnum::GetList(
+            [
+                "SORT" => "ASC"
+            ],
+            [
+                "IBLOCK_ID" => IBLOCK_OFFERS,
+                "CODE" => "SIZE"
+            ]
+        );
+
+        while($arEnum = $propertyEnums->GetNext())
+        {
+            $arSizes[$arEnum['ID']] = $arEnum['VALUE'];
+        }
+
+        return $arSizes;
     }
 
     private function needJson(): bool
@@ -2251,127 +2234,22 @@ class QsoftCatalogSection extends ComponentHelper
         return $chain;
     }
 
-    /**
-     * Формирует массив для фильтра по типу изделия
-     *
-     * @return array
-     */
-    private function getTypeproductFilter()
+    private function getSameSections(): array
     {
-        global $LOCATION;
-        $result = [];
         $arSections = [];
-        if ($this->initCache('all_available_sections|' . $LOCATION->getName())) {
-            $arSections = $this->getCachedVars('array_sections');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-            $res = CIBlockSection::GetList(
-                [
-                    "DEPTH_LEVEL" => "ASC",
-                ],
-                [
-                    "IBLOCK_ID" => IBLOCK_CATALOG,
-                    'GLOBAL_ACTIVE' => 'Y',
-                    'ACTIVE' => 'Y',
-                    'IBLOCK_ACTIVE' => 'Y',
-                    '<=DEPTH_LEVEL' => 3,
-                ],
-                false,
-                [
-                    "ID",
-                    "IBLOCK_SECTION_ID",
-                    "DEPTH_LEVEL",
-                    "NAME",
-                    "CODE",
-                ]
-            );
-            while ($arItem = $res->Fetch()) {
-                $arSections[$arItem["ID"]] = $arItem;
-            }
+        $arFilter = [
+            '!ID' => $this->section['ID'],
+            'IBLOCK_ID' => IBLOCK_CATALOG,
+            'ACTIVE' => 'Y',
+            'SECTION_ID' => $this->section['IBLOCK_SECTION_ID']
+        ];
+        $res = CIBlockSection::GetList(false, $arFilter, true, ['ID', 'NAME', 'SECTION_PAGE_URL']);
+        while($arResult = $res->GetNext())
+        {
+            $arSections[] = $arResult;
+        }
 
-            $this->endTagCache();
-            $this->saveToCache('array_sections', $arSections);
-        }
-        foreach ($this->items as $id => $item) {
-            if ($item['IBLOCK_SECTION_ID'] == '593' || $item['IBLOCK_SECTION_ID'] == '587') {
-                continue;
-            }
-            if ($item['IBLOCK_SECTION_ID'] && $arSections[$item['IBLOCK_SECTION_ID']]) {
-                $firstDepthSection = $arSections[$arSections[$arSections[$item['IBLOCK_SECTION_ID']]['IBLOCK_SECTION_ID']]['IBLOCK_SECTION_ID']];
-                $secondDepthSection = $arSections[$arSections[$item['IBLOCK_SECTION_ID']]['IBLOCK_SECTION_ID']];
-                $secondDepthSection['CODE'] = $firstDepthSection['CODE'] . '_' . $secondDepthSection['CODE'];
-                $thirdDepthSection = $arSections[$item['IBLOCK_SECTION_ID']];
-                if ($firstDepthSection['CODE'] == 'dlya_muzhchin') {
-                    if ($secondDepthSection['CODE'] !== 'dlya_muzhchin_obuv') {
-                        $result['VIDS'][$secondDepthSection['ID']]['NAME'] = 'Мужские ' . strtolower($secondDepthSection['NAME']);
-                    } else {
-                        $result['VIDS'][$secondDepthSection['ID']]['NAME'] = $secondDepthSection['NAME'];
-                    }
-                    $result['VIDS'][$secondDepthSection['ID']]['CODE'] = $secondDepthSection['CODE'];
-                    $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['NAME'] = $thirdDepthSection['NAME'];
-                    if ($item['PROPERTY_SUBTYPEPRODUCT_VALUE']) {
-                        $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['SUBTYPES'][$item['PROPERTY_SUBTYPEPRODUCT_VALUE']]['NAME'] = $this->props['SUBTYPEPRODUCT'][$item['PROPERTY_SUBTYPEPRODUCT_VALUE']];
-                    } else {
-                        $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['SUBTYPES']['NONAME']['NAME'] = 'NONAME';
-                    }
-                } elseif ($firstDepthSection['CODE'] == 'dlya_zhenshchin') {
-                    if ($secondDepthSection['CODE'] !== 'dlya_zhenshchin_obuv') {
-                        $result['VIDS'][$secondDepthSection['ID']]['NAME'] = 'Женские ' . strtolower($secondDepthSection['NAME']);
-                    } else {
-                        $result['VIDS'][$secondDepthSection['ID']]['NAME'] = $secondDepthSection['NAME'];
-                    }
-                    $result['VIDS'][$secondDepthSection['ID']]['CODE'] = $secondDepthSection['CODE'];
-                    $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['NAME'] = $thirdDepthSection['NAME'];
-                    if ($item['PROPERTY_SUBTYPEPRODUCT_VALUE']) {
-                        $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['SUBTYPES'][$item['PROPERTY_SUBTYPEPRODUCT_VALUE']]['NAME'] = $this->props['SUBTYPEPRODUCT'][$item['PROPERTY_SUBTYPEPRODUCT_VALUE']];
-                    } else {
-                        $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['SUBTYPES']['NONAME']['NAME'] = 'NONAME';
-                    }
-                } else {
-                    $result['VIDS'][$secondDepthSection['ID']]['NAME'] = $secondDepthSection['NAME'];
-                    $result['VIDS'][$secondDepthSection['ID']]['CODE'] = $secondDepthSection['CODE'];
-                    $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['NAME'] = $thirdDepthSection['NAME'];
-                    if ($item['PROPERTY_SUBTYPEPRODUCT_VALUE']) {
-                        $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['SUBTYPES'][$item['PROPERTY_SUBTYPEPRODUCT_VALUE']]['NAME'] = $this->props['SUBTYPEPRODUCT'][$item['PROPERTY_SUBTYPEPRODUCT_VALUE']];
-                    } else {
-                        $result['VIDS'][$secondDepthSection['ID']]['TYPES'][$thirdDepthSection['ID']]['SUBTYPES']['NONAME']['NAME'] = 'NONAME';
-                    }
-                }
-            }
-        }
-        $sort = self::TYPEPRODUCT_FILTER_SORT;
-        uasort($result['VIDS'], function ($a, $b) use ($sort) {
-            if (isset($sort[$a['CODE']]) && isset($sort[$b['CODE']])) {
-                return $sort[$a['CODE']] <=> $sort[$b['CODE']];
-            }
-            return -1;
-        });
-        foreach ($result['VIDS'] as &$category) {
-            uasort($category['TYPES'], function ($a, $b) {
-                if ($a['NAME'] == $b['NAME']) {
-                    return 0;
-                }
-                return ($a['NAME'] < $b['NAME']) ? -1 : 1;
-            });
-            foreach ($category['TYPES'] as &$podcategory) {
-                uasort($podcategory['SUBTYPES'], function ($a, $b) {
-                    if ($a['NAME'] == $b['NAME']) {
-                        return 0;
-                    }
-                    return ($a['NAME'] < $b['NAME']) ? -1 : 1;
-                });
-            }
-        }
-        $countTypes = 0;
-        foreach ($result['VIDS'] as $vid) {
-            foreach ($vid['TYPES'] as $type) {
-                $countTypes += count($type['SUBTYPES']) < 1 ? 1 : count($type['SUBTYPES']);
-            }
-        }
-        $this->arResult['SHOW_TYPEPRODUCT_FILTER'] = $countTypes > 1 ? true : false;
-
-        return $result;
+        return $arSections;
     }
 
     private function getBrand()
