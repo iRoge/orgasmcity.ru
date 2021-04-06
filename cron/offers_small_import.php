@@ -101,11 +101,12 @@ if($upd) {
 	
 	//remove not exist in import
 	$act = $profile_params['outFileAction'];
-	if($act=='H' || $act=='D' || $act=='M' || $act=='F') {
+	if ($act == 'H' || $act == 'D' || $act == 'M' || $act == 'F') {
 		$arProductArray = \Bitrix\Catalog\ProductTable::getDefaultAvailableSettings();
 		$filter = ['IBLOCK_ID' => $OFFERS_IBLOCK_ID];
-		if($act=='F')
-			$filter['=PROPERTY_supplier_VALUE'] = 'p5s';
+		if ($act=='F') {
+            $filter['=PROPERTY_SUPPLIER_VALUE'] = 'p5s';
+        }
 		$rsItems = CIBlockElement::GetList([], $filter, false, false, array('ID', 'XML_ID'));
 		while($arItem = $rsItems->Fetch()) 
 			if(!$upd[$arItem['XML_ID']] && !$exclude[$arItem['XML_ID']]) {
@@ -117,71 +118,88 @@ if($upd) {
 					\Bitrix\Catalog\Model\Product::update($arItem['ID'], $arProductArray);
 			}
 	}
-	//
-	$rsItems = CIBlockElement::GetList([], ['=XML_ID' => array_keys($upd), '=IBLOCK_ID' => $OFFERS_IBLOCK_ID], false, false, ['ID', 'IBLOCK_ID', 'XML_ID', 'PROPERTY_CML2_LINK', 'PROPERTY_shipping_date', 'PRICE_'.$BaseID, 'CURRENCY_'.$BaseID, 'QUANTITY', 'PURCHASING_PRICE', 'PURCHASING_CURRENCY', 'PROPERTY_p5s_stock', 'PROPERTY_SuperSale', 'PROPERTY_StopPromo', 'PROPERTY_BasePrice', 'PROPERTY_BasewholePrice']);
-	
-	while($arItem = $rsItems->fetch())
-		if($data = $upd[$arItem['XML_ID']]) {
-			$prod = [];
-			if($arItem['QUANTITY']!=$data['qty']) {
-				if( ($arItem['QUANTITY']>0 && $data['qty']<=0) || ($arItem['QUANTITY']<=0 && $data['qty']>0) )
-					$Dates = false;
-				$prod['QUANTITY'] = $data['qty'];
-			}
-			if($arItem['PURCHASING_PRICE']!=$data['basewholeprice'])
-				$prod['PURCHASING_PRICE'] = $data['basewholeprice'];
-			if($arItem['PURCHASING_CURRENCY']!=$data['currency'])
-				$prod['PURCHASING_CURRENCY'] = $data['currency'];
-			
-			if($prod)
-				CCatalogProduct::Update($arItem['ID'], $prod);
-			
-			if($arItem['PRICE_'.$BaseID]!=$data['price'] || $arItem['CURRENCY_'.$BaseID]!=$data['currency']) {
-				$Dates = false;
-				CPrice::SetBasePrice($arItem['ID'], $data['price'], $data['currency']);
-			}
-			
-			$props = array();
-			if($catalog_props['SHIPPING_DATE'])
-				if($arItem['PROPERTY_SHIPPING_DATE_VALUE']!=$data['shippingdate'])
-					$props['shipping_date'] = $data['shippingdate'];
-			if($catalog_props['P5S_STOCK'])
-				if($arItem['PROPERTY_P5S_STOCK_VALUE']!=$data['p5s_stock'])
-					$props['p5s_stock'] = $data['p5s_stock'];
-			if($catalog_props['SUPERSALE'])
-				if($arItem['PROPERTY_SUPERSALE_VALUE']!=$data['SuperSale'])
-					$props['SuperSale'] = $data['SuperSale'];
-			if($catalog_props['STOPPROMO'])
-				if($arItem['PROPERTY_STOPPROMO_VALUE']!=$data['StopPromo'])
-					$props['StopPromo'] = $data['StopPromo'];
-			if($catalog_props['BASEPRICE'])
-				if($arItem['PROPERTY_BASEPRICE_VALUE']!=$data['price'])
-					$props['BasePrice'] = $data['price'];
-			if($catalog_props['BASEWHOLEPRICE'])
-				if($arItem['PROPERTY_BASEWHOLEPRICE_VALUE']!=$data['basewholeprice'])
-					$props['BasewholePrice'] = $data['basewholeprice'];
-			if($props) {
-				CIBlockElement::SetPropertyValuesEx($arItem['ID'], $arItem['IBLOCK_ID'], $props);
-				if($Dates!==false)
-					$Dates[$arItem['PROPERTY_CML2_LINK_VALUE']] = 1;
-			}
-		}
-		
-		if($Dates) {
-			$arr = unserialize(Fire_Settings::getModuleSetting('ClearCacheElements'));
-			$arr = is_array($arr)? $arr : array();
-			$arr = $arr +$Dates;
-			Fire_Settings::setModuleSetting('ClearCacheElements', serialize($arr));
-		}
-		if($Dates===false) {
-			CIBlock::clearIblockTagCache($OFFERS_IBLOCK_ID);
-			Fire_Settings::setModuleSetting('ClearCacheElements', '');
-		}
-	
+
+    foreach (array_chunk($upd, 5000, true) as $upd1000) {
+        $rsItems = CIBlockElement::GetList([], ['=XML_ID' => array_keys($upd1000), '=IBLOCK_ID' => $OFFERS_IBLOCK_ID], false, false, ['ID', 'IBLOCK_ID', 'XML_ID', 'PROPERTY_CML2_LINK', 'PROPERTY_shipping_date', 'PRICE_' . $BaseID, 'CURRENCY_' . $BaseID, 'QUANTITY', 'PURCHASING_PRICE', 'PURCHASING_CURRENCY', 'PROPERTY_p5s_stock', 'PROPERTY_SuperSale', 'PROPERTY_StopPromo', 'PROPERTY_BasePrice', 'PROPERTY_BasewholePrice']);
+
+        while ($arItem = $rsItems->fetch()) {
+
+            if ($data = $upd1000[$arItem['XML_ID']]) {
+                $prod = [];
+                if ($arItem['QUANTITY'] != $data['qty']) {
+                    if (($arItem['QUANTITY'] > 0 && $data['qty'] <= 0) || ($arItem['QUANTITY'] <= 0 && $data['qty'] > 0))
+                        $Dates = false;
+                    $prod['QUANTITY'] = $data['qty'];
+                }
+                if ($arItem['PURCHASING_PRICE'] != $data['basewholeprice'])
+                    $prod['PURCHASING_PRICE'] = $data['basewholeprice'];
+                if ($arItem['PURCHASING_CURRENCY'] != $data['currency'])
+                    $prod['PURCHASING_CURRENCY'] = $data['currency'];
+
+                if ($prod)
+                    CCatalogProduct::Update($arItem['ID'], $prod);
+
+                if ($arItem['PRICE_' . $BaseID] != $data['price'] || $arItem['CURRENCY_' . $BaseID] != $data['currency']) {
+                    $Dates = false;
+                    CPrice::SetBasePrice($arItem['ID'], $data['price'], $data['currency']);
+                }
+
+                $props = array();
+                if ($catalog_props['SHIPPING_DATE']) {
+                    if ($arItem['PROPERTY_SHIPPING_DATE_VALUE'] != $data['shippingdate']) {
+                        $props['shipping_date'] = $data['shippingdate'];
+                    }
+                }
+                if ($catalog_props['P5S_STOCK']) {
+                    if ($arItem['PROPERTY_P5S_STOCK_VALUE'] != $data['p5s_stock']) {
+                        $props['p5s_stock'] = $data['p5s_stock'];
+                    }
+                }
+                if ($catalog_props['SUPERSALE']) {
+                    if ($arItem['PROPERTY_SUPERSALE_VALUE'] != $data['SuperSale']) {
+                        $props['SuperSale'] = $data['SuperSale'];
+                    }
+                }
+                if ($catalog_props['STOPPROMO']) {
+                    if ($arItem['PROPERTY_STOPPROMO_VALUE'] != $data['StopPromo']) {
+                        $props['StopPromo'] = $data['StopPromo'];
+                    }
+                }
+                if ($catalog_props['BASEPRICE']) {
+                    if ($arItem['PROPERTY_BASEPRICE_VALUE'] != $data['price']) {
+                        $props['BasePrice'] = $data['price'];
+                    }
+                }
+                if ($catalog_props['BASEWHOLEPRICE']) {
+                    if ($arItem['PROPERTY_BASEWHOLEPRICE_VALUE'] != $data['basewholeprice']) {
+                        $props['BasewholePrice'] = $data['basewholeprice'];
+                    }
+                }
+
+                if ($props) {
+                    CIBlockElement::SetPropertyValuesEx($arItem['ID'], $arItem['IBLOCK_ID'], $props);
+                    if ($Dates !== false) {
+                        $Dates[$arItem['PROPERTY_CML2_LINK_VALUE']] = 1;
+                    }
+                }
+            }
+
+            if ($Dates) {
+                $arr = unserialize(Fire_Settings::getModuleSetting('ClearCacheElements'));
+                $arr = is_array($arr) ? $arr : array();
+                $arr = $arr + $Dates;
+                Fire_Settings::setModuleSetting('ClearCacheElements', serialize($arr));
+            }
+            if ($Dates === false) {
+                CIBlock::clearIblockTagCache($OFFERS_IBLOCK_ID);
+                Fire_Settings::setModuleSetting('ClearCacheElements', '');
+            }
+        }
+    }
+
 	\Bitrix\Catalog\Product\Sku::disableDeferredCalculation();
 	\Bitrix\Catalog\Product\Sku::calculate();
 }
 
 $end_time = time();
-echo "work_time ".ceil(($end_time - $start_time)/60)." minutes\n";
-?>
+echo "work_time ".ceil($end_time - $start_time)." seconds\n";
