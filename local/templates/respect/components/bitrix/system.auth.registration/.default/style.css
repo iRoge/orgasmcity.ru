@@ -1,0 +1,160 @@
+.bx_registration_page{
+	color: #3F3F3F;
+	font-size: 13px;
+	line-height: 20px;
+}
+.bx-auth{
+	margin: 0 auto;
+	width: 300px;
+}
+.bx_registration_page a{color: #007acf;}
+.bx_registration_page a:hover{text-decoration: none;}
+
+.bx_registration_page .input_text_style{
+	font-family: 'firaregular',sans-serif;
+	padding: 12px 20px;
+	background: white;
+	outline: 0;
+	margin-top: 20px;
+	border: 1px solid rgba(200,200,200, .5);
+	width: 100%;
+}
+.bx_registration input{
+	padding: 10px 15px;
+	margin: 0;
+	border: solid 1px rgba(0,0,0,.15);
+	background: #fff;
+	font-size: 14px;
+	color: #000;
+}
+
+.bx_registration_page .starrequired{color: #f00;}
+.bx_registration_page .bt_blue{
+	display:inline-block;
+	border-radius:3px;
+	text-align:center;
+	text-decoration:none;
+	font-size:14px;
+	cursor:pointer;
+	border: none;
+}
+.bx_registration_page .shadow.bt_blue{box-shadow:0 1px 1px 0 rgba(0,0,0,.2)}
+.bx_registration_page .shadow.bt_blue:active{box-shadow:none}
+
+.bx_registration_page .bt_blue  			{
+	background:#00a2df;
+	background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwYTJkZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDZmY2IiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#00a2df), color-stop(100%,#006fcb));
+	background:-webkit-linear-gradient(top, #00a2df 0%,#006fcb 100%);
+	background:  -moz-linear-gradient(top, #00a2df 0%,#006fcb 100%);
+	background:   -ms-linear-gradient(top, #00a2df 0%,#006fcb 100%);
+	background:    -o-linear-gradient(top, #00a2df 0%,#006fcb 100%);
+	background:       linear-gradient(to bottom, #00a2df 0%,#006fcb 100%);
+	color:#fff;
+	text-shadow:0 1px 0 #006cae;
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#00a2df', endColorstr='#006fcb',GradientType=0 );
+}
+.bx_registration_page .bt_blue:hover  		{
+	background:#21afe4;
+	background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIxYWZlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDZmY2IiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#21afe4), color-stop(100%,#006fcb));
+	background:-webkit-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:  -moz-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:    -o-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:   -ms-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:       linear-gradient(to bottom, #21afe4 0%,#006fcb 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#21afe4', endColorstr='#006fcb',GradientType=0 );
+}
+.bx_registration_page .bt_blue:active 		{
+	background:#21afe4;
+	background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIxYWZlNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDZmY2IiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#21afe4), color-stop(100%,#006fcb));
+	background:-webkit-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:  -moz-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:   -ms-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:    -o-linear-gradient(top, #21afe4 0%,#006fcb 100%);
+	background:       linear-gradient(to bottom, #21afe4 0%,#006fcb 100%);
+	box-shadow:inset 0 3px 5px 0 rgba(0,0,0,.21);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#21afe4', endColorstr='#006fcb',GradientType=0 );
+}
+
+.bx_registration_page .big.bt_blue			{
+	padding:0 13px;
+	height:34px;
+	font-weight:bold;
+	line-height:34px;
+	height:36px;
+	line-height:36px;
+}
+.bx_registration_page .big.bt_blue:hover  	{}
+.bx_registration_page .big.bt_blue:active 	{}
+.personal-checkbox {
+    display: block;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: left;
+}
+
+.personal-checkbox_font-size_inherit {
+    font-size: inherit;
+	margin-bottom: 15px;
+}
+
+.personal-checkbox__title {
+    color: #3F3F3F;
+    font-size: 13px;
+    line-height: 20px;
+    float: l;
+    display: inline-block;
+    margin-left: 25px;
+}
+
+.personal-checkbox__title:hover{cursor:pointer;}
+
+.privace-reg{
+	position: relative;
+}
+
+.personal-checkbox__input{display: none;}
+
+.personal-checkbox__indicator{
+	position: absolute;
+	left: -5px;
+	top: 1px;
+	content: "";
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    margin: 0 9px 0 4px;
+    background: #fff;
+    border: 1px solid #c1c1c2;
+	cursor: pointer;
+}
+
+.personal-checkbox__indicator:before{
+	margin-left: -14%;
+    font-size: 47px;
+    line-height: 16px;
+    color: #e8162f;
+    text-align: center;
+}
+
+.personal-checkbox__input:checked ~ .personal-checkbox__indicator:before{
+    content: "\2022";
+}
+
+.personal-checkbox__title a{
+	color: #e8162f;
+    text-decoration: none;
+    border-bottom: 1px solid #f9c5cb;
+    transition: .3s;
+}
+
+input[disabled]{
+	cursor: not-allowed !important;
+}
+
+input[disabled]:hover{
+	background: #323232;
+}

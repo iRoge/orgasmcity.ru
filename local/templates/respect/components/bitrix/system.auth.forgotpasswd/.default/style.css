@@ -1,0 +1,151 @@
+div.bx-auth form {
+    padding: 0;
+    margin: 0;
+}
+
+div.bx-auth-line {
+    border-bottom: 1px solid #E3E3E3;
+    padding-bottom: 10px;
+}
+
+div.bx-auth-title {
+    font-size: 140%;
+    border-bottom: solid 2px #E3E3E3;
+    padding-bottom: 12px;
+}
+
+div.bx-auth-note {
+    margin: 18px 0px 6px 0px;
+}
+
+td.bx-auth-label {
+    font-weight: bold;
+}
+
+table.bx-auth-table {
+    margin-top: 8px;
+}
+
+table.bx-auth-table td {
+    padding: 3px 10px 5px 3px;
+}
+
+.forgot-password__input {
+    outline: 0;
+    margin-bottom: 15px;
+    width: 100% !important;
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid #d8d8d8;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'firalight';
+}
+
+.forgot-password input {
+    width: 100% !important;
+}
+
+.form-forgot-password {
+    margin-bottom: 80px;
+}
+
+.forgot-password {
+    width: 500px;
+    margin: 0 auto;
+}
+
+div.bx-auth span.bx-auth-secure {
+    background-color: #FFFAE3;
+    border: 1px solid #DEDBC8;
+    padding: 2px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.bx-auth div.bx-auth-secure-icon {
+    width: 19px;
+    height: 18px;
+}
+
+.bx-auth-table input.bx-auth-input {
+    width: 100% !important;
+    margin: 0;
+}
+
+.bx-auth-table label {
+    color: #999;
+    display: block;
+    float: right;
+    padding-left: 3px;
+    padding-top: 2px;
+}
+
+.mr-30 {
+    margin-right: 30px;
+    display: inline-block;
+    line-height: 16px;
+}
+
+#USER_REMEMBER {
+    display: none;
+}
+
+.label_checkbox {
+    font-size: 15px !important;
+    float: left;
+
+}
+
+.auth_link, .alert {
+    font-family: 'firalight', sans-serif;
+    font-size: 15px;
+    line-height: 30px;
+    color: #4e4e4e;
+    margin: 0 !important;
+}
+
+.auth__social p, .alert {
+    font-size: 13px;
+    text-align: center;
+    margin: 15px 0 0 !important;
+}
+
+.link_reg {
+    float: right;
+}
+
+.bx-auth .blue-btn {
+    margin-top: 30px;
+}
+
+#forgot_password_error {
+    font-family: 'firaregular', sans-serif;
+}
+
+#forgot_password_error p {
+    margin: 0 0 10px !important;
+    color: red;
+}
+
+#sms_code,
+#forgot_password_sms_send {
+    display: none;
+}
+
+#forgot_password_send:disabled {
+    background: #81A0BB !important;
+}
+
+.alert {
+    font-family: 'firalight';
+    font-size: 16px;
+    line-height: 30px;
+    color: #4e4e4e;
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.forgot-password > p {
+    margin: 0 0 10px !important;
+}

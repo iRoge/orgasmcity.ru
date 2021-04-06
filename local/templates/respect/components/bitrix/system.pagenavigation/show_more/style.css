@@ -1,0 +1,7 @@
+.load-more-btn.preloader {
+    color: transparent;
+    background: url('images/bars.svg') center no-repeat;
+    -webkit-background-size: contain;
+    background-size: contain;
+    margin: 0;
+}

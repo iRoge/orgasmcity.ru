@@ -1,0 +1,9 @@
+.navigation ul.navigation-row > li .navigation-submenu.open {
+    display: block;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .navigation nav.navigation-column ul {
+        height: initial;
+    }
+}

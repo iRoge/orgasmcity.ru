@@ -1,0 +1,148 @@
+.product-image {
+    background-color: #fff !important;
+}
+
+.color-selector a.has-img {
+    height: 2.7em;
+    background-repeat: no-repeat;
+}
+
+.color-selector a.selected.has-img {
+    height: 2.43em;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 599px) {
+    body .product-shop-list > header label {
+        width: 100%;
+    }
+}
+
+.product .attributes td .size-selector label {
+    margin-bottom: 0.25em;
+    max-width: 40px;
+}
+
+.product-page__add-to-cart input[type="submit"] {
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+.product-page__add-to-cart input:disabled {
+    border-color: #c0c0c0 !important;
+    background-color: #f4f4f4 !important;
+    color: #c0c0c0 !important;
+    cursor: default;
+}
+
+.product-page__add-to-cart {
+    position: relative;
+}
+
+.product-page__add-to-cart .btn-desc {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 7px;
+    color: #c0c0c0;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.preorder-list-item.selected {
+	border: 1px solid #FD7778;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.one-click-form .input-group{
+	margin-top: .5em;
+}
+
+.one-click-form h1{
+	padding-left: 0px;
+}
+
+
+.size-button-list .half-button:not(.button--outline) {
+	
+}
+
+.size-button-list .half-button {
+	width: 48% !important;
+    float: left;
+    margin: 0 !important;
+}
+
+.size-button-list .half-left {
+	margin-right: 2% !important;
+	letter-spacing: 2px !important;
+}
+
+.size-button-list .half-right {
+	margin-left: 2% !important;
+	letter-spacing: 2px !important;
+}
+
+.size-button-list  .left-label{
+	width: 50%;
+    left: 0%;
+}
+
+.size-button-list  .right-label{
+	width: 50%;
+    left: 50%;
+}
+.sizes-popup-area {
+    margin:10px 0 -5px;
+    text-align:left;
+}
+.sizes-popup-area a {
+    text-transform:uppercase;
+}
+.sizes-popup-block {
+    display:none;
+}
+.popup--size-tab .popup__content > img {
+    max-width:100%;
+    width:auto;
+}
+
+/* reserv popup */
+@media (min-width: 600px) and (max-height: 835px) {
+    .popup__content .product-preorder__media {
+        padding-top: 25vh;
+    }
+}
+@media (min-width: 900px) and (max-height: 685px) {
+    .popup--preorder.popup--overflow {
+        overflow-y: scroll;
+    }
+}
+
+.tab-size-block {
+    color:#000!important;
+}
+.tab-size-block h3 {
+    margin:0!important;
+}
+
+.tab-size-block table {
+    border:1px solid #000;
+    border-collapse: collapse; /*убираем пустые промежутки между ячейками*/
+    width:100%;
+}
+.tab-size-block table th {
+    border:1px solid #000;
+    background:#ccc;
+    padding:5px 10px;
+    text-align:left;
+}
+.tab-size-block table td {
+    border:1px solid #000;
+    padding:5px 10px;
+}
+
+.popup.popup--size-tab {
+    min-width:auto!important;
+}

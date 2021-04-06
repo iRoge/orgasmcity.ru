@@ -1,0 +1,58 @@
+.btn-enroll {
+    display: inline-block;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    font-family: 'firaregular';
+    font-size: 16px;
+    text-transform: uppercase;
+    color: white;
+    background-color: #034078;
+    border: none;
+    line-height: 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-enroll:hover,
+.btn-enroll:visited,
+.btn-enroll:active,
+.btn-enroll:link {
+    color: white;
+    text-decoration: none;
+}
+
+.field_error {
+    color: red;
+}
+
+.close-popup-btn.btn-enroll {
+    display: block;
+    width: 80px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.contest-popup-container {
+    display: block;
+    width: 80%;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 15px;
+    margin-left:auto;
+    margin-right:auto;
+    word-wrap: break-word;
+}
+
+@media(max-width: 767px) {
+    .contest-popup-container {
+        width: 100%;
+        margin-top: 35px;
+    }
+}
+
+.insta_contest_rules {
+    display: inline-block;
+    font-size: 14px;
+    margin: 18px 0px;
+}

@@ -1,5 +1,5 @@
 .idea
-bitrix
+/bitrix
 upload
 cron/logs
 cron/orders_export_logs

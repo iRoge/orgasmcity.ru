@@ -1,0 +1,32 @@
+.js-profile-input-date {
+    background: #F8F8F8 !important;
+}
+
+.js-profile-input-lk {
+    margin-top: 22px !important;
+}
+
+#lk_form h3 {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.error-personal-fields.actual {
+    display: table;
+    color: red;
+    margin-top: 2px;
+    height: 20px;
+    margin-left: 20px;
+}
+
+.error-personal-fields.actual + input,
+.error-personal-fields.actual + span {
+    margin-top: 0 !important;
+}
+
+.personal-result {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 24px;
+    text-decoration: underline;
+}

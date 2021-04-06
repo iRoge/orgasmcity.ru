@@ -1,0 +1,104 @@
+.main_container_subscribe{
+    text-align: center;
+    margin: 50px 0 50px 35%;
+    width: 30%;
+}
+.content_top p{
+ font-weight: bold;
+ color: #8E8787;
+}
+.content_top p:nth-child(2){
+    color: rgb(8, 0, 85);
+    font-size: 13px;
+   }
+   .content_top p:nth-child(3){
+    font-weight: normal;
+    font-size: 11px;
+   }
+   .content_top label{
+    font-weight: normal;
+    font-size: 11px !important;
+   }
+#sender_subscribe_component{
+    padding: 50px;
+    border: 4px solid #034078;
+}
+
+   .content_top input[type=checkbox], input[type=radio] {display: none;}
+
+   .content_top input[type=checkbox] + label:before {
+       content: "\2713";
+       color: transparent;
+       display: inline-block;
+       background: hsl(209, 99%, 31%);
+       color: #fff;
+       font-size: 20px;    
+       line-height: 14px;
+       margin: -5px 5px 0 0;
+       height: 20px;
+       width: 20px;
+       text-align: center;
+       vertical-align: middle;
+       transition: color ease .3s;
+   }
+   
+   .content_top input[type=checkbox]:checked + label:before {
+       color: #fff;
+   }
+   
+   .content_top input[type=radio] + label:before {
+       content: "\26AB";
+       background: hsl(209, 99%, 31%);
+       color: #fff;
+       border-radius: 50%;
+       display: inline-block;
+       font-size: 20px;    
+       line-height: 20px;
+       margin: -5px 5px 0 0;
+       height: 20px;
+       width: 20px;
+       text-align: center;
+       vertical-align: middle;
+       font-size: 0;    
+       transition: font-size ease .3s;
+   }
+   .content_top input[type=radio]:checked + label:before {
+       font-size: 20px;    
+   }
+
+
+.btn-subscribe {
+	cursor: pointer;
+	text-align: center;
+    background: hsl(209, 99%, 31%);
+    color: #fff;
+    border: none;
+    font-size: 11px;
+    font-weight: bold;
+	position: relative;
+	text-transform: uppercase;
+	border-radius: 2px;
+	line-height: 30px;
+	padding: 14px 100px;
+	vertical-align: middle;
+	outline: none;
+	-webkit-transition: width 5s linear;
+	-moz-transition: width 5s linear;
+	-ms-transition: width 5s linear;
+	-o-transition: width 5s linear;
+	transition: width 5s linear;
+}
+
+@keyframes MeilSend {0%{padding:5px 60px 5px 20px}100%{padding:5px 40px}}
+@-webkit-keyframes MeilSend {0%{padding:5px 60px 5px 20px}100%{padding:5px 40px}}
+@keyframes MeilSendSpan {0%{color:transparent;}100%{color:#fff;}}
+@-webkit-keyframes MeilSendSpan {0%{color:transparent;}100%{color:#fff;}}
+@keyframes MeilSendButton {0%{width:40px;background-position:50%}100%{width:0;background-position:100px 50%}}
+@-webkit-keyframes MeilSendButton {0%{width:40px;background-position:50%}100%{width:0;background-position:100px 50%}}
+
+
+
+.bx-sender-subscribe-agreement .main-user-consent-request a {
+	font-weight: 100;
+	font: 11px/10px "Open Sans", Arial, "Helvetica Neue", Helvetica, sans-serif;
+}

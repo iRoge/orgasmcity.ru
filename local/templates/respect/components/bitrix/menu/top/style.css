@@ -1,0 +1,15 @@
+.navigation ul.navigation-row > li .navigation-submenu.open {
+    display: block;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .navigation nav.navigation-column ul {
+        height: initial;
+    }
+}
+/*.left-hide-menu{
+    display: none;
+}
+.left-hide-menu:first-child,.left-hide-menu:nth-child(2){
+    display: block;
+}*/

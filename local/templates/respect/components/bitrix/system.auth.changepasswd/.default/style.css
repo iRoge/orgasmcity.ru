@@ -1,0 +1,37 @@
+.form-forgor-password {
+    margin-bottom: 80px;
+}
+.alert {
+    font-family: 'firalight',sans-serif;
+    line-height: 30px;
+    color: #4e4e4e;
+    font-size: 13px;
+    text-align: center;
+    margin: 15px 0 0!important;
+}
+.js-password {
+    width: 400px;
+    margin: 0 auto;
+}
+@media(max-width: 767px) {
+    .js-password {
+        width: 100%;
+    }
+}
+.js-password input {
+    width: 100% !important;
+}
+.js-password__input {
+    font-family: 'firaregular',sans-serif;
+    padding: 12px 20px;
+    background: white;
+    outline: 0;
+    margin-bottom: 15px;
+    border: 1px solid rgba(200,200,200, .5);
+}
+#forgotten_error {
+    font-family: 'firaregular',sans-serif;
+}
+#forgotten_error p {
+    margin: 0 0 10px !important;
+}

@@ -1,0 +1,72 @@
+.in-auth-form-full {
+    font-family: 'firalight';
+    font-size: 16px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.in-auth-form-full > input {
+    width: 100%;
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid #d8d8d8;
+    margin-bottom: 15px;
+}
+
+.in-auth-form-full p {
+    margin: 0 0 10px !important;
+}
+
+.in-auth-form-full a {
+    color: #337ab7;
+    font-family: 'firaregular';
+    font-size: 16px;
+}
+
+.in-auth-form-full input[type=submit] {
+    background: #034078;
+    text-transform: uppercase;
+    margin-top: 30px;
+    color: #fefefe;
+    font-family: 'firaregular';
+    font-size: 16px;
+}
+
+.in-auth-form-full > .link_reg {
+    float: right;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.in-auth-form-full > #after-auth-in-err-full {
+    color: red;
+}
+
+.in-auth-form-full > #after-auth-in-err-full > p {
+    color: red !important;
+    margin: 0 !important;
+}
+
+.err-phone-email-full {
+    color: red;
+    float: right;
+}
+
+.err-pass-full {
+    color: red;
+    float: right;
+}
+
+@media (min-width: 1280px) {
+    .in-auth-form-full {
+        width: 500px;
+    }
+}
+
+@media (max-width: 767px) {
+    .err-pass-full {
+        width: 180px;
+        position: absolute;
+        right: 0;
+    }
+}
