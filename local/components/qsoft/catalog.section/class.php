@@ -227,6 +227,7 @@ class QsoftCatalogSection extends ComponentHelper
 
     /**
      * @return mixed|void
+     * @throws \Bitrix\Main\LoaderException
      */
     public function executeComponent()
     {
@@ -1459,9 +1460,26 @@ class QsoftCatalogSection extends ComponentHelper
         if ($this->type == 'favorites') {
             $isFavoritesCatalog = true;
         }
+        $rests = [];
+        if (!$isFavoritesCatalog) {
+            $rsStoreProduct = CCatalogProduct::GetList(
+                [],
+                ['ID' => array_keys($this->offers)],
+                false,
+                false,
+                ['ID', 'QUANTITY']
+            );
+            while ($arStoreProduct = $rsStoreProduct->fetch()) {
+                $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+            }
+        }
 
         $items = [];
         foreach ($this->offers as $offerId => $value) {
+            if (!$isFavoritesCatalog && (!isset($rests[$offerId]) || $rests[$offerId] < 1)) {
+                continue;
+            }
+
             $pid = $value["PROPERTY_CML2_LINK_VALUE"];
 
             if (!$items[$pid]) {
