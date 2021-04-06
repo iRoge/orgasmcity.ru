@@ -159,16 +159,7 @@ class Catalog
                 if (intval($store['PROPERTY_STORE_VALUE'])) {
                     $arLocationOnlineStores[$store['NAME']][] = $store['PROPERTY_STORE_VALUE'];
                 }
-//                $store_id = $store['PROPERTY_STORE_VALUE'];
-
-//                foreach ($curStoreId as $key => $store){
-//                    if($key==$store_id){
-//                        unset($curStoreId[$key]);
-//                    }
-//                }
             }
-//            pre($arLocationOnlineStores);
-//            pre($currentLocation);
             unset($rsStores, $currentLocation);
         }
         return $arLocationOnlineStores;

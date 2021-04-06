@@ -72,6 +72,7 @@ class QsoftCatalogSection extends ComponentHelper
         "ID",
         "IBLOCK_ID",
         "IBLOCK_SECTION_ID",
+        "XML_ID",
         "NAME",
         "CODE",
         "DETAIL_PICTURE",
@@ -149,14 +150,12 @@ class QsoftCatalogSection extends ComponentHelper
     /**
      * @var array
      */
-    private array $tag;
     private array $section;
     /**
      * @var array
      */
     private $ibFilter;
     private $urlFilter;
-    private $defaultStoresType = false;
     private $filterArray = [];
     private $disabledOptions;
     private $props = [];
@@ -165,8 +164,8 @@ class QsoftCatalogSection extends ComponentHelper
 
     private $resultItems;
 
-    private $srcSize = ['width' => 300, 'height' => 400];
-    private $srcSizeBig = ['width' => 600, 'height' => 800];
+    private $smallImgHeight = 300;
+    private $bigImgHeight = 600;
 
     private $filtersScopes = [
         'MAX_PRICE' => 0,
@@ -256,8 +255,6 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->arResult['FAVORITES'] = $this->getFavorites(); //загружаем избранное
 
-//        var_dump($_REQUEST);
-//        DIE;
         if ($this->checkActionFavorite()) {
             Functions::exitJson($this->addOrDelFavorite());
         }
@@ -306,9 +303,8 @@ class QsoftCatalogSection extends ComponentHelper
         if (isset($_COOKIE['user_settings'])) {
             $userSettings = explode('~', $_COOKIE['user_settings']);
             $this->arResult['USER_SETTINGS']['SORT'] = $userSettings[0];
-            $this->arResult['USER_SETTINGS']['VIEW'] = $userSettings[1];
-            $this->arResult['USER_SETTINGS']['GRID'] = $userSettings[2];
-            $this->arResult['USER_SETTINGS']['LOCATION_FILTER'] = $userSettings[3];
+            $this->arResult['USER_SETTINGS']['GRID'] = $userSettings[1];
+            $this->arResult['USER_SETTINGS']['LOCATION_FILTER'] = $userSettings[2];
         }
     }
 
@@ -547,6 +543,7 @@ class QsoftCatalogSection extends ComponentHelper
             $arProducts[$arItem["ID"]] = [
                 "ID" => $arItem["ID"],
                 "NAME" => $arItem['NAME'],
+                "XML_ID" => $arItem['XML_ID'],
                 "DETAIL_PICTURE" => $arItem["DETAIL_PICTURE"],
                 "PREVIEW_PICTURE" => $arItem["PREVIEW_PICTURE"],
                 "PROPERTY_ARTICLE_VALUE" => $arItem["PROPERTY_ARTICLE_VALUE"],
@@ -562,11 +559,7 @@ class QsoftCatalogSection extends ComponentHelper
             ];
 
             $arImageIds[] = $arItem["DETAIL_PICTURE"];
-            if (!empty($arItem["PREVIEW_PICTURE"])) {
-                $arImageIds[] = $arItem["PREVIEW_PICTURE"];
-            }
         }
-
         if (!empty($arImageIds)) {
             $res = FileTable::getList([
                 "select" => [
@@ -584,9 +577,19 @@ class QsoftCatalogSection extends ComponentHelper
             $arImages = [];
             $arImagesBig = [];
             while ($arItem = $res->Fetch()) {
-                $resizeSrc = Functions::ResizeImageGet($arItem, $this->srcSize, BX_RESIZE_IMAGE_EXACT);
-                $resizeSrcBig = Functions::ResizeImageGet($arItem, $this->srcSizeBig, BX_RESIZE_IMAGE_EXACT);
                 $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
+                $image = new \Bitrix\Main\File\Image($_SERVER["DOCUMENT_ROOT"] . $src);
+                $k = $image->getExifData()['COMPUTED']['Width'] / $image->getExifData()['COMPUTED']['Height'];
+                $smallSizes = [
+                    'height' => $this->smallImgHeight,
+                    'width' => $k * $this->smallImgHeight,
+                ];
+                $bigSizes = [
+                    'height' => $this->bigImgHeight,
+                    'width' => $k * $this->bigImgHeight,
+                ];
+                $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes, BX_RESIZE_IMAGE_EXACT);
+                $resizeSrcBig = Functions::ResizeImageGet($arItem, $bigSizes, BX_RESIZE_IMAGE_EXACT);
                 if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
                     continue;
                 }
@@ -602,10 +605,6 @@ class QsoftCatalogSection extends ComponentHelper
                         unset($arProducts[$id]);
                     }
                     continue;
-                }
-                if (!empty($arImages[$arItem["PREVIEW_PICTURE"]])) {
-                    $arItem["PREVIEW_PICTURE_BIG"] = $arImagesBig[$arItem["PREVIEW_PICTURE"]];
-                    $arItem["PREVIEW_PICTURE"] = $arImages[$arItem["PREVIEW_PICTURE"]];
                 }
             }
         }
@@ -654,7 +653,7 @@ class QsoftCatalogSection extends ComponentHelper
         $this->offers = $arOffers;
     }
 
-    private function processOffers($res)
+    private function processOffers($res): array
     {
         $arOffers = [];
         while ($arItem = $res->Fetch()) {
@@ -687,9 +686,11 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function checkActionFavorite()
     {
-        if (isset($_REQUEST['favorites'])) {
+        if (isset($_REQUEST['changeFavourite'])) {
             return true;
         }
+
+        return false;
     }
 
     private function addOrDelFavorite()
@@ -748,7 +749,7 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             }
         }
-        $this->setFavoritesId(array_intersect_key($this->arResult['FAVORITES'], $arActualProducts));
+        $this->setFavorites(array_intersect_key($this->arResult['FAVORITES'], $arActualProducts));
         return array_intersect_key($this->arResult['FAVORITES'], $arActualProducts);
     }
 
@@ -1236,74 +1237,6 @@ class QsoftCatalogSection extends ComponentHelper
         return $arProducts;
     }
 
-    private function filterEmptyTags($tags)
-    {
-        global $LOCATION;
-        $availableOffers = $LOCATION->getRests(array_keys($this->offers));
-        $arOffers = [];
-        foreach ($availableOffers as $key => $offer) {
-            // Фильтруем офферы без остатка
-            $arOffers[$this->offers[$key]['PROPERTY_CML2_LINK_VALUE']][] = $this->offers[$key]['PROPERTY_SIZE_VALUE'];
-        }
-        $products = $this->products;
-        $prices = $LOCATION->getProductsPrices(array_keys($products));
-        foreach ($products as $key => $prod) {
-            // Удаляем продукты без остатков
-            if (isset($arOffers[$key])) {
-                $products[$key]['PROPERTY_SIZES_VALUE'] = $arOffers[$key];
-            } else {
-                unset($products[$key]);
-                continue;
-            }
-            // Присваеваем цены
-            if (isset($prices[$key]['PRICE'])) {
-                $products[$key]['PRICE'] = $prices[$key]['PRICE'];
-            }
-            $products[$key]['PROPERTY_ARTICLE_VALUE'] = array($prod['PROPERTY_ARTICLE_VALUE']);
-        }
-        foreach ($tags as $key => $tag) {
-            $filteredItems = array_filter($products, function ($elem) use ($tag) {
-                foreach ($tag as $key2 => $prop) {
-                    if (strpos($key2, 'PROPERTY') === false || empty($prop) || $prop == '' || $prop == null) {
-                        continue;
-                    }
-                    if ($key2 == 'PROPERTY_PRICE_FROM_VALUE') {
-                        if ($prop > $elem['PRICE']) {
-                            return false;
-                        }
-                        continue;
-                    }
-                    if ($key2 == 'PROPERTY_PRICE_TO_VALUE') {
-                        if ($prop < $elem['PRICE']) {
-                            return false;
-                        }
-                        continue;
-                    }
-                    if ($key2 == 'PROPERTY_SIZES_VALUE' || $key2 == 'PROPERTY_COLORS_VALUE') {
-                        $checkSizes = false;
-                        foreach ($elem[$key2] as $option) {
-                            if (in_array($option, $prop)) {
-                                $checkSizes = true;
-                            }
-                        }
-                        if (!$checkSizes) {
-                            return false;
-                        }
-                        continue;
-                    }
-                    if (!in_array($elem[$key2], $prop)) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-            if (empty($filteredItems)) {
-                unset($tags[$key]);
-            }
-        }
-        return $tags;
-    }
-
     private function getGroupOffers()
     {
         $offers = [];
@@ -1330,7 +1263,6 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function loadOffersByFilter()
     {
-        $arOffers = [];
         $res = CIBlockElement::GetList(
             [
                 "SORT" => "ASC",
@@ -1349,198 +1281,6 @@ class QsoftCatalogSection extends ComponentHelper
         $arOffers = $this->processOffers($res);
 
         return $arOffers;
-    }
-
-    private function getTag()
-    {
-        $tag = [];
-        if ($this->initCache('tag')) {
-            $tag = $this->getCachedVars('tag');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $tag = $this->loadTag();
-
-            if (!empty($tag)) {
-                $this->endTagCache();
-                $this->saveToCache('tag', $tag);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
-        if (empty($tag)) {
-            return Functions::abort404();
-        }
-        $this->tag = $tag;
-
-        return true;
-    }
-
-    private function loadTag()
-    {
-        $tag = [];
-        if (!empty($this->code)) {
-            $dbTag = CIBlockElement::GetList(
-                [],
-                [
-                    'IBLOCK_ID' => IBLOCK_TAGS,
-                    'CODE' => $this->code,
-                    'ACTIVE' => 'Y',
-                ],
-                false,
-                false,
-                [
-                    'ID',
-                    'IBLOCK_ID',
-                    'NAME',
-                    'DETAIL_PAGE_URL',
-                    'IBLOCK_SECTION_ID',
-                    'DETAIL_TEXT',
-                    'PROPERTY_PRICE_FROM',
-                    'PROPERTY_PRICE_TO',
-                    'PROPERTY_ARTICLE',
-                    'PROPERTY_OFFERS_SIZE',
-                    'PROPERTY_LININGMATERIAL',
-                    'PROPERTY_UPPERMATERIAL',
-                    'PROPERTY_RHODEPRODUCT',
-                    'PROPERTY_SEASON',
-                    'PROPERTY_COLOR',
-                    'PROPERTY_SUBTYPEPRODUCT',
-                    'PROPERTY_COLORS',
-                    'PROPERTY_HEELHEIGHT_TYPE',
-                    'PROPERTY_COUNTRY',
-                    'PROPERTY_ZASTEGKA',
-                    'PROPERTY_STYLE',
-                    'PROPERTY_BRAND',
-                    'PROPERTY_MATERIALSTELKI',
-                    'PROPERTY_VIDKABLUKA',
-                ]
-            );
-
-            while ($tag = $dbTag->GetNext(true, false)) {
-                if (strpos($tag['DETAIL_PAGE_URL'], $this->arParams['SECTION_URL']) !== false) {
-                    break;
-                }
-            }
-        }
-
-        return $tag ?: [];
-    }
-
-    private function getTagFilters()
-    {
-        list($productPropertiesMap, $offersPropertiesMap) = array_values($this->getPropertiesMap());
-
-        $filter = [
-            'PRODUCT' => ['IBLOCK_ID' => IBLOCK_CATALOG, 'ACTIVE' => 'Y'],
-            'OFFER' => ['IBLOCK_ID' => IBLOCK_OFFERS, 'ACTIVE' => 'Y'],
-            'RESULT' => [],
-        ];
-
-        foreach ($productPropertiesMap as $property) {
-            if (!empty($this->tag[$property . '_VALUE'])) {
-                $filter['PRODUCT'][$property] = $this->tag[$property . '_VALUE'];
-            }
-        }
-
-        foreach ($offersPropertiesMap as $key => $value) {
-            if (!empty($this->tag[$key . '_VALUE'])) {
-                $filter['OFFER'][$value] = $this->tag[$key . '_VALUE'];
-            }
-        }
-
-        $this->getFilterArticles($filter);
-
-        /**
-         * обработка размеров
-         */
-        $this->getFilterSizes($filter);
-
-        /**
-         * обработка секций
-         */
-        $this->getTagSections($filter);
-
-        $this->getFilterPrices($filter, $this->tag);
-
-        $this->ibFilter = $filter;
-    }
-
-    private function getTagSections(array &$filter)
-    {
-        $urlArray = explode('/', rtrim($this->arParams['SECTION_URL'], '/'));
-        $code = $urlArray[count($urlArray) - 2];
-
-        $arSection = [];
-
-        if (!empty($code)) {
-            $arSection = $this->getCurrentSection($code);
-        }
-
-        $this->section = $arSection;
-        $relatedSections = $this->loadRelatedSections($arSection);
-
-        if (!empty($relatedSections)) {
-            $filter['PRODUCT']['IBLOCK_SECTION_ID'] = $relatedSections;
-        }
-    }
-
-    private function getTagProducts()
-    {
-        $products = [];
-
-        if (empty($this->props)) {
-            $this->props = $this->getPropertyValues();
-        }
-        if ($this->initCache('tag_products' . $this->code)) {
-            $products = $this->getCachedVars('products');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $products = $this->loadProductsByFilter();
-
-            if (!empty($products)) {
-                $this->endTagCache();
-                $this->saveToCache('products', $products);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
-        $this->products = $products;
-    }
-
-    private function getTagOffers()
-    {
-        $offers = [];
-        if ($this->initCache('tag_offers' . $this->code)) {
-            $offers = $this->getCachedVars('offers');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $offers = $this->loadOffersByFilter();
-
-            if (!empty($offers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers', $offers);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
-        $this->offers = $offers;
-    }
-
-    private function filterSearch($v)
-    {
-        return stristr($v, $this->arParams['SEARCH']);
     }
 
     private function buildSearchFilter()
@@ -1658,92 +1398,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
     }
 
-    private function getPromoFilter()
-    {
-        $this->ibFilter = [
-            'PRODUCT' => [
-                'IBLOCK_ID' => IBLOCK_CATALOG,
-                'ACTIVE' => $this->isPreorder ? '' : 'Y'
-            ],
-            'OFFER' => [
-                'IBLOCK_ID' => IBLOCK_OFFERS,
-                'ACTIVE' => $this->isPreorder ? '' : 'Y'
-            ],
-            'RESULT' => [],
-        ];
-
-        $this->ibFilter['PRODUCT']['!' . self::PROMO_TYPES[$this->type]] = false;
-
-        if (!empty($this->code)) {
-            $section = $this->getCurrentSection($this->code);
-            if (!empty($section)) {
-                $relatedSections = $this->loadRelatedSections($section);
-                $this->ibFilter['PRODUCT']['IBLOCK_SECTION_ID'] = $relatedSections;
-            } else {
-                return Functions::abort404();
-            }
-        }
-
-        return true;
-    }
-
-    private function getPromoProducts()
-    {
-        if (empty($this->props)) {
-            $this->props = $this->getPropertyValues();
-        }
-
-        $currentSection = [];
-        $products = [];
-        if ($this->initCache('promo_products')) {
-            list($products, $currentSection) = $this->getCachedVars('products');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-            if ($this->code) {
-                $currentSection = $this->getCurrentSection($this->code)['ID'];
-            } else {
-                $currentSection = $this->getSecondLevelSections();
-            }
-            $products = $this->loadProductsByFilter();
-
-            if (!empty($products)) {
-                $this->endTagCache();
-                $this->saveToCache('products', [$products, $currentSection]);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
-        $this->arResult['SECTION_ID'] = $currentSection;
-        $this->products = $products;
-    }
-
-    private function getPromoOffers()
-    {
-        $offers = [];
-
-        if ($this->initCache('promo_offers')) {
-            $offers = $this->getCachedVars('offers');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-
-            $offers = $this->loadOffersByFilter();
-
-            if (!empty($offers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers', $offers);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
-        $this->offers = $offers;
-    }
-
     private function prepareCatalogResult(): void
     {
         if (isset($_REQUEST['getFilters'])) {
@@ -1827,8 +1481,8 @@ class QsoftCatalogSection extends ComponentHelper
 
             if ($value["PROPERTY_BASEPRICE_VALUE"]) {
                 $items[$pid]['PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"];
-                $items[$pid]['OLD_PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"];
-                $items[$pid]['PERCENT'] = 100 - $value['PROPERTY_BASEPRICE_VALUE'] * 100 / $value['PROPERTY_BASEPRICE_VALUE'];
+                $items[$pid]['OLD_PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"] + 1000;
+                $items[$pid]['PERCENT'] = (int)(100 - $items[$pid]['PRICE'] * 100 / $items[$pid]['OLD_PRICE']);
                 $items[$pid]['SEGMENT'] = 'red';
             }
 
@@ -1849,48 +1503,15 @@ class QsoftCatalogSection extends ComponentHelper
         return $this->items;
     }
 
-    /**
-     * Возвращает идентификаторы складов, в которых есть остатки по резерву, на основе массива остатков по складам
-     * ["товарID" => ["складID" => [...]]]
-     *
-     * @param array $rests
-     *
-     * @return array
-     */
-    private function getActiveStorages(array $rests)
-    {
-        $res = [];
-        foreach ($rests as $rest) {
-            foreach ($rest as $storageId => $value) {
-                $res[$storageId] = $storageId;
-            }
-        }
-        return array_unique($res);
-    }
-
-    /**
-     * Сравнивает массивы на равенство по значениям
-     *
-     * @param $arr1
-     * @param $arr2
-     *
-     * @return bool
-     */
-    private function checkArrayEqual($arr1, $arr2)
-    {
-        return (is_array($arr1) && is_array($arr2) && count($arr1) == count($arr2) && array_diff($arr1, $arr2) === array_diff($arr2, $arr1));
-    }
-
     private function getFilterFromUrl()
     {
-        $filter = ['STORES' => $this->defaultStoresType];
-
+        $filter = [];
         $query = $this->request->getQueryList();
         if ($query->get('set_filter') === 'Y') {
             foreach (self::PRODUCT_PROPERTIES as $urlKey => $filterKey) {
                 if ($params = $query->get($urlKey)) {
                     $params = explode(',', $params);
-                    if (in_array($urlKey, array_keys(self::PRICES))) {
+                    if (in_array($urlKey, array_keys(self::NUMBER_FILTERS))) {
                         $params = intval(array_pop($params));
                     }
                     $filter[$filterKey] = $params;
@@ -2004,11 +1625,11 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getDisabledOptions()
     {
-        $this->getFilterArray();
+        global $APPLICATION;
+        $APPLICATION->RestartBuffer();
         $availableOptions = $this->getAvailableFilterOptions();
-        $filterArray = [];
 
-        foreach ($filterArray as $key => $options) {
+        foreach ($this->filterArray as $key => $options) {
             if (!array_key_exists($key, $availableOptions)) {
                 $this->disabledOptions[$key] = $options;
             } else {
@@ -2122,32 +1743,13 @@ class QsoftCatalogSection extends ComponentHelper
             foreach ($filterArray as $option) {
                 $tmpFilter = $currentFilter;
                 $tmpFilter[$filterKey] = [];
-
+                $tmpFilter[$filterKey][] = $option;
                 if ($this->checkActiveCheckbox($items, $tmpFilter)) {
                     $filter[$filterKey][] = $option;
                 }
             }
         }
 
-        $items = $this->resultItems;
-
-        foreach ($items as $item) {
-            if (!isset($filter['MIN_PRICE'])) {
-                $filter['MIN_PRICE'] = $item['PRICE'];
-            } else {
-                if ($item['PRICE'] < $filter['MIN_PRICE']) {
-                    $filter['MIN_PRICE'] = $item['PRICE'];
-                }
-            }
-
-            if (!isset($filter['MAX_PRICE'])) {
-                $filter['MAX_PRICE'] = $item['PRICE'];
-            } else {
-                if ($item['PRICE'] > $filter['MAX_PRICE']) {
-                    $filter['MAX_PRICE'] = $item['PRICE'];
-                }
-            }
-        }
         return $filter;
     }
 
@@ -2162,9 +1764,20 @@ class QsoftCatalogSection extends ComponentHelper
             if (isset($arFilter['MIN_PRICE'])) {
                 $comp = $item['PRICE'] >= $arFilter['MIN_PRICE'];
             }
-
             if (isset($arFilter['MAX_PRICE'])) {
                 $comp = $comp && $item['PRICE'] <= $arFilter['MAX_PRICE'];
+            }
+            if (isset($arFilter['MAX_DIAMETER'])) {
+                $comp = $comp && $item['PROPERTY_DIAMETER_VALUE'] <= $arFilter['MAX_DIAMETER'];
+            }
+            if (isset($arFilter['MIN_DIAMETER'])) {
+                $comp = $comp && $item['PROPERTY_DIAMETER_VALUE'] >= $arFilter['MIN_DIAMETER'];
+            }
+            if (isset($arFilter['MAX_LENGTH'])) {
+                $comp = $comp && $item['PROPERTY_LENGTH_VALUE'] <= $arFilter['MAX_LENGTH'];
+            }
+            if (isset($arFilter['MIN_LENGTH'])) {
+                $comp = $comp && $item['PROPERTY_LENGTH_VALUE'] >= $arFilter['MIN_LENGTH'];
             }
 
             if (!$comp) {
@@ -2217,7 +1830,7 @@ class QsoftCatalogSection extends ComponentHelper
         $this->arResult['SORT_ARRAY'] = [
             self::SORT_PRICE_DESC => 'Цена по убыванию',
             self::SORT_PRICE_ASC => 'Цена по возрастанию',
-            self::SORT_POPULAR => 'По популярности',
+//            self::SORT_POPULAR => 'По популярности',
             self::SORT_NEW => 'По новизне',
             self::SORT_DEFAULT => 'По умолчанию',
         ];
@@ -2270,16 +1883,10 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $sortParams = [
             [
-                'sort_key' => 'SORT',
+                'sort_key' => 'XML_ID',
                 'sort' => 100,
                 'rnd_sort' => 0,
-                'order' => 'asc'
-            ],
-            [
-                'sort_key' => 'COLLECTION_SORT',
-                'sort' => 200,
-                'rnd_sort' => 0,
-                'order' => 'asc'
+                'order' => 'desc'
             ],
         ];
 
@@ -2300,8 +1907,8 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         if ($lastNotEqualSortParam === false) {
-            // Если элементы с одинаковой сортировкой, то сортирует по RND_SORT по возрастанию
-            return $a['RND_SORT'] ? 1 : -1;
+            // Если элементы с одинаковой сортировкой, то сортирует по XML_ID по убыванию
+            return $b['XML_ID'] <=> $a['XML_ID'];
         }
 
         if ($lastNotEqualSortParam['order'] == 'desc') {

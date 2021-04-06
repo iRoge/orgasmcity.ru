@@ -10,7 +10,6 @@
                 + '</div>';
 
             Popup.show(html);
-            sendYandexMetrkiaGoal('instashopping_popup');
         });
         $('.js-lis-section').on('click', ' .js-load-more-btn', function (e) {
             e.preventDefault();
@@ -24,9 +23,6 @@
                 section.find('.js-show-more-box').remove();
                 section.append(html);
             });
-        });
-        $(document).on('click', '.lis-full__button', function() {
-            sendYandexMetrkiaGoal('instashopping2product');
         });
     });
 })(jQuery);

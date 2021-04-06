@@ -200,7 +200,6 @@ $(window).on('pageshow site-ajax', function() {
 				goalParams = respectMetrkiaGoal[i].params;
 			}
 
-			sendYandexMetrkiaGoal(goalName, goalParams);
 
 			if ('function' === typeof window['respercEvent__'+goalName]) {
 				window['respercEvent__'+goalName]();
@@ -337,18 +336,6 @@ $(window).on('pageshow site-ajax', function() {
 		initFileField($('.popup'));
 	}
 
-	$(document).on('basket-small-data', function(event, response) {
-		if (! response || ! response.hasOwnProperty('ITEMS')) {
-			return;
-		}
-
-		window.flocktory = window.flocktory || [];
-		window.flocktory.push(['updateCart', {
-			cart: {
-				items: response.ITEMS
-			}
-		}]);
-	});
 	$(document).on('change', 'input[type="file"]', function(e) {
 		$('body').addClass('disable--popup-overlay-close');
 		setTimeout(function() {
@@ -417,31 +404,6 @@ function respercEvent__add_to_cart()
 	Popup.show(popupContent, {
 		className: 'popup--feedback'
 	});
-
-	sendYandexMetrkiaGoal('add-to-cart');
-}
-
-function flocktory__add_to_cart(data){
-	window.flocktory = window.flocktory || [];
-	window.flocktory.push(['addToCart', {
-		item:{
-			"id": data.ID,
-			"price": data.PRICE,
-			"count": data.QUANTITY,
-			"brand": data.BRAND,
-			"categoryId": data.CATEGORY_ID,
-		}
-	}]);
-}
-
-function flocktory__remove_from_cart(data){
-	window.flocktory = window.flocktory || [];
-	window.flocktory.push(['removeFromCart', {
-		item:{
-			"id": data.ID,
-			"count": data.QUANTITY,
-		}
-	}]);
 }
 
 // скрипт редиректа по нажатие на кнопку в корзине
@@ -528,18 +490,9 @@ function respectOptionsBannersProcess(banners, utmList) {
 					className: 'popup--banner' + (response.use_subscribe ? ' popup--banner-with-subscribe' : '')
 				});
 
-				sendYandexMetrkiaGoal('popup-panner-open', {popup: response.name});
-				$('.popup--banner .js-banner-link').on('click', function() {
-					sendYandexMetrkiaGoal('popup-panner-click', {popup: response.name});
-				});
 				if (response.use_subscribe) {
 					var subscribe = new window.Subscribe('#subscribe-popup');
 				}
-
-				sendYandexMetrkiaGoal('popup-panner-open', {popup: response.name});
-				$('.popup--banner .js-banner-link').on('click', function() {
-					sendYandexMetrkiaGoal('popup-panner-click', {popup: response.name});
-				});
 
 				if (response.js) {
 					eval(response.js);
@@ -582,11 +535,8 @@ function checkPageMetrkiaGoals()
 	}
 	goalTitle = $.trim(goalTitle);
 
-	if ($('body').is('.page--action')) {
-		sendYandexMetrkiaGoal('page-action', {action: goalTitle});
-	} else if ($('body').is('.page--group')) {
+	if ($('body').is('.page--group')) {
 		goalTitle += ' - '+ window.location.pathname.split('/')[2];
-		sendYandexMetrkiaGoal('page-group', {group: goalTitle});
 	}
 }
 

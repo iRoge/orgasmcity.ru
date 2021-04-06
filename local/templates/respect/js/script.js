@@ -21,14 +21,12 @@ $(function(){
     $('.mail-div').toggle(0);
     $('.podlozhka').toggle(0);
     $('.mail-div .popup').show(0);
-	sendYandexMetrkiaGoal('feedback-open');
   });
 
   $('.obr').click(function(){
     $('.mail-div').toggle(0);
     $('.podlozhka').toggle(0);
     $('.mail-div .popup').show(0);
-  sendYandexMetrkiaGoal('feedback-open');
   });
 
 
@@ -1298,10 +1296,7 @@ $(document).ready(function () {
   $(document).on('click', '.heart__btn', function () {
     let button = $(this);
     button.toggleClass('active');
-    if (button.hasClass('rr-heart__btn')) {
-      return;
-    }
-    BX.ajax.post('/catalog/favorites/', 'favorites=Y&ID=' + $(this).data('id'), function (response) {
+    BX.ajax.post('/catalog/favorites/', 'changeFavourite=Y&ID=' + $(this).data('id'), function (response) {
       response = JSON.parse(response);
       if (response.res == 'error') {
         button.toggleClass('active');
@@ -1310,67 +1305,12 @@ $(document).ready(function () {
         let count = Number($('.count--heart.in-full').text());
         if (response.res == 'add') {
           $('.count--heart').text(++count);
-          sendYandexMetrkiaGoal('add_favorites');
         } else {
           $('.count--heart').text(--count);
-          sendYandexMetrkiaGoal('del_favorites');
         }
       }
     });
   });
-  $(document).on('click', '.favorites_header', function () {
-    sendYandexMetrkiaGoal('open_favorites');
-  });
-
-  //TODO дикая дичь. Попробовать переделать.
-  if (window.matchMedia('(max-width: 767px)').matches) {
-    let mgoObs = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        mutation.addedNodes.forEach(function (e) {
-          let m = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mu) {
-              mu.addedNodes.forEach(function (ee) {
-                let mgoCallBtn = ee.querySelector('.mgo-mcw__button_cb');
-                let mgoCallBtnSt = new StickyButton(mgoCallBtn, 3);
-                mgoCallBtnSt.init();
-
-                mgoCallBtn = ee.querySelector('.mgo-mcw__group-buttons');
-                mgoCallBtnSt = new StickyButton(mgoCallBtn, 3);
-                mgoCallBtnSt.init();
-
-                window.StickyButton.update();
-
-                m.disconnect();
-                mgoObs.disconnect();
-
-                const obs = new MutationObserver(function (mutations) {
-                  mutations.forEach(function (mutation) {
-                    mutation.addedNodes.forEach(function (e) {
-                      if (e.classList.contains('mgo-mcw__button')) {
-                        if (window.matchMedia('(max-width: 767px)').matches) {
-                          let mgoCallBtn = document.querySelector('.mgo-mcw__button_cb');
-                          let mgoCallBtnSt = new StickyButton(mgoCallBtn, 3);
-                          mgoCallBtnSt.init();
-
-                          window.StickyButton.update();
-                        }
-                      }
-                    });
-                  });
-                });
-
-                obs.observe(document.querySelector('#mgo-mcw-callback'), {childList: true});
-              })
-            })
-          });
-
-          m.observe(e.lastChild, {childList: true})
-        });
-      });
-    });
-
-    mgoObs.observe(document.querySelector('body'), {childList: true});
-  }
 });
 
 //Прикрепление маски на поле ввода телефона

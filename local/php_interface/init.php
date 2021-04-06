@@ -3,7 +3,8 @@ use Bitrix\Main\EventManager;
 use Bitrix\Main\Loader;
 
 ini_set('max_execution_time', 0);
-ini_set('ignore_user_abort', 1);
+ignore_user_abort(true);
+set_time_limit(0);
 Loader::includeModule('iblock');
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/constants.php');
@@ -49,21 +50,17 @@ function process404()
 }
 
 if (!function_exists("pre")) {
-    function pre($var, $die = false, $all = false)
+    function pre($var)
     {
-        global $USER;
-        if ($USER->IsAdmin() || $all == true) {
-            ob_start();
-            var_dump($var);
-            $dump = ob_get_clean();
-            mb_internal_encoding('utf-8'); ?>
-            <font style="text-align: left; font-size: 12px">
-                <pre><?=$dump?></pre>
-            </font><br>
-            <?
-        }
-        if ($die) {
-            die;
-        }
+        global $APPLICATION;
+        $APPLICATION->RestartBuffer();
+        ob_start();
+        var_dump($var);
+        $dump = ob_get_clean();
+        mb_internal_encoding('utf-8'); ?>
+        <font style="text-align: left; font-size: 12px">
+            <pre><?=$dump?></pre>
+        </font><br>
+        <?php
     }
 }

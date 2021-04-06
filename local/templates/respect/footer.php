@@ -89,7 +89,7 @@
                         <p>Единая справочная</p>
                     </div>
                     <div class="col-sm-12 col-xs-6 num2">
-                        <h3><a href="tel:<?=$GLOBALS['LOCATION']->getRegionPhone()?>"><?=$GLOBALS['LOCATION']->getRegionPhone()?></a></h3>
+                        <h3><a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></h3>
                         <p>Интернет-магазин</p>
                     </div>
                     <div class="col-xs-12 social">
@@ -131,7 +131,7 @@
         </div>
         <div class="col-sm-12 bottom-mob">
             <p class="copy-shop-mob">
-                2012-<?= date('Y'); ?> ©Интернет-магазин обуви и аксессуаров Respect. Все права защищены.
+                2020-<?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
             </p>
         </div>
 
@@ -142,7 +142,7 @@
 <div class="col-xs-12 bottom">
     <div class="main">
         <p class="copy-shop col-xs-8">
-            2012-<?= date('Y'); ?> ©Интернет-магазин обуви и аксессуаров Respect. Все права защищены.
+            2020-<?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
         </p>
     </div>
 </div>
@@ -153,19 +153,12 @@ $waProlog = COption::GetOptionString('respect', 'whatsapp_text');
 $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 ?>
 
-
-
 <?php if ($waAllowShow) : ?>
 <a href="<?= "https://wa.me/$waPhone?text=$waProlog" ?>" class="whatsap-call-btn js-whatsapp" aria-label="Напишите нам в WhatSap"></a>
 
 <?php endif; ?>
 
 <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
-<? if (env("useMetric", true)) : ?>
-    <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/counters.php"), false);?>
-    <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/criteo.php"), false);?>
-<? endif ?>
-
 <script>
 (function () {
     let regForm   = $('#reg-form-popup'),
@@ -305,7 +298,6 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         ?>
     </div>
 </div>
-<? setPoddomenSeoTags(); //проверяет наличие seo мета-тегов в ИБ Поддомены и устанавливает их?>
 
 <? if ($_COOKIE['seller_id']) {
     $APPLICATION->IncludeComponent(
@@ -316,19 +308,6 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
             "CACHE_TYPE" => "A",
         )
     );
-}
-
-$mangoShow = COption::GetOptionString('respect', 'mango_show');
-if ($mangoShow) : ?>
-<script>
-    (function(w, d, u, i, o, s, p) {
-        if (d.getElementById(i)) { return; } w['MangoObject'] = o;
-        w[o] = w[o] || function() { (w[o].q = w[o].q || []).push(arguments) }; w[o].u = u; w[o].t = 1 * new Date();
-        s = d.createElement('script'); s.async = 1; s.id = i; s.src = u; s.charset = 'utf-8';
-        p = d.getElementsByTagName('script')[0]; p.parentNode.insertBefore(s, p);
-    }(window, document, '//widgets.mango-office.ru/widgets/mango.js', 'mango-js', 'mgo'));
-    mgo({multichannel: {id: 9223}});
-</script>
-<? endif; ?>
+}?>
 </body>
 </html>

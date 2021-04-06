@@ -29,7 +29,6 @@ $(function () {
                 $subscribe = form.closest('.js-subscribe-new');
                 if ($subscribe.find('.subscribe-message').length > 0) {
                     $subscribe.addClass('subscribe--success');
-                    sendYandexMetrkiaGoal('subscribe-footer');
                 }
             });
         }

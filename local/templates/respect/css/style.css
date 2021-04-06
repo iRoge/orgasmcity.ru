@@ -8103,12 +8103,12 @@ input::-webkit-inner-spin-button {
 .card__img::before {
   content: "";
   display: block;
-  padding-bottom: 125%;
+  padding-bottom: 100%;
 }
 
 .card__img-box {
   align-items: center;
-
+  max-height: 60%;
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -8140,34 +8140,21 @@ input::-webkit-inner-spin-button {
 }
 
 .card__img-pic {
-  width:100%;
   color: transparent;
-
-}
-.card__img-pic.pic-active {
-  display: block;
-  position: inherit;
-}
-.card__img-pic.pic-hide {
-  display: block;
-  visibility: hidden;
   position: absolute;
-}
-
-.card__img:hover .card__img-pic.pic-active:not(.pic-one) {
-  display: none;
-}
-.card__img:hover .card__img-pic.pic-hide {
-  display: block;
-  visibility: visible;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100%;
 }
 
 .card__info {
+  text-align: center;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   flex-grow: 1;
-  padding: 1.8em .3125em 0 .3125em;
+  padding: 0 .3125em;
 }
 
 .card__title {
@@ -8208,6 +8195,8 @@ input::-webkit-inner-spin-button {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .card__price {
@@ -9553,10 +9542,9 @@ input::-webkit-inner-spin-button {
   padding: 7px;
   margin-left: auto;
   position: absolute;
-  bottom: 66px;
-  left: 50%;
+  left: 0;
+  top: 0;
   z-index: 10;
-  transform: translate(-50%);
 }
 
 .right-cartochka__top-block .heart__btn{
@@ -9578,7 +9566,6 @@ input::-webkit-inner-spin-button {
   }
   .heart__btn {
     position: absolute;
-    bottom: 111px;
   }
   .rr-item__info-wrap .heart__btn {
     margin-top: -40px;
@@ -9601,7 +9588,7 @@ input::-webkit-inner-spin-button {
 
 .heart__btn.active svg,
 .heart__btn.active:hover svg {
-  fill: #e6a949;
+  fill: red;
 }
 
 .heart__btn:hover svg {
@@ -9794,6 +9781,10 @@ input::-webkit-inner-spin-button {
   .mgo-mcw-widget_position-right .mgo-mcw__button-close {
     right: -5px !important;
     top: -35px !important;
+  }
+
+  .card__img-box {
+    max-height: 75%;
   }
 }
 

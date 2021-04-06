@@ -16,7 +16,6 @@ $('.button-vacancies').click(function () {
     $('.mail-div').toggle(0);
     $('.podlozhka').toggle(0);
     $('.mail-div .popup').show(0);
-    sendYandexMetrkiaGoal('feedback-open');
 
     $('.feedback-selectize').attr('onmousedown', 'return false;');
     $('.feedback-selectize').attr('onkeydown', 'return false;');

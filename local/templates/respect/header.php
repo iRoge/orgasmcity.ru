@@ -107,9 +107,6 @@
 
 
     ?>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBS2jmmM_gqSotmatW-pvrDne7xSWDBhRw&callback=initMap"
-            async defer></script>
-    <script type="text/javascript" src="https://api.flocktory.com/v2/loader.js?site_id=2648" async="async"></script>
     <script type="text/javascript" data-skip-moving="true" >
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(

@@ -129,13 +129,6 @@ if (!$arResult['IS_AJAX']) :
                             <!-- /sort -->
                             <!-- view -->
                             <div class="catalog__view view js-view">
-                                <span class="view__item catalog-change-image <?= $arResult['USER_SETTINGS']['VIEW'] == 'true' ? 'active' : '' ?>">
-                                    <span class="view__item-icon view__item-icon--all">
-                                        <? if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/img/svg/boot-arrows.svg')) {
-                                            include $_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/img/svg/boot-arrows.svg';
-                                        } ?>
-                                    </span>
-                                </span>
                                 <span class="view__item catalog-sort catalog-sort--mobile-icon">
                                     <span class="view__item-icon view__item-icon--device">
                                         <? if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/img/svg/sort-arrows.svg')) {
@@ -321,7 +314,7 @@ if (!$arResult['IS_AJAX']) :
                                             <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>>
                                                 <div class="from">
                                                     <span>От</span>
-                                                    <input id="min_<?=strtolower($filterKey)?>" class="js-price-from" type="text" name="min_<?=strtolower($filterKey)?>"
+                                                    <input id="min_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="min_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MIN_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
@@ -329,7 +322,7 @@ if (!$arResult['IS_AJAX']) :
                                                 </div>
                                                 <div class="to">
                                                     <span>До</span>
-                                                    <input id="max_<?=strtolower($filterKey)?>" class="js-price-to" type="text" name="max_<?=strtolower($filterKey)?>"
+                                                    <input id="max_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="max_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MAX_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
@@ -388,22 +381,6 @@ if (!$arResult['IS_AJAX']) :
                                                             <?=$color['VALUE']['UF_NAME']; ?>
                                                         </label>
                                                     </div>
-                                                <? endforeach; ?>
-                                            <? elseif ($filterKey === 'SIZES') :?>
-                                                <? foreach ($value as $key => $item) : ?>
-                                                <input id="<?= $jsKey ?>_<?= $key ?>"
-                                                       class="checkbox_size"
-                                                       type="checkbox"
-                                                       name="<?= $jsKey ?>"
-                                                       value="<?= $key ?>"
-                                                    <? if (!empty($item['CHECKED'])) : ?>
-                                                        checked
-                                                    <? endif; ?>
-                                                    <? if (!empty($item['DISABLED'])) : ?>
-                                                        disabled
-                                                    <? endif; ?>
-                                                       onchange="smartFilter.click(this)">
-                                                <label for="<?= $jsKey ?>_<?= $key ?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?= $item['VALUE'] ?></label>
                                                 <? endforeach; ?>
                                             <? else :?>
                                                 <? foreach ($value as $key => $item) : ?>
@@ -484,16 +461,28 @@ if (!$arResult['IS_AJAX']) :
                                                                 <div></div>
                                                             </div>
                                                         </div>
-                                                        <img
-                                                            <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
-                                                                src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
-                                                                data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
-                                                            <? else : ?>
-                                                                src="<?= $arItem['DETAIL_PICTURE'] ;?>"
-                                                                data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
-                                                            <? endif; ?>
-                                                            class="card__img-pic <?= ($arResult['USER_SETTINGS']['VIEW'] == 'true') ? 'pic-hide' : 'pic-active' ?> pic-one"
-                                                            alt="<?= $arItem['NAME'] ?>">
+<!--                                                        <style>-->
+<!--                                                            .fig {-->
+<!--                                                                display: block; /* Блочный элемент (для старых браузеров) */-->
+<!--                                                                text-align: center; /* Выравнивание по центру */-->
+<!--                                                                font-style: italic; /* Курсивное начертание */-->
+<!--                                                                margin-top: 0; /* Отступ сверху */-->
+<!--                                                                margin-bottom: 5px; /* Отступ снизу */-->
+<!--                                                                color: #666; /* Цвет подрисуночной подписи */-->
+<!--                                                            }-->
+<!--                                                        </style>-->
+<!--                                                        <figure class="fig">-->
+                                                            <img
+                                                                <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
+                                                                    src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
+                                                                    data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
+                                                                <? else : ?>
+                                                                    src="<?= $arItem['DETAIL_PICTURE'] ;?>"
+                                                                    data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
+                                                                <? endif; ?>
+                                                                class="card__img-pic pic-active pic-one"
+                                                                alt="<?= $arItem['NAME'] ?>">
+<!--                                                        </figure>-->
                                                     </div>
                                                     <div class="card__info">
                                                         <div class="card__meta">
@@ -506,7 +495,6 @@ if (!$arResult['IS_AJAX']) :
                                                                         <span class="card__discount">-<?= $arItem['PERCENT'] ?>%</span>
                                                                     <? endif ?>
                                                                 </div>
-
                                                                 <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
                                                                     <span class="card__price-old" style="display:block;"><?= number_format($arItem['OLD_PRICE'], 0, '', ' '); ?> р.</span>
                                                                 <? endif ?>
@@ -515,7 +503,7 @@ if (!$arResult['IS_AJAX']) :
                                                         <span class="card__title"><?= $arItem['NAME'] ?></span>
                                                     </div>
                                                 </a>
-                                                <button title="" type="button" class="heart__btn <?= isset($arResult['FAVORITES'][$arItem['ID']]) ? 'active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
+                                                <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES'][$arItem['ID']]) ? ' active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
                                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
                                                         <g>
                                                             <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3

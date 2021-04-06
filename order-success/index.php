@@ -214,17 +214,6 @@ if (!$orderId) {
                 }]);
                 <? if (!empty($_SESSION['CRITEO_NEW_ORDER_ID'])) :?>
                 var deviceType = /iPad/.test(navigator.userAgent) ? "t" : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(navigator.userAgent) ? "m" : "d";
-                window.criteo_q = window.criteo_q || [];
-                window.criteo_q.push(
-                    {event: "setAccount", account: 55655},
-                    {event: "setEmail", email: "<?= ($USER->IsAuthorized() ? md5($USER->GetEmail()) : '') ?>"},
-                    {event: "setSiteType", type: deviceType},
-                    {
-                        event: "trackTransaction",
-                        id: <?= $order->getId() ?>,
-                        item: <?= CUtil::PhpToJSObject($arEcommerceOrderBasketCriteo) ?>
-                    }
-                );
                     <? unset($_SESSION['CRITEO_NEW_ORDER_ID']);?>
                 <? endif;?>
             </script>

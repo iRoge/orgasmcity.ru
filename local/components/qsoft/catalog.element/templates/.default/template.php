@@ -368,11 +368,6 @@ global $APPLICATION;
                     </div>
                 <? endif; ?>
             </div>
-            <div class="i-flocktory" data-fl-action="track-item-view"
-                 data-fl-item-id="<?= (empty($arResult['OFFERS']) ? $arResult['ID'] : reset($arResult['OFFERS'])['ID']) ?>"
-                 data-fl-item-category-id="<?= $arResult['IBLOCK_SECTION_ID'] ?>"
-                 data-fl-item-available="<?= ('Y' == $arResult['AVAILABILITY_IN_REGION'] ? 'true' : 'false') ?>">
-            </div>
 
             <div class="hidden-divs" style="display: none">
                 <form id="one-click-form"
@@ -686,7 +681,6 @@ global $APPLICATION;
             endif ?>
             <script>
                 inBasket = JSON.parse('<?= json_encode($arResult["BASKET_OFFERS"] ?? array(), JSON_UNESCAPED_UNICODE) ?>') || [];
-                var dataFlock = <?= CUtil::PhpToJSObject($arResult["FLOCKTORY"]);?>;
             </script>
         <? else : ?>
             <div class="container">

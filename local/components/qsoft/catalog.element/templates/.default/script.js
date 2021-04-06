@@ -323,8 +323,6 @@ function basketHandler(offerId, isLocal) {
                 $('#buy-btn').val('В корзине');
                 respercEvent__add_to_cart();
                 dataFlock["ID"] = offerId.toString();
-                flocktory__add_to_cart(dataFlock);
-                try { rrApi.addToBasket(offerId,{'stockId': userShowcase}) } catch(e) {}
                 return;
             }
             let error_text = '<div class="product-preorder-success">'
@@ -339,7 +337,6 @@ function basketHandler(offerId, isLocal) {
             hide_wait();
         }
     });
-    sendYandexMetrkiaGoal('click_product_cart');
 }
 
 //функция для клика на кнопку "Забрать в мгазине"
@@ -360,7 +357,6 @@ function reserveHandler(offerId) {
             gtmPush('remove_from_cart', 'reserve')
         },
     });
-    sendYandexMetrkiaGoal('click_reserved');
 
     gtmPush('add_to_cart', 'reserve');
 
@@ -396,8 +392,6 @@ function preorderHandler (offerId) {
             CountInput.init();
         }
     });
-
-    sendYandexMetrkiaGoal('click_preorder');
 
     $('#preorder-form').submit(function(e) {
         e.preventDefault();
@@ -452,15 +446,6 @@ function preorderHandler (offerId) {
                 hide_wait();
                 let popupContent;
                 if (data.status === "add") {
-                    //gtmPush('add_to_preorder');
-                    //fbq('track', 'AddToCart');
-
-                    //dataFlock["ID"] = offerId.toString();
-                    //flocktory__add_to_cart(dataFlock);
-                    // try {
-                    //     rrApi.addToBasket(offerId, {'stockId': userShowcase})
-                    // } catch (e) {
-                    // }
                     $('#preorder-form .preorder_email').data('phone', email).val(email);
 
                     popupContent = '<div class="product-preorder-success">'
@@ -632,7 +617,6 @@ function onOpenModalFastOrder(offerId, isLocal) {
     let $form = $('.js-one-click-form');
     let $sizeInput = $form.find('input[name="PRODUCTS[]"]');
     $sizeInput.val(offerId);
-    sendYandexMetrkiaGoal('click_fast_order');
 }
 
 function onOpenModalOneClick() {

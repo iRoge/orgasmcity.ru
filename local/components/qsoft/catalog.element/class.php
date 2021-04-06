@@ -219,21 +219,6 @@ class QsoftCatalogElement extends ComponentHelper
             $arRests['DELIVERY'] = array();
         }
 
-        //удаляем неместные размеры, если у пользователя стоит флажок в фильтрах "Убрать Московский товары"
-        if (isset($_COOKIE['user_settings'])) {
-            $userSettings = explode('~', $_COOKIE['user_settings']);
-            $locationFilter = $userSettings[3];
-            if ($locationFilter === 'true') {
-                foreach ($arRests['DELIVERY'] as $id => $rest) {
-                    if ($rest['IS_LOCAL'] === 'N') {
-                        unset($arRests['DELIVERY'][$id]);
-                        if (empty($arRests['RESERVATION'][$id])) {
-                            unset($arRests['ALL'][$id]);
-                        }
-                    }
-                }
-            }
-        }
         return $arRests;
     }
 

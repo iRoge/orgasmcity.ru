@@ -758,7 +758,6 @@ $(function() {
                 if (data.status == "ok") {
                     gtmPush('deleteProduct', el.closest('.js-card'));
                     updateSmallBasket(-1);
-                    flocktory__remove_from_cart(dataFlock);
                     let basketPrice = parseInt(data.text);
                     el.closest('.js-card').slideUp("normal", function() {
                         $(this).remove();
