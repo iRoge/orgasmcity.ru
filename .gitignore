@@ -1,5 +1,8 @@
 .idea
 bitrix
 upload
+cron/logs
+cron/orders_export_logs
+cron/orders_status_logs
 local/vendor
 local/php_interface/.env
