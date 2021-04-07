@@ -16,17 +16,11 @@ use \Bitrix\Sale\Basket;
 use \Bitrix\Sale\PaySystem\Manager as PayManager;
 use \Bitrix\Sale\Delivery\Services\Manager as DelManager;
 use \Bitrix\Sale\DiscountCouponsManager as CouponsManager;
-use Qsoft\DeliveryWays\WaysByDeliveryServicesTable;
-use Qsoft\DeliveryWays\WaysDeliveryTable;
 use \Qsoft\Helpers\ComponentHelper;
 use Qsoft\Helpers\EventHelper;
 use \Qsoft\Helpers\IBlockHelper;
-use Qsoft\PaymentWays\WaysByPaymentServicesTable;
-use Qsoft\PaymentWays\WaysPaymentTable;
 use Qsoft\Pvzmap\PVZFactory;
 use Qsoft\Pvzmap\PVZTable;
-use \Qsoft\Sailplay\Tasks\TaskManager;
-use \Qsoft\Sailplay\Tasks\TaskManagerException;
 
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
@@ -214,17 +208,15 @@ class QsoftOrderComponent extends ComponentHelper
             // получаем поля юзера
             $this->getUser();
             // устанавливаем стандартизированное название региона для dadata
-            $this->arResult['DADATA_REGION_NAME'] = getDadataStandartRegionNameFromLocation();
+            $this->arResult['DADATA_REGION_NAME'] = $LOCATION->getDadataStandartRegionNameFromLocation();
             // устанавливаем стандартизированное название города для dadata
-            $this->arResult['DADATA_CITY_NAME'] = getDadataStandartCityNameFromLocation();
+            $this->arResult['DADATA_CITY_NAME'] = $LOCATION->getDadataStandartCityNameFromLocation();
             // проверяем работоспособность дадаты и остаток запросов на день
-            $this->arResult['DADATA_STATUS'] = getDadataStatus();
+            $this->arResult['DADATA_STATUS'] = $LOCATION->getDadataStatus();
             // передаем данные юзера
             $this->arResult["USER"] = $this->user;
             //передаем имя хоста для установки кук
             $this->arResult['CURRENT_HOST'] = $LOCATION->getCurrentHost();
-            //витрина пользователя для RetailRocket
-            $this->arResult['USER_SHOWCASE'] = $LOCATION->getUserShowcase();
             //передаем куки с данными пользователя
             $this->getUserInfoCookie();
             // получаем список доставок
@@ -256,7 +248,6 @@ class QsoftOrderComponent extends ComponentHelper
             $this->createOrder();
         }
         $this->arResult['DADATA_PROPS'] = $this->arDadataProps;
-        $this->arResult['BRANCH_ID'] = $LOCATION->getUserShowcase();
         $this->includeComponentTemplate();
         $GLOBALS["BASKET_VIEW"] = $this->arResult["BASKET"];
     }

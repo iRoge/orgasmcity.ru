@@ -24,7 +24,7 @@ SmartFilter.prototype.getFormData = function () {
         }
         formData[filterName] = [];
         $(this).find(':checkbox:checked').each(function () {
-            formData[filterName].push($(this).val());
+            formData[filterName].push(encodeURIComponent($(this).val()));
         });
     });
 
@@ -58,7 +58,7 @@ SmartFilter.prototype.getQuery = function () {
 
     for (let filterName in formData) {
         if (typeof formData[filterName] === 'object') {
-            formData[filterName] = formData[filterName].join(',');
+            formData[filterName] = formData[filterName].join(';');
         }
         if (formData[filterName] !== '') {
             setFilter = true;
@@ -136,7 +136,7 @@ SmartFilter.prototype.click = function (checkbox) {
 
 SmartFilter.prototype.doClick = function (url,request) {
     let params = this.processSearch();
-    if(request !== 'sort'){
+    if (request !== 'sort'){
         params.getFilters = 'Y';
     }
 
@@ -145,7 +145,6 @@ SmartFilter.prototype.doClick = function (url,request) {
         SmartFilter.prototype.nextAjax[0] = url;
         SmartFilter.prototype.nextAjax[1] = request;
     } else {
-        console.log(url);
         SmartFilter.prototype.currentAjax = BX.ajax.get(url, params, function (data) {
             SmartFilter.prototype.currentAjax = null;
             //переходим к следующему в очереди, если есть
@@ -529,55 +528,6 @@ function resetHandlers() {
         let $filterSection = $(e.target).closest('.in-left-catalog');
         $('.filter-btn-loader').show();
         smartFilter.resetFilterSection($filterSection);
-    });
-
-    $('.storage_search').on('keyup', function () {
-        let that = $(this);
-        let text = that.val().toLowerCase();
-        let $list = that.siblings('.storages-list');
-
-        $list.find('li').hide();
-        $list.find('label').each(function() {
-            if ($(this).find('.storage-name').text().toLowerCase().indexOf(text) > -1 || $(this).find('.storage-address').text().toLowerCase().indexOf(text) > -1) {
-                $(this).closest('li').show();
-            }
-        });
-    });
-
-    // событие для чекбоксов типа изделия
-    $(".all-type").on("change", function () {
-        let that = $(this);
-        that.prop("checked", this.checked);
-        that.siblings('.filter__product-list').find('.type').prop("checked", this.checked);
-        smartFilter.click(this)
-    });
-
-    // событие для чекбоксов вида изделия
-    $(".type").on("change", function () {
-        let that = $(this);
-        let sectionId = that.data('section');
-        that.closest('.filter__type-list').find('.all-type[data-id="' + sectionId + '"]').prop("checked", $('input[data-section="' + sectionId + '"]:checked').length > 0);
-        if($('.type.checkbox_size[data-section="' + sectionId + '"]:checked:not([data-id="NONAME"])').length == $('.type.checkbox_size[data-section="' + sectionId + '"]:not([data-id="NONAME"])').length){
-            $('.type.checkbox_size[data-section="' + sectionId + '"][data-id="NONAME"]').prop("checked", true);
-        } else {
-            $('.type.checkbox_size[data-section="' + sectionId + '"][data-id="NONAME"]').prop("checked", false);
-        }
-        smartFilter.click(this)
-    });
-
-    //выбор вообще всех чекбоксов в блоке
-    $(".general-all").on("change", function () {
-        let that = $(this);
-        that.closest('.js-filter-box').find('.type').prop("checked", this.checked);
-        that.closest('.js-filter-box').find('.all-type').prop("checked", this.checked);
-        smartFilter.click(this)
-    });
-
-    //активирует главный чекбокс если все чекбоксы в блоке отмечены, и снимает, если сняли один из вложенных
-    $('.js-filter-box').on("change", function () {
-        let that = $(this);
-        let allChecked = that.find('input:not(.general-all):not(:checked)').length === 0;
-        that.find('.general-all').prop("checked", allChecked);
     });
 
     $('.name-h3').click(function() {

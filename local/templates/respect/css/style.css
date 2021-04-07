@@ -1114,6 +1114,7 @@ html, body
   background: #fefefe;
   margin-top: 28px;
   padding-bottom: 75px;
+  padding-top: 30px;
 }
 .info--
 {
@@ -1267,10 +1268,6 @@ html, body
     margin-left: 0%;
     width: 100%!important;
   }
-}
-.left-hide-menu
-{
-  padding-top: 30px;
 }
 .blue-a
 {

@@ -15,6 +15,21 @@ CJSCore::Init(['fx']);
 EventManager::getInstance()->addEventHandler('main', 'onBeforeUserLoginByHttpAuth', function (&$arAuth) {
     return false;
 });
+if (!$_COOKIE['device_type']) {
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/Mobile_Detect.php');
+
+    $typeDevDetect = new Mobile_Detect();
+
+    if ($typeDevDetect->isTablet()) {
+        $GLOBALS['device_type'] = 'tablet';
+    } elseif ($typeDevDetect->isMobile()) {
+        $GLOBALS['device_type'] = 'mobile';
+    } else {
+        $GLOBALS['device_type'] = 'pc';
+    }
+} else {
+    $GLOBALS['device_type'] = $_COOKIE['device_type'];
+}
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/Functions.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/qsoft/superDebug.php');

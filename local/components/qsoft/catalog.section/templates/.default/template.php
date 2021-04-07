@@ -193,14 +193,14 @@ if (!$arResult['IS_AJAX']) :
                                   action="<?= $curPage ?>" method="get">
                                 <? if (!empty($arResult['SAME_SECTIONS']) && $arResult['IS_AJAX']) :?>
                                     <div class="in-left-catalog subsections-block">
-                                        <div class="name-h3 active-name-h3">
+                                        <div class="name-h3 <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'active-name-h3'?>">
                                             <h3>
                                                 Похожие разделы
                                             </h3>
-                                            <svg class="minus" style="display: inline; position: absolute">
+                                            <svg class="minus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: inline; position: absolute"'?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>
-                                            <svg class="plus" style="display: none;">
+                                            <svg class="plus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: none;"'?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
@@ -313,19 +313,21 @@ if (!$arResult['IS_AJAX']) :
                                                 <? endforeach; ?>
                                             <? else :?>
                                                 <? foreach ($value as $key => $item) : ?>
-                                                <input id="<?=$jsKey ?>_<?=$key ?>"
-                                                       class="checkbox_size"
-                                                       type="checkbox"
-                                                       name="<?=$jsKey ?>"
-                                                       value="<?=$key ?>"
-                                                    <? if (!empty($item['CHECKED'])) : ?>
-                                                        checked
-                                                    <? endif; ?>
-                                                    <? if (!empty($item['DISABLED'])) : ?>
-                                                        disabled
-                                                    <? endif; ?>
-                                                       onchange="smartFilter.click(this)">
-                                                <label for="<?=$jsKey ?>_<?=$key ?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?=$item['VALUE'] ?></label>
+                                                <div>
+                                                    <input id="<?=$jsKey ?>_<?=sha1($key)?>"
+                                                           class="checkbox_size"
+                                                           type="checkbox"
+                                                           name="<?=$jsKey?>"
+                                                           value="<?=$key?>"
+                                                        <? if (!empty($item['CHECKED'])) : ?>
+                                                            checked
+                                                        <? endif; ?>
+                                                        <? if (!empty($item['DISABLED'])) : ?>
+                                                            disabled
+                                                        <? endif; ?>
+                                                           onchange="smartFilter.click(this)">
+                                                    <label for="<?=$jsKey ?>_<?=sha1($key)?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?=$item['VALUE'] ?></label>
+                                                </div>
                                                 <? endforeach; ?>
                                             <?endif;?>
                                         </div>

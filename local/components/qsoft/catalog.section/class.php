@@ -45,10 +45,16 @@ class QsoftCatalogSection extends ComponentHelper
         'color' => 'COLORS',
         'vendor' => 'VENDOR',
         'sizes' => 'SIZES',
+        'material' => 'MATERIAL',
+        'volume' => 'VOLUME',
+        'collection' => 'COLLECTION',
     ];
 
     private const PRODUCT_PROPERTIES_MAP = [
         'VENDOR' => 'PROPERTY_VENDOR_VALUE',
+        'MATERIAL' => 'PROPERTY_MATERIAL_VALUE',
+        'VOLUME' => 'PROPERTY_VOLUME_VALUE',
+        'COLLECTION' => 'PROPERTY_COLLECTION_VALUE',
         'COLORS' => 'COLORS',
         'SIZES' => 'SIZES',
     ];
@@ -77,6 +83,9 @@ class QsoftCatalogSection extends ComponentHelper
         "PROPERTY_LENGTH",
         "PROPERTY_BESTSELLER",
         "PROPERTY_VENDOR",
+        "PROPERTY_VOLUME",
+        "PROPERTY_MATERIAL",
+        "PROPERTY_COLLECTION",
         "SHOW_COUNTER",
     ];
 
@@ -93,11 +102,14 @@ class QsoftCatalogSection extends ComponentHelper
      * порядок вывода фильтра
      */
     private const FILTER_KEYS = [
+        'MATERIAL',
         'PRICE',
         'DIAMETER',
         'LENGTH',
+        'VOLUME',
         'SIZES',
         'COLORS',
+        'COLLECTION',
         'VENDOR'
     ];
 
@@ -232,8 +244,8 @@ class QsoftCatalogSection extends ComponentHelper
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
-        global $CACHE_MANAGER;
-        $CACHE_MANAGER->clearByTag('catalogAll');
+//        global $CACHE_MANAGER;
+//        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
@@ -373,8 +385,8 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$all) {
                 $currentSection = $this->getCurrentSection($this->code);
                 if (!empty($currentSection)) {
+                    $currentSection['SAME_SECTIONS'] = $this->getSameSections($currentSection);
                     $this->section = $currentSection;
-                    $this->section['SAME_SECTIONS'] = $this->getSameSections();
                     $relatedSections = $this->loadRelatedSections($currentSection);
                     if (!empty($relatedSections)) {
                         $arFilter['IBLOCK_SECTION_ID'] = $relatedSections;
@@ -536,6 +548,9 @@ class QsoftCatalogSection extends ComponentHelper
                 "PROPERTY_LENGTH_VALUE" => $arItem["PROPERTY_LENGTH_VALUE"],
                 "PROPERTY_BESTSELLER_VALUE" => $arItem["PROPERTY_BESTSELLER_VALUE"],
                 "PROPERTY_VENDOR_VALUE" => $arItem["PROPERTY_VENDOR_VALUE"],
+                "PROPERTY_VOLUME_VALUE" => $arItem["PROPERTY_VOLUME_VALUE"],
+                "PROPERTY_MATERIAL_VALUE" => $arItem["PROPERTY_MATERIAL_VALUE"],
+                "PROPERTY_COLLECTION_VALUE" => $arItem["PROPERTY_COLLECTION_VALUE"],
                 "SORT" => $arItem["SORT"],
                 "SHOW_COUNTER" => $arItem["SHOW_COUNTER"],
                 "DETAIL_PAGE_URL" => "/" . $arItem["CODE"] . "/",
@@ -1518,7 +1533,7 @@ class QsoftCatalogSection extends ComponentHelper
         if ($query->get('set_filter') === 'Y') {
             foreach (self::PRODUCT_PROPERTIES as $urlKey => $filterKey) {
                 if ($params = $query->get($urlKey)) {
-                    $params = explode(',', $params);
+                    $params = explode(';', $params);
                     if (in_array($urlKey, array_keys(self::NUMBER_FILTERS))) {
                         $params = intval(array_pop($params));
                     }
@@ -1665,7 +1680,6 @@ class QsoftCatalogSection extends ComponentHelper
                     $filter['MAX_PRICE'] = $item['PRICE'];
                 }
             }
-
             foreach (self::PRODUCT_PROPERTIES_MAP as $filterKey => $itemKey) {
                 if (empty($item[$itemKey])) {
                     continue;
@@ -1956,6 +1970,7 @@ class QsoftCatalogSection extends ComponentHelper
     private function getFilterValues()
     {
         $arFiltersWithValues = [];
+
         foreach ($this->arResult['FILTER'] as $key => $xml_ids) {
             if (array_key_exists($key, $this->props)) {
                 foreach ($xml_ids as $xml_id) {
@@ -2014,8 +2029,9 @@ class QsoftCatalogSection extends ComponentHelper
             $this->registerTag("catalogAll");
             $props = [];
 
-            $props['SIZES'] = $this->getSizesFilter();
+            $props['SIZES'] = $this->getEnumProps(IBLOCK_OFFERS, 'SIZE');
             $props['COLORS'] = $this->getColorsFilter();
+            $props['MATERIAL'] = $this->getEnumProps(IBLOCK_CATALOG, 'MATERIAL');
             $props['VENDOR'] = $this->getVendorFilter();
 
             $this->endTagCache();
@@ -2046,6 +2062,28 @@ class QsoftCatalogSection extends ComponentHelper
         return $arColors;
     }
 
+    private function getEnumProps($iblockID, $code)
+    {
+        $arPropsValues = [];
+        $propertyEnums = CIBlockPropertyEnum::GetList(
+            [
+                "SORT" => "ASC"
+            ],
+            [
+                "IBLOCK_ID" => $iblockID,
+                "CODE" => $code
+            ]
+        );
+
+        while($arEnum = $propertyEnums->GetNext())
+        {
+            $arPropsValues[$arEnum['ID']] = $arEnum['VALUE'];
+        }
+
+
+        return $arPropsValues;
+    }
+
     private function getVendorFilter()
     {
         $arBrands = [];
@@ -2070,27 +2108,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         return $arBrands;
-    }
-
-    private function getSizesFilter()
-    {
-        $arSizes = [];
-        $propertyEnums = CIBlockPropertyEnum::GetList(
-            [
-                "SORT" => "ASC"
-            ],
-            [
-                "IBLOCK_ID" => IBLOCK_OFFERS,
-                "CODE" => "SIZE"
-            ]
-        );
-
-        while($arEnum = $propertyEnums->GetNext())
-        {
-            $arSizes[$arEnum['ID']] = $arEnum['VALUE'];
-        }
-
-        return $arSizes;
     }
 
     private function needJson(): bool
@@ -2252,14 +2269,14 @@ class QsoftCatalogSection extends ComponentHelper
         return $chain;
     }
 
-    private function getSameSections(): array
+    private function getSameSections($section): array
     {
         $arSections = [];
         $arFilter = [
-            '!ID' => $this->section['ID'],
+            '!ID' => $section['ID'],
             'IBLOCK_ID' => IBLOCK_CATALOG,
             'ACTIVE' => 'Y',
-            'SECTION_ID' => $this->section['IBLOCK_SECTION_ID']
+            'SECTION_ID' => $section['IBLOCK_SECTION_ID']
         ];
         $res = CIBlockSection::GetList(false, $arFilter, true, ['ID', 'NAME', 'SECTION_PAGE_URL']);
         while($arResult = $res->GetNext())
