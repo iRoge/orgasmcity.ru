@@ -6,5 +6,5 @@ $MESS['PRICE'] = 'Цена';
 $MESS['LENGTH'] = 'Длина';
 $MESS['DIAMETER'] = 'Диаметр';
 $MESS['MATERIAL'] = 'Материал';
-$MESS['COLLECTION'] = 'Коллекция';
+$MESS['COLLECTION'] = 'Коллекция/Бренд';
 $MESS['VOLUME'] = 'Объем/Колличество';

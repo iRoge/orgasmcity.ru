@@ -20,6 +20,7 @@ $searchMap = explode(" ", $searchMap);
 
 // Получаем города вместе с их регионами
 $cache = new CPHPCache();
+$cities = [];
 if ($cache->InitCache(31536000, 'geo_cities')) {
     $cities = $cache->GetVars()['cities'];
 } elseif ($cache->StartDataCache()) {
@@ -33,11 +34,8 @@ if ($cache->InitCache(31536000, 'geo_cities')) {
             'CITY_NAME' => 'NAME.NAME',
             'PARENT_NAME' => 'PARENT.NAME.NAME',
             'PARENT_TYPE_ID' => 'PARENT.TYPE_ID',
-            'GRANDPARENT_NAME' => 'PARENT.PARENT.NAME.NAME',
-            'GRANDPARENT_TYPE_ID' => 'PARENT.PARENT.TYPE_ID',
         ],
     ]);
-    
     $cities = [];
     while ($location = $locationList->fetch()) {
         $cities[$location['ID']] = [
@@ -45,14 +43,9 @@ if ($cache->InitCache(31536000, 'geo_cities')) {
             'code' => $location['CODE'],
             'name' => $location['CITY_NAME'],
         ];
-    
         if ($location['PARENT_TYPE_ID'] == 3) {
             $cities[$location['ID']]['region'] = $location['PARENT_NAME'];
             continue;
-        }
-    
-        if ($location['GRANDPARENT_TYPE_ID'] == 3) {
-            $cities[$location['ID']]['region'] = $location['GRANDPARENT_NAME'];
         }
     }
 
@@ -64,7 +57,7 @@ $result = [];
 $searchWords = array_unique(array_merge($search, $searchMap));
 foreach ($cities as $city) {
     foreach ($searchWords as $word) {
-        if (stristr($city['name'], $word) !== false) {
+        if (mb_stristr($city['name'], $word) !== false) {
             $city['text'] = $city['region'] ? $city['name'] . ', ' . $city['region'] : $city['name'];
             $result[] = $city;
             continue 2;

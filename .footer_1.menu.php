@@ -24,13 +24,6 @@ $aMenuLinks = array(
         ''
     ),
     array(
-        'Резерв в магазине',
-        '/company_reservation/',
-        array(),
-        array("itemclass" => "hideincart"),
-        ''
-    ),
-    array(
         'Акции',
         '/events/actions/',
         array(),
@@ -51,11 +44,4 @@ $aMenuLinks = array(
         array("itemclass" => "forcart"),
         ''
     ),
-    array(
-        'Примерить онлайн',
-        '/catalog/fittin/',
-        array(),
-        array(),
-        ''
-    )
 );

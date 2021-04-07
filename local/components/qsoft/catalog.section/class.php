@@ -244,8 +244,8 @@ class QsoftCatalogSection extends ComponentHelper
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
-//        global $CACHE_MANAGER;
-//        $CACHE_MANAGER->clearByTag('catalogAll');
+        global $CACHE_MANAGER;
+        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
@@ -2259,9 +2259,9 @@ class QsoftCatalogSection extends ComponentHelper
         $chain = [];
         $rsPath = CIBlockSection::GetNavChain(IBLOCK_CATALOG, $this->section['ID'], ['NAME', 'SECTION_PAGE_URL']);
         while ($arPath = $rsPath->GetNext(true, false)) {
-            $ipropValues = new SectionValues(IBLOCK_CATALOG, $arPath["ID"]);
+//            $ipropValues = new SectionValues(IBLOCK_CATALOG, $arPath["ID"]);
             $chain[] = [
-                'title' => $ipropValues->getValues()['SECTION_PAGE_TITLE'],
+                'title' => $arPath['NAME'],
                 'url' => $arPath['SECTION_PAGE_URL'],
             ];
         }

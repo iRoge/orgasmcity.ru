@@ -48,17 +48,6 @@ $this->addExternalCss("/local/templates/respect/js/select2/select2.min.css");
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <div class="country_container">
-            <hr>
-            <ul class="country_list">
-                <li>
-                    <a href="https://respect-shoes.by/?utm_source=respect_ru&utm_medium=referral&utm_campaign=okno_gorodov">Беларусь</a>
-                </li>
-                <li>
-                    <a href="https://respect-shoes.kz/?utm_source=respect_ru&utm_medium=referral&utm_campaign=okno_gorodov">Казахстан</a>
-                </li>
-            </ul>
-        </div>
     </form>
 </div>
 <?php $this->EndViewTarget(); ?>

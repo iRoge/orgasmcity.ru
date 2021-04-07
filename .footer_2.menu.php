@@ -1,13 +1,6 @@
 <?php
 $aMenuLinks = Array(
     Array(
-        'Магазины',
-        '/shops/',
-        array(),
-        array("itemclass" => "forcart"),
-        ''
-    ),
-    Array(
         "О компании",
         "/company_about/",
         Array(),
@@ -29,22 +22,8 @@ $aMenuLinks = Array(
         ""
     ),
     Array(
-        "Вакансии",
-        "/company_vacancies/",
-        Array(),
-        Array("itemclass"=>"hideincart"),
-        ""
-    ),
-    Array(
         "Контакты",
         "/company_contacts/",
-        Array(),
-        Array(),
-        ""
-    ),
-    Array(
-        "Статьи",
-        "/articles/",
         Array(),
         Array(),
         ""

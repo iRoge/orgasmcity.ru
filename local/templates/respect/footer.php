@@ -20,7 +20,7 @@
     <div class="main">
         <div class="row ones">
             <div class="col-md-6 col-sm-8">
-                <div class="col-xs-4 footer-div">
+                <div class="col-xs-6 footer-div">
                     <h4>ПОКУПАТЕЛЯМ</h4>
                     <? $APPLICATION->IncludeComponent(
                         'bitrix:menu',
@@ -40,7 +40,7 @@
                         )
                     ); ?>
                 </div>
-                <div class="col-xs-4 footer-div">
+                <div class="col-xs-6 footer-div">
                     <h4>RESPECT</h4>
                     <? $APPLICATION->IncludeComponent(
                         'bitrix:menu',
@@ -48,26 +48,6 @@
                         array(
                             'COMPONENT_TEMPLATE' => '.default',
                             'ROOT_MENU_TYPE' => 'footer_2',
-                            'MENU_CACHE_TYPE' => 'Y',
-                            'MENU_CACHE_TIME' => '604800',
-                            'MENU_CACHE_USE_GROUPS' => 'Y',
-                            'MENU_CACHE_GET_VARS' => array(),
-                            'MAX_LEVEL' => '1',
-                            'CHILD_MENU_TYPE' => 'left',
-                            'USE_EXT' => 'N',
-                            'DELAY' => 'N',
-                            'ALLOW_MULTI_SELECT' => 'N'
-                        )
-                    ); ?>
-                </div>
-                <div class="col-xs-4 footer-div">
-                    <h4>СОТРУДНИЧЕСТВО</h4>
-                    <? $APPLICATION->IncludeComponent(
-                        'bitrix:menu',
-                        'footer',
-                        array(
-                            'COMPONENT_TEMPLATE' => '.default',
-                            'ROOT_MENU_TYPE' => 'footer_3',
                             'MENU_CACHE_TYPE' => 'Y',
                             'MENU_CACHE_TIME' => '604800',
                             'MENU_CACHE_USE_GROUPS' => 'Y',

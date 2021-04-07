@@ -69,7 +69,6 @@ function updateUserLocality(localityCode) {
         url: '/local/ajax/update_user_locality.php',
         data: {
             'location_code': localityCode,
-            'pathname': document.location.pathname
         },
         success:function(data) {
             var parsed = JSON.parse(data);
@@ -97,7 +96,7 @@ function updateUserLocality(localityCode) {
 
                         $(window).scrollTop(0);
                         popup.css('top', '');
-                        document.location.href = parsed.url;
+                        document.location.href = document.location.href;
                     }
                     break;
                 case 'fail':
