@@ -1113,6 +1113,7 @@ html, body
   border-bottom: 1px solid #ededed;
   background: #fefefe;
   margin-top: 28px;
+  padding-bottom: 75px;
 }
 .info--
 {
@@ -1270,7 +1271,6 @@ html, body
 .left-hide-menu
 {
   padding-top: 30px;
-  padding-bottom: 75px;
 }
 .blue-a
 {

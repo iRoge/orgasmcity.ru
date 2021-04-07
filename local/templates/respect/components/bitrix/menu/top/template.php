@@ -52,12 +52,12 @@ $this->setFrameMode(true);
                     <div class="main">
                         <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
                             <?
-                            $class = array(3, 12);
-                            if (count($arItem2Level['ITEMS']) > $arItem['MAX']) {
-                                $class = array(4, 6);
-                            } elseif ($arItem2Level["MAX_L"] <= 15) {
-                                $class = array(2, 12);
-                            }
+                                $class = array(3, 12);
+//                            if (count($arItem2Level['ITEMS']) > $arItem['MAX']) {
+//                                $class = array(4, 6);
+//                            } elseif ($arItem2Level["MAX_L"] <= 15) {
+//                                $class = array(2, 12);
+//                            }
                             ?>
                             <div class="col-md-<?=$class[0]?> left-hide-menu">
                                 <? if ($arItem2Level['LINK']) : ?>

@@ -176,7 +176,6 @@ if (empty($aMenuLinksNew)) {
 //                $arAvailableMLTSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
 //            }
         }
-
         // Находим все секции
         $arFilter = array(
             'IBLOCK_ID' => $arParams['IBLOCK_ID'],
@@ -212,10 +211,9 @@ if (empty($aMenuLinksNew)) {
             $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();
         }
 
-
         // Фильтруем секции по массиву $arSectionsIds
         foreach ($arResult['SECTIONS'] as $key => $section) {
-            if (in_array($section['ID'], $arMainSectionIds) && $section['DEPTH_LEVEL'] == 1 || $section['DEPTH_LEVEL'] == 2) {
+            if (in_array($section['ID'], $arMainSectionIds) && ($section['DEPTH_LEVEL'] == 1 || $section['DEPTH_LEVEL'] == 2)) {
                 continue;
             } elseif (!in_array($section['ID'], $arAvailableSectionsIds)) {
                 unset($arResult['SECTIONS'][$key]);

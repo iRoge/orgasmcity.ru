@@ -36,8 +36,8 @@ foreach ($arResult as &$arItem) {
 try {
     $colorsIblockId = \Likee\Site\Helpers\IBlock::getIBlockId('COLORS');
     $arSelect = array("ID", "NAME", 'IBLOCK_ID','PROPERTY_COLOR');
-    $arFilter = array("IBLOCK_ID"=>$colorsIblockId, "ACTIVE"=>"Y");
-    $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize"=>5000), $arSelect);
+    $arFilter = array("IBLOCK_ID" => $colorsIblockId, "ACTIVE" => "Y");
+    $res = CIBlockElement::GetList([], $arFilter, false, ["nPageSize" => 5000], $arSelect);
     while ($ob = $res->Fetch()) {
         $arColors[$ob['ID']] = $ob;
     }
