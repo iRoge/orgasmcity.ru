@@ -227,7 +227,7 @@
     #main-slider-mob8 .slick-dots li button:hover,
     #main-slider-mob9 .slick-dots li button:hover,
     #main-slider-mob10 .slick-dots li button:hover {
-        background-color: #034078;
+        background-color: #ff5e5e;
     }
 
     #main-slider-mob1 .slick-dots li.slick-active button,
@@ -242,7 +242,7 @@
     #main-slider-mob10 .slick-dots li.slick-active button {
         width: 12px;
         height: 12px;
-        background-color: #034078;
-        border: 2px solid #034078;
+        background-color: #ff5e5e;
+        border: 2px solid #ff5e5e;
     }
 }

@@ -13,10 +13,10 @@
 	margin-bottom: 15px;
 }
 .update-btn a {
-	color: #034078;
+	color: #ff5e5e;
 }
 .update-btn a:hover {
-	color: #034078;
+	color: #ff5e5e;
 	text-decoration: none;
 }
 .sort .stat-bns {
@@ -34,7 +34,7 @@
 	text-align: center;
 }
 .zach-bns.plus-bonus {
-	color: #034078;
+	color: #ff5e5e;
 }
 .zach-bns.minus-bonus {
 	color: #f00;

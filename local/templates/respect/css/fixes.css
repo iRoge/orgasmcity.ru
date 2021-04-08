@@ -735,7 +735,7 @@ body.with--popup:after {
 }
 
 .product-preorder article .tabs .tabs-item.active {
-  background-color: #034078;
+  background-color: #ff5e5e;
   color: #ffffff;
   font-weight: normal;
 }
@@ -818,7 +818,7 @@ body.with--popup:after {
 }
 
 .preorder-list-item__take {
-  background-color:#034078;
+  background-color:#ff5e5e;
   color: #ffffff;
   font-weight: normal;
   letter-spacing: 0;

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>*{margin:0;padding:0}body{font-family:'Neue Haas Unica W1G',Tahoma,Geneva,Verdana,sans-serif;font-size:16px;color:#525c66;background:#f7f7f7}.countdown-block__wrapper{max-width:720px;margin:auto;position:absolute;top:15%;left:0;right:0}.countdown-block{max-width:720px;padding:30px;margin:auto auto;background:#fff}.countdown-block__logo{width:100%;height:60px;margin-bottom:20px;background:url("") center no-repeat}.countdown-block__subtitle{font-size:24px;font-weight:300;margin-bottom:10px}.countdown-block__box{font-size:20px;font-weight:700;text-align:center;color:#fff;border-radius:25px;border:solid 1px #525c66;max-width:350px;padding:10px 30px;margin:20px auto;background:#034078}.countdown-block__sm{margin:15px 0}</style>
+    <style>*{margin:0;padding:0}body{font-family:'Neue Haas Unica W1G',Tahoma,Geneva,Verdana,sans-serif;font-size:16px;color:#525c66;background:#f7f7f7}.countdown-block__wrapper{max-width:720px;margin:auto;position:absolute;top:15%;left:0;right:0}.countdown-block{max-width:720px;padding:30px;margin:auto auto;background:#fff}.countdown-block__logo{width:100%;height:60px;margin-bottom:20px;background:url("") center no-repeat}.countdown-block__subtitle{font-size:24px;font-weight:300;margin-bottom:10px}.countdown-block__box{font-size:20px;font-weight:700;text-align:center;color:#fff;border-radius:25px;border:solid 1px #525c66;max-width:350px;padding:10px 30px;margin:20px auto;background:#ff5e5e}.countdown-block__sm{margin:15px 0}</style>
 </head>
 <body>
     <div class="countdown-block__wrapper">

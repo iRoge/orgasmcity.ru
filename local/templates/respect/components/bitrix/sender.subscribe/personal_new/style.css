@@ -21,7 +21,7 @@
    }
 #sender_subscribe_component{
     padding: 50px;
-    border: 4px solid #034078;
+    border: 4px solid #ff5e5e;
 }
 
    .content_top input[type=checkbox], input[type=radio] {display: none;}

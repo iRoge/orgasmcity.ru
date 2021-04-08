@@ -304,7 +304,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
         </div>
     </div>
     <? /* if ($USER->IsAuthorized()): ?>
-            <a href="<?=$_SERVER['REQUEST_URI']?>?logout=yes"class="exit" style="color: #034078;">Выход</a>
+            <a href="<?=$_SERVER['REQUEST_URI']?>?logout=yes"class="exit" style="color: #ff5e5e;">Выход</a>
         <?endif;*/ ?>
 </div>
 <div class="menu-spacer">

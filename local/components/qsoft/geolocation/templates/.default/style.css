@@ -201,7 +201,7 @@
 
 .geoposition__button--ok
 {
-    background-color: #034078;
+    background-color: #ff5e5e;
     margin-bottom: 15px;
 }
 
@@ -266,13 +266,13 @@
 
 .tooltip-window__button--ok
 {
-    background-color: #034078;
+    background-color: #ff5e5e;
 }
 
 .tooltip-window__button--no
 {
     background-color: none;
-    color : #034078;
+    color : #ff5e5e;
 }
 .geoposition__city {
     margin-bottom: 15px;

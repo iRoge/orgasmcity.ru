@@ -21,7 +21,7 @@
 }
 
 .active-blue {
-    color: #034078 !important;
+    color: #ff5e5e !important;
     font-family: 'firaregular' !important;
     border-bottom: 0 !important;
     font-size: 16px;
@@ -34,7 +34,7 @@
 
 .after-blue {
     display: none;
-    border-bottom: 1px solid #034078;
+    border-bottom: 1px solid #ff5e5e;
     padding: 0 !important;
     /*padding-bottom: 20px!important;*/
 }

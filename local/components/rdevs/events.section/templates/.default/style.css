@@ -40,9 +40,9 @@
 }
 
 .event-menu-link.active {
-    background-color: #034078;
+    background-color: #ff5e5e;
     color: #ffffff;
-    border: 1px solid #034078;
+    border: 1px solid #ff5e5e;
     opacity: 1;
 }
 

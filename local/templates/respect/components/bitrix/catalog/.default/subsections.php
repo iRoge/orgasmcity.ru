@@ -78,7 +78,7 @@
         .section:hover > a
         {
 
-          color: #034078!important;
+          color: #ff5e5e!important;
         }
         .wrapper-scroll::-webkit-scrollbar
         {
@@ -91,7 +91,7 @@
         }
         .wrapper-scroll::-webkit-scrollbar-thumb:hover
         {
-          background: #034078;
+          background: #ff5e5e;
         }
 </style>
 <script src="<?= SITE_TEMPLATE_PATH; ?>/js/horwheel.js"></script>

@@ -123,8 +123,8 @@
 }
 .tag_btn:hover {
     text-decoration: none;
-    color: #034078;
-    border-color: #034078;
+    color: #ff5e5e;
+    border-color: #ff5e5e;
 }
 .tags {
     padding: 0 10px;
@@ -138,7 +138,7 @@
 }
 
 .tags-wrapper .swiper-scrollbar-drag:hover {
-    background-color: #034078;
+    background-color: #ff5e5e;
 }
 .tags-wrapper .swiper-scrollbar {
     height: 5px;
@@ -200,7 +200,7 @@
 }
 
 .products-pre__right a:hover,.products-pre__right a.active{
-    color: #034078!important;
+    color: #ff5e5e!important;
 }
 @media(max-width: 1000px){
     .right-catalog ul {

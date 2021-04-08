@@ -200,11 +200,11 @@ if (!$arResult['IS_AJAX']) :
                                             <svg class="minus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: inline; position: absolute"'?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>
-                                            <svg class="plus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: none;"'?>>
+                                            <svg class="plus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: none"'?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" style="display: block;">
+                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: block;"'?>>
                                             <ul class=" filter__main-list" id="gender-list">
                                                 <div class="filter__vid-elem">
                                                     <? foreach ($arResult['SAME_SECTIONS'] as $section) :?>
