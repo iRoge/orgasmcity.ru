@@ -244,8 +244,8 @@ class QsoftCatalogSection extends ComponentHelper
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
-        global $CACHE_MANAGER;
-        $CACHE_MANAGER->clearByTag('catalogAll');
+//        global $CACHE_MANAGER;
+//        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
@@ -599,11 +599,6 @@ class QsoftCatalogSection extends ComponentHelper
                 if (!empty($arImages[$arItem["DETAIL_PICTURE"]])) {
                     $arItem["DETAIL_PICTURE_BIG"] = $arImagesBig[$arItem["DETAIL_PICTURE"]];
                     $arItem["DETAIL_PICTURE"] = $arImages[$arItem["DETAIL_PICTURE"]];
-                } else {
-                    if ($id != 'TOP_ARTICLES') {
-                        unset($arProducts[$id]);
-                    }
-                    continue;
                 }
             }
         }
@@ -737,14 +732,25 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function delNonActualFavorites()
     {
-        global $LOCATION;
-
         $this->loadProducts(true);
         $this->loadOffers();
-        $actualOffers = array_intersect_key($this->offers, $LOCATION->getRests(array_keys($this->offers), '', '', true));
+        $rsStoreOffers = \Bitrix\Catalog\ProductTable::getList(
+            [
+                'select' => ['ID', 'QUANTITY']
+            ],
+        );
+        $availableOffers = [];
+        while ($arStoreOffer = $rsStoreOffers->fetch()) {
+            if ($arStoreOffer['QUANTITY'] > 0) {
+                $availableOffers[$arStoreOffer['ID']] = $arStoreOffer['ID'];
+            }
+        }
+        $actualOffers = array_intersect_key($this->offers, $availableOffers);
+        $arProducts = [];
         foreach ($actualOffers as $offerId => $arItem) {
             $arProducts[$arItem["PROPERTY_CML2_LINK_VALUE"]][] = $offerId;
         }
+        $arActualProducts = [];
         foreach ($arProducts as $productId => $arOffersId) {
             foreach ($arOffersId as $offerId) {
                 if (isset($actualOffers[$offerId])) {
@@ -1321,14 +1327,14 @@ class QsoftCatalogSection extends ComponentHelper
     private function prepareCatalogResult(): void
     {
         if (isset($_REQUEST['getFilters'])) {
-            if ($this->initCache('resultItems')) {
+            if ($this->initCache('resultItems', 3)) {
                 $this->items = $this->getCachedVars('items');
             } else {
                 $this->getResultItems();
             }
         } else {
             $this->getResultItems();
-            $this->initCache('resultItems');
+            $this->initCache('resultItems', 3);
             $this->startCache();
             $this->saveToCache('items', $this->items);
         }
@@ -1494,6 +1500,7 @@ class QsoftCatalogSection extends ComponentHelper
                     return false;
                 }
             }
+
             if ($item['PRICE'] > $this->filtersScopes['MAX_PRICE']) {
                 $this->filtersScopes['MAX_PRICE'] = $item['PRICE'];
             }
@@ -1520,7 +1527,6 @@ class QsoftCatalogSection extends ComponentHelper
                     $this->filtersScopes['MIN_DIAMETER'] = $item['PROPERTY_DIAMETER_VALUE'];
                 }
             }
-
             return $comp;
         });
         return $items;
@@ -1862,12 +1868,18 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $this->getCheckedOptions();
-        $this->arResult['FILTER']['MIN_PRICE'] = $this->filtersScopes['MIN_PRICE'];
-        $this->arResult['FILTER']['MAX_PRICE'] = $this->filtersScopes['MAX_PRICE'];
-        $this->arResult['FILTER']['MIN_DIAMETER'] = $this->filtersScopes['MIN_DIAMETER'];
-        $this->arResult['FILTER']['MAX_DIAMETER'] = $this->filtersScopes['MAX_DIAMETER'];
-        $this->arResult['FILTER']['MIN_LENGTH'] = $this->filtersScopes['MIN_LENGTH'];
-        $this->arResult['FILTER']['MAX_LENGTH'] = $this->filtersScopes['MAX_LENGTH'];
+        if ($this->filtersScopes['MIN_PRICE'] != $this->filtersScopes['MAX_PRICE']) {
+            $this->arResult['FILTER']['MIN_PRICE'] = $this->filtersScopes['MIN_PRICE'];
+            $this->arResult['FILTER']['MAX_PRICE'] = $this->filtersScopes['MAX_PRICE'];
+        }
+        if ($this->filtersScopes['MIN_DIAMETER'] != $this->filtersScopes['MAX_DIAMETER']) {
+            $this->arResult['FILTER']['MIN_DIAMETER'] = $this->filtersScopes['MIN_DIAMETER'];
+            $this->arResult['FILTER']['MAX_DIAMETER'] = $this->filtersScopes['MAX_DIAMETER'];
+        }
+        if ($this->filtersScopes['MIN_LENGTH'] != $this->filtersScopes['MAX_LENGTH']) {
+            $this->arResult['FILTER']['MIN_LENGTH'] = $this->filtersScopes['MIN_LENGTH'];
+            $this->arResult['FILTER']['MAX_LENGTH'] = $this->filtersScopes['MAX_LENGTH'];
+        }
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
 
@@ -1913,18 +1925,7 @@ class QsoftCatalogSection extends ComponentHelper
                 unset($this->arResult['FILTER'][$filterKey]);
             }
         }
-        if ($this->arResult['FILTER']['MAX_PRICE'] === $this->arResult['FILTER']['MIN_PRICE']) {
-            unset($this->arResult['FILTER']['MAX_PRICE']);
-            unset($this->arResult['FILTER']['MIN_PRICE']);
-        }
-        if ($this->arResult['FILTER']['MAX_DIAMETER'] === $this->arResult['FILTER']['MIN_DIAMETER']) {
-            unset($this->arResult['FILTER']['MAX_DIAMETER']);
-            unset($this->arResult['FILTER']['MIN_DIAMETER']);
-        }
-        if ($this->arResult['FILTER']['MAX_LENGTH'] === $this->arResult['FILTER']['MIN_LENGTH']) {
-            unset($this->arResult['FILTER']['MAX_LENGTH']);
-            unset($this->arResult['FILTER']['MIN_LENGTH']);
-        }
+
         sort($this->arResult['FILTER']['SIZES']);
     }
 

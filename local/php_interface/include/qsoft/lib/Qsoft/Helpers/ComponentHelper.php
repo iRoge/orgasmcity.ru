@@ -41,9 +41,9 @@ class ComponentHelper extends CBitrixComponent
         $this->cache = new CPHPCache();
     }
     // cache
-    protected function initCache(string $type): bool
+    protected function initCache(string $type, $time = false): bool
     {
-        return $this->cache->InitCache($this->arParams['CACHE_TIME'], $this->buildCacheId($type), $this->getRelativePath() ?? $this->relativePath);
+        return $this->cache->InitCache($time ? $time : $this->arParams['CACHE_TIME'], $this->buildCacheId($type), $this->getRelativePath() ?? $this->relativePath);
     }
     protected function buildCacheId(string $type)
     {
