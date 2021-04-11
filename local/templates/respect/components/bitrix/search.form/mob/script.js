@@ -64,19 +64,10 @@ function getResultMobSearch(q, searchSuggestBlock) {
             let empty = true;
             $.each(json.sections, function(index, element) {
                 searchSuggestBlock.append('<li style="list-style-type: none;line-height: 40px;" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+element.url+'">'+element.title+'</a></li>');
-                searchSuggestBlock.append('<input type="hidden" name="sections[' + element.url1 + ']" value="' + element.title1 + '">');
                 empty = false;
-            });
-            $.each(json.properties, function(index, element) {
-                for (let i in element) {
-                    searchSuggestBlock.append('<li style="list-style-type: none;line-height: 40px;" class="suggest-item"><a style="text-decoration: none; color: black;" href="' + element[i].url + '">' + element[i].title + '</a></li>');
-                    searchSuggestBlock.append('<input type="hidden" name="properties[' + element[i].url1 + ']" value="' + element[i].title1 + '">');
-                    empty = false;
-                }
             });
             $.each(json.items, function(index, element) {
                 searchSuggestBlock.append('<li style="list-style-type: none;line-height: 40px;" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+ element.url + '">' + element.title + '</a></li>');
-                searchSuggestBlock.append('<input type="hidden" name="items[' + element.url1 +']" value="' + element.title1 + '">');
                 empty = false;
             });
             if (empty) {

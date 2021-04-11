@@ -142,13 +142,6 @@
             res += prmName + '=' + val;
             return base + '?' + res;
         }
-
-        let seller_id = getCookie('seller_id');
-
-        if (seller_id !== undefined) {
-            let url = setAttr('utm_source', 'prodavec');
-            history.pushState(null, null, url);
-        }
     </script>
     <script data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/device.js' ?>"></script>
     <script data-skip-moving="true">

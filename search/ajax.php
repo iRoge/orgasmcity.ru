@@ -1,6 +1,5 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/main/include/prolog_before.php");
-use Bitrix\Highloadblock\HighloadBlockTable as HLBT;
 
 global $CACHE_MANAGER;
 global $LOCATION;
@@ -15,7 +14,8 @@ if (
 
     $cache = new CPHPCache;
     $availableProds = [];
-    if ($cache->InitCache(84600, 'search_index223', '/')) {
+    $availableOffers = [];
+    if ($cache->InitCache(84600, 'search_index', '/')) {
         $index = $cache->GetVars()['search_index'];
         $availableProds = $cache->GetVars()['available_prods'];
     } elseif ($cache->StartDataCache()) {
@@ -23,8 +23,6 @@ if (
         $CACHE_MANAGER->RegisterTag("catalogAll");
         // Достаем секции
         $index['sections'] = getSectionsIndex();
-//        // Достаем свойства
-//        $index['properties'] = getPropertiesIndex();
         // Достаем товары
         $index['items'] = getProductsIndex();
         // Достаем остатки
@@ -35,10 +33,29 @@ if (
         );
         while ($arStoreProduct = $rsStoreProduct->fetch()) {
             if ($arStoreProduct['QUANTITY'] > 0) {
-                $availableProds[] = $arStoreProduct['ID'];
+                $availableOffers[] = $arStoreProduct['ID'];
             }
         }
-
+        // Достаем товары по предложениям
+        $res = CIBlockElement::GetList(
+            [],
+            [
+                "IBLOCK_ID" => IBLOCK_OFFERS,
+                "ACTIVE" => "Y",
+                "ID" => $availableOffers,
+            ],
+            false,
+            false,
+            [
+                "ID",
+                "IBLOCK_ID",
+                "PROPERTY_CML2_LINK",
+            ]
+        );
+        while ($offer = $res->GetNext()) {
+            $availableProds[$offer['PROPERTY_CML2_LINK_VALUE']] = $offer['PROPERTY_CML2_LINK_VALUE'];
+        }
+        $availableProds = array_unique($availableProds);
         if (!empty($index)) {
             $CACHE_MANAGER->EndTagCache();
             $cache->EndDataCache(array (
@@ -58,10 +75,10 @@ if (
     echo json_encode($index);
 }
 
-function processIndex(&$index, $q, $available_prods)
+function processIndex(&$index, $q, $availableProds)
 {
     foreach ($index['items'] as $id => $item) {
-        if (!in_array($id, $available_prods)) {
+        if (!isset($availableProds[$id])) {
             unset($index['items'][$id]);
         }
     }
@@ -70,9 +87,6 @@ function processIndex(&$index, $q, $available_prods)
     $q = str_replace(')', '\)', $q);
     $q = str_replace('.', '\.', $q);
     $i = 1;
-    pre($q);
-    pre($available_prods);
-//    pre($index['items']);
     foreach ($index['sections'] as $key => $section) {
         if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $section['index'], $matches) && ($i <= 20)) {
             $index['sections'][$key]['title1'] = $section['title'];
@@ -84,44 +98,18 @@ function processIndex(&$index, $q, $available_prods)
             unset($index['sections'][$key]);
             continue;
         }
-//        foreach ($index['items'] as $item) {
-//            if ($item['section_id'] == $section['id']) {
-//                $index['sections'][$key]['items'][] = $item['id'];
-//            }
-//        }
-//        if (empty($index['sections'][$key]['items'])) {
-//            unset($index['sections'][$key]);
-//        }
+        if ($section['depth_level'] > 2) {
+            foreach ($index['items'] as $item) {
+                if ($item['section_id'] == $section['id']) {
+                    $index['sections'][$key]['items'][] = $item['id'];
+                }
+            }
+            if (empty($index['sections'][$key]['items'])) {
+                unset($index['sections'][$key]);
+            }
+        }
     }
-    pre($index['items']);
-//    foreach ($index['properties'] as $key => $item) {
-//        foreach ($item as $id => $value) {
-//            if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $value['index'], $matches) && ($i <= 20)) {
-//                if ($no_changes != 'Y') {
-//                    $index['properties'][$key][$id]['title1'] = $value['title'];
-//                    $index['properties'][$key][$id]['title'] = str_replace($matches[2], '<span style="color: blue">' . $matches[2] . '</span>', $value['title']);
-//                }
-//                $index['properties'][$key][$id]['url1'] = $index['properties'][$key][$id]['url'];
-//                $index['properties'][$key][$id]['url'] = $index['properties'][$key][$id]['url'] . '&q=' . $q;
-//                $i++;
-//            } else {
-//                unset($index['properties'][$key][$id]);
-//                continue;
-//            }
-//            foreach ($index['items'] as $elem) {
-//                if ($elem[$key] == $value['xml_id']) {
-//                    $index['properties'][$key][$id]['items'][] = $item['id'];
-//                }
-//            }
-//            if (empty($index['properties'][$key][$id]['items'])) {
-//                unset($index['properties'][$key][$id]);
-//            }
-//        }
-//        if (empty($index['properties'][$key])) {
-//            unset($index['properties'][$key]);
-//        }
-//    }
-//    $i = 1;
+    $i = 1;
     foreach ($index['items'] as $key => $item) {
         if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $item['title'], $matches) && ($i <= 5)) {
             $index['items'][$key]['title1'] = $item['title'];
@@ -146,7 +134,7 @@ function getSectionsIndex()
             'IBLOCK_ID' => IBLOCK_CATALOG,
             ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
             "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
-            ">DEPTH_LEVEL" => 2
+            ">DEPTH_LEVEL" => 1
         ],
         false,
         ['*'],
@@ -164,6 +152,7 @@ function getSectionsIndex()
         $result[$section['ID']]['title'] = $section['NAME'];
         $result[$section['ID']]['id'] = $section['ID'];
         $result[$section['ID']]['url'] = $section['SECTION_PAGE_URL'];
+        $result[$section['ID']]['depth_level'] = $section['DEPTH_LEVEL'];
     }
     usort($result, function ($a, $b) {
         if ($a['title'] > $b['title']) {
@@ -226,53 +215,4 @@ function getProductsIndex()
 //        $products[$prod['ID']]['Colorsfilter'] = $prod['PROPERTY_COLORSFILTER_VALUE'][0];
     }
     return $products;
-}
-
-function getPropertiesIndex()
-{
-    $arHLFilters = [
-        'Brand' => 'Бренд: ',
-        'Uppermaterial' => 'Материал верха: ',
-        'Liningmaterial' => 'Материал подкладки: ',
-        'Season' => 'Сезон: ',
-        'Country' => 'Страна происхождения: ',
-        'Colorsfilter' => 'Цвет: ',
-//        'Typeproduct => '',
-//        'Subtypeproduct' => '',
-    ];
-    $result = [];
-    foreach ($arHLFilters as $HLBName => $lang) {
-        $result[$HLBName] = getHLBLockItems($HLBName, $lang);
-    }
-    uasort($result, function ($a, $b) {
-        return $a['title'] <=> $b['title'];
-    });
-    return $result;
-}
-
-function getHLBLockItems($HLBName, $lang = null)
-{
-    $HLBName_filterName = [
-        'Brand' => 'brand',
-        'Uppermaterial' => 'uppermaterial',
-        'Liningmaterial' => 'liningmaterial',
-        'Season' => 'season',
-        'Country' => 'country',
-        'Colorsfilter' => 'color',
-    ];
-    $result = [];
-    $hlblock = HLBT::getList(array('filter' => array('=NAME' => $HLBName)))->fetch();
-    $entity = HLBT::compileEntity($hlblock);
-    $entity_data_class = $entity->getDataClass();
-    $rsData = $entity_data_class::getList(array(
-        'filter' => array(),
-        'select' => array('*'),
-    ));
-    while ($arData = $rsData->fetch()) {
-        $result[$arData['UF_XML_ID']]['index'] = $arData['UF_NAME'];
-        $result[$arData['UF_XML_ID']]['title'] = $lang . $arData['UF_NAME'];
-        $result[$arData['UF_XML_ID']]['xml_id'] = $arData['UF_XML_ID'];
-        $result[$arData['UF_XML_ID']]['url'] = '/catalog/?set_filter=Y&' . $HLBName_filterName[$HLBName] . '=' . $arData['UF_XML_ID'];
-    }
-    return $result;
 }

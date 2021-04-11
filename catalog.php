@@ -274,7 +274,7 @@ $APPLICATION->IncludeComponent(
         "SEF_URL_TEMPLATES" => array(
             "sections" => 'catalog/',
             "ajax" => "ajax/#ELEMENT_ID#/",
-            "search" => "search/",
+            "search" => "catalog/search/",
             "search_section" => "search/#SECTION_CODE_PATH#/",
             "section" => "#SECTION_CODE_PATH#/",
             "element" => "#ELEMENT_CODE#/",
