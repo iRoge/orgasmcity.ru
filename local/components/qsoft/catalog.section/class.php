@@ -1666,21 +1666,6 @@ class QsoftCatalogSection extends ComponentHelper
         $filter = [];
         $items = $this->items;
         foreach ($items as $item) {
-            if (!isset($filter['MIN_PRICE'])) {
-                $filter['MIN_PRICE'] = $item['PRICE'];
-            } else {
-                if ($item['PRICE'] < $filter['MIN_PRICE']) {
-                    $filter['MIN_PRICE'] = $item['PRICE'];
-                }
-            }
-
-            if (!isset($filter['MAX_PRICE'])) {
-                $filter['MAX_PRICE'] = $item['PRICE'];
-            } else {
-                if ($item['PRICE'] > $filter['MAX_PRICE']) {
-                    $filter['MAX_PRICE'] = $item['PRICE'];
-                }
-            }
             foreach (self::PRODUCT_PROPERTIES_MAP as $filterKey => $itemKey) {
                 if (empty($item[$itemKey])) {
                     continue;
@@ -1705,6 +1690,54 @@ class QsoftCatalogSection extends ComponentHelper
                 if (count($value) <= 1) {
                     unset($value);
                 }
+            }
+        }
+
+        if (!isset($filter['MIN_PRICE'])) {
+            $filter['MIN_PRICE'] = $item['PRICE'];
+        } else {
+            if ($item['PRICE'] < $filter['MIN_PRICE']) {
+                $filter['MIN_PRICE'] = $item['PRICE'];
+            }
+        }
+
+        if (!isset($filter['MAX_PRICE'])) {
+            $filter['MAX_PRICE'] = $item['PRICE'];
+        } else {
+            if ($item['PRICE'] > $filter['MAX_PRICE']) {
+                $filter['MAX_PRICE'] = $item['PRICE'];
+            }
+        }
+
+        if (!isset($filter['MIN_LENGTH'])) {
+            $filter['MIN_LENGTH'] = $item['LENGTH'];
+        } else {
+            if ($item['LENGTH'] < $filter['MIN_LENGTH']) {
+                $filter['MIN_LENGTH'] = $item['LENGTH'];
+            }
+        }
+
+        if (!isset($filter['MAX_LENGTH'])) {
+            $filter['MAX_LENGTH'] = $item['LENGTH'];
+        } else {
+            if ($item['LENGTH'] > $filter['MAX_LENGTH']) {
+                $filter['MAX_LENGTH'] = $item['LENGTH'];
+            }
+        }
+
+        if (!isset($filter['MIN_DIAMETER'])) {
+            $filter['MIN_DIAMETER'] = $item['DIAMETER'];
+        } else {
+            if ($item['DIAMETER'] < $filter['MIN_DIAMETER']) {
+                $filter['MIN_DIAMETER'] = $item['DIAMETER'];
+            }
+        }
+
+        if (!isset($filter['MAX_DIAMETER'])) {
+            $filter['MAX_DIAMETER'] = $item['DIAMETER'];
+        } else {
+            if ($item['DIAMETER'] > $filter['MAX_DIAMETER']) {
+                $filter['MAX_DIAMETER'] = $item['DIAMETER'];
             }
         }
         return $filter;
