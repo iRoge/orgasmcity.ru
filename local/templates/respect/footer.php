@@ -41,7 +41,7 @@
                     ); ?>
                 </div>
                 <div class="col-xs-6 footer-div">
-                    <h4>RESPECT</h4>
+                    <h4>Город Огразма</h4>
                     <? $APPLICATION->IncludeComponent(
                         'bitrix:menu',
                         'footer',

@@ -1413,11 +1413,9 @@ class QsoftCatalogSection extends ComponentHelper
             }
         } else {
             $this->getResultItems();
-            if (!isset($_POST['set_filter'])) {
-                $this->initCache('resultItems');
-                $this->startCache();
-                $this->saveToCache('items', $this->items);
-            }
+            $this->initCache('resultItems');
+            $this->startCache();
+            $this->saveToCache('items', $this->items);
         }
         $resultItems = $this->items;
         $this->resultItems = $this->filter($resultItems);
@@ -1477,15 +1475,18 @@ class QsoftCatalogSection extends ComponentHelper
         }
         $rests = [];
         if (!$isFavoritesCatalog) {
-            $rsStoreProduct = CCatalogProduct::GetList(
-                [],
-                ['ID' => array_keys($this->offers)],
-                false,
-                false,
-                ['ID', 'QUANTITY']
-            );
-            while ($arStoreProduct = $rsStoreProduct->fetch()) {
-                $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+            foreach (array_chunk($this->offers, 5000, true) as $offers) {
+                $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
+                    [
+                        'filter' => [
+                            'ID' => array_keys($offers)
+                        ],
+                        'select' => ['ID', 'QUANTITY']
+                    ],
+                );
+                while ($arStoreProduct = $rsStoreProduct->fetch()) {
+                    $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+                }
             }
         }
 

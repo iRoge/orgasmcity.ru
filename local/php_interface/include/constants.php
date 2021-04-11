@@ -7,6 +7,8 @@ define('IBLOCK_CATALOG', 5);
 define('IBLOCK_OFFERS', 6);
 define('IBLOCK_VENDORS', 4);
 
+define('MAIN_SECTION_ID', 574);
+
 define('HL_ARTICLES_SKU', 217);
 define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'] . '/local/logs/log.log');
 define('BUY_IN_CREDIT', false); //не забудьте активировать платежную систему

@@ -43,7 +43,7 @@ if (empty($aMenuLinksNew)) {
     if (!Loader::includeModule('iblock')) {
         $this->AbortResultCache();
     } else {
-        $mainSection = CIBlockSection::GetByID(574)->GetNext();
+        $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
         $res = CIBlockSection::GetList(
             [
                 "SORT" => "ASC",
@@ -138,12 +138,13 @@ if (empty($aMenuLinksNew)) {
         $offerIds = array_keys($offers);
         // Достаем остатки по товарам
         foreach (array_chunk($offerIds, 5000) as $ids) {
-            $rsStoreProduct = CCatalogProduct::GetList(
-                [],
-                ['ID' => $ids],
-                false,
-                false,
-                ['ID', 'QUANTITY']
+            $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
+                [
+                    'filter' => [
+                        'ID' => $ids
+                    ],
+                    'select' => ['ID', 'QUANTITY']
+                ],
             );
             while ($arStoreProduct = $rsStoreProduct->fetch()) {
                 $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
