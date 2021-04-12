@@ -648,8 +648,13 @@ $('a.pay-button').on('click', function (){
 
   $('.sex-span').on('click', function(e) {
     let that = $(this);
-    that.parent().addClass('sex-btn--non-active');
-    that.parent().siblings().addClass('sex-btn--active');
+    let sections = $('.sex-span');
+    sections.each(function (index) {
+      $(this).parent().removeClass('sex-btn--active');
+      $(this).parent().addClass('sex-btn--non-active');
+    });
+    that.parent().removeClass('sex-btn--non-active');
+    that.parent().addClass('sex-btn--active');
     let name = that.data('name');
     $('.sex-list').each(function(index) {
       let that = $(this);
@@ -659,12 +664,6 @@ $('a.pay-button').on('click', function (){
         that.hide();
       }
     });
-  });
-
-  $('.sex-span').on('click', function(e) {
-    let that = $(this);
-    that.parent().toggleClass('sex-btn--active sex-btn--non-active');
-    that.parent().siblings().toggleClass('sex-btn--active sex-btn--non-active');
   });
 
   $('.submenu-item').click(function(e) {

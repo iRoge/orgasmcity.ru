@@ -7466,29 +7466,28 @@ input::-webkit-inner-spin-button {
     z-index: 1;
     display: block;
   }
-  .sex-block :nth-child(1).sex-btn--non-active
-  {
-    border-right-style: none !important;
-  }
-
   .mobile_menu_top {
     position: relative;
     display: block;
   }
   .sex-btn {
-    border: 1px solid grey;
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+    border-left: 1px solid grey;
+    border-bottom: none;
     padding-right: 0px !important;
     padding-left: 0px !important;
     text-align: center;
     border-left-style: none;
   }
+  .sex-btn:last-child {
+    border-bottom: 1px solid grey;
+  }
   .sex-btn-left {
     border-left-style: solid !important;
-
   }
 
   .sex-btn--active {
-    border: 1px solid #000;
     color: #000;
   }
 
@@ -8266,7 +8265,7 @@ input::-webkit-inner-spin-button {
 }
 @media(max-width: 990px){
   .catalog__settings {
-    margin-bottom: 4em;
+    margin-bottom: 2em;
   }
 }
 
@@ -8466,7 +8465,7 @@ input::-webkit-inner-spin-button {
 .catalog__sort--mobile {
   display: none;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .catalog-sort--mobile-icon {

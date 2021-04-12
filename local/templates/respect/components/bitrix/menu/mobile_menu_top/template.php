@@ -21,8 +21,12 @@ if (!empty($arResult)) :?>
     <? $cou=0;
     foreach ($arResult as $arItem) : ?>
         <?$cou++;
-        if ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1 && !isset($item['PARAMS']['PROPS']) && $arItem['TEXT'] !== 'Уход за обувью') {?>
-        <div class="sex-btn <?=($cou==1)? "sex-btn-left":""?> col-xs-6" >
+        if ($arItem['TEXT'] == 'Одежда') {?>
+            <div class="sex-btn sex-btn-left col-xs-12" >
+                <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
+            </div>
+        <?} elseif ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1 && !isset($item['PARAMS']['PROPS'])) {?>
+        <div class="sex-btn <?=($cou % 2 == 1)? "sex-btn-left":""?> col-xs-6" >
             <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
         </div>
         <?}?>
