@@ -262,7 +262,7 @@ function getBrandsIndex()
     while ($brand = $data->GetNext()) {
         $brands[$brand['ID']]['index'] = ucfirst($brand['NAME']);
         $brands[$brand['ID']]['title'] = $brand['NAME'];
-        $brands[$brand['ID']]['url'] = '/brands/' . $brand['CODE'];
+        $brands[$brand['ID']]['url'] = '/brands/' . $brand['CODE'] . '/';
         $brands[$brand['ID']]['name'] = $brand['NAME'];
         $brands[$brand['ID']]['id'] = $brand['ID'];
         $brands[$brand['ID']]['xml_id'] = $brand['XML_ID'];

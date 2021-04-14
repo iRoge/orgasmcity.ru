@@ -278,8 +278,9 @@ $APPLICATION->IncludeComponent(
             "ajax" => "ajax/#ELEMENT_ID#/",
             "search" => "search/",
             "search_section" => "#SITE_DIR#/search/#SECTION_CODE_PATH#/",
-            "catalog" => "#SECTION_CODE_PATH#",
-            "element" => "#ELEMENT_CODE#",
+            "catalog" => "#SECTION_CODE_PATH#/",
+            "section" => null,
+            "element" => "#ELEMENT_CODE#/",
             "compare" => "compare/",
             "smart_filter" => "#SECTION_CODE#/filter/#SMART_FILTER_PATH#/apply/",
         )

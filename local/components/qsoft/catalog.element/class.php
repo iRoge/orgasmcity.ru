@@ -86,9 +86,8 @@ class QsoftCatalogElement extends ComponentHelper
         )->Fetch();
         $this->forSEO['DETAIL_TEXT'] = $arItem['DETAIL_TEXT'];
         $this->forSEO['NAME'] = $arItem['NAME'];
-        $this->isPreorder = $arItem['PROPERTY_PREORDER_VALUE'] == 'Y';
 
-        if (!$arItem['ID'] || ($arItem['ACTIVE'] == 'N' && !$this->isPreorder)) {
+        if (!$arItem['ID'] || ($arItem['ACTIVE'] == 'N')) {
             Tools::process404("", true, true, true, "");
         }
     }
@@ -105,13 +104,13 @@ class QsoftCatalogElement extends ComponentHelper
                 $this->registerTag('SEO_META');
             }
             $arEntity = $this->$method();
-            if (!empty($arEntity)) {
-                $this->endTagCache();
-                $this->saveToCache($key, $arEntity);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
+//            if (!empty($arEntity)) {
+//                $this->endTagCache();
+//                $this->saveToCache($key, $arEntity);
+//            } else {
+//                $this->abortTagCache();
+//                $this->abortCache();
+//            }
         }
         return $arEntity;
     }
@@ -159,7 +158,7 @@ class QsoftCatalogElement extends ComponentHelper
         $oElement = $rsElement->GetNextElement();
         $arElement = $oElement->GetFields();
         $arElement['PROPERTIES'] = $oElement->GetProperties();
-        $arElement['BRAND_PAGE'] = $this->getBrandPage($arElement['PROPERTIES']['BRAND']['VALUE']);
+        $arElement['BRAND_PAGE'] = $this->getBrandPage($arElement['PROPERTIES']['vendor']['VALUE']);
         return $arElement;
     }
 
@@ -169,7 +168,7 @@ class QsoftCatalogElement extends ComponentHelper
         $arOrder = [];
         $arFilter = [
             'IBLOCK_ID' => IBLOCK_OFFERS,
-            'ACTIVE' => $this->isPreorder ? '' : 'Y',
+            'ACTIVE' => 'Y',
             'PROPERTY_CML2_LINK' => $this->arResult['ID'],
         ];
         $arSelect = [
@@ -178,45 +177,40 @@ class QsoftCatalogElement extends ComponentHelper
             'IBLOCK_ID'
         ];
         $rsOffers = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
-        while ($arOffer = $rsOffers->GetNextElement()) {
-            $offer_fields = $arOffer->GetFields();
-            $arOffers[$offer_fields['ID']] = $offer_fields;
-            $arOffers[$offer_fields['ID']]['PROPERTIES'] = $arOffer->GetProperties(
+        while ($objOffer = $rsOffers->GetNextElement()) {
+            $offerFields = $objOffer->GetFields();
+            $arOffers[$offerFields['ID']] = $offerFields;
+            $arOffers[$offerFields['ID']]['PROPERTIES']['COLOR'] = $objOffer->GetProperties(
                 [],
-                ['CODE' => $this->arParams['OFFERS_PROPERTY_CODE']]
+                ['CODE' => 'color']
+            );
+            $arOffers[$offerFields['ID']]['PROPERTIES']['SIZE'] = $objOffer->GetProperties(
+                [],
+                ['CODE' => 'size']
             );
         }
         return $arOffers;
     }
 
-    private function getSizes(): array
-    {
-        $arSizes = array();
-        if (!empty($this->arResult['OFFERS'])) {
-            foreach ($this->arResult['OFFERS'] as $value) {
-                $arSizes[$value['ID']] = true;
-                if ($value['PROPERTIES']['SIZE']['VALUE']) {
-                    $arSizes[$value['ID']] = $value['PROPERTIES']['SIZE']['VALUE'];
-                }
-            }
-        }
-        return $arSizes;
-    }
-
+    /**
+     * @throws \Bitrix\Main\ObjectPropertyException
+     * @throws \Bitrix\Main\SystemException
+     * @throws \Bitrix\Main\ArgumentException
+     */
     private function loadRests(): array
     {
-        global $LOCATION;
-        $arRestsTemp = $LOCATION->getRests(array_keys($this->arResult['SIZES']));
-        //остатки по типам
-        $arRests = $LOCATION->getTypeSizes($arRestsTemp, $this->arResult['SIZES']);
-        //обрабатываем свойство "запрет резервирования или доставки"
-        if (!empty($this->arResult['PROPERTIES']['NO_RESERVE']['VALUE_ENUM_ID'])) {
-            $arRests['ALL'] = $arRests['DELIVERY'];
-            $arRests['RESERVATION'] = array();
-        }
-        if (!empty($this->arResult['PROPERTIES']['DISABLE_DELIVERY']['VALUE_ENUM_ID'])) {
-            $arRests['ALL'] = $arRests['RESERVATION'];
-            $arRests['DELIVERY'] = array();
+        $arRests = [];
+
+        $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
+            [
+                'filter' => [
+                    'ID' => array_keys($this->arResult['OFFERS'])
+                ],
+                'select' => ['ID', 'QUANTITY']
+            ],
+        );
+        while ($arStoreProduct = $rsStoreProduct->fetch()) {
+            $arRests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
         }
 
         return $arRests;
@@ -306,39 +300,26 @@ class QsoftCatalogElement extends ComponentHelper
         return $arSizes;
     }
 
+    /**
+     * @throws \Bitrix\Main\ObjectPropertyException
+     * @throws \Bitrix\Main\SystemException
+     * @throws \Bitrix\Main\ArgumentException
+     */
     private function prepareResult(): void
     {
-        global $LOCATION;
-
         $this->arResult = $this->getEntity('product', 'loadProduct');
         $this->arResult['NAME'] = $this->forSEO['NAME'];
         $this->arResult['DETAIL_TEXT'] = $this->forSEO['DETAIL_TEXT'];
         $this->arResult['OFFERS'] = $this->getEntity('offers', 'loadOffers');
-        $this->arResult['SIZES'] = $this->getSizes();
         $this->arResult['RESTS'] = $this->loadRests();
-
-        if (empty($this->arResult['RESTS']['ALL']) && $this->isPreorder == true) {
-            asort($this->arResult['SIZES']);
-            foreach ($this->arResult['SIZES'] as $offerId => $size) {
-                $this->arResult['RESTS']['ALL'][$offerId]['SIZE'] = $size;
-            }
-        } else {
-            $this->isPreorder = false;
-        }
-
         $this->arResult['IPROPERTY_VALUES'] = $this->getEntity('iprops', 'loadInheritedProperties');
         $this->arResult['PHOTOS'] = $this->getEntity('images', 'loadImages');
-        $this->arResult['COLORS'] = $this->getEntity('colors', 'loadColors');
         $this->arResult['DISPLAY_PROPERTIES'] = $this->getDisplayProperties();
         $this->arResult['SIZES_PROPERTIES'] = $this->getSizesProperties();
         $this->arResult['PATH'] = $this->getEntity('path', 'loadSectionsPath');
         $this->arResult['SECTION_SIZES_TAB'] = reset($this->getEntity('size_table', 'loadSizesTable'));
         $this->arResult['USER'] = $this->loadUserData();
         $this->arResult['ARTICLE'] = trim($this->arResult['PROPERTIES']['ARTICLE']['VALUE']);
-        $this->arResult['SHOPS'] = $this->loadShops();
-        $this->arResult['YOUTUBE_LINK'] = $this->arResult['PROPERTIES']['YOUTUBE_LINK']['VALUE'];
-
-        $this->arResult['CITY_NAME'] = $LOCATION->getName();
 
         $this->arResult['PICTURES_COUNT'] = count($this->arResult['PICTURES']);
 
@@ -364,9 +345,6 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function beforeTemplate(): void
     {
-        global $LOCATION;
-
-        $this->arResult['BRANCH_ID'] = $LOCATION->getUserShowcase();
         $GLOBALS['ELEMENT_BREADCRUMB'] = $this->arResult['ELEMENT_BREADCRUMB'];
         $GLOBALS['CATALOG_ELEMENT_ID'] = sprintf('%s-%s', $this->arResult['ID'], $this->arResult['BRANCH_ID']);
         Helper::addBodyClass('page--product');
@@ -404,18 +382,15 @@ class QsoftCatalogElement extends ComponentHelper
     private function loadImages(): array
     {
         $arImages = [];
-        if ($this->arResult['PROPERTIES']['MORE_PHOTO']['VALUE'] != '') {
-            $arImagesIDs = array_merge([$this->arResult['DETAIL_PICTURE'], $this->arResult['PREVIEW_PICTURE']], $this->arResult['PROPERTIES']['MORE_PHOTO']['VALUE']);
+        if ($this->arResult['PROPERTIES']['pics']['VALUE'] != '') {
+            $arImagesIDs = $this->arResult['PROPERTIES']['pics']['VALUE'];
         } else {
             $arImagesIDs = [$this->arResult['DETAIL_PICTURE'], $this->arResult['PREVIEW_PICTURE']];
         }
         if (!empty($arImagesIDs)) {
             $rsImages = CFile::GetList([], ['@ID' => $arImagesIDs]);
             while ($arImage = $rsImages->Fetch()) {
-                if (preg_match('/^.*\_(.+)\./', $arImage['ORIGINAL_NAME'], $match)) {
-                    $key = $match[1];
-                    $arImages[$key] = $this->getImageArray($arImage);
-                }
+                $arImages[$arImage['ID']] = $this->getImageArray($arImage);
             }
         } else {
             $arImages['SRC'] = Helper::getEmptyImg(650, 650);
@@ -423,56 +398,6 @@ class QsoftCatalogElement extends ComponentHelper
         }
         ksort($arImages, SORT_NATURAL);
         return $arImages;
-    }
-
-    private function loadColors(): array
-    {
-        $arColors = [];
-        // это свойства, которые одинаковые у одной модели
-        $arColorsProps = ['LINE', 'SHOE', 'MODEL', 'MANUFACTURER'];
-        $bHasAllColorProps = true;
-
-        foreach ($arColorsProps as $sProp) {
-            $bHasAllColorProps &= !empty($this->arResult['PROPERTIES'][$sProp]['VALUE']);
-        }
-
-        if ($bHasAllColorProps) {
-            $arColorsFilter = [
-                'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
-                'ACTIVE' => 'Y',
-                '!DETAIL_PICTURE' => false,
-                '!ID' => $this->arResult['ID'],
-            ];
-            foreach ($arColorsProps as $sProp) {
-                $arColorsFilter['PROPERTY_' . $sProp] = $this->arResult['PROPERTIES'][$sProp]['VALUE'];
-            }
-        } else {
-            $arColorsFilter['=ID'] = -1;
-        }
-
-        $rsColors = CIBlockElement::GetList(
-            [
-                'SORT' => 'ASC',
-                'ID' => 'ASC'
-            ],
-            $arColorsFilter,
-            false,
-            false,
-            ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'DETAIL_PICTURE', 'NAME']
-        );
-
-        //TODO Отрефакторить: много запросов
-        //TODO Дампануть массив colors на правильность детальной ссылки
-        while ($obColor = $rsColors->GetNextElement(true, false)) {
-            $arColor = $obColor->GetFields();
-            $arColor['PROPERTIES'] = $obColor->GetProperties([], ['CODE' => 'COLORSFILTER']);
-            $arColor['CURRENT'] = $arColor['ID'] == $this->arResult['ID'] ? 'Y' : 'N';
-            $arColor['COLOR'] = HL::getFieldValueByProp($arColor['PROPERTIES']['COLORSFILTER'], 'UF_GRBCODE');
-            $arColor['COLOR'] = Helper::rgb2hex($arColor['COLOR']);
-            $arColor['FILE'] = Helper::getResizePath($arColor['DETAIL_PICTURE'], 62, 62, true);
-            $arColors[] = $arColor;
-        }
-        return $arColors;
     }
 
     private function includeStyles(): void
@@ -619,91 +544,6 @@ class QsoftCatalogElement extends ComponentHelper
             );
         }
         return $arUser;
-    }
-
-    private function loadShops(): array
-    {
-        global $LOCATION;
-
-        $arShops = [];
-
-        //остатки по складам (только на резерв)
-        $arRests = $LOCATION->getRests(array_keys($this->arResult['SIZES']), 2);
-
-        //остатки по магазинам
-        $arStores = $LOCATION->getStoreSizes($arRests, $this->arResult['SIZES']);
-
-        if (!empty($arStores)) {
-            $arStoresIds = array_keys($arStores);
-            $res = \CCatalogStore::GetList(
-                array(
-                    'TITLE' => 'ASC',
-                ),
-                array(
-                    'ID' => $arStoresIds,
-                ),
-                false,
-                false,
-                array(
-                    'ID',
-                    'TITLE',
-                    'PHONE',
-                    'ADDRESS',
-                    'SCHEDULE',
-                    'GPS_N',
-                    'GPS_S',
-                    'UF_METRO',
-                    'UF_PHONES',
-                    'UF_WHATSAPP_VIDEO',
-                    'UF_WHATSAPP_NUM',
-                    'UF_METRO_DADATA'
-                )
-            );
-            while ($arStore = $res->Fetch()) {
-                if (empty($arStore['PHONE'])) {
-                    $arPhones = unserialize($arStore['UF_PHONES']);
-                    $arStore['PHONE'] = reset($arPhones);
-                }
-                $arStore['METRO'] = [];
-                foreach (unserialize($arStore['UF_METRO']) as $iMetro) {
-                    $obEntity = \Likee\Site\Helpers\HL::getEntityClassByTableName('b_1c_dict_metro');
-                    if (!empty($obEntity) && is_object($obEntity)) {
-                        $sClass = $obEntity->getDataClass();
-                        $arMetro = $sClass::getRowById($iMetro);
-                        $arStore['METRO'][] = $arMetro['UF_NAME'];
-                    }
-                }
-                $arStore['METRO'] = implode(', ', $arStore['METRO']);
-                $arStore['GPS_N'] = floatval(str_replace(',', '.', $arStore['GPS_N']));
-                $arStore['GPS_S'] = floatval(str_replace(',', '.', $arStore['GPS_S']));
-
-                if ($arStore['UF_WHATSAPP_VIDEO'] && !empty($arStore['UF_WHATSAPP_NUM'])) {
-                    $arStore['UF_WHATSAPP_NUM'] = str_replace(['+', '-', '(', ')', ' '], '', $arStore['UF_WHATSAPP_NUM']);
-                    $arStore['WHATSAPP_LINK'] = 'https://wa.me/' . $arStore['UF_WHATSAPP_NUM'] . '?text=' . Bitrix\Main\Config\Option::get("respect", "whatsapp_text_reserv", "");
-                    $arStore['WHATSAPP_LINK'] = str_replace('%23ARTICLE_NAME%23', urlencode($this->arResult['ARTICLE'] . ' ' . $this->arResult['NAME']), $arStore['WHATSAPP_LINK']);
-                }
-                $metro = json_decode($arStore['UF_METRO_DADATA']);
-                $arShops[] = [
-                    'index' => intval($arStore['ID']),
-                    'title' => $arStore['TITLE'],
-                    'address' => $arStore['ADDRESS'],
-                    'subway' => $metro[0]->name,
-                    'subway1' => $metro[1]->name,
-                    'subway2' => $metro[2]->name,
-                    'subway_trans' => Cutil::translit($arStore['METRO'], "ru", []),
-                    'worktime' => $arStore['SCHEDULE'],
-                    'phone' => $arStore['PHONE'],
-                    'coordinates' => [
-                        'lat' => $arStore['GPS_N'],
-                        'lng' => $arStore['GPS_S']
-                    ],
-                    'sizes' => $arStores[$arStore['ID']] ?: [],
-                    'whatsapp_link' => $arStore['WHATSAPP_LINK'] ?? '',
-                    'metro' => $metro,
-                ];
-            }
-        }
-        return $arShops;
     }
 
     private function checkFavorites($productId)
@@ -901,29 +741,25 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function getBrandPage($brandXml)
     {
-        $res = CIBlockSection::GetList(
+        $res = CIBlockElement::GetList(
             [
                 'NAME' => 'ASC',
             ],
             [
-                "IBLOCK_ID" => \Functions::getEnvKey('IBLOCK_VENDORS'),
-                'GLOBAL_ACTIVE' => 'Y',
+                "IBLOCK_ID" => IBLOCK_VENDORS,
                 'ACTIVE' => 'Y',
-                'IBLOCK_ACTIVE' => 'Y',
-                'UF_XML_BRANDS' => $brandXml,
+                'XML_ID' => $brandXml,
             ],
             false,
             [
                 "ID",
                 "NAME",
                 "CODE",
-                "SECTION_PAGE_URL",
-                "UF_XML_BRANDS",
             ]
         );
 
         if ($brand = $res->GetNext(true, false)) {
-            return $brand['SECTION_PAGE_URL'];
+            return '/brands/' . $brand["CODE"] . '/';
         } else {
             return false;
         }
