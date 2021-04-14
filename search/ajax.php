@@ -7,7 +7,6 @@ global $LOCATION;
 if (
     CModule::IncludeModule('search')
     && CModule::IncludeModule('iblock')
-    && CModule::IncludeModule('highloadblock')
 ) {
     $index = [];
     $q = $_REQUEST['q'];
@@ -144,12 +143,12 @@ function getSectionsIndex()
         $arSections[$section['ID']] = $section;
     }
     // Сортируем массив секций по глубине уровня для удобства итерации
-    usort($arSections, function ($a, $b) {
+    uasort($arSections, function ($a, $b) {
         return $a['DEPTH_LEVEL'] <=> $b['DEPTH_LEVEL'];
     });
     foreach ($arSections as $section) {
         $result[$section['ID']]['index'] = ucfirst($section['NAME']);
-        $result[$section['ID']]['title'] = $section['NAME'];
+        $result[$section['ID']]['title'] = ($section['DEPTH_LEVEL'] == 4 ? $arSections[$section['IBLOCK_SECTION_ID']]['NAME'] . ' > ' : '') . $section['NAME'];
         $result[$section['ID']]['id'] = $section['ID'];
         $result[$section['ID']]['url'] = $section['SECTION_PAGE_URL'];
         $result[$section['ID']]['depth_level'] = $section['DEPTH_LEVEL'];
@@ -207,12 +206,6 @@ function getProductsIndex()
         $products[$prod['ID']]['name'] = $prod['NAME'];
         $products[$prod['ID']]['id'] = $prod['ID'];
         $products[$prod['ID']]['section_id'] = $prod['IBLOCK_SECTION_ID'];
-//        $products[$prod['ID']]['Brand'] = $prod['PROPERTY_BRAND_VALUE'];
-//        $products[$prod['ID']]['Uppermaterial'] = $prod['PROPERTY_UPPERMATERIAL_VALUE'];
-//        $products[$prod['ID']]['Liningmaterial'] = $prod['PROPERTY_LININGMATERIAL_VALUE'];
-//        $products[$prod['ID']]['Season'] = $prod['PROPERTY_SEASON_VALUE'];
-//        $products[$prod['ID']]['Country'] = $prod['PROPERTY_COUNTRY_VALUE'];
-//        $products[$prod['ID']]['Colorsfilter'] = $prod['PROPERTY_COLORSFILTER_VALUE'][0];
     }
     return $products;
 }

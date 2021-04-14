@@ -19,6 +19,7 @@ class QsoftCatalogSection extends ComponentHelper
     private const TYPE_NEW = 'new';
     private const TYPE_SALE = 'sale';
     private const TYPE_FAVORITES = 'favorites';
+    private const TYPE_GROUP = 'group';
     private const SORT_PRICE_DESC = 'price_desc';
     private const SORT_PRICE_ASC = 'price';
     private const SORT_POPULAR = 'popular';
@@ -154,9 +155,8 @@ class QsoftCatalogSection extends ComponentHelper
     private $filterArray = [];
     private $disabledOptions;
     private $props = [];
-    private $stores;
-    private $arLocalTypeSizesRests = []; // массив остатков по местоположению
-
+    private $isBrand = false;
+    private $isBrandTagCode = null;
     private $resultItems;
 
     private $smallImgHeight = 300;
@@ -222,6 +222,16 @@ class QsoftCatalogSection extends ComponentHelper
                 $sectionUrl = str_replace('/catalog/favorites', '', $sectionUrl);
                 return 'favorites';
             }
+        } elseif (strpos($sectionUrl, '/brands/') !== false) {
+            $this->isBrand = true;
+            $brandUrl = explode('/', rtrim($sectionUrl, '/'));
+
+            if (count($brandUrl) == 4) {
+                $this->isBrandTagCode = $brandUrl[3];
+                $sectionUrl = str_replace($brandUrl[3] . '/', '', $sectionUrl);
+            }
+
+            return 'group';
         }
 
         return 'section';
@@ -325,6 +335,21 @@ class QsoftCatalogSection extends ComponentHelper
                     return Functions::abort404();
                 }
                 $this->loadOffers();
+                break;
+            case self::TYPE_GROUP:
+                if ($this->isBrand) {
+                    if (!$this->getBrand()) {
+                        return false;
+                    }
+                } else {
+                    return Functions::abort404();
+                    if (!$this->getGroup()) {
+                        return false;
+                    }
+                }
+                $this->getGroupFilters();
+                $this->getGroupProducts();
+                $this->getGroupOffers();
                 break;
             case self::TYPE_SEARCH:
                 $this->getSearchProducts();
@@ -941,29 +966,23 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-        /**
-         * артикулы для фильтра
-         * TODO - файл с артикулами
-         */
-        $this->getFilterArticles($filter);
-
-        /**
-         * обработка размеров
-         */
-        $this->getFilterSizes($filter);
-
-        /**
-         * обработка секций
-         */
-        $this->getFilterSections($filter);
-
-        $this->getFilterPrices($filter, $this->group);
-
-        $this->getGroupFilterStores($filter);
-
-        $this->getGroupFilterPriceSegment($filter);
-
-        $this->getFilterOnlineTryOn($filter);
+//        /**
+//         * артикулы для фильтра
+//         * TODO - файл с артикулами
+//         */
+//        $this->getFilterArticles($filter);
+//
+//        /**
+//         * обработка размеров
+//         */
+//        $this->getFilterSizes($filter);
+//
+//        /**
+//         * обработка секций
+//         */
+//        $this->getFilterSections($filter);
+//
+//        $this->getFilterPrices($filter, $this->group);
 
         $this->ibFilter = $filter;
     }
@@ -972,35 +991,9 @@ class QsoftCatalogSection extends ComponentHelper
     {
         return [
             'PRODUCT' => [
-                'PROPERTY_SECTION',
-                'PROPERTY_ARTICLE',
-                'PROPERTY_LININGMATERIAL',
-                'PROPERTY_UPPERMATERIAL',
-                'PROPERTY_VID',
-                'PROPERTY_TYPEPRODUCT',
-                'PROPERTY_RHODEPRODUCT',
-                'PROPERTY_SEASON',
-                'PROPERTY_COLOR',
-                'PROPERTY_MLT',
-                'PROPERTY_MRT',
-                'PROPERTY_SUBTYPEPRODUCT',
-                'PROPERTY_COLLECTION',
-                'PROPERTY_COUNTRY',
-                'PROPERTY_HEELHEIGHT',
-                'PROPERTY_SKU_ADDITIONAL',
-                'PROPERTY_SKU_EXCLUDE',
-                'PROPERTY_BRAND',
-                'PROPERTY_COLORSFILTER',
-                'PROPERTY_ONLINE_TRY_ON',
-                'PROPERTY_ZASTEGKA',
-                'PROPERTY_STYLE',
-                'PROPERTY_HEELHEIGHT_TYPE',
-                'PROPERTY_MATERIALSTELKI',
-                'PROPERTY_VIDKABLUKA',
-                'PROPERTY_TOP_ARTICLES',
+                'PROPERTY_VENDOR'
             ],
             'OFFER' => [
-                'PROPERTY_OFFERS_SIZE' => 'PROPERTY_SIZE',
             ],
         ];
     }
@@ -1100,54 +1093,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
     }
 
-    private function getGroupFilterStores(array &$filter)
-    {
-        if (isset($this->stores)) {
-            $filter['RESULT']['STORES'] = $this->stores;
-
-            return;
-        }
-
-        $stores = 0;
-        if (!empty($this->group['PROPERTY_F_STORES_O_VALUE'])) {
-            $stores += 1;
-        }
-
-        if (!empty($this->group['PROPERTY_F_STORES_R_VALUE'])) {
-            $stores += 2;
-        }
-
-        if (!in_array($stores, [1, 2])) {
-            $stores = false;
-        }
-
-        $this->stores = $stores;
-        $filter['RESULT']['STORES'] = $stores;
-    }
-
-    private function getGroupFilterPriceSegment(array &$filter)
-    {
-        if (!empty($this->group['PROPERTY_PRICESEGMENTID_VALUE'])) {
-            $filter['RESULT']['SEGMENT'] = $this->group['PROPERTY_PRICESEGMENTID_VALUE'];
-        }
-
-        if (!empty($this->group['PROPERTY_SEGMENT_FROM_VALUE'])) {
-            $filter['RESULT']['SEGMENT_FROM'] = intval($this->group['PROPERTY_SEGMENT_FROM_VALUE']);
-        }
-
-        if (!empty($this->group['PROPERTY_SEGMENT_TO_VALUE'])) {
-            $filter['RESULT']['SEGMENT_TO'] = intval($this->group['PROPERTY_SEGMENT_TO_VALUE']);
-        }
-    }
-
-    private function getFilterOnlineTryOn(array &$filter)
-    {
-        if (!empty($filter['PRODUCT']['PROPERTY_ONLINE_TRY_ON'])) {
-            $filter['PRODUCT']['PROPERTY_ONLINE_TRY_ON_VALUE'] = $filter['PRODUCT']['PROPERTY_ONLINE_TRY_ON'];
-        }
-        unset($filter['PRODUCT']['PROPERTY_ONLINE_TRY_ON']);
-    }
-
     private function getGroupProducts()
     {
         $products = [];
@@ -1170,11 +1115,6 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->abortTagCache();
                 $this->abortCache();
             }
-        }
-
-        if (!empty($products['TOP_ARTICLES'])) {
-            $this->ibFilter['TOP_ARTICLES'] = $products['TOP_ARTICLES'];
-            unset($products['TOP_ARTICLES']);
         }
 
         $this->products = $products;
@@ -1432,7 +1372,6 @@ class QsoftCatalogSection extends ComponentHelper
             $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
             $items[$pid]["COLORS"][] = $value["PROPERTY_COLOR_VALUE"];
             $items[$pid]["ASSORTMENTS"][] = $value;
-            $this->arLocalTypeSizesRests['ALL'][$pid][] = $value["PROPERTY_SIZE_VALUE"];
         }
 
         foreach ($items as $key => &$item) {
@@ -2223,24 +2162,18 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $this->group = $brand;
-        $this->arResult['TAGS'] = $brand['TAGS'];
 
         return $brand;
     }
 
     private function loadBrand()
     {
-        $ibBrandsId = Functions::getEnvKey('IBLOCK_BRANDS');
-
-        $brand = CIBlockSection::GetList(
+        $brand = CIBlockElement::GetList(
             [],
             [
-                "IBLOCK_ID" => $ibBrandsId,
-                'GLOBAL_ACTIVE' => 'Y',
+                "IBLOCK_ID" => IBLOCK_VENDORS,
                 'ACTIVE' => 'Y',
-                'IBLOCK_ACTIVE' => 'Y',
                 'CODE' => $this->code,
-                'DEPTH_LEVEL' => 2,
             ],
             false,
             [
@@ -2248,11 +2181,11 @@ class QsoftCatalogSection extends ComponentHelper
                 "NAME",
                 "CODE",
                 "SORT",
+                "XML_ID",
                 "DESCRIPTION",
                 "PICTURE",
                 "DETAIL_PICTURE",
                 "SECTION_PAGE_URL",
-                "UF_XML_BRANDS",
             ]
         )->GetNext(true, false);
 
@@ -2260,60 +2193,7 @@ class QsoftCatalogSection extends ComponentHelper
             return false;
         }
 
-        $brand['PROPERTY_BRAND_VALUE'] = $brand['UF_XML_BRANDS'];
-
-        $arFilter = [
-            'IBLOCK_ID' => $ibBrandsId,
-            'SECTION_ID' => $brand['ID'],
-        ];
-
-        if ($this->isBrandTagCode) {
-            $arFilter = $arFilter + ['CODE' => $this->isBrandTagCode];
-        }
-
-        $rTags = CIBlockElement::GetList(
-            [],
-            $arFilter,
-            false,
-            false,
-            [
-                'ID',
-                'IBLOCK_ID',
-                'NAME',
-                'DETAIL_PAGE_URL',
-                'IBLOCK_SECTION_ID',
-                'DETAIL_TEXT',
-                'PROPERTY_PRICE_FROM',
-                'PROPERTY_PRICE_TO',
-                'PROPERTY_ARTICLE',
-                'PROPERTY_OFFERS_SIZE',
-                'PROPERTY_LININGMATERIAL',
-                'PROPERTY_UPPERMATERIAL',
-                'PROPERTY_RHODEPRODUCT',
-                'PROPERTY_SEASON',
-                'PROPERTY_COLOR',
-                'PROPERTY_SUBTYPEPRODUCT',
-                'PROPERTY_COLORS',
-                'PROPERTY_HEELHEIGHT_TYPE',
-                'PROPERTY_COUNTRY',
-                'PROPERTY_ZASTEGKA',
-                'PROPERTY_STYLE',
-                'PROPERTY_MATERIALSTELKI',
-                'PROPERTY_VIDKABLUKA',
-                'PROPERTY_SECTION',
-            ]
-        );
-
-        if ($this->isBrandTagCode) {
-            $tag = $rTags->Fetch();
-            $brand = $brand + $tag;
-            $brand['TAG_ID'] = $tag['ID'];
-            $brand['TAG_NAME'] = $tag['NAME'];
-        } else {
-            while ($tag = $rTags->GetNext(true, false)) {
-                $brand['TAGS'][] = $tag;
-            }
-        }
+        $brand['PROPERTY_VENDOR_VALUE'] = $brand['XML_ID'];
 
         return $brand;
     }

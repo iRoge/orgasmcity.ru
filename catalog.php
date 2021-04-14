@@ -276,7 +276,7 @@ $APPLICATION->IncludeComponent(
             "ajax" => "ajax/#ELEMENT_ID#/",
             "search" => "catalog/search/",
             "search_section" => "search/#SECTION_CODE_PATH#/",
-            "section" => "#SECTION_CODE_PATH#/",
+            "catalog" => "#SECTION_CODE_PATH#/",
             "element" => "#ELEMENT_CODE#/",
             "compare" => "compare/",
             "smart_filter" => "#SECTION_CODE#/filter/#SMART_FILTER_PATH#/apply/",
@@ -284,6 +284,6 @@ $APPLICATION->IncludeComponent(
         )
     ),
     false
-); ?>
+);
 
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");

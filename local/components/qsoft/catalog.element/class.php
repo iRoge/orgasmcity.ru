@@ -35,7 +35,7 @@ use Bitrix\Main\Localization\Loc;
  */
 class QsoftCatalogElement extends ComponentHelper
 {
-    protected $relativePath = '/qsoft/catalog.element';
+    protected string $relativePath = '/qsoft/catalog.element';
     private $cacheTag = 'catalogAll';
     private $srcThousand = ['width' => 1000, 'height' => 1000];
     private $srcSizeMedium = ['width' => 600, 'height' => 600];
@@ -906,7 +906,7 @@ class QsoftCatalogElement extends ComponentHelper
                 'NAME' => 'ASC',
             ],
             [
-                "IBLOCK_ID" => \Functions::getEnvKey('IBLOCK_BRANDS'),
+                "IBLOCK_ID" => \Functions::getEnvKey('IBLOCK_VENDORS'),
                 'GLOBAL_ACTIVE' => 'Y',
                 'ACTIVE' => 'Y',
                 'IBLOCK_ACTIVE' => 'Y',
