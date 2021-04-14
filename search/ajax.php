@@ -24,6 +24,8 @@ if (
         $index['sections'] = getSectionsIndex();
         // Достаем товары
         $index['items'] = getProductsIndex();
+        // Достаем бренды
+        $index['brands'] = getBrandsIndex();
         // Достаем остатки
         $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
             [
@@ -87,25 +89,48 @@ function processIndex(&$index, $q, $availableProds)
     $q = str_replace('.', '\.', $q);
     $i = 1;
     foreach ($index['sections'] as $key => $section) {
-        if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $section['index'], $matches) && ($i <= 20)) {
+        if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $section['index'], $matches) && ($i <= 10)) {
             $index['sections'][$key]['title1'] = $section['title'];
             $index['sections'][$key]['title'] = str_replace($matches[2], '<span style="color: blue">' . $matches[2] . '</span>', $section['title']);
             $index['sections'][$key]['url1'] = $index['sections'][$key]['url'];
             $index['sections'][$key]['url'] = $index['sections'][$key]['url'] . '?q=' . $q;
+            if ($section['depth_level'] > 2) {
+                foreach ($index['items'] as $item) {
+                    if ($item['section_id'] == $section['id']) {
+                        $index['sections'][$key]['items'][] = $item['id'];
+                    }
+                }
+                if (empty($index['sections'][$key]['items'])) {
+                    unset($index['sections'][$key]);
+                    continue;
+                }
+            }
             $i++;
         } else {
             unset($index['sections'][$key]);
             continue;
         }
-        if ($section['depth_level'] > 2) {
+    }
+    $i = 1;
+    foreach ($index['brands'] as $key => $brand) {
+        if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $brand['index'], $matches) && ($i <= 3)) {
+            $index['brands'][$key]['title1'] = $brand['title'];
+            $index['brands'][$key]['title'] = str_replace($matches[2], '<span style="color: blue">' . $matches[2] . '</span>', $brand['title']);
+            $index['brands'][$key]['url1'] = $index['brands'][$key]['url'];
+            $index['brands'][$key]['url'] = $index['brands'][$key]['url'] . '?q=' . $q;
             foreach ($index['items'] as $item) {
-                if ($item['section_id'] == $section['id']) {
-                    $index['sections'][$key]['items'][] = $item['id'];
+                if ($item['brand_xml_id'] == $brand['xml_id']) {
+                    $index['brands'][$key]['items'][] = $item['id'];
                 }
             }
-            if (empty($index['sections'][$key]['items'])) {
-                unset($index['sections'][$key]);
+            if (empty($index['brands'][$key]['items'])) {
+                unset($index['brands'][$key]);
+                continue;
             }
+            $i++;
+        } else {
+            unset($index['brands'][$key]);
+            continue;
         }
     }
     $i = 1;
@@ -206,6 +231,41 @@ function getProductsIndex()
         $products[$prod['ID']]['name'] = $prod['NAME'];
         $products[$prod['ID']]['id'] = $prod['ID'];
         $products[$prod['ID']]['section_id'] = $prod['IBLOCK_SECTION_ID'];
+        $products[$prod['ID']]['brand_xml_id'] = $prod['PROPERTY_VENDOR_VALUE'];
     }
     return $products;
+}
+
+function getBrandsIndex()
+{
+    $brands = [];
+    $data = CIBlockElement::GetList(
+        array(),
+        [
+            'IBLOCK_ID' => IBLOCK_VENDORS,
+            'ACTIVE' => 'Y',
+        ],
+        false,
+        false,
+        [
+            "ID",
+            "NAME",
+            "CODE",
+            "SORT",
+            "XML_ID",
+            "DESCRIPTION",
+            "PICTURE",
+            "DETAIL_PICTURE",
+            "SECTION_PAGE_URL",
+        ]
+    );
+    while ($brand = $data->GetNext()) {
+        $brands[$brand['ID']]['index'] = ucfirst($brand['NAME']);
+        $brands[$brand['ID']]['title'] = $brand['NAME'];
+        $brands[$brand['ID']]['url'] = '/brands/' . $brand['CODE'];
+        $brands[$brand['ID']]['name'] = $brand['NAME'];
+        $brands[$brand['ID']]['id'] = $brand['ID'];
+        $brands[$brand['ID']]['xml_id'] = $brand['XML_ID'];
+    }
+    return $brands;
 }

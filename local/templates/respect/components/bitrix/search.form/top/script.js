@@ -66,6 +66,10 @@ function getResultSearch(q, searchSuggestBlock) {
                 searchSuggestBlock.append('<li class="suggest-item"><a href="' + element.url + '">' + element.title + '</a></li>');
                 empty = false;
             });
+            $.each(json.brands, function(index, element) {
+                searchSuggestBlock.append('<li class="suggest-item"><a href="' + element.url + '">' + element.title + '</a></li>');
+                empty = false;
+            });
             $.each(json.items, function(index, element) {
                 searchSuggestBlock.append('<li class="suggest-item"><a href="' + element.url + '">' + element.title + '</a></li>');
                 empty = false;

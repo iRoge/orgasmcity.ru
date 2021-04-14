@@ -208,7 +208,7 @@ class QsoftCatalogSection extends ComponentHelper
         return $arParams;
     }
 
-    private function checkGroupOrTag(&$sectionUrl)
+    private function checkGroupOrTag(&$sectionUrl): string
     {
         $isSpecial = strpos($sectionUrl, 'catalog') !== false;
         if ($isSpecial) {
