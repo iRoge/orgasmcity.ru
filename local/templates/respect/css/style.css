@@ -223,12 +223,6 @@ html, body
   display: block;
 }
 
-.top-border
-{
-  border-bottom: 2px solid #f4f4f4;
-  height: inherit;
-}
-
 .table-size__heading {
   font-family: 'vollkornsemibold';
   color: #4e4e4e;
@@ -5686,7 +5680,7 @@ input::-webkit-inner-spin-button {
   }
   .carto
   {
-    padding: 0!important;
+    padding: 0 0 35px 0!important;
   }
   .blue-menu
   {
@@ -9830,6 +9824,20 @@ input::-webkit-inner-spin-button {
   .blue-menu-div {
     margin-left: -320px;
     width: 320px;
+  }
+}
+@media (max-width: 990px) {
+  .blue-menu-div {
     display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  .info {
+    border-bottom: 2px solid #f4f4f4;
+  }
+
+  .right-block-top {
+    border-bottom: 2px solid #f4f4f4;
   }
 }

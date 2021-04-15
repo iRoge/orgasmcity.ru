@@ -1156,22 +1156,24 @@
 			if ( this.settings.autoHeight === true ) {
 				this.$mainImage.css({ width: '100%', height: 'auto', 'marginLeft': '', 'marginTop': '' });
 			} else {
-				if ( this.settings.imageScaleMode === 'cover' ) {
-					this.$mainImage.css({ width: 'auto', height: '100%', margin: '0 auto' });
-					// if ( this.$mainImage.width() / this.$mainImage.height() <= this.width / this.height ) {
-					// 	this.$mainImage.css({ width: '100%', height: 'auto' });
-					// } else {
-					// 	this.$mainImage.css({ width: 'auto', height: '69%' });
-					// }
-				} else if ( this.settings.imageScaleMode === 'contain' ) {
-					if ( this.$mainImage.width() / this.$mainImage.height() >= this.width / this.height ) {
-						this.$mainImage.css({ width: '100%', height: 'auto' });
-					} else {
-						this.$mainImage.css({ width: 'auto', height: '69%' });
-					}
-				} else if ( this.settings.imageScaleMode === 'exact' ) {
-					this.$mainImage.css({ width: '100%', height: '69%' });
-				}
+				this.$mainImage.css({ width: 'auto', height: this.settings.imageScaleMode + '%', margin: '0 auto' });
+
+				// if ( this.settings.imageScaleMode === 'cover' ) {
+				// 	this.$mainImage.css({ width: 'auto', height: '100%', margin: '0 auto' });
+				// 	// if ( this.$mainImage.width() / this.$mainImage.height() <= this.width / this.height ) {
+				// 	// 	this.$mainImage.css({ width: '100%', height: 'auto' });
+				// 	// } else {
+				// 	// 	this.$mainImage.css({ width: 'auto', height: '69%' });
+				// 	// }
+				// } else if ( this.settings.imageScaleMode === 'contain' ) {
+				// 	if ( this.$mainImage.width() / this.$mainImage.height() >= this.width / this.height ) {
+				// 		this.$mainImage.css({ width: '100%', height: 'auto' });
+				// 	} else {
+				// 		this.$mainImage.css({ width: 'auto', height: '69%' });
+				// 	}
+				// } else if ( this.settings.imageScaleMode === 'exact' ) {
+				// 	this.$mainImage.css({ width: '100%', height: '69%' });
+				// }
 
 				if ( this.settings.centerImage === true ) {
 					if (this.settings.topImage === false)

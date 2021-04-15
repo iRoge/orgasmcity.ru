@@ -261,18 +261,10 @@ $(function () {
         thumbnailHeight: 96,
         topImage: true,
         smallSize: 768,
-        imageScaleMode: 'cover',
+        imageScaleMode: 100,
         centerImage: true,
-        resize: function() {
-            // $(this)[0].$slidesMask[0].style.maxHeight=$(this)[0].$slidesMask[0].style.width;
-            // $(this)[0].$slidesMask[0].style.height=$(this)[0].$slidesMask[0].style.maxHeight;
-        },
         init: function(data) {
-            // $(this)[0].$slidesMask[0].style.maxHeight=$(this)[0].$slidesMask[0].style.width;
             goZoom(data);
-        },
-        update: function() {
-            // $(this)[0].$slidesMask[0].style.height=$(this)[0].$slidesMask[0].style.width;
         },
         gotoSlide: function(data) {
             goZoom(data);
@@ -284,7 +276,17 @@ $(function () {
                 loop: isLoop,
                 thumbnailPointer: true,
                 orientation: "horizontal",
-                imageScaleMode: 'contain',
+                imageScaleMode: 100,
+                height: 200,
+            },
+            900: {
+                thumbnailsPosition: "bottom",
+                arrows: false,
+                loop: isLoop,
+                thumbnailPointer: true,
+                orientation: "horizontal",
+                imageScaleMode: 100,
+                height: 250,
             },
             990: {
                 thumbnailsPosition: "bottom",
@@ -292,7 +294,24 @@ $(function () {
                 loop: isLoop,
                 thumbnailPointer: true,
                 orientation: "horizontal",
-                imageScaleMode: 'contain',
+                imageScaleMode: 100,
+                height: 300,
+            },
+            1090: {
+                imageScaleMode: 100,
+                height: 300,
+            },
+            1205: {
+                imageScaleMode: 65,
+            },
+            1275: {
+                imageScaleMode: 75,
+            },
+            1350: {
+                imageScaleMode: 80,
+            },
+            1500: {
+                imageScaleMode: 85,
             }
         }
     });
