@@ -6600,7 +6600,8 @@ input::-webkit-inner-spin-button {
   }
   .footer
   {
-    padding: 0!important;
+    padding-top: 0;
+    padding-bottom: 0;
   }
   .footer > .main
   {
