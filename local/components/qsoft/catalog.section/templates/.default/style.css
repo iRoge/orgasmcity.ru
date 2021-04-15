@@ -23,7 +23,8 @@
 
 @media (max-width: 1150px) {
     .filter__status-text-btn {
-        font-size: 9px !important;
+        font-size: 10px !important;
+        line-height: 22px;
     }
 }
 
@@ -276,9 +277,6 @@ footer .hide-block {
     	max-height: 260px;
     	overflow-x: hidden !important;
     }
-    .filter__displayed {
-        display: none;
-    }
     .lds-ring-container-lazyload {
         top: 25%;
     }
@@ -472,4 +470,11 @@ footer .hide-block {
 .page-massage.recomendation {
     font-size: 18px;
     font-weight: 600;
+}
+
+
+@media (max-width: 992px) {
+    .filter__displayed {
+        display: none;
+    }
 }

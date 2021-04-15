@@ -135,7 +135,7 @@ function processIndex(&$index, $q, $availableProds)
     }
     $i = 1;
     foreach ($index['items'] as $key => $item) {
-        if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $item['title'], $matches) && ($i <= 5)) {
+        if (preg_match('/(\s|)(\S*' . $q . '\S*)(\s|)/ium', $item['index'], $matches) && ($i <= 8)) {
             $index['items'][$key]['title1'] = $item['title'];
             $index['items'][$key]['title'] = str_replace($matches[2], '<span style="color: blue">' . $matches[2] . '</span>', $item['title']);
             $index['items'][$key]['url1'] = $index['items'][$key]['url'];
@@ -209,6 +209,7 @@ function getProductsIndex()
             "NAME",
             "CODE",
             "DETAIL_PICTURE",
+            'DETAIL_PAGE_URL',
             "PREVIEW_PICTURE",
             "SORT",
             "PROPERTY_ARTICLE",
@@ -226,7 +227,8 @@ function getProductsIndex()
         if (!$prod['DETAIL_PICTURE']) {
             continue;
         }
-        $products[$prod['ID']]['title'] = $prod['NAME'] . ' ' . $prod['PROPERTY_ARTICLE_VALUE'];
+        $products[$prod['ID']]['index'] = $prod['NAME'] . ' ' . $prod['PROPERTY_ARTICLE_VALUE'];
+        $products[$prod['ID']]['title'] = $prod['NAME'];
         $products[$prod['ID']]['url'] = $prod['DETAIL_PAGE_URL'];
         $products[$prod['ID']]['name'] = $prod['NAME'];
         $products[$prod['ID']]['id'] = $prod['ID'];

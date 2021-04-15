@@ -1541,12 +1541,12 @@ body {
 
 a {
   cursor: pointer;
-  color: #333333;
+  color: #FD7778;
   text-decoration: none;
 }
 
 a:hover {
-  color: #FD7778;
+  color: #ff5e5e;
 }
 
 a:focus {

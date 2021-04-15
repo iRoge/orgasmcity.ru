@@ -254,8 +254,8 @@ class QsoftCatalogSection extends ComponentHelper
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
-//        global $CACHE_MANAGER;
-//        $CACHE_MANAGER->clearByTag('catalogAll');
+        global $CACHE_MANAGER;
+        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
@@ -605,12 +605,12 @@ class QsoftCatalogSection extends ComponentHelper
                 $image = new \Bitrix\Main\File\Image($_SERVER["DOCUMENT_ROOT"] . $src);
                 $k = $image->getExifData()['COMPUTED']['Width'] / $image->getExifData()['COMPUTED']['Height'];
                 $smallSizes = [
-                    'height' => $this->smallImgHeight,
                     'width' => $k < 1 ? $k * $this->smallImgHeight : $this->smallImgHeight,
+                    'height' => $this->smallImgHeight,
                 ];
                 $bigSizes = [
-                    'height' => $this->bigImgHeight,
                     'width' => $k < 1 ? $k * $this->bigImgHeight : $this->bigImgHeight,
+                    'height' => $this->bigImgHeight,
                 ];
                 $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes);
                 $resizeSrcBig = Functions::ResizeImageGet($arItem, $bigSizes);
@@ -1286,7 +1286,7 @@ class QsoftCatalogSection extends ComponentHelper
         if (!$pageSize) {
             $pageSize = $_COOKIE["CATALOG_SORT_TO"];
         }
-        $pageSize = in_array($pageSize, [36, 48, 72, 96]) ? $pageSize : 36;
+        $pageSize = in_array($pageSize, [36, 48, 72, 96]) ? $pageSize : 48;
         $dbResult = new CDBResult();
         // костыль для того, что бы номер страницы всегда брался из URL
         CPageOption::SetOptionString("main", "nav_page_in_session", "N");
@@ -1363,7 +1363,7 @@ class QsoftCatalogSection extends ComponentHelper
                 $items[$pid] = $this->products[$pid];
             }
 
-            if ($value["PROPERTY_BASEPRICE_VALUE"]) {
+            if ($value["PROPERTY_BASEPRICE_VALUE"] && (!isset($items[$pid]['PRICE']) || isset($items[$pid]['PRICE']) && $value["PROPERTY_BASEPRICE_VALUE"] < $items[$pid]['PRICE'])) {
                 $items[$pid]['PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"];
                 $items[$pid]['OLD_PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"] + 1000;
                 $items[$pid]['PERCENT'] = (int)(100 - $items[$pid]['PRICE'] * 100 / $items[$pid]['OLD_PRICE']);

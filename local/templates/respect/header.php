@@ -172,6 +172,7 @@ if (!$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
 ?>
 <body class="<? $APPLICATION->ShowProperty('BODY_CLASS'); ?>">
 <div id="panel"><? $APPLICATION->ShowPanel(); ?></div>
+<div class="body-settings">
 <div class="podlozhka"></div>
 <?
     $APPLICATION->IncludeComponent(
@@ -199,7 +200,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
 ?>
 
 <div class="top col-xs-12 tolltips">
-    <div class="main">
+    <div class="main top-border">
         <div class="col-md-8 col-sm-9 col-xs-12 info">
             <? $APPLICATION->IncludeComponent(
                 'qsoft:geolocation',
@@ -217,11 +218,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 </p>
 
             </div>
-            <div class="col-sm-3 hidden-xs phone-top">
-                <p class="phone-top-first">
-                    <span>Единая справочная: </span>
-                    <span><a class="phone-top-link" href="tel:88005555292">8 800 555-52-92</a></span>
-                </p>
+            <div class="col-sm-offset-1 col-sm-3 hidden-xs phone-top">
                 <p class="phone-top-second">
                     <span>Интернет-магазин: </span>
                     <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
@@ -296,9 +293,6 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
         </div>
     </div>
-    <? /* if ($USER->IsAuthorized()): ?>
-            <a href="<?=$_SERVER['REQUEST_URI']?>?logout=yes"class="exit" style="color: #ff5e5e;">Выход</a>
-        <?endif;*/ ?>
 </div>
 <div class="menu-spacer">
     <div class="poisk-div">

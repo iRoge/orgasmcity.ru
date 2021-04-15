@@ -25,7 +25,10 @@ label.radio > span .input__color,
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+.body-settings {
+    max-width: 1600px;
+    margin: 0 auto;
+}
 .icon-lg {
     font-size: 1.3333333333333333em;
     line-height: 0.75em;

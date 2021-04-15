@@ -13,10 +13,10 @@
 
 $this->setFrameMode(true);
 ?>
-<div class="bestsellers col-xs-12">
-  <div class="main">
+<div class="col-xs-12">
+  <div class="bestsellers main">
     <h2 class="zagolovok">Бестселлеры</h2>
-    <div class="bestsel col-xs-12">
+    <div class="bestsel">
      <? foreach ($arResult['PRODUCTS'] as $iKey => $arItem): ?>
         <div style="outline: none;">
           <div class="col-xs-12">

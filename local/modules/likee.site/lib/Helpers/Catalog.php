@@ -659,25 +659,4 @@ class Catalog
         
         return false;
     }
-
-    public static function checkElementResult(&$element)
-    {
-        $priceParams = \Likee\Site\Helpers\Price::getProductPriceParams($element['ID']);
-        if ($priceParams) {
-            $element['PROPERTIES']['PRICESEGMENTID']['VALUE'] = $priceParams['price_segment_id'];
-            $element['PROPERTIES']['MAXDISCBP']['VALUE'] = $priceParams['max_disc_bp'];
-
-            if (!empty($priceParams['price_original'])) {
-                foreach ($element['OFFERS'] as &$arOffer) {
-                    if ($arOffer['CATALOG_AVAILABLE'] == 'Y' && $arOffer['CAN_BUY']) {
-                        $arOffer['MIN_PRICE']['VALUE'] = $priceParams['price_original'];
-                        $arOffer['MIN_PRICE']['PRINT_VALUE'] = CurrencyFormat($arOffer['MIN_PRICE']['VALUE'], $arOffer['MIN_PRICE']['CURRENCY']);
-                        $arOffer['MIN_PRICE']['DISCOUNT_PCT'] = $priceParams['max_disc_bp'];
-                        break;
-                    }
-                }
-            }
-        }
-        unset($priceParams);
-    }
 }

@@ -318,26 +318,7 @@ global $LOCATION;
 //    );
 //    ?>
 <!--</div>-->
-<?
-if (!Functions::checkMobileDevice()) {
-    $APPLICATION->IncludeComponent(
-        "likee:bestsellers",
-        ".default",
-        array(
-            "COMPONENT_TEMPLATE" => ".default",
-            "PRODUCTS_IBLOCK_TYPE" => "1c_catalog",
-            "PRODUCTS_IBLOCK_ID" => IBLOCK_CATALOG,
-            "PRICE_CODE" => array(0 => "Цена"),
-            "ACTIONS_IBLOCK_TYPE" => "CONTENT",
-            "ACTIONS_IBLOCK_ID" => "8",
-            "INSATGRAM_LINK" => 'http://instagram.com/respectshoes',
-            "CACHE_TYPE" => "N",
-            "CACHE_TIME" => "604800"
-        ),
-        false
-    );
-}
-?>
+
 <?/*div class="container col-xs-12 container--no-padding phone--hidden in-view">
     <div class="column-10">
         <div class="content content--index">

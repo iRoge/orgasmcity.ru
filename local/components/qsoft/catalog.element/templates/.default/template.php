@@ -10,20 +10,13 @@ global $LOCATION;
 global $APPLICATION;
 ?>
 <script type="text/javascript">
-    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-        try{ rrApi.groupView([<?=implode(',', array_keys($arResult['RESTS']['ALL']))?>],{"stockId": "<?=$GLOBALS['USER_SHOWCASE']?>"}); } catch(e) {}
-    })
-
     var propsTooltip = <?= CUtil::PhpToJSObject($arResult['AR_PROPS_TOOLTIP']); ?>;
 </script>
 <div class="col-xs-12 carto">
     <div class="main">
         <? if (!empty($arResult)) : ?>
-            <script>
-                BX.message({'RESERVED_STORES_LIST': '<?= json_encode($arResult['SHOPS']) ?>'});
-            </script>
-            <? if ($arResult['IS_PREORDER'] == false && ((empty($arResult['RESTS']['DELIVERY']) && empty($arResult['RESTS']['RESERVATION'])) || empty($arResult['PRICE_PRODUCT']))) : ?>
-            <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK_IN_LOCATION") ?></div>
+            <? if ((empty($arResult['OFFERS'])) || empty($arResult['PRICE_PRODUCT'])) : ?>
+            <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
             <? endif; ?>
             <?
             $propCat = $arResult['PROPS_GTM']['RHODEPRODUCT']['VALUE'];
@@ -104,29 +97,22 @@ global $APPLICATION;
                         <h1 class="h1-cart"><?= $arResult["NAME"] ?></h1>
                         <? if (!empty($arResult['PRICE_PRODUCT'])) : ?>
                             <div class="right-cartochka__inner-wrap">
-                                <p class="price<?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == "Red" ? " price--discount" : "" ?>
-                            <?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == "Yellow" ? " price--discount-yellow" : "" ?>
-                                   <?= empty($arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE']) ? " price--short" : "" ?>">
-                                    <b><?= number_format($arResult['PRICE_PRODUCT'][$arResult['ID']]['PRICE'], 0, "", " ") ?></b>
+                                <p class="price price--discount
+                                   <?= empty($arResult['PRICE_PRODUCT']['OLD_PRICE']) ? " price--short" : "" ?>">
+                                    <b><?= number_format($arResult['PRICE_PRODUCT']['PRICE'], 0, "", " ") ?></b>
                                     <?= Loc::getMessage("RUB") ?>
                                 </p>
-                                <? if (!empty($arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE']) &&
-                                    $arResult['PRICE_PRODUCT'][$arResult['ID']]['PRICE'] < $arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE']) : ?>
-                                    <p class="percents">-<?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['PERCENT'] ?>%</p>
+                                <? if (!empty($arResult['PRICE_PRODUCT']['OLD_PRICE']) &&
+                                    $arResult['PRICE_PRODUCT']['PRICE'] < $arResult['PRICE_PRODUCT']['OLD_PRICE']) : ?>
+                                    <p class="percents">-<?= $arResult['PRICE_PRODUCT']['PERCENT'] ?>%</p>
                                     <p class="old-price">
-                                        <b><?= number_format($arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE'], 0, "", " ") ?></b>
+                                        <b><?= number_format($arResult['PRICE_PRODUCT']['OLD_PRICE'], 0, "", " ") ?></b>
                                         <?= Loc::getMessage("RUB") ?>
                                     </p>
                                 <? endif ?>
-                                <p class="grey-under bonus-text">
-                                    <?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == 'Red' || $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == 'Yellow' ? Loc::getMessage("NO_BONUS") : Loc::getMessage("BONUS") ?>
-                                    <br/><?= Loc::getMessage("DIFFERENT_PRICES") ?>
-                                    <?= $LOCATION->checkIfLocationIsDonorTarget($LOCATION->code) ? ('<br>*' . Bitrix\Main\Config\Option::get("respect", "product_cart_donors_text")) : '' ?>
-                                </p>
-
                             </div>
                         <? endif ?>
-                        <? if ((!empty($arResult['RESTS']['DELIVERY']) || !empty($arResult['RESTS']['RESERVATION']) || $arResult['PROPERTIES']['PREORDER']['VALUE'] == 'Y') && !empty($arResult['PRICE_PRODUCT'])) : ?>
+                        <? if (!empty($arResult['OFFERS']) && !empty($arResult['PRICE_PRODUCT'])) : ?>
                             <? if (!$arResult['SINGLE_SIZE']) : ?>
                                 <h3 class="after-hr-cart"><?= Loc::getMessage("SIZE") ?></h3>
                             <? endif; ?>
@@ -176,12 +162,6 @@ global $APPLICATION;
                                         <div style="clear: both"></div>
                                     </div>
                                     <div class="buttons-wrapper">
-                                        <?php if ($arResult["ONLINE_TRY_ON"]) : ?>
-                                            <input id="fittin_widget_button"
-                                                   class="button-bordered button-bordered--transparent button-bordered--fitting <?= $USER->IsAuthorized() ? 'authorized' : 'non-authorized'; ?>"
-                                                   type="button" value="Примерить онлайн">
-                                            <div id="fittin_widget_dialog"></div>
-                                        <?php endif; ?>
                                         <div class="sizes-popup-area">
                                             <a class="sizes-popup" href="#"><?= Loc::getMessage("SIZES_INFO") ?></a>
                                             <div class="sizes-popup-block" style="display:none;">
@@ -204,23 +184,13 @@ global $APPLICATION;
                                                type="button"
                                                value="Купить в 1 клик"/>
                                         <?php endif; ?>
-                                        <? if (in_array(\Functions::getEnvKey('SELLERS_GROUP_ID'), $USER->GetUserGroupArray())) { ?>
-                                            <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
-                                                   data-is-local="<?= $arResult['SINGLE_SIZE'] ? $arResult['RESTS']['DELIVERY'][$arResult['SINGLE_SIZE']]['IS_LOCAL'] : "" ?>"
-                                                   id="seller_buy-btn"
-                                                   class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
-                                                   style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
-                                                   type="button"
-                                                   value="Найти покупателя"/>
-                                        <? } else { ?>
-                                            <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
-                                                   data-is-local="<?= $arResult['SINGLE_SIZE'] ? $arResult['RESTS']['DELIVERY'][$arResult['SINGLE_SIZE']]['IS_LOCAL'] : "" ?>"
-                                                   id="buy-btn"
-                                                   class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
-                                                   style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
-                                                   type="button"
-                                                   value="Добавить в корзину"/>
-                                        <? } ?>
+                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
+                                               data-is-local="<?= $arResult['SINGLE_SIZE'] ? $arResult['RESTS']['DELIVERY'][$arResult['SINGLE_SIZE']]['IS_LOCAL'] : "" ?>"
+                                               id="buy-btn"
+                                               class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
+                                               style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
+                                               type="button"
+                                               value="Добавить в корзину"/>
                                     </div>
                                     <div id="js-toggle-delivery-error"
                                          class="catalog-element-btn-container <?= !empty($arResult['RESTS']['DELIVERY']) ? 'js-button-hide' : '' ?>">
@@ -416,7 +386,7 @@ global $APPLICATION;
                         </div>
                     </div>
                     <div class="container container--quick-order product__footer">
-                        <? $APPLICATION->IncludeComponent('qsoft:subscribe.manager', 'popUp', ['SOURCE' => '1click']); ?>
+<!--                        --><?// $APPLICATION->IncludeComponent('qsoft:subscribe.manager', 'popUp', ['SOURCE' => '1click']); ?>
                         <div id="one_click_checkbox_policy_error"></div>
                         <div id="one_click_checkbox_policy" class="col-xs-12">
                             <input type="checkbox" id="one_click_checkbox_policy_checked"
@@ -609,46 +579,6 @@ global $APPLICATION;
                                         </div>
                                     </div>
                                 </article>
-                                <aside class="col-md-6 col-lg-4 product-preorder__aside-form">
-                                    <div class="product-preorder__form">
-                                        <div id="after-cart-in-err"></div>
-                                        <input name="PROPS[FIO]" data-fio="<?= $arResult['USER']['FIO'] ?>" class="fio"
-                                               placeholder="*ФИО" type="text" required>
-                                        <input name="PROPS[PHONE]"
-                                               data-phone="<?= $arResult['USER']['PERSONAL_PHONE'] ?>"
-                                               class="reservation_phone" placeholder="*Телефон" type="text" required>
-                                        <? if ($_COOKIE['seller_id'] && !in_array(\Functions::getEnvKey('SELLERS_GROUP_ID'), $USER->GetUserGroupArray())) { ?>
-                                        <input name="USER_DESCRIPTION"
-                                               class="reservation_comment" placeholder="Комментарий к заказу" type="text">
-                                        <? } ?>
-                                        <div class="alert alert--danger js-store-selected phone--only"
-                                             style="display: none;">
-                                            <div class="alert-content">
-                                                <?= Loc::getMessage('SELECTED_STORE') ?> «<span
-                                                        class="js-store-selected-value"></span>»
-                                            </div>
-                                        </div>
-                                        <? if (in_array(\Functions::getEnvKey('SELLERS_GROUP_ID'), $USER->GetUserGroupArray())) { ?>
-                                            <button id="seller_btn-reserv"
-                                                    class="js-preorder-submit cartochka-transparent js-preorder-submit--reservation">Найти покупателя</button>
-                                        <? } else { ?>
-                                            <button form="reserve-form"
-                                                    class="js-preorder-submit cartochka-transparent js-preorder-submit--reservation"><?= Loc::getMessage("RESERVE") ?></button>
-                                        <? } ?>
-                                        <div class="buttonReservation-loader">
-                                            <div class="one-click-preloader-div">
-                                                <button class="reservation-preloader"><?= Loc::getMessage('WAIT') ?></button>
-                                            </div>
-                                        </div>
-                                           <? $APPLICATION->IncludeComponent('qsoft:subscribe.manager', 'popUp', ['SOURCE' => 'reserv']); ?>
-                                        <div id="reservation_checkbox_policy" class="col-xs-12">
-                                            <input type="checkbox" id="reservation_checkbox_policy_checked"
-                                                   name="reservation_checkbox_policy" class="checkbox3" checked/>
-                                            <label for="reservation_checkbox_policy_checked"
-                                                   class="checkbox--_"><?= Loc::getMessage('AGREEMENT') ?></label>
-                                        </div>
-                                    </div>
-                                </aside>
                             </div>
                         </main>
                     </div>

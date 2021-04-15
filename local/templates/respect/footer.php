@@ -64,10 +64,6 @@
             </div>
             <div class="col-md-6 col-sm-4 right-footer-div">
                 <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
-                    <div class="col-sm-12 col-xs-6 num1">
-                        <h3><a href="tel:88005555292">8 800 555-52-92</a></h3>
-                        <p>Единая справочная</p>
-                    </div>
                     <div class="col-sm-12 col-xs-6 num2">
                         <h3><a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></h3>
                         <p>Интернет-магазин</p>
@@ -278,16 +274,6 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         ?>
     </div>
 </div>
-
-<? if ($_COOKIE['seller_id']) {
-    $APPLICATION->IncludeComponent(
-        "rdevs:sellers",
-        "",
-        array(
-            "CACHE_TIME" => "3600000",
-            "CACHE_TYPE" => "A",
-        )
-    );
-}?>
+</div>
 </body>
 </html>

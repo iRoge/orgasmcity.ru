@@ -53,7 +53,6 @@ class QsoftCatalogElement extends ComponentHelper
         $this->setUploadDir();
         $this->loadModules();
         $this->prepareResult();
-        $this->checkElementResult();
         $this->beforeTemplate();
         $this->forFlocktory();
         $this->includeComponentTemplate();
@@ -174,7 +173,7 @@ class QsoftCatalogElement extends ComponentHelper
         $arSelect = [
             'ID',
             'NAME',
-            'IBLOCK_ID'
+            'IBLOCK_ID',
         ];
         $rsOffers = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
         while ($objOffer = $rsOffers->GetNextElement()) {
@@ -183,11 +182,15 @@ class QsoftCatalogElement extends ComponentHelper
             $arOffers[$offerFields['ID']]['PROPERTIES']['COLOR'] = $objOffer->GetProperties(
                 [],
                 ['CODE' => 'color']
-            );
+            )['color'];
             $arOffers[$offerFields['ID']]['PROPERTIES']['SIZE'] = $objOffer->GetProperties(
                 [],
                 ['CODE' => 'size']
-            );
+            )['size'];
+            $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $objOffer->GetProperties(
+                [],
+                ['CODE' => 'BasePrice']
+            )['BasePrice'];
         }
         return $arOffers;
     }
@@ -216,11 +219,6 @@ class QsoftCatalogElement extends ComponentHelper
         return $arRests;
     }
 
-    private function checkElementResult(): void
-    {
-        \Likee\Site\Helpers\Catalog::checkElementResult($this->arResult);
-    }
-
     private function loadInheritedProperties(): array
     {
         $ipropValues = new ElementValues($this->arParams["IBLOCK_ID"], $this->arResult["ID"]);
@@ -233,16 +231,17 @@ class QsoftCatalogElement extends ComponentHelper
         $arProps = [];
 
         $arPropsForGTM = [
-            'COLLECTION',
-            'COLORSFILTER',
-            'SUBTYPEPRODUCT',
-            'TYPEPRODUCT',
-            'VID',
+            "article",
+            "diameter",
+            "length",
+            "bestseller",
+            "vendor",
+            "volume",
+            "material",
+            "collection",
         ];
 
-        $arNeedleProps = array_merge($this->arParams['PROPERTY_CODE'], $arPropsForGTM);
-
-        foreach ($arNeedleProps as $prop_code) {
+        foreach ($arPropsForGTM as $prop_code) {
             if (!empty($this->arResult['PROPERTIES'][$prop_code]['VALUE'])) {
                 $arProps[$prop_code] = $this->arResult['PROPERTIES'][$prop_code];
             }
@@ -269,35 +268,12 @@ class QsoftCatalogElement extends ComponentHelper
             }
         }
 
-        if ($arProps['RHODEPRODUCT']['VALUE'] != 'Женские') {
-            unset($arProps['HEELHEIGHT']);
-        } elseif ($arProps['HEELHEIGHT']['VALUE'] || $arProps['HEELHEIGHT']['VALUE'] === 0) {
-            $arProps['HEELHEIGHT']['VALUE'] = $arProps['HEELHEIGHT']['VALUE'] === 0 || $arProps['HEELHEIGHT']['VALUE'] == 'Без каблука' ? 'Без каблука' : (string)($arProps['HEELHEIGHT']['VALUE'] / 10) . ' см';
-        } else {
-            unset($arProps['HEELHEIGHT']);
-        }
-
         $this->arResult['PROPS_GTM'] = $arProps;
         $arProps = array_intersect_key($arProps, array_flip($this->arParams['PROPERTY_CODE']));
 
         unset($arProp);
 
         return $arProps;
-    }
-
-    private function getSizesProperties()
-    {
-        $arSizes = [];
-        if ($this->arResult['PROPERTIES']['LENGTH']['VALUE']) {
-            $arSizes['LENGTH'] = $this->arResult['PROPERTIES']['LENGTH']['VALUE'];
-        }
-        if ($this->arResult['PROPERTIES']['HEIGHT']['VALUE']) {
-            $arSizes['HEIGHT'] = $this->arResult['PROPERTIES']['HEIGHT']['VALUE'];
-        }
-        if ($this->arResult['PROPERTIES']['WIDTH']['VALUE']) {
-            $arSizes['WIDTH'] = $this->arResult['PROPERTIES']['WIDTH']['VALUE'];
-        }
-        return $arSizes;
     }
 
     /**
@@ -315,17 +291,14 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult['IPROPERTY_VALUES'] = $this->getEntity('iprops', 'loadInheritedProperties');
         $this->arResult['PHOTOS'] = $this->getEntity('images', 'loadImages');
         $this->arResult['DISPLAY_PROPERTIES'] = $this->getDisplayProperties();
-        $this->arResult['SIZES_PROPERTIES'] = $this->getSizesProperties();
         $this->arResult['PATH'] = $this->getEntity('path', 'loadSectionsPath');
         $this->arResult['SECTION_SIZES_TAB'] = reset($this->getEntity('size_table', 'loadSizesTable'));
         $this->arResult['USER'] = $this->loadUserData();
-        $this->arResult['ARTICLE'] = trim($this->arResult['PROPERTIES']['ARTICLE']['VALUE']);
-
+        $this->arResult['ARTICLE'] = trim($this->arResult['PROPERTIES']['article']['VALUE']);
         $this->arResult['PICTURES_COUNT'] = count($this->arResult['PICTURES']);
 
-        $key = key($this->arResult['RESTS']['ALL']);
-        $this->arResult['SINGLE_SIZE'] = (count($this->arResult['RESTS']['ALL']) == 1 && $this->arResult['RESTS']['ALL'][$key]['SIZE'] === true) ? $key : false;
-        //цена товара
+        $this->arResult['SINGLE_SIZE'] = (count($this->arResult['OFFERS']) === 1) ? key($this->arResult['OFFERS']) : false;
+        // минимальная цен атовара по офферам
         $this->arResult['PRICE_PRODUCT'] = $this->getPrice();
 
         $this->arResult['SHOW_ONE_CLICK'] = $this->getShowOneClick();
@@ -335,10 +308,6 @@ class QsoftCatalogElement extends ComponentHelper
         if (strlen($this->arResult['ARTICLE']) > 0) {
             $this->arResult['ELEMENT_BREADCRUMB'] = Loc::getMessage("ARTICLE") . $this->arResult['ARTICLE'];
         }
-
-        $this->arResult["ONLINE_TRY_ON"] = $this->arResult['PROPERTIES']['ONLINE_TRY_ON']['VALUE'] === 'Y';
-        unset($this->arResult['PROPERTIES']['ONLINE_TRY_ON']);
-        unset($this->arResult['DISPLAY_PROPERTIES']['ONLINE_TRY_ON']);
 
         $this->arResult["FAVORITES"] = $this->checkFavorites($this->arResult['ID']);
     }
@@ -368,9 +337,9 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function getImageArray(array $arImage): array
     {
-        $arSRCMedium = Functions::ResizeImageGet($arImage, $this->srcSizeMedium);
-        $arTHUMB = Functions::ResizeImageGet($arImage, $this->thumbSize);
-        $arSRCThousand = Functions::ResizeImageGet($arImage, $this->srcThousand);
+        $arSRCMedium = Functions::ResizeImageGet($arImage, $this->srcSizeMedium, BX_RESIZE_IMAGE_EXACT);
+        $arTHUMB = Functions::ResizeImageGet($arImage, $this->thumbSize, BX_RESIZE_IMAGE_EXACT);
+        $arSRCThousand = Functions::ResizeImageGet($arImage, $this->srcThousand, BX_RESIZE_IMAGE_EXACT);
 
         $arImage['ALT'] = $this->arResult['NAME']; //TODO Собрать нормальный ALT
         $arImage['SRC_ORIGINAL'] = $arSRCThousand['src'] ?: $this->uploadDir . $arImage["SUBDIR"] . "/" . $arImage["FILE_NAME"];
@@ -570,11 +539,6 @@ class QsoftCatalogElement extends ComponentHelper
         $GLOBALS['SEO_ELEMENT_ARTICLE'] = $this->arResult['ARTICLE'];
         $GLOBALS['SEO_ELEMENT_NAME'] = $this->arResult['NAME'];
         $GLOBALS['SEO_CURRENT_PAGE'] = $section['SECTION_PAGE_URL'];
-        if ($LOCATION->getPoddomen(false, true)) {
-            $seo = $LOCATION->getPoddomenSeo($section['SECTION_PAGE_URL']);
-            $seo = str_replace("#ARTICLE#", $this->arResult['ARTICLE'], $seo);
-            $seo = str_replace("#NAME#", $this->arResult['NAME'], $seo);
-        }
 
         if ($this->arParams["SET_TITLE"]
             || $this->arParams["ADD_ELEMENT_CHAIN"]
@@ -710,33 +674,29 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function getShowOneClick()
     {
-        global $LOCATION;
-        // настройки в админке
-        $minOneClickPrice = COption::GetOptionString('respect', 'one_click_min');
-        if ($this->arResult['PRICE_PRODUCT'][$this->arResult['ID']]['PRICE'] < $minOneClickPrice) {
-            return false;
-        }
-        // не показываем кнопку 1 клик, если местоположение является регионом-пациентом
-        if ($LOCATION->checkIfLocationIsDonorTarget($LOCATION->code)) {
-            return false;
-        }
         return true;
     }
 
     private function getPrice()
     {
-        global $LOCATION;
-        if (in_array('Y', array_column($this->arResult['RESTS']['DELIVERY'], 'IS_LOCAL')) || !empty($this->arResult['RESTS']['RESERVATION'])) {
-            $price = $LOCATION->getProductsPrices($this->arResult['ID']);
-            if (!empty($price[$this->arResult['ID']])) {
-                return $price;
-            }
-        } else {
-            $price = $LOCATION->getProductsPrices($this->arResult['ID'], $LOCATION->DEFAULT_BRANCH);
-            if (!empty($price[$this->arResult['ID']])) {
-                return $price;
+        $minPrice = 10000000;
+        $price = [];
+        foreach ($this->arResult['OFFERS'] as $offer) {
+            if (isset($offer['PROPERTIES']['PRICE']['VALUE']) && $offer['PROPERTIES']['PRICE']['VALUE'] < $minPrice) {
+                $minPrice = $offer['PROPERTIES']['PRICE']['VALUE'];
             }
         }
+
+        if ($minPrice === 10000000) {
+            return null;
+        }
+
+        $price['PRICE'] = $minPrice;
+        $price['OLD_PRICE'] = $minPrice + 1000;
+        $price['PERCENT'] = (int)(100 - $price['PRICE'] * 100 / $price['OLD_PRICE']);
+        $price['SEGMENT'] = 'red';
+
+        return $price;
     }
 
     private function getBrandPage($brandXml)
