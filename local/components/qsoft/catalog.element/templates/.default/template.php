@@ -192,29 +192,6 @@ global $APPLICATION;
                                                type="button"
                                                value="Добавить в корзину"/>
                                     </div>
-                                    <div id="js-toggle-delivery-error"
-                                         class="catalog-element-btn-container <?= !empty($arResult['RESTS']['DELIVERY']) ? 'js-button-hide' : '' ?>">
-                                        <input class="cartochka-transparent cartochka-transparent--decoration"
-                                               type="button"
-                                               value="Недоступно для доставки"
-                                               disabled/>
-                                    </div>
-                                    <div id="js-toggle-reserve-ok"
-                                         class="catalog-element-btn-container <?= empty($arResult['RESTS']['RESERVATION']) ? 'js-button-hide' : '' ?>">
-                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
-                                               data-is-local=""
-                                               id="reserved-btn"
-                                               class="js-reserved-btn cartochka-border cartochka-transparent"
-                                               type="button"
-                                               value="Забрать в магазине"/>
-                                    </div>
-                                    <div id="js-toggle-reserve-error"
-                                         class="catalog-element-btn-container <?= !empty($arResult['RESTS']['RESERVATION']) ? 'js-button-hide' : '' ?>">
-                                        <input class="cartochka-transparent cartochka-transparent--decoration"
-                                               type="button"
-                                               value="Доступно только в интернет-магазине"
-                                               disabled/>
-                                    </div>
                                     <? } else { ?>
                                     <div id="js-toggle-preorder"
                                          class="catalog-element-btn-container">
@@ -240,22 +217,8 @@ global $APPLICATION;
                                 ),
                             false
                         ); ?>
-                        <? if (!empty($arResult['COLORS'])) : ?>
-                            <div clas="other-size">
-                                <h3><?= Loc::getMessage("OTHERS_COLORS") ?></h3>
-                                <div class="other-color">
-                                    <? foreach ($arResult['COLORS'] as $arColor) : ?>
-                                        <a href="<?= $arColor['DETAIL_PAGE_URL']; ?>" class="a-others">
-                                            <div style="">
-                                                <img src="<?= $arColor['FILE']; ?>" alt="<?= $arColor['NAME']; ?>"/>
-                                            </div>
-                                        </a>
-                                    <? endforeach; ?>
-                                </div>
-                            </div>
-                        <? endif; ?>
                     </div>
-                    <? if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
+                    <?if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
                         <div class="col-sm-12 hidden-xs" style="margin-right: 20px;margin-top: 50px">
                             <? if (!empty($arResult['SIZES_PROPERTIES'])) :?>
                                 <div class="p3">
@@ -599,10 +562,6 @@ global $APPLICATION;
                     </div>
                 </form>
             </div>
-            <!-- RetailRocket -->
-            <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfd7197a52821e059f039" data-product-id="<?=implode(',', array_keys($arResult['RESTS']['ALL']))?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>"></div>
-            <div class="js-retail-rocket-recommendation2" data-retailrocket-markup-block="5ebcfd7a97a5250230f3bfb4" data-product-id="<?=implode(',', array_keys($arResult['RESTS']['ALL']))?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>"></div>
-            <!-- End RetailRocket -->
             <? // фикс для безразмерной номенклатуры?>
             <? if ($arResult['SINGLE_SIZE']) :
                 if ($arResult["BASKET_OFFERS"][$arResult['SINGLE_SIZE']]) : ?>

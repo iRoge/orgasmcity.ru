@@ -491,7 +491,6 @@
 			} else {
 				this.slideHeight = isNaN( this.settings.aspectRatio ) ? this.settings.height : this.slideWidth / this.settings.aspectRatio;
 			}
-
 			// Resize the slider only if the size of the slider has changed
 			// If it hasn't, return.
 			if ( this.previousSlideWidth !== this.slideWidth ||
@@ -1158,11 +1157,12 @@
 				this.$mainImage.css({ width: '100%', height: 'auto', 'marginLeft': '', 'marginTop': '' });
 			} else {
 				if ( this.settings.imageScaleMode === 'cover' ) {
-					if ( this.$mainImage.width() / this.$mainImage.height() <= this.width / this.height ) {
-						this.$mainImage.css({ width: '100%', height: 'auto' });
-					} else {
-						this.$mainImage.css({ width: 'auto', height: '69%' });
-					}
+					this.$mainImage.css({ width: 'auto', height: '100%', margin: '0 auto' });
+					// if ( this.$mainImage.width() / this.$mainImage.height() <= this.width / this.height ) {
+					// 	this.$mainImage.css({ width: '100%', height: 'auto' });
+					// } else {
+					// 	this.$mainImage.css({ width: 'auto', height: '69%' });
+					// }
 				} else if ( this.settings.imageScaleMode === 'contain' ) {
 					if ( this.$mainImage.width() / this.$mainImage.height() >= this.width / this.height ) {
 						this.$mainImage.css({ width: '100%', height: 'auto' });

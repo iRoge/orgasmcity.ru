@@ -245,30 +245,34 @@ $(function () {
     const isLoop = $(".sp-slide").length > 2 ? true : false;
     $("#example5").sliderPro({
         width: '100%',
-        height: '100%',
-        aspectRatio: 1,
-        orientation: "vertical",
+        height: 500,
+        // responsive: false,
+        autoSlideSize: true,
+        // aspectRatio: 1,
+        orientation: "horizontal",
         loop: isLoop,
         arrows: true,
         fadeArrows: true,
         autoplay: false,
         buttons: false,
-        autoHeight: true,
+        autoHeight: false,
         thumbnailsPosition: "left",
         thumbnailPointer: false,
         thumbnailHeight: 96,
         topImage: true,
         smallSize: 768,
+        imageScaleMode: 'cover',
+        centerImage: true,
         resize: function() {
-            $(this)[0].$slidesMask[0].style.maxHeight=$(this)[0].$slidesMask[0].style.width;
-            $(this)[0].$slidesMask[0].style.height=$(this)[0].$slidesMask[0].style.maxHeight;
+            // $(this)[0].$slidesMask[0].style.maxHeight=$(this)[0].$slidesMask[0].style.width;
+            // $(this)[0].$slidesMask[0].style.height=$(this)[0].$slidesMask[0].style.maxHeight;
         },
         init: function(data) {
-            $(this)[0].$slidesMask[0].style.maxHeight=$(this)[0].$slidesMask[0].style.width;
+            // $(this)[0].$slidesMask[0].style.maxHeight=$(this)[0].$slidesMask[0].style.width;
             goZoom(data);
         },
         update: function() {
-            $(this)[0].$slidesMask[0].style.height=$(this)[0].$slidesMask[0].style.width;
+            // $(this)[0].$slidesMask[0].style.height=$(this)[0].$slidesMask[0].style.width;
         },
         gotoSlide: function(data) {
             goZoom(data);
@@ -554,17 +558,17 @@ function gtmPush(type, isLocalOrReserv, data) {
 }
 
 function goZoom(data) {
-    if (!navigator.userAgent.match(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i)) {
-        let slide;
-        if (data.type === 'init') {
-            slide = 0;
-        } else {
-            slide = data.index;
-        }
-        $('.jq-zoom[data-index="'+slide+'"]').zoom({
-            magnify: 1.2
-        });
-    }
+    // if (!navigator.userAgent.match(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i)) {
+    //     let slide;
+    //     if (data.type === 'init') {
+    //         slide = 0;
+    //     } else {
+    //         slide = data.index;
+    //     }
+    //     $('.jq-zoom[data-index="'+slide+'"]').zoom({
+    //         magnify: 1.2
+    //     });
+    // }
 }
 
 function redirectToProductByCode(code, id) {

@@ -54,7 +54,6 @@ class QsoftCatalogElement extends ComponentHelper
         $this->loadModules();
         $this->prepareResult();
         $this->beforeTemplate();
-        $this->forFlocktory();
         $this->includeComponentTemplate();
         $this->setMeta();
         return $this->returnElementID();
@@ -253,18 +252,25 @@ class QsoftCatalogElement extends ComponentHelper
                 continue;
             }
 
-            is_array($arProp['VALUE']) ? $arProp['VALUE'] = $arProp['VALUE'][0] : '';
+            if (is_array($arProp['VALUE'])) {
+                $arProp['VALUE'] = $arProp['VALUE'][0];
+            }
 
-            if ($arProp['PROPERTY_TYPE'] == 'S') {
-                $arProp['VALUE'] = HL::getFieldValueByProp($arProp, 'UF_NAME');
-                $tooptipON = HL::getFieldValueByProp($arProp, 'UF_TOOLTIP_ON');
-                if ($tooptipON) {
-                    $arProp['TOOLTIP'] = HL::getFieldValueByProp($arProp, 'UF_TOOLTIP');
-
-                    if (!empty($arProp['TOOLTIP'])) {
-                        $this->arResult['AR_PROPS_TOOLTIP'][$arProp['CODE']] = $arProp['TOOLTIP'];
-                    }
-                }
+            if ($arProp['CODE'] == 'vendor') {
+                $arProp['VALUE'] = CIBlockElement::GetList(
+                    [],
+                    [
+                        'IBLOCK_ID' => IBLOCK_VENDORS,
+                        'ACTIVE' => 'Y',
+                        'XML_ID' =>  $arProp['VALUE'],
+                    ],
+                    false,
+                    false,
+                    [
+                    'ID',
+                    'NAME',
+                    'IBLOCK_ID',
+                ])->GetNext()['NAME'];
             }
         }
 
@@ -320,26 +326,26 @@ class QsoftCatalogElement extends ComponentHelper
         $this->includeStyles();
         $this->includeScripts();
         $this->checkAndSetNoIndex();
-        $this->arResult['IS_PREORDER'] = $this->isPreorder;
-    }
-
-    private function forFlocktory(): void
-    {
-        $arFlocktory = array(
-            'PRICE' => $this->arResult["PRICE_PRODUCT"][$this->arResult["ID"]]["PRICE"],
-            'CATEGORY_ID' => $this->arResult["IBLOCK_SECTION_ID"],
-            'BRAND' => $this->arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"],
-            'QUANTITY' => 1,
-        );
-
-        $this->arResult["FLOCKTORY"] = $arFlocktory;
     }
 
     private function getImageArray(array $arImage): array
     {
-        $arSRCMedium = Functions::ResizeImageGet($arImage, $this->srcSizeMedium, BX_RESIZE_IMAGE_EXACT);
-        $arTHUMB = Functions::ResizeImageGet($arImage, $this->thumbSize, BX_RESIZE_IMAGE_EXACT);
-        $arSRCThousand = Functions::ResizeImageGet($arImage, $this->srcThousand, BX_RESIZE_IMAGE_EXACT);
+        $k = $arImage['WIDTH'] / $arImage['HEIGHT'];
+        $srcSizeMedium = [
+            'width' => $k < 1 ? $k * $this->srcSizeMedium['height'] : $this->srcSizeMedium['height'],
+            'height' => $this->srcSizeMedium['height'],
+        ];
+        $thumbSize = [
+            'width' => $k < 1 ? $k * $this->thumbSize['height'] : $this->thumbSize['height'],
+            'height' => $this->thumbSize['height'],
+        ];
+        $srcThousand = [
+            'width' => $k < 1 ? $k * $this->srcThousand['height'] : $this->srcThousand['height'],
+            'height' => $this->srcThousand['height'],
+        ];
+        $arSRCMedium = Functions::ResizeImageGet($arImage, $srcSizeMedium);
+        $arTHUMB = Functions::ResizeImageGet($arImage, $thumbSize);
+        $arSRCThousand = Functions::ResizeImageGet($arImage, $srcThousand);
 
         $arImage['ALT'] = $this->arResult['NAME']; //TODO Собрать нормальный ALT
         $arImage['SRC_ORIGINAL'] = $arSRCThousand['src'] ?: $this->uploadDir . $arImage["SUBDIR"] . "/" . $arImage["FILE_NAME"];
@@ -377,65 +383,8 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function includeScripts(): void
     {
-        global $USER;
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-ui.js');
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery.sliderPro.js');
-
-        if ($this->arResult["ONLINE_TRY_ON"] && $USER->IsAuthorized()) {
-            $sizes = [];
-
-            foreach ($this->arResult['RESTS']['ALL'] as $key => $item) {
-                $sizeDelivery = false;
-                $sizeReservation = false;
-                $sizeIsLocal = 'Y';
-
-                if (!empty($this->arResult['RESTS']['DELIVERY'][$key])) {
-                    $sizeDelivery = true;
-                    $sizeIsLocal = $this->arResult['RESTS']['DELIVERY'][$key]['IS_LOCAL'];
-                }
-                if (!empty($this->arResult['RESTS']['RESERVATION'][$key])) {
-                    $sizeReservation = true;
-                }
-
-                $sizes[$item['SIZE']] = [
-                    $key,
-                    $sizeDelivery,
-                    $sizeReservation,
-                    $sizeIsLocal,
-                ];
-
-                $jsonSizes = json_encode($sizes);
-            }
-
-            $asset = Asset::getInstance();
-            $widgetInitialization = "<script>
-            $(document).ready(function() {
-                let options = {
-                    customerId: {$USER->GetID()},
-                    productId: {$this->arResult['ID']},
-                    source: 'respect',
-                    sizes: {$jsonSizes},
-                    callbacks: {
-                        addToCart:
-                            function (offerId, isLocal) {
-                                console.log('Добавить в корзину . ID #' + offerId + ', isLocal=' + isLocal);
-                                basketHandler(offerId, isLocal);
-                            },
-                        reserve:
-                            function (offerId) {
-                                console.log('Зарезервировать. ID #' + offerId);
-                                reserveHandler(offerId);
-                            }
-                    }
-                };
-                $('#fittin_widget_button').fittin(options);
-            });
-            </script>";
-            // Использован addString() вместо addJs(), чтобы подключить скрипт виджета примерки после подключения jQuery
-            $asset->addString('<script type="text/javascript" src="https://widget.fittin.ru/widget.js"></script>', false, AssetLocation::AFTER_JS);
-            $asset->addString($widgetInitialization, false, AssetLocation::AFTER_JS);
-            //$asset->addCss('//api.fittin.ru/admin/api/lumen/public/css/style.css');
-        }
     }
 
     private function checkAndSetNoIndex(): void
@@ -449,11 +398,11 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function loadSectionsPath(): array
     {
-        $arSectionPath = array();
+        $arSectionPath = [];
         $rsPath = CIBlockSection::GetNavChain(
             $this->arParams["IBLOCK_ID"],
             $this->arResult['IBLOCK_SECTION_ID'],
-            array("ID", "SECTION_PAGE_URL")
+            ["ID", "SECTION_PAGE_URL", "NAME"]
         );
         $rsPath->SetUrlTemplates("", $this->arParams["SECTION_URL"]);
         while ($arPath = $rsPath->GetNext()) {
@@ -532,7 +481,6 @@ class QsoftCatalogElement extends ComponentHelper
     private function setMeta(): void
     {
         global $APPLICATION;
-        global $LOCATION;
         $section = $this->arResult['PATH'];
         $section = array_pop($section);
         $GLOBALS['SEO_PAGE_ELEMENT'] = true;
