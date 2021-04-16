@@ -604,12 +604,18 @@ $('.cls-blue-menu').click(function() {
 $('.sex-span').on('click', function(e) {
   let that = $(this);
   let sections = $('.sex-span');
+  let isActive = that.parent().hasClass('sex-btn--active');
   sections.each(function (index) {
     $(this).parent().removeClass('sex-btn--active');
     $(this).parent().addClass('sex-btn--non-active');
   });
-  that.parent().removeClass('sex-btn--non-active');
-  that.parent().addClass('sex-btn--active');
+  if (isActive) {
+    that.parent().removeClass('sex-btn--active');
+    that.parent().addClass('sex-btn--non-active');
+  } else {
+    that.parent().removeClass('sex-btn--non-active');
+    that.parent().addClass('sex-btn--active');
+  }
   let name = that.data('name');
   $('.sex-list').each(function(index) {
     let that = $(this);
