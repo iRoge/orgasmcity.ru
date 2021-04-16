@@ -18,81 +18,83 @@
 
 <div class="footer col-xs-12">
     <div class="main">
-        <div class="row ones">
-            <div class="col-md-6 col-sm-8">
-                <div class="col-xs-6 footer-div">
-                    <h4>ПОКУПАТЕЛЯМ</h4>
-                    <? $APPLICATION->IncludeComponent(
-                        'bitrix:menu',
-                        'footer',
-                        array(
-                            'COMPONENT_TEMPLATE' => '.default',
-                            'ROOT_MENU_TYPE' => 'footer_1',
-                            'MENU_CACHE_TYPE' => 'Y',
-                            'MENU_CACHE_TIME' => '604800',
-                            'MENU_CACHE_USE_GROUPS' => 'Y',
-                            'MENU_CACHE_GET_VARS' => array(),
-                            'MAX_LEVEL' => '1',
-                            'CHILD_MENU_TYPE' => 'left',
-                            'USE_EXT' => 'N',
-                            'DELAY' => 'N',
-                            'ALLOW_MULTI_SELECT' => 'N'
-                        )
-                    ); ?>
-                </div>
-                <div class="col-xs-6 footer-div">
-                    <h4>Город Огразма</h4>
-                    <? $APPLICATION->IncludeComponent(
-                        'bitrix:menu',
-                        'footer',
-                        array(
-                            'COMPONENT_TEMPLATE' => '.default',
-                            'ROOT_MENU_TYPE' => 'footer_2',
-                            'MENU_CACHE_TYPE' => 'Y',
-                            'MENU_CACHE_TIME' => '604800',
-                            'MENU_CACHE_USE_GROUPS' => 'Y',
-                            'MENU_CACHE_GET_VARS' => array(),
-                            'MAX_LEVEL' => '1',
-                            'CHILD_MENU_TYPE' => 'left',
-                            'USE_EXT' => 'N',
-                            'DELAY' => 'N',
-                            'ALLOW_MULTI_SELECT' => 'N'
-                        )
-                    ); ?>
-                </div>
-                <div style="clear: both"></div>
-            </div>
-            <div class="col-md-6 col-sm-4 right-footer-div">
-                <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
-                    <div class="col-sm-12 col-xs-6 num2">
-                        <h3><a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></h3>
-                        <p>Интернет-магазин</p>
-                    </div>
-                    <div class="col-xs-12 social">
+        <div class="row ones" style="padding: 0 15px;">
+            <div class="col-xs-12 footer-border">
+                <div class="col-md-6 col-sm-8">
+                    <div class="col-xs-6 footer-div">
+                        <h4>ПОКУПАТЕЛЯМ</h4>
                         <? $APPLICATION->IncludeComponent(
-                            "likee:social",
-                            "footer",
+                            'bitrix:menu',
+                            'footer',
                             array(
-                                "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
-                                "INSTAGRAM_LINK" => "https://www.instagram.com/respectshoes/",
-                                "VK_LINK" => "https://vk.com/respectshoess",
-                                "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
-                                "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
-                                "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
-                                "COMPONENT_TEMPLATE" => "footer",
-                            ),
+                                'COMPONENT_TEMPLATE' => '.default',
+                                'ROOT_MENU_TYPE' => 'footer_1',
+                                'MENU_CACHE_TYPE' => 'Y',
+                                'MENU_CACHE_TIME' => '604800',
+                                'MENU_CACHE_USE_GROUPS' => 'Y',
+                                'MENU_CACHE_GET_VARS' => array(),
+                                'MAX_LEVEL' => '1',
+                                'CHILD_MENU_TYPE' => 'left',
+                                'USE_EXT' => 'N',
+                                'DELAY' => 'N',
+                                'ALLOW_MULTI_SELECT' => 'N'
+                            )
+                        ); ?>
+                    </div>
+                    <div class="col-xs-6 footer-div">
+                        <h4>Город Огразма</h4>
+                        <? $APPLICATION->IncludeComponent(
+                            'bitrix:menu',
+                            'footer',
+                            array(
+                                'COMPONENT_TEMPLATE' => '.default',
+                                'ROOT_MENU_TYPE' => 'footer_2',
+                                'MENU_CACHE_TYPE' => 'Y',
+                                'MENU_CACHE_TIME' => '604800',
+                                'MENU_CACHE_USE_GROUPS' => 'Y',
+                                'MENU_CACHE_GET_VARS' => array(),
+                                'MAX_LEVEL' => '1',
+                                'CHILD_MENU_TYPE' => 'left',
+                                'USE_EXT' => 'N',
+                                'DELAY' => 'N',
+                                'ALLOW_MULTI_SELECT' => 'N'
+                            )
+                        ); ?>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="col-md-6 col-sm-4 right-footer-div">
+                    <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
+                        <div class="col-sm-12 col-xs-6 num2">
+                            <h3><a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></h3>
+                            <p>Интернет-магазин</p>
+                        </div>
+                        <div class="col-xs-12 social">
+                            <? $APPLICATION->IncludeComponent(
+                                "likee:social",
+                                "footer",
+                                array(
+                                    "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
+                                    "INSTAGRAM_LINK" => "https://www.instagram.com/respectshoes/",
+                                    "VK_LINK" => "https://vk.com/respectshoess",
+                                    "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
+                                    "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
+                                    "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
+                                    "COMPONENT_TEMPLATE" => "footer",
+                                ),
+                                false
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-7 hidden-xs mailsender">
+                        <h4>Подпишитесь на рассылку</h4>
+                        <? $APPLICATION->IncludeComponent(
+                            'qsoft:subscribe',
+                            'footer',
+                            array(),
                             false
                         ); ?>
                     </div>
-                </div>
-                <div class="col-md-7 hidden-xs mailsender">
-                    <h4>Подпишитесь на рассылку</h4>
-                    <? $APPLICATION->IncludeComponent(
-                        'qsoft:subscribe',
-                        'footer',
-                        array(),
-                        false
-                    ); ?>
                 </div>
             </div>
         </div>

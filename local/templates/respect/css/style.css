@@ -1099,10 +1099,10 @@ html, body
   /*border-top: 1px solid #ededed;
   border-bottom: 1px solid #ededed;
   margin-top: 73px;*/
-  width: 100%;
+  width: 86%;
   min-height: 200px;
   margin-top: 45px;
-  left: 0;
+  left: 7%;
   z-index: 999!important;
   height: auto!important;
   position: absolute;
@@ -1901,9 +1901,6 @@ a.in-zagolovok
 .footer
 {
   min-height: 100px!important;
-  border-top: 1px solid #e4e4e4;
-  padding-top: 50px;
-  padding-bottom: 50px;
 }
 .footer-div h4
 {
@@ -2070,7 +2067,6 @@ a.in-zagolovok
 
 .bottom
 {
-  border-top: 1px solid #e4e4e4;
   padding-top: 30px;
   padding-bottom: 20px;
   font-size: 14px;
@@ -9842,4 +9838,11 @@ input::-webkit-inner-spin-button {
   .right-block-top {
     border-bottom: 2px solid #f4f4f4;
   }
+}
+
+.footer-border {
+  padding-top: 30px;
+  padding-right: 0!important;
+  padding-left: 0!important;
+  border-top: 2px solid #f4f4f4;
 }
