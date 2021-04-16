@@ -229,7 +229,7 @@ class QsoftCatalogElement extends ComponentHelper
     {
         $arProps = [];
 
-        $arPropsForGTM = [
+        $arPropsToShow = [
             "article",
             "diameter",
             "length",
@@ -238,9 +238,14 @@ class QsoftCatalogElement extends ComponentHelper
             "volume",
             "material",
             "collection",
+            "batteries",
+            'material',
+            "function",
+            "vibration",
+            "year",
         ];
 
-        foreach ($arPropsForGTM as $prop_code) {
+        foreach ($arPropsToShow as $prop_code) {
             if (!empty($this->arResult['PROPERTIES'][$prop_code]['VALUE'])) {
                 $arProps[$prop_code] = $this->arResult['PROPERTIES'][$prop_code];
             }
@@ -273,9 +278,6 @@ class QsoftCatalogElement extends ComponentHelper
                 ])->GetNext()['NAME'];
             }
         }
-
-        $this->arResult['PROPS_GTM'] = $arProps;
-        $arProps = array_intersect_key($arProps, array_flip($this->arParams['PROPERTY_CODE']));
 
         unset($arProp);
 

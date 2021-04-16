@@ -105,7 +105,16 @@
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
 
-
+    // Получаем количество избранных товаров
+    $favoritesCount = 0;
+    if ($USER->IsAuthorized()) {
+        $arUser = $USER->GetByID($USER->GetID())->Fetch();
+        $favoritesCount = count($arUser['UF_FAVORITES']);
+    } else {
+        if (isset($_COOKIE['favorites'])) {
+            $favoritesCount = count(unserialize($_COOKIE['favorites']));
+        }
+    }
     ?>
     <script type="text/javascript" data-skip-moving="true" >
         function getCookie(name) {
@@ -365,7 +374,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     </div>
                     <div class="hidden-sm col-xs-2 cart heart">
                         <a class="favorites_header" href="/catalog/favorites/">
-                            <p class="count count--heart"><?= $_COOKIE['favorites_count'] ?? '0'?></p>
+                            <p class="count count--heart"><?=$favoritesCount?></p>
                             <img src="<?= SITE_TEMPLATE_PATH; ?>/img/transparent-heart.png"/>
                         </a>
                     </div>
