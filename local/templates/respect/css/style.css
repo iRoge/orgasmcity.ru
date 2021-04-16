@@ -5071,15 +5071,9 @@ input::-webkit-inner-spin-button {
   }
   .sp-thumbnail-image {
     position: absolute;
-
     top: 50%;
     left: 50%;
-
     transform: translateX(-50%) translateY(-50%);
-  }
-
-  .sp-bottom-thumbnails.sp-has-pointer .sp-thumbnail {
-    top: 0;
   }
 
   .sp-bottom-thumbnails.sp-has-pointer .sp-selected-thumbnail::before {
@@ -5123,8 +5117,7 @@ input::-webkit-inner-spin-button {
   height: 100%;
 }
 .sp-thumbnail-image {
-  width: 100%;
-  height: auto;
+  display: block;
 }
 .sp-thumbnail-container {
   transition: border-color 0.3s;
@@ -7727,7 +7720,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   position: fixed;
   top: 10rem;
-  right: 1rem;
+  right: 20rem;
   width: 50px;
   height: 50px;
   line-height: 3rem;
@@ -7783,7 +7776,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   position: fixed;
   bottom: 1rem;
-  right: 1rem;
+  right: 20rem;
   width: 50px;
   height: 50px;
   line-height: 3rem;

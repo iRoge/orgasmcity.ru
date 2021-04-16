@@ -40,7 +40,7 @@ if (empty($arParams['COLOR']))
 			<div class="sp-slides">
 				<? foreach ($arResult['PHOTOS'] as $iKey => $arPhoto): ?>
 					<div class="sp-slide">
-						<img class="sp-image" src="<?= $arPhoto['SRC']; ?>" data-src="<?= $arPhoto['SRC']; ?>" alt="<?= $arPhoto['ALT']; ?>" />
+						<img class="sp-image" src="<?= $arPhoto['SRC']; ?>" data-src="<?= $arPhoto['SRC']; ?>" alt="" />
 					</div>
 				<? endforeach; ?>
 			</div>
@@ -48,7 +48,7 @@ if (empty($arParams['COLOR']))
 				<? foreach ($arResult['PHOTOS'] as $iKey => $arPhoto): ?>
 					<div class="sp-thumbnail">
 						<div class="sp-thumbnail-image-container">
-							<img class="sp-thumbnail-image" src="<?= $arPhoto['THUMB']; ?>" alt="<?= $arPhoto['ALT']; ?>" />
+							<img class="sp-thumbnail-image" src="<?= $arPhoto['THUMB']; ?>" alt="" />
 						</div>
 					</div>
 				<? endforeach; ?>

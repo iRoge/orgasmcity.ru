@@ -113,7 +113,7 @@ function sendYandexMetrkiaGoal(goalName)
 
 		if (rightClosestPriorityButtons.length) {
 			positionStep = 6;
-			let right = 1;
+			let right = 20;
 
 			rightClosestPriorityButtons.forEach(function (element) {
                 if (element.state.visible) {
@@ -123,7 +123,7 @@ function sendYandexMetrkiaGoal(goalName)
 
 			this.element.root.style.right = right + 'rem';
 		} else {
-			this.element.root.style.right = positionStep + 'rem';
+			this.element.root.style.right = 20 + 'rem';
 		}
 	}
 	

@@ -5053,7 +5053,7 @@ label.radio > span .shop-card__phones i.input__color,
 .to-top-toggle {
   position: fixed;
   bottom: 1rem;
-  right: 1rem;
+  right: 20rem;
   width: 3rem;
   height: 3rem;
   line-height: 3rem;

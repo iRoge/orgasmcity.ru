@@ -585,7 +585,7 @@ function goZoom(data) {
     //         slide = data.index;
     //     }
     //     $('.jq-zoom[data-index="'+slide+'"]').zoom({
-    //         magnify: 1.2
+    //         magnify: 1.5
     //     });
     // }
 }

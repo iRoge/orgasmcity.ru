@@ -261,6 +261,10 @@ class QsoftCatalogElement extends ComponentHelper
                 $arProp['VALUE'] = $arProp['VALUE'][0];
             }
 
+            if (in_array($arProp['CODE'], ['length', 'diameter'])) {
+                $arProp['VALUE'] = (float)$arProp['VALUE'] . 'см';
+            }
+
             if ($arProp['CODE'] == 'vendor') {
                 $arProp['VALUE'] = CIBlockElement::GetList(
                     [],
@@ -337,16 +341,12 @@ class QsoftCatalogElement extends ComponentHelper
             'width' => $k < 1 ? $k * $this->srcSizeMedium['height'] : $this->srcSizeMedium['height'],
             'height' => $this->srcSizeMedium['height'],
         ];
-        $thumbSize = [
-            'width' => $k < 1 ? $k * $this->thumbSize['height'] : $this->thumbSize['height'],
-            'height' => $this->thumbSize['height'],
-        ];
         $srcThousand = [
             'width' => $k < 1 ? $k * $this->srcThousand['height'] : $this->srcThousand['height'],
             'height' => $this->srcThousand['height'],
         ];
         $arSRCMedium = Functions::ResizeImageGet($arImage, $srcSizeMedium);
-        $arTHUMB = Functions::ResizeImageGet($arImage, $thumbSize);
+        $arTHUMB = Functions::ResizeImageGet($arImage, $this->thumbSize);
         $arSRCThousand = Functions::ResizeImageGet($arImage, $srcThousand);
 
         $arImage['ALT'] = $this->arResult['NAME']; //TODO Собрать нормальный ALT

@@ -47,7 +47,7 @@ global $APPLICATION;
                                          src=""
                                          data-src="<?= $arPhoto['SRC_ORIGINAL']; ?>"
                                          data-small="<?= Functions::checkMobileDevice() ? $arPhoto['SRC_MEDIUM'] : $arPhoto['SRC_ORIGINAL']; ?>"
-                                         alt="<?= $arPhoto['ALT']; ?>"
+                                         alt=""
                                          style="height: 600px;"/>
                                 </div>
                             <? endforeach; ?>
@@ -57,7 +57,7 @@ global $APPLICATION;
                                 <div class="sp-thumbnail">
                                     <div class="sp-thumbnail-image-container">
                                         <img class="sp-thumbnail-image sp-image_hide" src="<?= $arPhoto['THUMB']; ?>"
-                                             alt="<?= $arPhoto['ALT']; ?>"/>
+                                             alt=""/>
                                     </div>
                                 </div>
                             <? endforeach; ?>
