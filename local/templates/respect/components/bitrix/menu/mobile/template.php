@@ -57,23 +57,16 @@ $this->setFrameMode(true);
                     <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
                         <? if ($arItem2Level['IS_PARENT']) : ?>
                             <?//pre($arItem2Level['ITEMS']);?>
+                            <a href="<?= $arItem2Level['LINK'] ?>"><span style="opacity: 0.7; padding-top: 10px"><?=$arItem2Level['TEXT']?></span></a>
                             <? //foreach (array_chunk($arItem2Level['ITEMS'], ceil(count($arItem2Level['ITEMS']) / 2)) as $arItem3LevelChunks): ?>
                             <? foreach ($arItem2Level['ITEMS'] as $arItem3LevelChunks) : ?>
                                 <?// foreach ($arItem3LevelChunks as $arItem3Level): ?>
-                                <?
-                                $imageCode=basename($arItem3LevelChunks['LINK']);
-
-                                $imagePath = $_SERVER["DOCUMENT_ROOT"].SITE_TEMPLATE_PATH.'/img/'.$imageCode.'.png';
-                                if (empty($imageCode) || !file_exists($imagePath)) {
-                                    $imageCode = 'botinki';
-                                }
-                                ?>
-                                                <li>
                                 <a href="<?= $arItem3LevelChunks['LINK'] ?>">
-                                  <?= $arItem3LevelChunks['TEXT']; ?>
-                                  <img src="<?= SITE_TEMPLATE_PATH; ?>/img/<?= $imageCode; ?>.png"/>
+                                    <li>
+                                      <?= $arItem3LevelChunks['TEXT']; ?>
+                                    </li>
                                 </a>
-                                </li>
+
                                 <?// endforeach; ?>
                             <? endforeach; ?>
                         <?else :?>

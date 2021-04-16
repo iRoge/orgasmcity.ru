@@ -72,34 +72,18 @@ if (!empty($arResult)) :?>
                                                 </a>
                                             </li>
                                             <? foreach ($arItem3Level['ITEMS'] as $arItem4LevelChunks) : ?>
-                                                <?
-                                                $imageCode=basename($arItem4LevelChunks['LINK']);
-
-                                                $imagePath = $_SERVER["DOCUMENT_ROOT"].SITE_TEMPLATE_PATH.'/img/'.$imageCode.'.png';
-                                                if (empty($imageCode) || !file_exists($imagePath)) {
-                                                    $imageCode = 'botinki';
-                                                }
-                                                ?>
                                             <li>
                                                 <a href="<?= $arItem4LevelChunks['LINK'] ?>">
                                                     <?= $arItem4LevelChunks['TEXT'] ?>
-                                                    <img src="<?= SITE_TEMPLATE_PATH ?>/img/<?= $imageCode ?>.png"/>
                                                 </a>
                                             </li>
                                             <? endforeach; ?>
                                         </ul> 
                                     </li>   
                                     <?else :?>
-                                        <?$imageCode=basename($arItem3Level['LINK']);
-                                        $imagePath = $_SERVER["DOCUMENT_ROOT"].SITE_TEMPLATE_PATH.'/img/'.$imageCode.'.png';
-                                        if (empty($imageCode) || !file_exists($imagePath)) {
-                                            $imageCode = 'botinki';
-                                        }
-                                        ?>
                                     <li>
                                         <a href="<?= $arItem3Level['LINK'] ?>">
                                             <?= $arItem3Level['TEXT'] ?>
-                                            <img src="<?= SITE_TEMPLATE_PATH ?>/img/<?= $imageCode ?>.png"/>
                                         </a>
                                     </li>
                                     <? endif; ?>
