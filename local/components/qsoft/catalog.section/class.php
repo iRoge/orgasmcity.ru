@@ -1396,7 +1396,7 @@ class QsoftCatalogSection extends ComponentHelper
                 if ($params = $query->get($urlKey)) {
                     $params = explode(';', $params);
                     if (in_array($urlKey, array_keys(self::NUMBER_FILTERS))) {
-                        $params = intval(array_pop($params));
+                        $params = floatval(array_pop($params));
                     }
                     $filter[$filterKey] = $params;
                 }
@@ -1413,22 +1413,22 @@ class QsoftCatalogSection extends ComponentHelper
             $comp = true;
 
             if (isset($arFilter['MIN_PRICE'])) {
-                $comp = $comp && $item['PRICE'] >= $arFilter['MIN_PRICE'];
+                $comp = $comp && isset($item['PRICE']) && $item['PRICE'] >= $arFilter['MIN_PRICE'];
             }
             if (isset($arFilter['MAX_PRICE'])) {
-                $comp = $comp && $item['PRICE'] <= $arFilter['MAX_PRICE'];
+                $comp = $comp && isset($item['PRICE']) && $item['PRICE'] <= $arFilter['MAX_PRICE'];
             }
             if (isset($arFilter['MIN_LENGTH'])) {
-                $comp = $comp && $item['PROPERTY_LENGTH_VALUE'] >= $arFilter['MIN_LENGTH'];
+                $comp = $comp && isset($item['PROPERTY_LENGTH_VALUE']) && $item['PROPERTY_LENGTH_VALUE'] >= $arFilter['MIN_LENGTH'];
             }
             if (isset($arFilter['MAX_LENGTH'])) {
-                $comp = $comp && $item['PROPERTY_LENGTH_VALUE'] <= $arFilter['MAX_LENGTH'];
+                $comp = $comp && isset($item['PROPERTY_LENGTH_VALUE']) && $item['PROPERTY_LENGTH_VALUE'] <= $arFilter['MAX_LENGTH'];
             }
             if (isset($arFilter['MIN_DIAMETER'])) {
-                $comp = $comp && $item['PROPERTY_DIAMETER_VALUE'] >= $arFilter['MIN_DIAMETER'];
+                $comp = $comp && isset($item['PROPERTY_DIAMETER_VALUE']) && $item['PROPERTY_DIAMETER_VALUE'] >= $arFilter['MIN_DIAMETER'];
             }
             if (isset($arFilter['MAX_DIAMETER'])) {
-                $comp = $comp && $item['PROPERTY_DIAMETER_VALUE'] <= $arFilter['MAX_DIAMETER'];
+                $comp = $comp && isset($item['PROPERTY_DIAMETER_VALUE']) && $item['PROPERTY_DIAMETER_VALUE'] <= $arFilter['MAX_DIAMETER'];
             }
 
             foreach ($arFilter as $key => $value) {
@@ -1807,21 +1807,21 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $this->getCheckedOptions();
-        if ($this->filtersScopes['MIN_PRICE'] != $this->filtersScopes['MAX_PRICE']) {
-            $this->arResult['FILTER']['MIN_PRICE'] = $this->filtersScopes['MIN_PRICE'];
-            $this->arResult['FILTER']['MAX_PRICE'] = $this->filtersScopes['MAX_PRICE'];
-        }
-        if ($this->filtersScopes['MIN_DIAMETER'] != $this->filtersScopes['MAX_DIAMETER']) {
-            $this->arResult['FILTER']['MIN_DIAMETER'] = $this->filtersScopes['MIN_DIAMETER'];
-            $this->arResult['FILTER']['MAX_DIAMETER'] = $this->filtersScopes['MAX_DIAMETER'];
-        }
-        if ($this->filtersScopes['MIN_LENGTH'] != $this->filtersScopes['MAX_LENGTH']) {
-            $this->arResult['FILTER']['MIN_LENGTH'] = $this->filtersScopes['MIN_LENGTH'];
-            $this->arResult['FILTER']['MAX_LENGTH'] = $this->filtersScopes['MAX_LENGTH'];
-        }
+
+        $this->arResult['FILTER']['MIN_PRICE'] = $this->filtersScopes['MIN_PRICE'];
+        $this->arResult['FILTER']['MAX_PRICE'] = $this->filtersScopes['MAX_PRICE'];
+        $this->arResult['FILTER']['MIN_DIAMETER'] = $this->filtersScopes['MIN_DIAMETER'];
+        $this->arResult['FILTER']['MAX_DIAMETER'] = $this->filtersScopes['MAX_DIAMETER'];
+        $this->arResult['FILTER']['MIN_LENGTH'] = $this->filtersScopes['MIN_LENGTH'];
+        $this->arResult['FILTER']['MAX_LENGTH'] = $this->filtersScopes['MAX_LENGTH'];
+
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
-
+//        global $APPLICATION;
+//        $APPLICATION->RestartBuffer();
+//        pre($this->arResult['FILTER_KEYS']);
+//        pre($this->arResult['FILTER']);
+//        die;
         if ($this->type === self::TYPE_SECTION) {
             if ($this->section['DEPTH_LEVEL'] > 1) {
                 $this->arResult['SAME_SECTIONS'] = $this->section['SAME_SECTIONS'];
@@ -2108,15 +2108,17 @@ class QsoftCatalogSection extends ComponentHelper
     private function getSectionChain()
     {
         $chain = [];
-        $rsPath = CIBlockSection::GetNavChain(IBLOCK_CATALOG, $this->section['ID'], ['NAME', 'SECTION_PAGE_URL']);
+        $rsPath = CIBlockSection::GetNavChain(IBLOCK_CATALOG, $this->section['ID'], ['NAME', 'SECTION_PAGE_URL', 'DEPTH_LEVEL']);
         while ($arPath = $rsPath->GetNext(true, false)) {
+            if ($arPath['DEPTH_LEVEL'] == 1) {
+                continue;
+            }
 //            $ipropValues = new SectionValues(IBLOCK_CATALOG, $arPath["ID"]);
             $chain[] = [
                 'title' => $arPath['NAME'],
                 'url' => $arPath['SECTION_PAGE_URL'],
             ];
         }
-
         return $chain;
     }
 

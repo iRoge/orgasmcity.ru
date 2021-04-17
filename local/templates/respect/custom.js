@@ -58,7 +58,7 @@ function sendYandexMetrkiaGoal(goalName)
 	}
 
     StickyButton.prototype.init = function () {
-		this.element.root.style.transition = 'all 0.2s';
+		this.element.root.style.transition = 'opacity 0.2s linear 0.2s';
 
         window.addEventListener('scroll', this._handleScroll.bind(this));
 		StickyButton.update();
@@ -113,7 +113,7 @@ function sendYandexMetrkiaGoal(goalName)
 
 		if (rightClosestPriorityButtons.length) {
 			positionStep = 6;
-			let right = 20;
+			let right = 3;
 
 			rightClosestPriorityButtons.forEach(function (element) {
                 if (element.state.visible) {
@@ -121,9 +121,9 @@ function sendYandexMetrkiaGoal(goalName)
                 }
             });
 
-			this.element.root.style.right = right + 'rem';
+			this.element.root.style.right = right + '%';
 		} else {
-			this.element.root.style.right = 20 + 'rem';
+			this.element.root.style.right = 3 + '%';
 		}
 	}
 	

@@ -402,11 +402,10 @@ class QsoftCatalogElement extends ComponentHelper
     {
         $arSectionPath = [];
         $rsPath = CIBlockSection::GetNavChain(
-            $this->arParams["IBLOCK_ID"],
+            IBLOCK_CATALOG,
             $this->arResult['IBLOCK_SECTION_ID'],
-            ["ID", "SECTION_PAGE_URL", "NAME"]
+            ['NAME', 'SECTION_PAGE_URL', 'ID', 'DEPTH_LEVEL']
         );
-        $rsPath->SetUrlTemplates("", $this->arParams["SECTION_URL"]);
         while ($arPath = $rsPath->GetNext()) {
             $ipropValues = new SectionValues($this->arParams["IBLOCK_ID"], $arPath["ID"]);
             $arPath["IPROPERTY_VALUES"] = $ipropValues->getValues();
@@ -601,6 +600,9 @@ class QsoftCatalogElement extends ComponentHelper
 
         if ($this->arParams["ADD_SECTIONS_CHAIN"] && !empty($this->arResult["PATH"]) && is_array($this->arResult["PATH"])) {
             foreach ($this->arResult["PATH"] as $arPath) {
+                if ($arPath['DEPTH_LEVEL'] == 1) {
+                    continue;
+                }
                 if ($arPath["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"] != "") {
                     $APPLICATION->AddChainItem($arPath["IPROPERTY_VALUES"]["SECTION_PAGE_TITLE"], $arPath["~SECTION_PAGE_URL"]);
                 } else {

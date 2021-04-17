@@ -7720,7 +7720,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   position: fixed;
   top: 10rem;
-  right: 20rem;
+  right: 3%;
   width: 50px;
   height: 50px;
   line-height: 3rem;
@@ -7731,13 +7731,20 @@ input::-webkit-inner-spin-button {
   border-radius: 50%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   color: #fff;
-  z-index: 2;
+  z-index: 11;
   transition: opacity 0.2s linear 0.2s;
 }
 
 @media (min-width: 769px) {
   .cart-button--visible {
     opacity: 1;
+  }
+}
+
+@media (min-width: 1366px) {
+  .cart-button {
+    width: 70px;
+    height: 70px;
   }
 }
 
@@ -7791,6 +7798,12 @@ input::-webkit-inner-spin-button {
   color: #fff;
   z-index: 5;
   transition: opacity 0.2s linear 0.2s;
+}
+@media (min-width: 1366px) {
+  .to-top-toggle {
+    width: 70px;
+    height: 70px;
+  }
 }
 .to-top-toggle--visible {
   opacity: 1;

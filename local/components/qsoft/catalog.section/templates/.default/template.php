@@ -221,7 +221,8 @@ if (!$arResult['IS_AJAX']) :
                                     </div>
                                 <? endif; ?>
                                 <input id="set_filter" type="hidden" name="set_filter" value="Y">
-                                <? foreach ($arResult['FILTER_KEYS'] as $filterKey) : ?>
+                                <?
+                                foreach ($arResult['FILTER_KEYS'] as $filterKey) : ?>
                                     <? if (in_array($filterKey, ['PRICE', 'DIAMETER', 'LENGTH']) && !empty($arResult['FILTER']['MAX_' . $filterKey]) && !empty($arResult['FILTER']['MIN_' . $filterKey])) : ?>
                                         <div class="in-left-catalog in-left-catalog--price<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' in-left-catalog--checked' : '' ?>">
                                             <div class="name-h3<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' active-name-h3' : '' ?>">
