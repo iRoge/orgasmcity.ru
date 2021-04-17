@@ -1817,11 +1817,7 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
-//        global $APPLICATION;
-//        $APPLICATION->RestartBuffer();
-//        pre($this->arResult['FILTER_KEYS']);
-//        pre($this->arResult['FILTER']);
-//        die;
+        
         if ($this->type === self::TYPE_SECTION) {
             if ($this->section['DEPTH_LEVEL'] > 1) {
                 $this->arResult['SAME_SECTIONS'] = $this->section['SAME_SECTIONS'];
