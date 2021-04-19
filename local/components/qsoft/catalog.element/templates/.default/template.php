@@ -10,7 +10,6 @@ global $LOCATION;
 global $APPLICATION;
 ?>
 <script type="text/javascript">
-    var propsTooltip = <?= CUtil::PhpToJSObject($arResult['AR_PROPS_TOOLTIP']); ?>;
 </script>
 <div class="col-xs-12 carto">
     <div class="main">
@@ -18,26 +17,7 @@ global $APPLICATION;
             <? if ((empty($arResult['OFFERS'])) || empty($arResult['PRICE_PRODUCT'])) : ?>
             <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
             <? endif; ?>
-            <?
-            $propCat = $arResult['PROPS_GTM']['RHODEPRODUCT']['VALUE'];
-            $propCat .= $arResult['PROPS_GTM']['VID']['VALUE'] ? '/' . $arResult['PROPS_GTM']['VID']['VALUE'] : '';
-            $propCat .= $arResult['PROPS_GTM']['TYPEPRODUCT']['VALUE'] ? '/' . $arResult['PROPS_GTM']['TYPEPRODUCT']['VALUE'] : '';
-            $propCat .= $arResult['PROPS_GTM']['SUBTYPEPRODUCT']['VALUE'] ? '/' . $arResult['PROPS_GTM']['SUBTYPEPRODUCT']['VALUE'] : '';
-            ?>
-            <div class="product-page product-main-div"
-                 data-prod-id="<?= $arResult['ID'] ?>"
-                 data-prod-articul="<?= $arResult['ARTICLE'] ?>"
-                 data-prod-name="<?= $arResult['NAME'] . ($arResult['ARTICLE'] ? ' | ' . $arResult['ARTICLE'] : '') ?>"
-                 data-prod-brand="<?= $arResult['PROPS_GTM']['BRAND']['VALUE'] ?>"
-                 data-prod-top-material="<?= $arResult['PROPS_GTM']['UPPERMATERIAL']['VALUE'] ?>"
-                 data-prod-lining-material="<?= $arResult['PROPS_GTM']['LININGMATERIAL']['VALUE'] ?>"
-                 data-prod-season="<?= $arResult['PROPS_GTM']['SEASON']['VALUE'] ?>"
-                 data-prod-variant="<?= $arResult['PROPS_GTM']['COLORSFILTER']['VALUE'] ?>"
-                 data-prod-collection="<?= $arResult['PROPS_GTM']['COLLECTION']['VALUE'] ?>"
-                 data-prod-category="<?= $propCat ?>"
-                 data-prod-price="<?= number_format($arResult['PRICE_PRODUCT'][$arResult['ID']]['PRICE'], 0, '', ''); ?>"
-                 data-prod-list="Каталог Страница 1"
-            >
+            <div class="product-page product-main-div">
                 <div class="col-sm-6 slider-pro-container col-image">
                     <div id="example5" class="slider-pro">
                         <div class="sp-slides">
@@ -63,15 +43,8 @@ global $APPLICATION;
                             <? endforeach; ?>
                         </div>
                     </div>
-                    <? if ($arResult['DETAIL_TEXT'] || $arResult['YOUTUBE_LINK']) :?>
+                    <? if ($arResult['DETAIL_TEXT']) :?>
                         <div class="hidden-xs detail-element-text">
-                            <? if (!empty($arResult['YOUTUBE_LINK'])) :?>
-                                <div style="width: 100%;padding-bottom: 56.25%;position: relative;">
-                                    <div style="position: absolute; left: 0; right: 0;top: 0;bottom: 0;">
-                                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/<?= $arResult['YOUTUBE_LINK'];?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                            <? endif; ?>
                             <?=$arResult['DETAIL_TEXT']?>
                         </div>
                     <? endif; ?>
@@ -225,25 +198,19 @@ global $APPLICATION;
                                     <div class="l3">Размер</div>
                                     <div class="r3"><?=implode(' x ', $arResult['SIZES_PROPERTIES']) . ' см'?></div>
                                 </div>
-                            <? endif;?>
-                            <? $arTypesNotIgnore4Props = ['ЦБ0012949', 'ЦБ0013283'];
-                            $ignore4Props = !in_array($arResult['PROPERTIES']['TYPEPRODUCT']['VALUE'], $arTypesNotIgnore4Props);
-                            $ar4Props = ['MATERIALGOLENISHCHE', 'MATERIALSOUZKA', 'PODKLADGOLENISHCHE', 'PODKLADSOUZKA'];
+                            <? endif;
                             foreach ($arResult['DISPLAY_PROPERTIES'] as $key => $arProperty) : ?>
                                 <? if (!empty($arProperty['VALUE']) && !is_array($arProperty['VALUE'])) : ?>
-                                    <? if ($ignore4Props && in_array($key, $ar4Props)) :
-                                        continue;
-                                    endif; ?>
                                     <div class="p3 for-relative">
                                         <div class="l3"><?= $arProperty['NAME']; ?></div>
-                                        <? if ($key == 'BRAND') { ?>
-                                        <div class="r3 <?= $arProperty['TOOLTIP'] ? 'have-tooltip' : '' ?>"><a href='<?= $arResult['BRAND_PAGE'] ?>'><?= $arProperty['VALUE']; ?></a></div>
+                                        <? if ($key == 'vendor') { ?>
+                                        <div class="r3">
+                                            <a href="/brands/<?= $arProperty['CODE_VALUE'] ?>/" target="_blank"><?= $arProperty['VALUE']; ?>
+                                            </a>
+                                        </div>
                                         <? } else { ?>
-                                        <div class="r3 <?= $arProperty['TOOLTIP'] ? 'have-tooltip' : '' ?>"><?= $arProperty['VALUE']; ?></div>
+                                        <div class="r3"><?= $arProperty['VALUE']; ?></div>
                                         <? } ?>
-                                        <? if (!empty($arProperty['TOOLTIP'])) : ?>
-                                            <div class="props-tooltip"><?= $arProperty['TOOLTIP'] ?></div>
-                                        <? endif; ?>
                                     </div>
                                 <? endif; ?>
                             <? endforeach; ?>
@@ -259,15 +226,9 @@ global $APPLICATION;
                                 <div class="l3">Размер</div>
                                 <div class="r3"><?=implode(' x ', $arResult['SIZES_PROPERTIES']) . ' см'?></div>
                             </div>
-                        <? endif;?>
-                        <? $arTypesNotIgnore4Props = ['ЦБ0012949', 'ЦБ0013283'];
-                        $ignore4Props = !in_array($arResult['PROPERTIES']['TYPEPRODUCT']['VALUE'], $arTypesNotIgnore4Props);
-                        $ar4Props = ['MATERIALGOLENISHCHE', 'MATERIALSOUZKA', 'PODKLADGOLENISHCHE', 'PODKLADSOUZKA'];
+                        <? endif;
                         foreach ($arResult['DISPLAY_PROPERTIES'] as $key => $arProperty) : ?>
                             <? if (!empty($arProperty['VALUE']) && !is_array($arProperty['VALUE'])) : ?>
-                                <? if ($ignore4Props && in_array($key, $ar4Props)) :
-                                    continue;
-                                endif; ?>
                                 <div class="p3">
                                     <div class="l3"><?= $arProperty['NAME']; ?></div>
                                     <? if ($key == 'BRAND') { ?>
@@ -277,9 +238,7 @@ global $APPLICATION;
                                             <a href='<?= $arResult['BRAND_PAGE'] ?>'><?= $arProperty['VALUE']; ?></a>
                                         </div>
                                     <? } else { ?>
-                                        <div class="r3 <?= $arProperty['TOOLTIP'] ? 'have-tooltip-mob' : '' ?>"
-                                            <?= $arProperty['TOOLTIP'] ? ' data-tooltipname="' . $arProperty['CODE'] . '"' : '' ?>
-                                        >
+                                        <div class="r3">
                                             <?= $arProperty['VALUE']; ?>
                                         </div>
                                     <? } ?>

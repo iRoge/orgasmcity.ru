@@ -266,7 +266,7 @@ class QsoftCatalogElement extends ComponentHelper
             }
 
             if ($arProp['CODE'] == 'vendor') {
-                $arProp['VALUE'] = CIBlockElement::GetList(
+                $vendor = CIBlockElement::GetList(
                     [],
                     [
                         'IBLOCK_ID' => IBLOCK_VENDORS,
@@ -276,14 +276,16 @@ class QsoftCatalogElement extends ComponentHelper
                     false,
                     false,
                     [
-                    'ID',
-                    'NAME',
-                    'IBLOCK_ID',
-                ])->GetNext()['NAME'];
+                        'ID',
+                        'NAME',
+                        'IBLOCK_ID',
+                        'CODE'
+                    ])->GetNext();
+                $arProp['VALUE'] = $vendor['NAME'];
+
+                $arProp['CODE_VALUE'] = $vendor['CODE'];
             }
         }
-
-        unset($arProp);
 
         return $arProps;
     }
