@@ -86,55 +86,42 @@ global $APPLICATION;
                             </div>
                         <? endif ?>
                         <? if (!empty($arResult['OFFERS']) && !empty($arResult['PRICE_PRODUCT'])) : ?>
-                            <? if (!$arResult['SINGLE_SIZE']) : ?>
-                                <h3 class="after-hr-cart"><?= Loc::getMessage("SIZE") ?></h3>
-                            <? endif; ?>
-                            <form method="post" name="name" style="width: 100%;" class="form-after-cart js-action-form">
+                            <form method="post" name="name" style="width: 100%; margin-top: 30px;" class="form-after-cart js-action-form">
                                 <input type="hidden" name="action" value="ADD2BASKET">
                                 <? if (!$arResult['SINGLE_SIZE']) : ?>
+                                    <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['SIZES'])) : ?>
+                                    <h3 class="after-hr-cart"><?= Loc::getMessage("SIZE") ?></h3>
                                     <div style="display: block; width: 100%;" class="js-size-selector base-sizes">
-                                        <? foreach ($arResult['RESTS']['ALL'] as $offerId => $data) : ?>
+                                        <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['SIZES'] as $sizeValue) : ?>
                                             <div class="top-minus">
-                                                <input type="radio" name="id" id="offer-<?= $offerId ?>"
-                                                       class="radio1 js-choose-size js-offer js-offer-<?= $offerId ?>"
-                                                       data-is-local="<?=$arResult['RESTS']['DELIVERY'][$offerId]['IS_LOCAL']?>"
-                                                       value="<?= $offerId ?>"/>
-                                                <label class="<?= $arResult['IS_PREORDER'] ? 'preorder_sizes_input' : '' ?>"
-                                                        for="offer-<?= $offerId ?>"
-                                                       data-is-local="<?=$arResult['RESTS']['DELIVERY'][$offerId]['IS_LOCAL']?>"
-                                                       data-offer-id="<?= $offerId ?>"><?= $data['SIZE'] ?></label>
+                                                <input type="radio" name="id" id="size-<?= $sizeValue ?>"
+                                                       class="radio1 js-choose-size js-offer js-offer-<?= $sizeValue ?>"
+                                                       value="<?= $sizeValue ?>"/>
+                                                <label for="offer-<?= $sizeValue ?>"
+                                                       data-value="<?= $sizeValue ?>"><?= $sizeValue ?></label>
                                             </div>
                                         <? endforeach; ?>
                                         <div style="clear: both"></div>
                                     </div>
-                                    <div style="display: none; width: 100%;" class="js-size-selector delivery-sizes">
-                                        <input type="hidden" id="del-popup-type" value="">
-                                        <? foreach ($arResult['RESTS']['DELIVERY'] as $offerId => $data) : ?>
+                                    <? endif; ?>
+                                    <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS'])) : ?>
+                                    <h3 class="after-hr-cart"><?= Loc::getMessage("COLOR") ?></h3>
+                                    <div style="display: block; width: 100%;" class="js-size-selector base-sizes">
+                                        <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['COLORS'] as $colorCode => $color) : ?>
                                             <div class="top-minus">
-                                                <input type="radio" name="size-del" id="del-offer-<?= $offerId ?>"
-                                                       class="radio1"
-                                                       data-is-local="<?=$data['IS_LOCAL']?>"
-                                                       value="<?= $offerId ?>"/>
-                                                <label class="delivery-sizes-input" for="offer-<?= $offerId ?>"
-                                                       data-is-local="<?=$data['IS_LOCAL']?>"
-                                                       data-offer-id="<?= $offerId ?>"><?= $data['SIZE'] ?></label>
+                                                <input type="radio" name="id" id="color-<?= $colorCode ?>"
+                                                       class="radio1 js-choose-size js-offer js-offer-<?= $colorCode ?>"
+                                                       value="<?= $colorCode ?>"/>
+                                                <label
+                                                        class="color-label"
+                                                        for="offer-<?= $colorCode ?>"
+                                                        data-value="<?= $colorCode ?>"><img src="<?=$color['IMG_SRC']?>" alt="<?=$color['NAME']?>"></label>
                                             </div>
                                         <? endforeach; ?>
                                         <div style="clear: both"></div>
                                     </div>
-                                    <div style="display: none; width: 100%;" class="js-size-selector reservation-sizes">
-                                        <? foreach ($arResult['RESTS']['RESERVATION'] as $offerId => $data) : ?>
-                                            <div class="top-minus">
-                                                <input type="radio" name="size-res" id="res-offer-<?= $offerId ?>"
-                                                       class="radio1"
-                                                       value="<?= $offerId ?>"/>
-                                                <label class="reservation-sizes-input" for="offer-<?= $offerId ?>"
-                                                       data-offer-id="<?= $offerId ?>"><?= $data['SIZE'] ?></label>
-                                            </div>
-                                        <? endforeach; ?>
-                                        <div style="clear: both"></div>
-                                    </div>
-                                    <div class="buttons-wrapper">
+                                    <? endif; ?>
+                                    <div class="buttons-wrapper" style="display: none">
                                         <div class="sizes-popup-area">
                                             <a class="sizes-popup" href="#"><?= Loc::getMessage("SIZES_INFO") ?></a>
                                             <div class="sizes-popup-block" style="display:none;">
@@ -146,50 +133,25 @@ global $APPLICATION;
                                     </div>
                                 <? endif; ?>
                                 <div id="wrap" class="btns-wrap">
-                                    <? if ($arResult['IS_PREORDER'] == false) { ?>
                                     <div id="js-toggle-delivery-ok"
-                                         class="catalog-element-btn-container <?= empty($arResult['RESTS']['DELIVERY']) ? 'js-button-hide' : '' ?>">
+                                         class="catalog-element-btn-container">
                                         <?php if ($arResult['SHOW_ONE_CLICK']) :?>
                                         <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
-                                               data-is-local="<?= $arResult['SINGLE_SIZE'] ? $arResult['RESTS']['DELIVERY'][$arResult['SINGLE_SIZE']]['IS_LOCAL'] : "" ?>"
                                                id="one-click-btn"
                                                class="js-one-click cartochka-blue blue-btn"
                                                type="button"
                                                value="Купить в 1 клик"/>
                                         <?php endif; ?>
                                         <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
-                                               data-is-local="<?= $arResult['SINGLE_SIZE'] ? $arResult['RESTS']['DELIVERY'][$arResult['SINGLE_SIZE']]['IS_LOCAL'] : "" ?>"
                                                id="buy-btn"
                                                class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
                                                style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
                                                type="button"
                                                value="Добавить в корзину"/>
                                     </div>
-                                    <? } else { ?>
-                                    <div id="js-toggle-preorder"
-                                         class="catalog-element-btn-container">
-                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
-                                               data-is-local="<?= $arResult['SINGLE_SIZE'] ? $arResult['RESTS']['ALL'][$arResult['SINGLE_SIZE']]['IS_LOCAL'] : "" ?>"
-                                               id="preorder-btn"
-                                               class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
-                                               style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
-                                               type="button"
-                                               value="Сообщить о поступлении"/>
-                                    </div>
-                                    <? } ?>
                                 </div>
                             </form>
                         <? endif; ?>
-                        <? $APPLICATION->IncludeComponent(
-                            "qsoft:infopage",
-                            "advantagesInCatalogElement",
-                            array(
-                                    "IBLOCK_CODE" => 'advantagesInCatalogElement',
-                                    "CACHE_TYPE" => "A",
-                                    "CACHE_TIME" => "86400"
-                                ),
-                            false
-                        ); ?>
                     </div>
                     <?if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
                         <div class="col-sm-12 hidden-xs" style="margin-right: 20px;margin-top: 50px">
@@ -245,15 +207,8 @@ global $APPLICATION;
                                 </div>
                             <? endif; ?>
                         <? endforeach; ?>
-                        <? if ($arResult['DETAIL_TEXT'] || $arResult['YOUTUBE_LINK']) :?>
+                        <? if ($arResult['DETAIL_TEXT']) :?>
                             <div class="detail-element-text">
-                                <? if (!empty($arResult['YOUTUBE_LINK'])) :?>
-                                <div style="width: 100%;padding-bottom: 56.25%;position: relative;">
-                                    <div style="position: absolute; left: 0; right: 0;top: 0;bottom: 0;">
-                                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/<?= $arResult['YOUTUBE_LINK'];?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                                <? endif; ?>
                                 <?=$arResult['DETAIL_TEXT']?>
                             </div>
                         <? endif; ?>
@@ -268,13 +223,9 @@ global $APPLICATION;
                     <?= bitrix_sessid_post(); ?>
                     <input type="hidden" name="action" value="1click">
                     <input type="hidden" name="PRODUCTS[]" value="">
-                    <input type="hidden" name="PROPS[IS_LOCAL]" value="Y">
                     <div id="after-cart-in-err"></div>
                     <div class="container container--quick-order">
                         <div class="column-5 column-md-2">
-                            <? if (!empty($arResult['PRICE_PRODUCT'][$arResult['ID']]) && $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == 'White' && !$USER->IsAuthorized()) :?>
-                                <div style="margin-top: 25px; font-size: 1.6rem;" class="product-page__na"><?='Заказ будет оформлен без учета индивидуальной скидки по программе лояльности RESPECT| БОНУС. Стоимость заказа составит <b>' . $arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE'] . ' руб</b>. <span style="color: #337ab7" class="ent span-1click-auth" onclick="$(\'.popup\').toggle();$(\'body\').removeClass(\'with--popup\')">Авторизуйтесь или зарегистрируйтесь</span>, чтобы получить скидку согласно вашего бонусного статуса.';?></div>
-                            <? endif; ?>
                             <div class="form">
                                 <div class="input-group input-group--phone">
                                     <input style="margin-top: 10px"

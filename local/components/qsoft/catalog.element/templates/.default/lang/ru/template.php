@@ -7,6 +7,7 @@ $MESS["BONUS"] = "*по условиям бонусной программы";
 $MESS["RUB"] = " р.";
 $MESS["DIFFERENT_PRICES"] = "*цены на сайте могут отличаться от цен в магазинах";
 $MESS["SIZE"] = "Размер";
+$MESS["COLOR"] = "Цвет";
 $MESS["OTHERS_COLORS"] = "Другие цвета";
 $MESS["ELEMENT_NOT_FOUND"] = "Элемент не найден!";
 $MESS["SIZES_INFO"] = "Руководство по размерам";

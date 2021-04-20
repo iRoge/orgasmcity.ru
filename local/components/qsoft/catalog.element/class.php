@@ -306,10 +306,11 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult['PHOTOS'] = $this->getEntity('images', 'loadImages');
         $this->arResult['DISPLAY_PROPERTIES'] = $this->getDisplayProperties();
         $this->arResult['PATH'] = $this->getEntity('path', 'loadSectionsPath');
-        $this->arResult['SECTION_SIZES_TAB'] = reset($this->getEntity('size_table', 'loadSizesTable'));
+//        $this->arResult['SECTION_SIZES_TAB'] = reset($this->getEntity('size_table', 'loadSizesTable'));
         $this->arResult['USER'] = $this->loadUserData();
         $this->arResult['ARTICLE'] = trim($this->arResult['PROPERTIES']['article']['VALUE']);
         $this->arResult['PICTURES_COUNT'] = count($this->arResult['PICTURES']);
+        $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
 
         $this->arResult['SINGLE_SIZE'] = (count($this->arResult['OFFERS']) === 1) ? key($this->arResult['OFFERS']) : false;
         // минимальная цен атовара по офферам
@@ -677,5 +678,46 @@ class QsoftCatalogElement extends ComponentHelper
         } else {
             return false;
         }
+    }
+
+    private function loadColors()
+    {
+        $arColors = [];
+        $obEntity = HL::getEntityClassByHLName('Firecolorreference');
+
+        if ($obEntity && is_object($obEntity)) {
+            $sClass = $obEntity->getDataClass();
+            $rsColors = $sClass::getList(['select' => ['UF_NAME', 'UF_XML_ID', 'UF_FILE']]);
+
+            while ($arColor = $rsColors->fetch()) {
+                $arColor['IMG_SRC'] = CFile::GetPath($arColor["UF_FILE"]);
+                $arColors[$arColor['UF_XML_ID']] = $arColor;
+                unset($arColors[$arColor['UF_XML_ID']]['UF_XML_ID']);
+                unset($arColors[$arColor['UF_XML_ID']]['UF_FILE']);
+            }
+        }
+        return $arColors;
+    }
+
+    private function getAvailableProps()
+    {
+        $colors = $this->getEntity('colors', 'loadColors');
+        $props = [
+            'SIZES' => [],
+            'COLORS' => [],
+        ];
+        foreach ($this->arResult['OFFERS'] as $offer) {
+            if ($offer['PROPERTIES']['SIZE']['VALUE']) {
+                $props['SIZES'][] = $offer['PROPERTIES']['SIZE']['VALUE'];
+            }
+            if ($offer['PROPERTIES']['COLOR']['VALUE']) {
+                $props['COLORS'][$offer['PROPERTIES']['COLOR']['VALUE']] = [
+                    'NAME' => $colors[$offer['PROPERTIES']['COLOR']['VALUE']]['UF_NAME'],
+                    'IMG_SRC' => $colors[$offer['PROPERTIES']['COLOR']['VALUE']]['IMG_SRC'],
+                ];
+            }
+        }
+
+        return $props;
     }
 }
