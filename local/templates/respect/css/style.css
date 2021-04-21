@@ -5055,7 +5055,7 @@ label.color-label {
   position: relative;
   cursor: pointer;
   background: white;
-  border: 1px solid #e4e4e4;
+  border: 2px solid white;
   letter-spacing: 0.4px;
   font-family: 'firalight' !important;
   float: left;
@@ -5067,8 +5067,9 @@ label.color-label {
 }
 .radio1:checked + label
 {
-  color: white;
-  background: #4e4e4e;
+  /*color: white;*/
+  border: solid 2px #e28400;
+  /*background: #4e4e4e;*/
 }
 
 @media(max-width: 992px) {

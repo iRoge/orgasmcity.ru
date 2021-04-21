@@ -10,6 +10,9 @@ global $LOCATION;
 global $APPLICATION;
 ?>
 <script type="text/javascript">
+    const OFFERS = <?=CUtil::PhpToJSObject($arResult['OFFERS'])?>;
+    var previousOffer = <?=CUtil::PhpToJSObject(reset($arResult['OFFERS']))?>;
+
 </script>
 <div class="col-xs-12 carto">
     <div class="main">
@@ -94,10 +97,10 @@ global $APPLICATION;
                                     <div style="display: block; width: 100%;" class="js-size-selector base-sizes">
                                         <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['SIZES'] as $sizeValue) : ?>
                                             <div class="top-minus">
-                                                <input type="radio" name="id" id="size-<?= $sizeValue ?>"
+                                                <input type="radio" name="size" id="size-<?= $sizeValue ?>"
                                                        class="radio1 js-choose-size js-offer js-offer-<?= $sizeValue ?>"
                                                        value="<?= $sizeValue ?>"/>
-                                                <label for="offer-<?= $sizeValue ?>"
+                                                <label for="size-<?= $sizeValue ?>"
                                                        data-value="<?= $sizeValue ?>"><?= $sizeValue ?></label>
                                             </div>
                                         <? endforeach; ?>
@@ -109,12 +112,12 @@ global $APPLICATION;
                                     <div style="display: block; width: 100%;" class="js-size-selector base-sizes">
                                         <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['COLORS'] as $colorCode => $color) : ?>
                                             <div class="top-minus">
-                                                <input type="radio" name="id" id="color-<?= $colorCode ?>"
+                                                <input type="radio" name="color" id="color-<?= $colorCode ?>"
                                                        class="radio1 js-choose-size js-offer js-offer-<?= $colorCode ?>"
                                                        value="<?= $colorCode ?>"/>
                                                 <label
                                                         class="color-label"
-                                                        for="offer-<?= $colorCode ?>"
+                                                        for="color-<?= $colorCode ?>"
                                                         data-value="<?= $colorCode ?>"><img src="<?=$color['IMG_SRC']?>" alt="<?=$color['NAME']?>"></label>
                                             </div>
                                         <? endforeach; ?>
@@ -136,13 +139,13 @@ global $APPLICATION;
                                     <div id="js-toggle-delivery-ok"
                                          class="catalog-element-btn-container">
                                         <?php if ($arResult['SHOW_ONE_CLICK']) :?>
-                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
+                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ?: "" ?>"
                                                id="one-click-btn"
                                                class="js-one-click cartochka-blue blue-btn"
                                                type="button"
                                                value="Купить в 1 клик"/>
                                         <?php endif; ?>
-                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ? $arResult['SINGLE_SIZE'] : "" ?>"
+                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ?: "" ?>"
                                                id="buy-btn"
                                                class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
                                                style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"

@@ -1,5 +1,16 @@
-$(function () {
+$(document).ready(function () {
     inBasket = inBasket || [];
+
+    // Выставляем дефолтную выборку оффера
+    if (previousOffer['PROPERTIES']['SIZE']['VALUE']) {
+        let sizeInput = $('input#size-' + previousOffer['PROPERTIES']['SIZE']['VALUE']);
+        sizeInput.prop('checked', true);
+    }
+
+    if (previousOffer['PROPERTIES']['SIZE']['VALUE']) {
+        let colorInput = $('input#color-' + previousOffer['PROPERTIES']['SIZE']['VALUE']);
+        colorInput.prop('checked', true);
+    }
 
     //попап окно размеров, если не выбрали
     function respercEvent__pushSize(valueBtn) {
@@ -206,7 +217,123 @@ $(function () {
             }
         }
     });
+
+    //обработка выбора оффера
+    $('.js-offer').on("change", function() {
+        selectOffer();
+    });
+
+    //Покупка в 1 клик
+    var presetDataPhone = $("input.one_click_phone").data('phone');
+    $("input.one_click_phone").val(presetDataPhone);
+
+    $('#one-click-form').on('submit', function (e) {
+        e.preventDefault();
+        var cou_err = 0;
+        var text_html = "";
+        if ($("input.one_click_phone").val().trim() == "") {
+            cou_err++;
+            text_html += '<p>Необходимо заполнить поле *Телефон</p>';
+            $("input.one_click_phone").addClass("red_border");
+        } else {
+            var inputPhoneValue = $("input.one_click_phone").val().replace(/\D+/g, '');
+            if (inputPhoneValue.length - 1 < 10) {
+                text_html += "<p>Неверно заполнено поле *Телефон</p>";
+                $("input.one_click_phone").addClass("red_border");
+                cou_err++;
+            } else {
+                $("input.one_click_phone").removeClass("red_border");
+            }
+        }
+        if (!($("#one_click_checkbox_policy_checked").prop('checked'))) {
+            cou_err++;
+            text_html += "<p>Необходимо согласие с политикой конфиденциальности</p>";
+        }
+        $("#after-cart-in-err").html(text_html);
+        if (cou_err > 0) {
+            return false;
+        }
+        $("#one-click-form").addClass("loader-one-click-form");
+        $(".input-group--phone").addClass("loader-one-click-element");
+        $("#button-one-click").hide();
+        $(".buttonFastBuy-loader").show();
+        $.ajax({
+            type: "POST",
+            url: "/cart/",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.status == "ok") {
+                    let paymentType = 'default';
+                    let items = [];
+                    for (var key in data.info) {
+                        items.push({"id": key, "qnt": 1,  "price": data.info[key].BASKET_PRICE})
+                    }
+                    // RetailRocket
+                    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+                        try {
+                            rrApi.order({
+                                "transaction": data.text,
+                                "items": items,
+                            });
+                        } catch(e) {}
+                    });
+                    window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
+                    return false;
+                }
+                $("#one-click-form").removeClass("loader-one-click-form");
+                $(".input-group--phone").removeClass("loader-one-click-element");
+                $("#button-one-click").show();
+                $(".buttonFastBuy-loader").hide();
+                $("#after-cart-in-err").html(data.text.join("<br>"));
+            },
+            error: function (jqXHR, exception) {
+                $("#one-click-form").removeClass("loader-one-click-form");
+                $(".input-group--phone").removeClass("loader-one-click-element");
+                $("#button-one-click").show();
+                $(".buttonFastBuy-loader").hide();
+            },
+        });
+        return false;
+    });
 });
+
+//функция для выбора оффера
+function selectOffer() {
+    let size = $('.js-size-selector input[name=size]:checked');
+    if (size) {
+        size = size.val();
+    }
+    let color = $('.js-size-selector input[name=color]:checked');
+    if (color) {
+        color = color.val();
+    }
+    let currentOffer = null;
+    for (let offerID in OFFERS) {
+        if (size && color) {
+            if (
+                OFFERS[offerID]['PROPERTIES']['COLOR']['VALUE'] === color
+                && OFFERS[offerID]['PROPERTIES']['SIZE']['VALUE'] === size
+            ) {
+                currentOffer = OFFERS[offerID];
+                break;
+            }
+        } else if (size) {
+            if (OFFERS[offerID]['PROPERTIES']['SIZE']['VALUE'] === size) {
+                currentOffer = OFFERS[offerID];
+                break;
+            }
+        } else {
+            if (OFFERS[offerID]['PROPERTIES']['COLOR']['VALUE'] === color) {
+                currentOffer = OFFERS[offerID];
+                break;
+            }
+        }
+    }
+    console.log(currentOffer);
+}
+
+
 
 //функция для клика на кнопку "Добавить в корзину"
 function basketHandler(offerId) {
@@ -626,80 +753,3 @@ window.SubwayMapMarker = (function () {
     };
     return SubwayMapMarker;
 })();
-
-//Покупка в 1 клик
-$(document).ready(function () {
-    //Покупка в 1 клик
-    var presetDataPhone = $("input.one_click_phone").data('phone');
-    $("input.one_click_phone").val(presetDataPhone);
-
-    $('#one-click-form').on('submit', function (e) {
-        e.preventDefault();
-        var cou_err = 0;
-        var text_html = "";
-        if ($("input.one_click_phone").val().trim() == "") {
-            cou_err++;
-            text_html += '<p>Необходимо заполнить поле *Телефон</p>';
-            $("input.one_click_phone").addClass("red_border");
-        } else {
-            var inputPhoneValue = $("input.one_click_phone").val().replace(/\D+/g, '');
-            if (inputPhoneValue.length - 1 < 10) {
-                text_html += "<p>Неверно заполнено поле *Телефон</p>";
-                $("input.one_click_phone").addClass("red_border");
-                cou_err++;
-            } else {
-                $("input.one_click_phone").removeClass("red_border");
-            }
-        }
-        if (!($("#one_click_checkbox_policy_checked").prop('checked'))) {
-            cou_err++;
-            text_html += "<p>Необходимо согласие с политикой конфиденциальности</p>";
-        }
-        $("#after-cart-in-err").html(text_html);
-        if (cou_err > 0) {
-            return false;
-        }
-        $("#one-click-form").addClass("loader-one-click-form");
-        $(".input-group--phone").addClass("loader-one-click-element");
-        $("#button-one-click").hide();
-        $(".buttonFastBuy-loader").show();
-        $.ajax({
-            type: "POST",
-            url: "/cart/",
-            data: $(this).serialize(),
-            dataType: "json",
-            success: function (data) {
-                if (data.status == "ok") {
-                    let paymentType = 'default';
-                    let items = [];
-                    for (var key in data.info) {
-                        items.push({"id": key, "qnt": 1,  "price": data.info[key].BASKET_PRICE})
-                    }
-                    // RetailRocket
-                    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-                        try {
-                            rrApi.order({
-                                "transaction": data.text,
-                                "items": items,
-                            });
-                        } catch(e) {}
-                    });
-                    window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
-                    return false;
-                }
-                $("#one-click-form").removeClass("loader-one-click-form");
-                $(".input-group--phone").removeClass("loader-one-click-element");
-                $("#button-one-click").show();
-                $(".buttonFastBuy-loader").hide();
-                $("#after-cart-in-err").html(data.text.join("<br>"));
-            },
-            error: function (jqXHR, exception) {
-                $("#one-click-form").removeClass("loader-one-click-form");
-                $(".input-group--phone").removeClass("loader-one-click-element");
-                $("#button-one-click").show();
-                $(".buttonFastBuy-loader").hide();
-            },
-        });
-        return false;
-    });
-});

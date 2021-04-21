@@ -629,7 +629,7 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function getShowOneClick()
     {
-        return true;
+        return false;
     }
 
     private function getPrice()
@@ -707,10 +707,10 @@ class QsoftCatalogElement extends ComponentHelper
             'COLORS' => [],
         ];
         foreach ($this->arResult['OFFERS'] as $offer) {
-            if ($offer['PROPERTIES']['SIZE']['VALUE']) {
+            if ($offer['PROPERTIES']['SIZE']['VALUE'] && !in_array($offer['PROPERTIES']['SIZE']['VALUE'], $props['SIZES'])) {
                 $props['SIZES'][] = $offer['PROPERTIES']['SIZE']['VALUE'];
             }
-            if ($offer['PROPERTIES']['COLOR']['VALUE']) {
+            if ($offer['PROPERTIES']['COLOR']['VALUE'] && !isset($props['COLORS'][$offer['PROPERTIES']['COLOR']['VALUE']])) {
                 $props['COLORS'][$offer['PROPERTIES']['COLOR']['VALUE']] = [
                     'NAME' => $colors[$offer['PROPERTIES']['COLOR']['VALUE']]['UF_NAME'],
                     'IMG_SRC' => $colors[$offer['PROPERTIES']['COLOR']['VALUE']]['IMG_SRC'],
