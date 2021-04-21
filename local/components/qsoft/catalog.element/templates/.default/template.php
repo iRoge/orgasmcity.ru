@@ -11,13 +11,12 @@ global $APPLICATION;
 ?>
 <script type="text/javascript">
     const OFFERS = <?=CUtil::PhpToJSObject($arResult['OFFERS'])?>;
-    var previousOffer = <?=CUtil::PhpToJSObject(reset($arResult['OFFERS']))?>;
-
+    var previousOffer = <?=CUtil::PhpToJSObject($arResult['MIN_PRICE_OFFER'])?>;
 </script>
 <div class="col-xs-12 carto">
     <div class="main">
         <? if (!empty($arResult)) : ?>
-            <? if ((empty($arResult['OFFERS'])) || empty($arResult['PRICE_PRODUCT'])) : ?>
+            <? if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) : ?>
             <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
             <? endif; ?>
             <div class="product-page product-main-div">
@@ -71,30 +70,32 @@ global $APPLICATION;
                             </button>
                         </div>
                         <h1 class="h1-cart"><?= $arResult["NAME"] ?></h1>
-                        <? if (!empty($arResult['PRICE_PRODUCT'])) : ?>
+                        <? if (!empty($arResult['MIN_PRICE_OFFER'])) : ?>
                             <div class="right-cartochka__inner-wrap">
                                 <p class="price price--discount
-                                   <?= empty($arResult['PRICE_PRODUCT']['OLD_PRICE']) ? " price--short" : "" ?>">
-                                    <b><?= number_format($arResult['PRICE_PRODUCT']['PRICE'], 0, "", " ") ?></b>
+                                   <?= empty($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) ? " price--short" : "" ?>">
+                                    <b><span class="js-price-span"><?= number_format($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'], 0, "", " ") ?></span></b>
                                     <?= Loc::getMessage("RUB") ?>
                                 </p>
-                                <? if (!empty($arResult['PRICE_PRODUCT']['OLD_PRICE']) &&
-                                    $arResult['PRICE_PRODUCT']['PRICE'] < $arResult['PRICE_PRODUCT']['OLD_PRICE']) : ?>
-                                    <p class="percents">-<?= $arResult['PRICE_PRODUCT']['PERCENT'] ?>%</p>
-                                    <p class="old-price">
-                                        <b><?= number_format($arResult['PRICE_PRODUCT']['OLD_PRICE'], 0, "", " ") ?></b>
-                                        <?= Loc::getMessage("RUB") ?>
-                                    </p>
+                                <? if (!empty($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) &&
+                                    $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] < $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) : ?>
+                                    <div class="js-old-price-block" style="display: inherit;">
+                                        <p class="percents">-<span class="js-price-percent-span"><?= $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['PERCENT'] ?></span>%</p>
+                                        <p class="old-price">
+                                            <b><span class="js-old-price-span"><?= number_format($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE'], 0, "", " ") ?></span></b>
+                                            <?= Loc::getMessage("RUB") ?>
+                                        </p>
+                                    </div>
                                 <? endif ?>
                             </div>
                         <? endif ?>
-                        <? if (!empty($arResult['OFFERS']) && !empty($arResult['PRICE_PRODUCT'])) : ?>
+                        <? if (!empty($arResult['OFFERS']) && !empty($arResult['MIN_PRICE_OFFER'])) : ?>
                             <form method="post" name="name" style="width: 100%; margin-top: 30px;" class="form-after-cart js-action-form">
                                 <input type="hidden" name="action" value="ADD2BASKET">
                                 <? if (!$arResult['SINGLE_SIZE']) : ?>
                                     <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['SIZES'])) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("SIZE") ?></h3>
-                                    <div style="display: block; width: 100%;" class="js-size-selector base-sizes">
+                                    <div style="display: block; width: 100%;" class="js-size-selector">
                                         <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['SIZES'] as $sizeValue) : ?>
                                             <div class="top-minus">
                                                 <input type="radio" name="size" id="size-<?= $sizeValue ?>"
@@ -107,9 +108,19 @@ global $APPLICATION;
                                         <div style="clear: both"></div>
                                     </div>
                                     <? endif; ?>
+<!--                                    <div class="buttons-wrapper">-->
+<!--                                        <div class="sizes-popup-area">-->
+<!--                                            <a class="sizes-popup" href="#">--><?//= Loc::getMessage("SIZES_INFO") ?><!--</a>-->
+<!--                                            <div class="sizes-popup-block" style="display:none;">-->
+<!--                                                <div class="tab-size-block">-->
+<!--                                                    --><?//= $arResult['SECTION_SIZES_TAB']; ?>
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS'])) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("COLOR") ?></h3>
-                                    <div style="display: block; width: 100%;" class="js-size-selector base-sizes">
+                                    <div style="display: block; width: 100%;" class="js-color-selector">
                                         <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['COLORS'] as $colorCode => $color) : ?>
                                             <div class="top-minus">
                                                 <input type="radio" name="color" id="color-<?= $colorCode ?>"
@@ -118,21 +129,16 @@ global $APPLICATION;
                                                 <label
                                                         class="color-label"
                                                         for="color-<?= $colorCode ?>"
-                                                        data-value="<?= $colorCode ?>"><img src="<?=$color['IMG_SRC']?>" alt="<?=$color['NAME']?>"></label>
+                                                        data-value="<?= $colorCode ?>"><img title="<?=$color['NAME']?>" src="<?=$color['IMG_SRC']?>" alt="<?=$color['NAME']?>"></label>
                                             </div>
                                         <? endforeach; ?>
                                         <div style="clear: both"></div>
                                     </div>
                                     <? endif; ?>
-                                    <div class="buttons-wrapper" style="display: none">
-                                        <div class="sizes-popup-area">
-                                            <a class="sizes-popup" href="#"><?= Loc::getMessage("SIZES_INFO") ?></a>
-                                            <div class="sizes-popup-block" style="display:none;">
-                                                <div class="tab-size-block">
-                                                    <?= $arResult['SECTION_SIZES_TAB']; ?>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="js-error-block" style="display: none; position: absolute">
+                                        <p style="color: #cd1030;font-size: 13px;font-family: 'firabold';">
+                                            Такого ассортимента сейчас нет в наличии!
+                                        </p>
                                     </div>
                                 <? endif; ?>
                                 <div id="wrap" class="btns-wrap">
@@ -328,150 +334,6 @@ global $APPLICATION;
                                    class="checkbox--_"><?= Loc::getMessage('AGREEMENT') ?></label>
                             <div class="error-policy error-preorder"></div>
                         </div>
-                    </div>
-                </form>
-
-                <form id="reserve-form" class="product-page product b-element-one-click js-reserv" action="/cart/"
-                      method="post">
-                    <?= bitrix_sessid_post(); ?>
-                    <input type="hidden" name="action" value="reserv">
-                    <input type="hidden" name="DELIVERY_STORE_ID" value="">
-                    <div class="product-preorder">
-                        <header>
-                            <div class="product-preorder__title"><?= Loc::getMessage("RESERVATION") ?></div>
-                        </header>
-                        <main>
-                            <?if ($arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == 'White' && !$USER->IsAuthorized()) :?>
-                                <div class="product-page__na product-page__na--reserve">
-                                    <?=Loc::getMessage('WARNING', ['#PRICE#' => $arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE']])?>
-                                </div>
-                            <? endif; ?>
-                            <div class="row product-preorder__container">
-                                <aside class="col-md-6 col-lg-4 product-preorder__aside-info column-33 column-md-2">
-                                    <div class="product-preorder__short-info">
-                                        <? if (!empty($arResult['NAME'])) : ?>
-                                            <div class="product-preorder__name">
-                                                <?= $arResult['NAME']; ?>
-                                            </div>
-                                        <? endif; ?>
-                                        <? if (!empty($arResult['ARTICLE'])) : ?>
-                                            <div class="product-preorder__sku">
-                                                <?= Loc::getMessage('ARTICLE_PREFIX') ?><?= $arResult['ARTICLE'] ?>
-                                            </div>
-                                        <? endif; ?>
-                                    </div>
-                                    <div class="product-preorder__info">
-                                        <div class="product-preorder__price">
-                                            <b class="product-preorder__main-price<?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == "Red" ? " product-preorder__main-price--discount" : "" ?>
-                                                <?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == "Yellow" ? " product-preorder__main-price--discount-yellow" : "" ?>">
-                                                <?= number_format(
-                                                    $arResult['PRICE_PRODUCT'][$arResult['ID']]['PRICE'],
-                                                    0,
-                                                    "",
-                                                    " "
-                                                ) ?><?= Loc::getMessage('RUB') ?>
-                                            </b>
-                                            <? if (!empty($arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE']) &&
-                                                $arResult['PRICE_PRODUCT'][$arResult['ID']]['PRICE'] < $arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE']) : ?>
-                                                <div class="product-preorder__discount-percent">
-                                                    -<?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['PERCENT'] ?>%
-                                                </div>
-                                                <div class="product-preorder__old-price">
-                                                    <b><?= number_format($arResult['PRICE_PRODUCT'][$arResult['ID']]['OLD_PRICE'], 0, "", " ") ?></b><?= Loc::getMessage('RUB') ?>
-                                                </div>
-                                            <? endif ?>
-                                        </div>
-                                    </div>
-                                    <? if (!empty($arResult['PRICE_PRODUCT'])) : ?>
-                                        <div class="product-preorder__messages">
-                                            <div class="product-preorder__cost-segment-desc">
-                                                <?= $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == "Red" || $arResult['PRICE_PRODUCT'][$arResult['ID']]['SEGMENT'] == "Yellow" ? '*скидка по бонусной программе будет рассчитана автоматически' : Loc::getMessage('BONUS') ?>
-                                            </div>
-                                            <div class="product-preorder__cost-segment-desc">
-                                                <?= Loc::getMessage('DIFFERENT_PRICES') ?>
-                                            </div>
-                                        </div>
-                                    <? endif ?>
-                                    <? if (!$arResult['SINGLE_SIZE']) : ?>
-                                        <div class="product-preorder__size">
-                                            <label><?= Loc::getMessage("SIZES") ?></label>
-                                            <div class="size-selector size-selector--wrap js-size-selector">
-                                                <? foreach ($arResult['RESTS']['RESERVATION'] as $offerId => $data) : ?>
-                                                    <div class="top-minus">
-                                                        <input type="radio"
-                                                               name="PRODUCTS[]"
-                                                               id="reserve-offer-<?= $offerId ?>"
-                                                               class="radio1 js-offer-res"
-                                                               value="<?= $offerId ?>"
-                                                        />
-                                                        <label class="reservation-popup-sizes-input"
-                                                               for="reserve-offer-<?= $offerId ?>"
-                                                               data-offer-id="<?= $offerId ?>"><?= $data['SIZE'] ?></label>
-                                                    </div>
-                                                <? endforeach; ?>
-                                                <div class="alert alert--danger js-offer-error" style="display: none;">
-                                                    <div class="alert-content noshop-block">
-                                                        <i class="icon icon-exclamation-circle"></i>
-                                                        <?= Loc::getMessage('CHOOSE_SIZE') ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <? else : ?>
-                                        <input type="radio"
-                                               name="PRODUCTS[]"
-                                               id="reserve-offer-<?= $arResult['SINGLE_SIZE'] ?>"
-                                               class="radio1 js-offer-res single-size-input"
-                                               value="<?= $arResult['SINGLE_SIZE'] ?>"
-                                               checked/>
-                                    <? endif ?>
-                                </aside>
-                                <article class="col-md-6 col-lg-8 column-md-2 product-preorder__article column-66">
-                                    <div class="tabs tabs--shop js-tabs">
-                                        <a data-target="#list"
-                                           class="tabs-item active"><?= Loc::getMessage("LIST") ?></a>
-                                        <a data-target="#map" class="tabs-item "><?= Loc::getMessage("MAP") ?></a>
-                                    </div>
-                                    <input type="text" name="store_name" class="search-mag d-inline col-xs-12" placeholder="Поиск по названию, адресу, метро" value="">
-                                    <div class="clearfix"></div>
-                                    <br>
-                                    <div class="tabs-targets">
-                                        <div id="list" class="active" data-init="list">
-                                            <div class="preorder-list" id="reserved-shop-list">
-                                            </div>
-                                        </div>
-                                        <div id="map" data-init="map">
-                                            <div class="shop-map--square js-shop-list-map shop-map" id="reserved-map"
-                                                 data-lat="<?= $arResult['LOCATION']['LAT'] ?>"
-                                                 data-lon="<?= $arResult['LOCATION']['LON'] ?>">
-                                            </div>
-                                        </div>
-                                        <div id="subway" class="subway-map" data-init="metro">
-                                            <div class="preloader">
-                                                <div class="bounce1"></div>
-                                                <div class="bounce2"></div>
-                                                <div class="bounce3"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
-                        </main>
-                    </div>
-                    <div class="js-success-cont" style="display: none;">
-                        <article class="popup__content">
-                            <div class="product-preorder-success">
-                                <header><?= Loc::getMessage("THANKS") ?></header>
-                                <article>
-                                    <div class="product-preorder-success__title"><?= Loc::getMessage("PRODUCT_RESERVED") ?></div>
-                                    <div class="product-preorder-success__subtitle"><?= Loc::getMessage("RESERVE_NUMBER") ?></div>
-                                    <div class="product-preorder-success__number"></div>
-                                </article>
-                                <footer>
-                                    <button class="js-popup-close button button--xxl button--primary button--outline"><?= Loc::getMessage("OK") ?></button>
-                                </footer>
-                            </div>
-                        </article>
                     </div>
                 </form>
             </div>

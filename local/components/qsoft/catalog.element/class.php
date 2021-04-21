@@ -176,8 +176,19 @@ class QsoftCatalogElement extends ComponentHelper
         ];
         $rsOffers = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
         while ($objOffer = $rsOffers->GetNextElement()) {
+            $basePrice = $objOffer->GetProperties(
+                [],
+                ['CODE' => 'BasePrice']
+            )['BasePrice'];
+            if (!$basePrice['VALUE']) {
+                continue;
+            }
+            $basePrice['OLD_VALUE'] = $basePrice['VALUE'];
+            $basePrice['VALUE'] = $basePrice['VALUE'] - 1000;
+            $basePrice['PERCENT'] = (int)(100 - $basePrice['VALUE'] * 100 / $basePrice['OLD_VALUE']);
             $offerFields = $objOffer->GetFields();
             $arOffers[$offerFields['ID']] = $offerFields;
+            $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $basePrice;
             $arOffers[$offerFields['ID']]['PROPERTIES']['COLOR'] = $objOffer->GetProperties(
                 [],
                 ['CODE' => 'color']
@@ -186,10 +197,6 @@ class QsoftCatalogElement extends ComponentHelper
                 [],
                 ['CODE' => 'size']
             )['size'];
-            $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $objOffer->GetProperties(
-                [],
-                ['CODE' => 'BasePrice']
-            )['BasePrice'];
         }
         return $arOffers;
     }
@@ -199,20 +206,22 @@ class QsoftCatalogElement extends ComponentHelper
      * @throws \Bitrix\Main\SystemException
      * @throws \Bitrix\Main\ArgumentException
      */
-    private function loadRests(): array
+    private function loadRests($offersIDs): array
     {
         $arRests = [];
 
         $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
             [
                 'filter' => [
-                    'ID' => array_keys($this->arResult['OFFERS'])
+                    'ID' => $offersIDs
                 ],
                 'select' => ['ID', 'QUANTITY']
             ],
         );
         while ($arStoreProduct = $rsStoreProduct->fetch()) {
-            $arRests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+            if ($arStoreProduct['QUANTITY'] > 0) {
+                $arRests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+            }
         }
 
         return $arRests;
@@ -301,7 +310,9 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult['NAME'] = $this->forSEO['NAME'];
         $this->arResult['DETAIL_TEXT'] = $this->forSEO['DETAIL_TEXT'];
         $this->arResult['OFFERS'] = $this->getEntity('offers', 'loadOffers');
-        $this->arResult['RESTS'] = $this->loadRests();
+        $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
+        $this->arResult['OFFERS'] = $this->filterOffersByRests($this->arResult['OFFERS']);
+
         $this->arResult['IPROPERTY_VALUES'] = $this->getEntity('iprops', 'loadInheritedProperties');
         $this->arResult['PHOTOS'] = $this->getEntity('images', 'loadImages');
         $this->arResult['DISPLAY_PROPERTIES'] = $this->getDisplayProperties();
@@ -310,11 +321,12 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult['USER'] = $this->loadUserData();
         $this->arResult['ARTICLE'] = trim($this->arResult['PROPERTIES']['article']['VALUE']);
         $this->arResult['PICTURES_COUNT'] = count($this->arResult['PICTURES']);
-        $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
 
-        $this->arResult['SINGLE_SIZE'] = (count($this->arResult['OFFERS']) === 1) ? key($this->arResult['OFFERS']) : false;
-        // минимальная цен атовара по офферам
-        $this->arResult['PRICE_PRODUCT'] = $this->getPrice();
+        $this->arResult['SINGLE_SIZE'] = (count($this->arResult['OFFERS']) === 1)
+        && !reset($this->arResult['OFFERS'])['PROPERTIES']['SIZE']['VALUE']
+        && !reset($this->arResult['OFFERS'])['PROPERTIES']['COLOR']['VALUE'] ? key($this->arResult['OFFERS']) : false;
+        // минимальная цена товара по офферам
+        $this->arResult['MIN_PRICE_OFFER'] = $this->getMinPriceOffer();
 
         $this->arResult['SHOW_ONE_CLICK'] = $this->getShowOneClick();
         $this->arParams['OFFER_IBLOCK_ID'] = IBLOCK_OFFERS;
@@ -632,13 +644,14 @@ class QsoftCatalogElement extends ComponentHelper
         return false;
     }
 
-    private function getPrice()
+    private function getMinPriceOffer()
     {
         $minPrice = 10000000;
-        $price = [];
+        $offerWithMinPrice = null;
         foreach ($this->arResult['OFFERS'] as $offer) {
             if (isset($offer['PROPERTIES']['PRICE']['VALUE']) && $offer['PROPERTIES']['PRICE']['VALUE'] < $minPrice) {
                 $minPrice = $offer['PROPERTIES']['PRICE']['VALUE'];
+                $offerWithMinPrice = $offer;
             }
         }
 
@@ -646,12 +659,7 @@ class QsoftCatalogElement extends ComponentHelper
             return null;
         }
 
-        $price['PRICE'] = $minPrice;
-        $price['OLD_PRICE'] = $minPrice + 1000;
-        $price['PERCENT'] = (int)(100 - $price['PRICE'] * 100 / $price['OLD_PRICE']);
-        $price['SEGMENT'] = 'red';
-
-        return $price;
+        return $offerWithMinPrice;
     }
 
     private function getBrandPage($brandXml)
@@ -719,5 +727,18 @@ class QsoftCatalogElement extends ComponentHelper
         }
 
         return $props;
+    }
+
+    private function filterOffersByRests($offers)
+    {
+        // Фильтруем по остаткам
+        $arRests = $this->loadRests(array_keys($offers));
+        foreach ($offers as $id => $offer) {
+            if (!isset($arRests[$id])) {
+                unset($offers[$id]);
+            }
+        }
+
+        return $offers;
     }
 }
