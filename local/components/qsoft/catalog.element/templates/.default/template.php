@@ -93,6 +93,7 @@ global $APPLICATION;
                             <form method="post" name="name" style="width: 100%; margin-top: 30px;" class="form-after-cart js-action-form">
                                 <input type="hidden" name="action" value="ADD2BASKET">
                                 <? if (!$arResult['SINGLE_SIZE']) : ?>
+                                <div style="display: block; position: relative">
                                     <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['SIZES'])) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("SIZE") ?></h3>
                                     <div style="display: block; width: 100%;" class="js-size-selector">
@@ -135,11 +136,12 @@ global $APPLICATION;
                                         <div style="clear: both"></div>
                                     </div>
                                     <? endif; ?>
-                                    <div class="js-error-block" style="display: none; position: absolute">
+                                    <div class="js-error-block" style="display: none; position: absolute;bottom: -20px;">
                                         <p style="color: #cd1030;font-size: 13px;font-family: 'firabold';">
                                             Такого ассортимента сейчас нет в наличии!
                                         </p>
                                     </div>
+                                </div>
                                 <? endif; ?>
                                 <div id="wrap" class="btns-wrap">
                                     <div id="js-toggle-delivery-ok"

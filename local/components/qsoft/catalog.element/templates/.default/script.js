@@ -399,7 +399,7 @@ $(document).ready(function () {
             $('.js-error-block').show();
             setTimeout(function () {
                 $('.js-error-block').hide();
-            }, 2000);
+            }, 5000);
             setPropsByOffer(previousOffer);
         }
     });
@@ -447,18 +447,9 @@ $(document).ready(function () {
                 if (data.status == "ok") {
                     let paymentType = 'default';
                     let items = [];
-                    for (var key in data.info) {
+                    for (let key in data.info) {
                         items.push({"id": key, "qnt": 1,  "price": data.info[key].BASKET_PRICE})
                     }
-                    // RetailRocket
-                    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-                        try {
-                            rrApi.order({
-                                "transaction": data.text,
-                                "items": items,
-                            });
-                        } catch(e) {}
-                    });
                     window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
                     return false;
                 }
