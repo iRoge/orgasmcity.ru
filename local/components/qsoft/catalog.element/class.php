@@ -274,6 +274,10 @@ class QsoftCatalogElement extends ComponentHelper
                 $arProp['VALUE'] = (float)$arProp['VALUE'] . 'см';
             }
 
+            if ($arProp['CODE'] == 'vibration') {
+                $arProp['VALUE'] = $arProp['VALUE'] ? 'Да' : 'Нет';
+            }
+
             if ($arProp['CODE'] == 'vendor') {
                 $vendor = CIBlockElement::GetList(
                     [],
