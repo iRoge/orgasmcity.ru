@@ -147,13 +147,13 @@ global $APPLICATION;
                                     <div id="js-toggle-delivery-ok"
                                          class="catalog-element-btn-container">
                                         <?php if ($arResult['SHOW_ONE_CLICK']) :?>
-                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ?: "" ?>"
+                                        <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                id="one-click-btn"
                                                class="js-one-click cartochka-blue blue-btn"
                                                type="button"
                                                value="Купить в 1 клик"/>
                                         <?php endif; ?>
-                                        <input data-offer-id="<?= $arResult['SINGLE_SIZE'] ?: "" ?>"
+                                        <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                id="buy-btn"
                                                class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
                                                style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
@@ -339,15 +339,6 @@ global $APPLICATION;
                     </div>
                 </form>
             </div>
-            <? // фикс для безразмерной номенклатуры?>
-            <? if ($arResult['SINGLE_SIZE']) :
-                if ($arResult["BASKET_OFFERS"][$arResult['SINGLE_SIZE']]) : ?>
-            <script>$("#buy-btn").val("В корзине")</script>
-                <? endif;
-            endif ?>
-            <script>
-                inBasket = JSON.parse('<?= json_encode($arResult["BASKET_OFFERS"] ?? array(), JSON_UNESCAPED_UNICODE) ?>') || [];
-            </script>
         <? else : ?>
             <div class="container">
                 <div class="column-8 pre-1">

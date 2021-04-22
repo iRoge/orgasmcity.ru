@@ -1,33 +1,4 @@
 $(document).ready(function () {
-    inBasket = inBasket || [];
-
-    //попап окно размеров, если не выбрали
-    function respercEvent__pushSize(valueBtn) {
-        let popupContent = $('.js-choose-size').clone(true, true);
-        popupContent.find('.js-size-popup').html(valueBtn);
-        Popup.show(popupContent, {
-            className: 'popup--size-tab',
-        });
-        $(".delivery-sizes-input").on("click", function () {
-            let offerId = $(this).data("offer-id");
-            if ($(this).text() !== '' && $(this).text() !== undefined) {
-                $('.product-main-div').attr('data-prod-size', $(this).text());
-            }
-            delPopupClickHandler(offerId);
-        });
-    }
-
-    //обработка клика в поп ап окне доставки
-    function delPopupClickHandler(offerId) {
-        Popup.hide(true);
-        if ($("#del-popup-type").val() == "basket") {
-            basketHandler(offerId);
-        } else {
-            oneClickHandler(offerId);
-        }
-        $("#del-popup-type").val("");
-    }
-
     //функция для клика на кнопку "Купить в 1 клик"
     function oneClickHandler(offerId, isLocal) {
         offerId = offerId || $('#one-click-btn').data('offer-id');
@@ -106,11 +77,12 @@ $(document).ready(function () {
     }
 
     //функция для клика на кнопку "Добавить в корзину"
-    function basketHandler(offerId) {
+    function basketHandler() {
         if ($('#buy-btn').val() == 'В корзине') {
             return false;
         }
-        offerId = offerId || $('#buy-btn').data('offer-id');
+
+        let offerId = $('#buy-btn').data('offer-id');
         let data = {
             action: "basketAdd",
             offerId: offerId,
@@ -122,15 +94,10 @@ $(document).ready(function () {
             data: data,
             dataType: "json",
             success: function (data) {
-                hide_wait();
                 if (data.status == "ok") {
-                    gtmPush('add_to_cart', isLocal);
-                    fbq('track', 'AddToCart');
-                    inBasket[offerId] = offerId;
                     updateSmallBasket(data.text);
                     $('#buy-btn').val('В корзине');
                     respercEvent__add_to_cart();
-                    dataFlock["ID"] = offerId.toString();
                     return;
                 }
                 let error_text = '<div class="product-preorder-success">'
@@ -142,23 +109,23 @@ $(document).ready(function () {
                 Popup.show(error_text, {});
             },
             error: function (data) {
-                hide_wait();
+                console.log(data);
             }
         });
     }
 
     function goZoom(data) {
-        // if (!navigator.userAgent.match(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i)) {
-        //     let slide;
-        //     if (data.type === 'init') {
-        //         slide = 0;
-        //     } else {
-        //         slide = data.index;
-        //     }
-        //     $('.jq-zoom[data-index="'+slide+'"]').zoom({
-        //         magnify: 1.5
-        //     });
-        // }
+        if (!navigator.userAgent.match(/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i)) {
+            let slide;
+            if (data.type === 'init') {
+                slide = 0;
+            } else {
+                slide = data.index;
+            }
+            $('.jq-zoom[data-index="'+slide+'"]').zoom({
+                magnify: 1.5
+            });
+        }
     }
 
     function transliterateCyrillic(string) {
@@ -202,11 +169,6 @@ $(document).ready(function () {
     //проверка размера для кнопки "Добавить в корзину"
     $('#buy-btn').click(function (e) {
         e.preventDefault();
-        if (!$(this).data('offer-id') || !$(this).data('is-local')) {
-            $("#del-popup-type").val("basket");
-            respercEvent__pushSize($('.delivery-sizes').html());
-            return;
-        }
         basketHandler();
     });
 
@@ -393,6 +355,8 @@ $(document).ready(function () {
                 })
             }
             $('.js-error-block').hide();
+            $('#buy-btn').data('offer-id', currentOffer['ID']);
+            $('#one-click-btn').data('offer-id', currentOffer['ID'])
         } else {
             $('.js-size-selector input[value=' + previousOffer['PROPERTIES']['SIZE']['VALUE'] + ']').prop('checked', true);
             $('.js-color-selector input[value=' + previousOffer['PROPERTIES']['COLOR']['VALUE'] + ']').prop('checked', true);

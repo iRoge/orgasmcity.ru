@@ -299,11 +299,6 @@ class QsoftCatalogElement extends ComponentHelper
         return $arProps;
     }
 
-    /**
-     * @throws \Bitrix\Main\ObjectPropertyException
-     * @throws \Bitrix\Main\SystemException
-     * @throws \Bitrix\Main\ArgumentException
-     */
     private function prepareResult(): void
     {
         $this->arResult = $this->getEntity('product', 'loadProduct');
@@ -312,7 +307,6 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult['OFFERS'] = $this->getEntity('offers', 'loadOffers');
         $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
         $this->arResult['OFFERS'] = $this->filterOffersByRests($this->arResult['OFFERS']);
-
         $this->arResult['IPROPERTY_VALUES'] = $this->getEntity('iprops', 'loadInheritedProperties');
         $this->arResult['PHOTOS'] = $this->getEntity('images', 'loadImages');
         $this->arResult['DISPLAY_PROPERTIES'] = $this->getDisplayProperties();
