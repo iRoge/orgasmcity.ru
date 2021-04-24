@@ -434,7 +434,7 @@ label.radio > span .input__color,
 .selectize selectize--inline{
 font-family: 'firaregular';
     padding: 12px 20px;
-    background: white;
+    background: #fff5f7;
     outline: 0;
     margin-top: 21px;
     border: 1px solid rgba(200,200,200, .5);
@@ -605,7 +605,7 @@ font-family: 'firaregular';
     font-family: 'firaregular';
     padding: 12px 20px;
     width: 100%;
-    background: white;
+    background: #fff5f7;
     outline: 0;
     margin-top: 20px;
     border: 1px solid rgba(200,200,200, .5);

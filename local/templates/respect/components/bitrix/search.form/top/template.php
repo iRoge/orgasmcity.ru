@@ -17,7 +17,7 @@ $this->setFrameMode(true);
 ?>
 
 <form id="main-search-form" class="search-form main-search-form" action="<?= $arResult['FORM_ACTION']; ?>" method="post">
-    <input id="main-search-input" class="search search-btn-disable" autocomplete="off" type="search" name="q" maxlength="50" placeholder="Поиск по каталогу" />
+    <input id="main-search-input" class="search" autocomplete="off" type="search" name="q" maxlength="50" placeholder="Поиск по каталогу" />
     <button id="main-search-btn" type="submit" class="search-btn"></button>
     <ul class="search-suggest"></ul>
 </form>

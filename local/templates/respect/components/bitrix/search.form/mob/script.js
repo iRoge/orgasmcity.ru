@@ -24,7 +24,6 @@ $(function () {
         clearTimeout(timer);
         var searchSuggestBlock = $('.poisk-div .search-suggest');
         if (q.length > 2) {
-            $(this).removeClass('search-btn-disable');
             searchSuggestBlock.show();
             //очищаем результаты поиска
             searchSuggestBlock.html('');
@@ -32,7 +31,6 @@ $(function () {
             searchSuggestBlock.append('<div style="padding-top:10px;width:30px;height:40px;" class="lds-ring lds-ring--button"><div style="width:30px;height:30px;"></div><div style="width:30px;height:30px;"></div><div style="width:30px;height:30px;"></div><div style="width:30px;height:30px;"></div></div>');
             timer = setTimeout(() => getResultMobSearch(q, searchSuggestBlock), 1000);
         } else {
-            $(this).addClass('search-btn-disable');
             searchSuggestBlock.show();
             searchSuggestBlock.html('Введите минимум 3 символа');
         }

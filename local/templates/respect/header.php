@@ -8,7 +8,7 @@
 /** @const SITE_TEMPLATE_PATH */
 ?>
 <!doctype html>
-<html lang="<?= LANGUAGE_ID; ?>">
+<html lang="<?= LANGUAGE_ID; ?>" style="background-color: #fff5f7">
 <head>
     <meta charset="UTF-8">
     <title><? $APPLICATION->ShowTitle(); ?></title>
@@ -318,11 +318,11 @@ $APPLICATION->ShowViewContent('geolocation_popup');
     <div class="menu-wrap">
         <div class="menu col-xs-12">
             <div class="main clearfix">
-                <div class="col-md-2 col-sm-2 col-xs-3 logo-div">
-                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_n3.png" class="logo header__logotype"/></a>
-                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_n3-small.png" class="logo-small"/></a>
+                <div class="col-md-1 col-sm-1 col-xs-2 logo-div">
+                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo.png" class="logo header__logotype"/></a>
+                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo.png" class="logo-small"/></a>
                 </div>
-                <div class="col-md-8 menu-div">
+                <div class="col-md-9 menu-div">
                     <?
                         $APPLICATION->IncludeComponent(
                             'bitrix:menu',
@@ -344,7 +344,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         );
                         ?>
                 </div>
-                <div class="col-md-2 col-sm-9 col-xs-8 pull-right search-div header__search" style="padding-left: 0px">
+                <div class="col-md-2 col-sm-10 col-xs-10 pull-right search-div header__search" style="padding-left: 0px">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:search.form",
                         "top",

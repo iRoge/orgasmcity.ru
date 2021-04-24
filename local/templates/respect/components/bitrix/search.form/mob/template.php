@@ -17,7 +17,7 @@ $this->setFrameMode(true);
 ?>
 
 <form id="mob-search-form" class="col-xs-12 search-form mob-search-form" action="<?= $arResult['FORM_ACTION']; ?>" method="post">
-    <input id="mob-search-input" class="search search-btn-disable" autocomplete="off" type="search" name="q" maxlength="50" placeholder="Поиск по каталогу" />
+    <input id="mob-search-input" class="search" autocomplete="off" type="search" name="q" maxlength="50" placeholder="Поиск по каталогу" />
     <button id="mob-search-btn" type="submit" class="search-btn"></button>
     <ul class="search-suggest"></ul>
 </form>

@@ -36,7 +36,7 @@
         max-height: 200px;
         display: block;
         position: absolute;
-        background: white;
+        background: #fff5f7;
         width: 94.6%;
         z-index: 1000;
         overflow: auto;

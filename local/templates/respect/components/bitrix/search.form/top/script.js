@@ -24,7 +24,6 @@ $(function () {
         clearTimeout(timer);
         var searchSuggestBlock = $('.header__search .search-suggest');
         if (q.length > 2) {
-            $(this).removeClass('search-btn-disable');
             searchSuggestBlock.show();
             //очищаем результаты поиска
             searchSuggestBlock.html('');
@@ -32,7 +31,6 @@ $(function () {
             searchSuggestBlock.append('<div style="width:30px;height:30px;" class="lds-ring lds-ring--button"><div style="width:30px;height:30px;"></div><div style="width:30px;height:30px;"></div><div style="width:30px;height:30px;"></div><div style="width:30px;height:30px;"></div></div>');
             timer = setTimeout(() => getResultSearch(q, searchSuggestBlock), 500);
         } else {
-            $(this).addClass('search-btn-disable');
             searchSuggestBlock.show();
             searchSuggestBlock.html('Введите минимум 3 символа');
         }

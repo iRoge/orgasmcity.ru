@@ -45,7 +45,7 @@ class QsoftOrderComponent extends ComponentHelper
     // ПВЗ
     private $arPvzIds = array();
     // путь кэша
-    protected $relativePath = '/qsoft/order';
+    protected string $relativePath = '/qsoft/order';
     // тип действия
     private $type;
     // тип ответа

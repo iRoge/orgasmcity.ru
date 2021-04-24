@@ -24,7 +24,7 @@
 .js-password__input {
     font-family: 'firaregular',sans-serif;
     padding: 12px 20px;
-    background: white;
+    background: #fff5f7;
     outline: 0;
     margin-bottom: 15px;
     border: 1px solid rgba(200,200,200, .5);
