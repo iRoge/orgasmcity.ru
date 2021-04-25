@@ -318,11 +318,11 @@ $APPLICATION->ShowViewContent('geolocation_popup');
     <div class="menu-wrap">
         <div class="menu col-xs-12">
             <div class="main clearfix">
-                <div class="col-md-1 col-sm-1 col-xs-2 logo-div">
-                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo.png" class="logo header__logotype"/></a>
-                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo.png" class="logo-small"/></a>
+                <div class="col-md-2 col-sm-2 col-xs-2 logo-div">
+                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.png" class="logo header__logotype"/></a>
+                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.png" class="logo-small"/></a>
                 </div>
-                <div class="col-md-9 menu-div">
+                <div class="col-md-8 menu-div">
                     <?
                         $APPLICATION->IncludeComponent(
                             'bitrix:menu',

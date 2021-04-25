@@ -7299,7 +7299,7 @@ label.color-label {
   }
   .logo
   {
-    width: 46px;
+    width: 80px;
     margin-left: -10px;
     margin-top: 4px;
   }
@@ -7841,7 +7841,7 @@ label.color-label {
   }
   .logo-small {
     display: block;
-    width: 50px;
+    width: 80px;
   }
   .search-div.header__search {
     width: 75%;
@@ -9748,19 +9748,26 @@ color: red;
 }
 
 @media (min-width: 768px) {
-.mgo-mcw-widget {
-right: 5px !important;
+  .mgo-mcw-widget {
+    right: 5px !important;
+  }
+
+  .mgo-mcw-widget_position-right .mgo-mcw__button-close {
+    right: -5px !important;
+    top: -35px !important;
+  }
+
+  .logo {
+    width: 170px;
+    margin-top: -10px;
+  }
 }
 
-.mgo-mcw-widget_position-right .mgo-mcw__button-close {
-right: -5px !important;
-top: -35px !important;
-}
-
-.logo {
-width: 90px;
-margin-top: -10px;
-}
+@media (min-width: 768px) and (max-width: 992px) {
+  .logo {
+    width: 120px;
+    margin-top: 0;
+  }
 }
 
 .preorder-popup {
