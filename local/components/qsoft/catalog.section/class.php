@@ -2036,13 +2036,13 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-        if (!empty($seo['SECTION_META_TITLE'])) {
-            $APPLICATION->SetPageProperty('title', $seo['SECTION_META_TITLE']);
-        } elseif (!empty($seo['ELEMENT_META_TITLE'])) {
-            $APPLICATION->SetPageProperty('title', $seo['ELEMENT_META_TITLE']);
-        } elseif (!empty($seo['ELEMENT_PAGE_TITLE'])) {
-            $APPLICATION->SetPageProperty('title', $seo['ELEMENT_PAGE_TITLE']);
-        }
+//        if (!empty($seo['SECTION_META_TITLE'])) {
+//            $APPLICATION->SetPageProperty('title', $seo['SECTION_META_TITLE']);
+//        } elseif (!empty($seo['ELEMENT_META_TITLE'])) {
+//            $APPLICATION->SetPageProperty('title', $seo['ELEMENT_META_TITLE']);
+//        } elseif (!empty($seo['ELEMENT_PAGE_TITLE'])) {
+//            $APPLICATION->SetPageProperty('title', $seo['ELEMENT_PAGE_TITLE']);
+//        }
 
         if (!empty($seo['SECTION_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['SECTION_META_KEYWORDS']);
@@ -2084,9 +2084,13 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
+        $title = 'Купить ';
         foreach ($chain as $item) {
             $APPLICATION->AddChainItem($item['title'], $item['url']);
         }
+        $title .= mb_strtolower(implode(' ', array_column($chain, 'title')));
+        $title .= ' в интернет магазине orgasmcity.ru';
+        $APPLICATION->SetPageProperty('title', $title);
     }
 
     private function getNavChain()

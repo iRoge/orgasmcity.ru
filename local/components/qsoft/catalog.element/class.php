@@ -49,6 +49,8 @@ class QsoftCatalogElement extends ComponentHelper
         if ($_REQUEST['action'] == 'subscribe') {
             return false;
         }
+        global $CACHE_MANAGER;
+        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->checkElement();
         $this->setUploadDir();
         $this->loadModules();
@@ -610,6 +612,8 @@ class QsoftCatalogElement extends ComponentHelper
                 $seo['ELEMENT_META_DESCRIPTION'] ?: $seo['SECTION_META_DESCRIPTION']
             );
         }
+
+        $APPLICATION->SetPageProperty("title", "Купить " . mb_strtolower($this->arResult["META_TAGS"]["TITLE"]));
 
         if ($this->arParams["ADD_SECTIONS_CHAIN"] && !empty($this->arResult["PATH"]) && is_array($this->arResult["PATH"])) {
             foreach ($this->arResult["PATH"] as $arPath) {
