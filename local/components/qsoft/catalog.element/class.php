@@ -49,8 +49,8 @@ class QsoftCatalogElement extends ComponentHelper
         if ($_REQUEST['action'] == 'subscribe') {
             return false;
         }
-        global $CACHE_MANAGER;
-        $CACHE_MANAGER->clearByTag('catalogAll');
+//        global $CACHE_MANAGER;
+//        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->checkElement();
         $this->setUploadDir();
         $this->loadModules();
