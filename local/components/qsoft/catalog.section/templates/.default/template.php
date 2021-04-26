@@ -205,16 +205,14 @@ if (!$arResult['IS_AJAX']) :
                                             </svg>
                                         </div>
                                         <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: block;"'?>>
-                                            <ul class=" filter__main-list" id="gender-list">
-                                                <div class="filter__vid-elem">
-                                                    <? foreach ($arResult['SAME_SECTIONS'] as $section) :?>
-                                                        <li>
-                                                            <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'firalight'; font-size: 20px; color: #4e4e4e;">
-                                                                <?=$section['NAME']?>
-                                                            </a>
-                                                        </li>
-                                                    <? endforeach; ?>
-                                                </div>
+                                            <ul class=" filter__main-list">
+                                                <? foreach ($arResult['SAME_SECTIONS'] as $section) :?>
+                                                    <li class="filter__type-item">
+                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'firalight'; font-size: 20px; color: #4e4e4e;">
+                                                            <?=$section['NAME']?>
+                                                        </a>
+                                                    </li>
+                                                <? endforeach; ?>
                                             </ul>
                                         </div>
                                         <div style="clear: both;"></div>

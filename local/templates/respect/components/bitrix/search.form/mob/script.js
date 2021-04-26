@@ -61,15 +61,15 @@ function getResultMobSearch(q, searchSuggestBlock) {
             searchSuggestBlock.html('');
             let empty = true;
             $.each(json.sections, function(index, element) {
-                searchSuggestBlock.append('<li style="list-style-type: none;line-height: 40px;" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+element.url+'">'+element.title+'</a></li>');
+                searchSuggestBlock.append('<li style="list-style-type: none;line-height: 15px;padding: 10px 0" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+element.url+'">'+element.title+'</a></li>');
                 empty = false;
             });
             $.each(json.brands, function(index, element) {
-                searchSuggestBlock.append('<li style="list-style-type: none;line-height: 40px;" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+element.url+'">'+element.title+'</a></li>');
+                searchSuggestBlock.append('<li style="list-style-type: none;line-height: 15px;padding: 10px 0" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+element.url+'">'+element.title+'</a></li>');
                 empty = false;
             });
             $.each(json.items, function(index, element) {
-                searchSuggestBlock.append('<li style="list-style-type: none;line-height: 40px;" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+ element.url + '">' + element.title + '</a></li>');
+                searchSuggestBlock.append('<li style="list-style-type: none;line-height: 15px;padding: 10px 0" class="suggest-item"><a style="text-decoration: none; color: black;" href="'+ element.url + '">' + element.title + '</a></li>');
                 empty = false;
             });
             if (empty) {

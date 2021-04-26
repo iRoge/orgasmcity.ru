@@ -550,7 +550,7 @@ $('a.pay-button').on('click', function (){
 })
 
 $('.blue-menu').click(function() {
-  console.log($('.blue-menu-div'));
+  $('body').css('overflow', 'hidden');
   $('.blue-menu-div').animate({"margin-left": "0px"}, 300);
   $('.podlozhka').fadeIn(600);
   $('.cls-blue-menu').css('display', 'inline-block');
@@ -599,6 +599,7 @@ $('.cls-blue-menu').click(function() {
   $('.podlozhka').fadeOut(600);
   $('.cls-blue-menu').css('display', 'none');
   $('.blue-menu').css('display', 'inline-block');
+  $('body').css('overflow', 'auto');
 });
 
 $('.sex-span').on('click', function(e) {

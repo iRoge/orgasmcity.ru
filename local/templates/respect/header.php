@@ -8,7 +8,7 @@
 /** @const SITE_TEMPLATE_PATH */
 ?>
 <!doctype html>
-<html lang="<?= LANGUAGE_ID; ?>" style="background-color: #fff5f7">
+<html lang="<?= LANGUAGE_ID; ?>" style="background-color: #fff5f7;">
 <head>
     <meta charset="UTF-8">
     <title><? $APPLICATION->ShowTitle(); ?></title>

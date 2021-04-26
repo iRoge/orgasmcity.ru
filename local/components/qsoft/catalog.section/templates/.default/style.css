@@ -478,3 +478,12 @@ footer .hide-block {
         display: none;
     }
 }
+
+.filter__type-item {
+    width: 100%!important;
+    padding-right: 0;
+}
+
+.filter__type-item a {
+    padding-right: 0;
+}

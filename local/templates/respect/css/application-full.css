@@ -5555,13 +5555,12 @@ label.radio > span .alert i.input__color,
   display: none;
   position: absolute;
   text-align: left;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 5px 15px;
   box-sizing: border-box;
-  background: #fff;
+  background: #fffafa;
   max-height: 146px;
   overflow-y: auto;
-  width: 96%;
+  width: 90%;
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
 }
 

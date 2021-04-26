@@ -1,5 +1,5 @@
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetPageProperty("title", "Брендовая женская и мужская обувь: продажа модной обуви в интернет-магазине Respect");
+$APPLICATION->SetPageProperty("title", "Город Оргазма. Секс-шоп №1 в России. Анонимно. Более 30 тысяч товаров");
 $APPLICATION->SetTitle("Главная страница");
 
 global $LOCATION;
