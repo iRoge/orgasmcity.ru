@@ -97,7 +97,6 @@ window.panel = {
         input.attr('data-price', delivery.PRICE);
         input.val(delivery.ID);
         input.prop('checked', true);
-        gtmDelPayPush('checkout-delivery', input.siblings('label').children('.cart-delivery__header').text().trim());
         input.addClass('pvz-checked');
         pvzDisabledInputs =  $(".js__cdek-disabled" + (window.isLocalCart ? '' : '2'));
         pvzDisabledInputs.addClass("is-hidden");

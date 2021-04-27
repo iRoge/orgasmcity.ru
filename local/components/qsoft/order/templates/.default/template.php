@@ -12,7 +12,7 @@ global $LOCATION, $APPLICATION; ?>
 <script>
     var arDelIdsJs = <?=CUtil::PhpToJSObject($arResult["DELIVERY"]["PVZIDS"])?>;
     var arOnlinePaymentIds = <?=CUtil::PhpToJSObject($arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"])?>;
-    var token = "<?=COption::GetOptionString('likee', 'dadata_token', '')?>";
+    var token = "<?=DADATA_TOKEN?>";
     var paymentWayErrorText = "<?= Option::get("respect", "disabled_payment_click_text", "");?>";
     <? $prepaymentMinSumm = Option::get("respect", "prepayment_min_summ");
     if ($prepaymentMinSumm > 0) { ?>
