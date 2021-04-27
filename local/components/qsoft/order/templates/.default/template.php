@@ -398,7 +398,7 @@ global $LOCATION, $APPLICATION; ?>
                                                 <div class="err-order err-PROPS[HOUSE_USER]"></div>
                                             </div>
                                             <div class="form__field form__field--1-2 js__cdek-disabled">
-                                                <input <?=$arResult['DADATA_STATUS'] && COption::GetOptionInt("likee", "dadata_active") ? 'readonly ' : ''?>id="postal_code"  class="form__elem" type="number" name="PROPS[POSTALCODE]" value="<?= $arResult["USER"]["UF_POSTALCODE"] ?>" placeholder="<?=$arResult['DADATA_STATUS'] && COption::GetOptionInt("likee", "dadata_active") ? 'Индекс, заполняется автоматически' : 'Индекс (не обязательно)'?>">
+                                                <input <?=$arResult['DADATA_STATUS'] ? 'readonly ' : ''?>id="postal_code"  class="form__elem" type="number" name="PROPS[POSTALCODE]" value="<?= $arResult["USER"]["UF_POSTALCODE"] ?>" placeholder="<?=$arResult['DADATA_STATUS'] ? 'Индекс, заполняется автоматически' : 'Индекс (не обязательно)'?>">
                                             </div>
                                             <div class="form__field form__field--1-4 js__cdek-disabled">
                                                 <input id="flat" class="form__elem" type="text" name="PROPS[FLAT]" value="<?= $arResult["USER"]["UF_APARTMENT"] ?>" placeholder="Кв/офис">
