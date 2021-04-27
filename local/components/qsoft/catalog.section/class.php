@@ -1336,19 +1336,7 @@ class QsoftCatalogSection extends ComponentHelper
         }
         $rests = [];
         if (!$isFavoritesCatalog) {
-            foreach (array_chunk($this->offers, 5000, true) as $offers) {
-                $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
-                    [
-                        'filter' => [
-                            'ID' => array_keys($offers)
-                        ],
-                        'select' => ['ID', 'QUANTITY']
-                    ],
-                );
-                while ($arStoreProduct = $rsStoreProduct->fetch()) {
-                    $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
-                }
-            }
+            $rests = Functions::getRests(array_keys($this->offers));
         }
 
         $items = [];

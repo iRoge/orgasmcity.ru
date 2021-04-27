@@ -134,22 +134,9 @@ if (empty($aMenuLinksNew)) {
             }
             $offers[$arElement['ID']] = $arElement;
         }
-        $rests = [];
         $offerIds = array_keys($offers);
         // Достаем остатки по товарам
-        foreach (array_chunk($offerIds, 5000) as $ids) {
-            $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
-                [
-                    'filter' => [
-                        'ID' => $ids
-                    ],
-                    'select' => ['ID', 'QUANTITY']
-                ],
-            );
-            while ($arStoreProduct = $rsStoreProduct->fetch()) {
-                $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
-            }
-        }
+        $rests = Functions::getRests($offerIds);
 
         foreach ($offers as $offerId => $offer) {
             if ((!isset($rests[$offerId]) || $rests[$offerId] < 1)) {

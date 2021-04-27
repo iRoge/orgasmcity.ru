@@ -596,4 +596,38 @@ class Functions
         }
         return false;
     }
+
+    public static function getRests($offerIds): array
+    {
+        $rests = [];
+        if (count($offerIds) > 5000) {
+            foreach (array_chunk($offerIds, 5000) as $ids) {
+                $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
+                    [
+                        'filter' => [
+                            'ID' => $ids
+                        ],
+                        'select' => ['ID', 'QUANTITY']
+                    ],
+                );
+                while ($arStoreProduct = $rsStoreProduct->fetch()) {
+                    $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+                }
+            }
+        } else {
+            $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
+                [
+                    'filter' => [
+                        'ID' => $offerIds
+                    ],
+                    'select' => ['ID', 'QUANTITY']
+                ],
+            );
+            while ($arStoreProduct = $rsStoreProduct->fetch()) {
+                $rests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
+            }
+        }
+
+        return $rests;
+    }
 }

@@ -203,32 +203,6 @@ class QsoftCatalogElement extends ComponentHelper
         return $arOffers;
     }
 
-    /**
-     * @throws \Bitrix\Main\ObjectPropertyException
-     * @throws \Bitrix\Main\SystemException
-     * @throws \Bitrix\Main\ArgumentException
-     */
-    private function loadRests($offersIDs): array
-    {
-        $arRests = [];
-
-        $rsStoreProduct = \Bitrix\Catalog\ProductTable::getList(
-            [
-                'filter' => [
-                    'ID' => $offersIDs
-                ],
-                'select' => ['ID', 'QUANTITY']
-            ],
-        );
-        while ($arStoreProduct = $rsStoreProduct->fetch()) {
-            if ($arStoreProduct['QUANTITY'] > 0) {
-                $arRests[$arStoreProduct['ID']] = $arStoreProduct['QUANTITY'];
-            }
-        }
-
-        return $arRests;
-    }
-
     private function loadInheritedProperties(): array
     {
         $ipropValues = new ElementValues($this->arParams["IBLOCK_ID"], $this->arResult["ID"]);
@@ -734,13 +708,12 @@ class QsoftCatalogElement extends ComponentHelper
     private function filterOffersByRests($offers)
     {
         // Фильтруем по остаткам
-        $arRests = $this->loadRests(array_keys($offers));
+        $arRests = Functions::getRests(array_keys($offers));
         foreach ($offers as $id => $offer) {
             if (!isset($arRests[$id])) {
                 unset($offers[$id]);
             }
         }
-
         return $offers;
     }
 }

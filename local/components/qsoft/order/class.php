@@ -68,8 +68,6 @@ class QsoftOrderComponent extends ComponentHelper
     private $currency;
     // тип плательщика
     private $personType;
-    // флаг наличия в корзине неместных товаров
-    private $notLocalItemsExistsFlag = false;
     // Данные по названию и классу пунктов выдачи из таблицы b_qsoft_pvz
     private $arPVZNames = [];
     // Массив свойств, получаемых от dadata
@@ -430,6 +428,7 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
     }
+
     private function checkCouponStatus($arCoupon, $needLocalCoupon = null)
     {
         if ($arCoupon["STATUS"] == CouponsManager::STATUS_NOT_FOUND) {
@@ -835,6 +834,7 @@ class QsoftOrderComponent extends ComponentHelper
         }
         return true;
     }
+
     private function addToBasket($offerId, $isLocal, $quantity)
     {
         // загружаем корзину
@@ -882,6 +882,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->arResult["ERRORS"][] = "Не удалось добавить или обновить товар в коризне";
         $this->returnError();
     }
+
     private function deleteFromBasket($offerId, $needLocalBasketPrice)
     {
         // загружаем корзину
@@ -912,6 +913,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->arResult["ERRORS"][] = "Не удалось удалить товар из корзины";
         $this->returnError();
     }
+
     private function createBasketItem($offerId, $isLocal = 'Y', $quantity = 1)
     {
         $GLOBALS['localBasketFlag'] = $isLocal;
@@ -1086,112 +1088,22 @@ class QsoftOrderComponent extends ComponentHelper
             }
             return;
         }
-        // получаем остатки, в зависимости от типа заказа
-        if ($this->checkType(array("reserv"))) {
-            $type = 2;
-        } else {
-            $type = 1;
-        }
-        $arRests = $LOCATION->getRests(array_keys($this->offers), $type);
-        $arPrices = $LOCATION->getProductsPrices($arProductIds);
-        $typeSizesDelivery = $LOCATION->getTypeSizes($arRests, array(), $type)[$type === 1 ? 'DELIVERY' : 'RESERVATION'];
-        if (!$typeSizesDelivery) {
-            $this->arResult["ERRORS"]['LOCAL'][] = "Некоторые товары не доступны для доставки в вашем регионе";
-            $this->arResult["ERRORS"]['NOT_LOCAL'][] = "Некоторые товары не доступны для доставки в вашем регионе";
-            $this->offers = $this->checkItemsLocations($this->offers, $typeSizesDelivery);
-            return;
-        }
-        $this->offers = $this->checkItemsLocations($this->offers, $typeSizesDelivery);
-        if ($this->notLocalItemsExistsFlag) {
-            $arDefaultRegionRests = $LOCATION->getRests(array_keys($this->offers), $type, false, false, $LOCATION->DEFAULT_STORAGES);
-            $arDefaultBranchPrices = $LOCATION->getProductsPrices($arProductIds, $LOCATION->DEFAULT_BRANCH);
-        }
+
+        $arRests = Functions::getRests(array_keys($this->offers));
+
         // проверяем, что у ТП есть остатки и цена
         foreach ($this->offers as $offerId => $arItem) {
-            if ($full && $this->offers[$offerId]["IS_LOCAL"] === 'N') {
-                $this->offers[$offerId]["BRANCH"] = $arDefaultBranchPrices[$arItem["PRODUCT_ID"]]["SEGMENT"];
-                $this->offers[$offerId]["BRANCH_PRICE"] = $arDefaultBranchPrices[$arItem["PRODUCT_ID"]]["PRICE"];
-                $this->offers[$offerId]["BRANCH_OLD_PRICE"] = $arDefaultBranchPrices[$arItem["PRODUCT_ID"]]["OLD_PRICE"];
-            } elseif ($full) {
-                $this->offers[$offerId]["BRANCH"] = $arPrices[$arItem["PRODUCT_ID"]]["SEGMENT"];
-                $this->offers[$offerId]["BRANCH_PRICE"] = $arPrices[$arItem["PRODUCT_ID"]]["PRICE"];
-                $this->offers[$offerId]["BRANCH_OLD_PRICE"] = $arPrices[$arItem["PRODUCT_ID"]]["OLD_PRICE"];
+            if ($full) {
+                $this->offers[$offerId]["PRICE"] = $this->offers[$offerId]["PRICE"];
+                $this->offers[$offerId]["OLD_PRICE"] = $this->offers[$offerId]["OLD_PRICE"];
             }
-//TODO: DANGER КОСТЫЛЬ ЛЮТЫЙ!
-            if ($this->offers[$offerId]["BRANCH"] != 'White') {
-                $arProduct = CIBlockElement::GetList(
-                    array(),
-                    array(
-                        "ID" => $arItem["PRODUCT_ID"],
-                        "IBLOCK_ID" => IBLOCK_CATALOG,
-                        "ACTIVE" => "Y",
-                    ),
-                    false,
-                    array(
-                        "nTopCount" => 1,
-                    ),
-                    array(
-                        "ID",
-                        "IBLOCK_ID",
-                        "PROPERTY_VID",
-                    )
-                )->Fetch();
-
-
-                $arBonusStatus = [
-                    1 => 'Платина',
-                    2 => 'Золото',
-                    3 => 'Серебро',
-                    4 => 'Бронза',
-                ];
-                $userStatus = $arBonusStatus[$LOCATION->getUserType()];
-
-
-                //Получаем доп скидки для бонусных статусов
-                $arSelect = [
-                    'ID',
-                    'IBLOCK_ID',
-                    'PROPERTY_USER_STATUS',
-                    'PROPERTY_PRICE_SEGMENT',
-                    'PROPERTY_SALE_PROCENT',
-                    'PROPERTY_SALE_VID',
-                ];
-                $arFilter = [
-                    'IBLOCK_CODE' => 'BONUS_SALE_FOR_RY_SEGMENT',
-                    'PROPERTY_USER_STATUS_VALUE' => $userStatus,
-                    'PROPERTY_PRICE_SEGMENT_VALUE' => $this->offers[$offerId]["BRANCH"],
-                    [
-                        "LOGIC" => "OR",
-                        ["PROPERTY_SALE_VID" => false],
-                        ["PROPERTY_SALE_VID" => $arProduct['PROPERTY_VID_VALUE']],
-                    ],
-                ];
-
-                $res = CIBlockElement::GetList(
-                    [],
-                    $arFilter,
-                    false,
-                    false,
-                    $arSelect
-                );
-                $arSale = $res->Fetch();
-                if ($arSale) {
-                    $this->offers[$offerId]["BRANCH_PRICE"] = intval(round($this->offers[$offerId]["BRANCH_PRICE"] * (100 - $arSale['PROPERTY_SALE_PROCENT_VALUE']) / 100));
-                }
-            }
-            //Конец костыля
-            if ((!$arRests[$offerId] || !$arPrices[$arItem["PRODUCT_ID"]]) && $this->offers[$offerId]["IS_LOCAL"] === 'Y') {
-                $this->arResult["PROBLEM_LOCAL_OFFERS"][$offerId] = $offerId;
-            } elseif ((!$arDefaultRegionRests[$offerId] || !$arPrices[$arItem["PRODUCT_ID"]]) && $this->offers[$offerId]["IS_LOCAL"] === 'N') {
-                $this->arResult["PROBLEM_NOT_LOCAL_OFFERS"][$offerId] = $offerId;
+            if (!$arRests[$offerId]) {
+                $this->arResult["PROBLEM_OFFERS"][$offerId] = $offerId;
             }
         }
         // если есть проблемные ТП
-        if (!empty($this->arResult["PROBLEM_LOCAL_OFFERS"])) {
-            $this->arResult["ERRORS"]['LOCAL'][] = "Некоторые товары не доступны для доставки в вашем регионе";
-        }
-        if (!empty($this->arResult["PROBLEM_NOT_LOCAL_OFFERS"])) {
-            $this->arResult["ERRORS"]['NOT_LOCAL'][] = "Некоторые товары не доступны для доставки в вашем регионе";
+        if (!empty($this->arResult["PROBLEM_OFFERS"])) {
+            $this->arResult["ERRORS"][] = "Некоторые товары не доступны для доставки в вашем регионе";
         }
     }
 
@@ -1214,6 +1126,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->arResult["ERRORS"]['NOT_LOCAL'][] = str_replace("%NUM%", $basketNum, Option::get("respect", "basket_max_art_num_text", "Максимальное количество позиций в корзине - %NUM% шт"));
         }
     }
+
     private function checkBasketSumLimit()
     {
         $basketSum = Option::get("respect", "basket_min_num", 2500);
@@ -1238,9 +1151,6 @@ class QsoftOrderComponent extends ComponentHelper
                     $isLocal = $basketPropertyItem->getField('VALUE');
                 }
             }
-            if ($isLocal === 'N') {
-                $this->notLocalItemsExistsFlag = true;
-            }
             if ($full) {
                 $arOffers[$offerId] = array(
                     "QUANTITY" => $arItem->getQuantity(),
@@ -1263,23 +1173,25 @@ class QsoftOrderComponent extends ComponentHelper
         );
         if ($full) {
             $arSelect[] = "PROPERTY_SIZE";
+            $arSelect[] = "PROPERTY_COLOR";
         }
         $res = CIBlockElement::GetList(
-            array(),
-            array(
+            [],
+            [
                 "ID" => array_keys($arOffers),
                 "IBLOCK_ID" => IBLOCK_OFFERS,
-            ),
+            ],
             false,
             false,
             $arSelect
         );
-        $arOffersNew = array();
+        $arOffersNew = [];
         while ($arItem = $res->Fetch()) {
             if ($full) {
                 $arOffersNew[$arItem["ID"]] = array(
                     "PRODUCT_ID" => $arItem["PROPERTY_CML2_LINK_VALUE"],
                     "SIZE" => $arItem["PROPERTY_SIZE_VALUE"],
+                    "COLOR" => $arItem["PROPERTY_COLOR_VALUE"],
                     "QUANTITY" => $arOffers[$arItem["ID"]]["QUANTITY"],
                     "BASKET_PRICE" => $arOffers[$arItem["ID"]]["BASKET_PRICE"],
                     "IS_LOCAL" => $arOffers[$arItem["ID"]]["IS_LOCAL"],
@@ -2057,6 +1969,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->postProps["FILIAL"] = $arStore["UF_FILIAL"];
         }
     }
+
     private function clearPropsPVZ()
     {
         $allowedProps = array(
@@ -2091,6 +2004,7 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
     }
+
     private function getBasketsPrices()
     {
         if (!empty($this->arResult['ITEMS']['LOCAL'])) {
@@ -2100,6 +2014,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->arResult['PRICE']['NOT_LOCAL'] = array_sum(array_column($this->arResult['ITEMS']['NOT_LOCAL'], 'PRICE'));
         }
     }
+
     private function getTypePrice($arOffers, $needLocalBasketPrice = 'Y')
     {
         $price = 0;
@@ -2110,6 +2025,7 @@ class QsoftOrderComponent extends ComponentHelper
         }
         return $price;
     }
+
     private function divideBasket()
     {
         $this->newBasket = $this->basket->copy();
@@ -2128,33 +2044,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->newBasket->getItemById($arItem->getField('ID'))->delete();
         }
     }
-    private function checkItemsLocations($offers, $typeDeliverySizes)
-    {
-        global $LOCATION;
-        foreach ($offers as $key => $item) {
-            if (empty($typeDeliverySizes[$key])) {
-                continue;
-            }
-            if ($LOCATION->exepRegionFlag) {
-                $typeDeliverySizes[$key]['IS_LOCAL'] = 'Y';
-            }
-            $arBasketItems = $this->basket->getBasketItems();
-            foreach ($arBasketItems as $arItem) {
-                if ($arItem->getProductId() == $key) {
-                    $arItem->delete();
-                    if ($item = $this->createBasketItem($key, $typeDeliverySizes[$key]['IS_LOCAL'] ? $typeDeliverySizes[$key]['IS_LOCAL'] : 'Y', 1)) {
-                        $offers[$key]['BASKET_PRICE'] = $item->getPrice();
-                    }
-                }
-            }
-            $offers[$key]['IS_LOCAL'] = $typeDeliverySizes[$key]['IS_LOCAL'] ? $typeDeliverySizes[$key]['IS_LOCAL'] : 'Y';
-            if ($offers[$key]['IS_LOCAL'] == 'N') {
-                $this->notLocalItemsExistsFlag = true;
-            }
-        }
-        $this->basket->save();
-        return $offers;
-    }
+
     private function getDeliveryWays(): void
     {
         $rsDeliveryWaysIds = WaysByDeliveryServicesTable::getList([
