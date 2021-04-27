@@ -46,15 +46,7 @@ global $LOCATION, $APPLICATION; ?>
     <? if (!empty($arResult['ITEMS'])) : ?>
     <div id="full_basket" class="col-xs-12 col-xs-12--padding-sm-0 full_basket">
         <div class="main main--banner full_basket-container full_basket-container--local">
-            <div class="checkout <?=empty($arResult['ITEMS']['NOT_LOCAL']) ? '' : 'basket-border'?>">
-                <? if (!empty($arResult['ITEMS']['NOT_LOCAL'])) : ?>
-                <div class="opening-cart">
-                    <svg class="plus">
-                        <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
-                    </svg>
-                    <?= COption::GetOptionString("respect", "text_for_popup_basket_with_local_products") ?>
-                </div>
-                <? endif; ?>
+            <div class="checkout ">
                 <form id="b-order" class="checkout__inner clearfix" action="<?= $APPLICATION->GetCurPageParam() ?>" style="<?=empty($arResult['ITEMS']['NOT_LOCAL']) ? 'display: block' : ''?>" method="post">
                     <!-- main -->
                     <div class="checkout__col checkout__col--main col-md-8">
@@ -374,14 +366,14 @@ global $LOCATION, $APPLICATION; ?>
                                                 <input class="form__elem js-required js-phone" type="text" name="PROPS[PHONE]" value="<?= $arResult["USER"]["PERSONAL_PHONE"] ?: $arResult["COOKIE_PHONE"][0] ?>" placeholder="*Телефон">
                                                 <div class="err-order err-PROPS[PHONE]"></div>
                                             </div>
-                                            <? $APPLICATION->IncludeComponent(
-                                                'qsoft:subscribe.manager',
-                                                'cart',
-                                                [
-                                                    'SOURCE' => 'cart',
-                                                    'CART_NUMBER' => 1,
-                                                ]
-                                            ); ?>
+<!--                                            --><?// $APPLICATION->IncludeComponent(
+//                                                'qsoft:subscribe.manager',
+//                                                'cart',
+//                                                [
+//                                                    'SOURCE' => 'cart',
+//                                                    'CART_NUMBER' => 1,
+//                                                ]
+//                                            ); ?>
                                             <? $APPLICATION->IncludeComponent(
                                                 'qsoft:geolocation',
                                                 'cart',
@@ -502,8 +494,6 @@ global $LOCATION, $APPLICATION; ?>
         <? //$APPLICATION->FinalActions() ?>
         <? die() ?>
     <? endif ?>
-    <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfd9e97a52821e059f055" data-products="<?=implode(',', $arResult['OFFERS'])?>" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>">
-    </div>
 <? else : ?>
     <? if ($this->__component->checkType(array("offers")) || $this->__component->ajax) : ?>
         <? $APPLICATION->RestartBuffer() ?>
@@ -515,8 +505,6 @@ global $LOCATION, $APPLICATION; ?>
         <? //$APPLICATION->FinalActions() ?>
         <? die() ?>
     <? endif ?>
-    <div class="js-retail-rocket-recommendation" data-retailrocket-markup-block="5ebcfda897a52821e059f057" data-stock-id="<?=$GLOBALS['USER_SHOWCASE']?>">
-    </div>
 <? endif ?>
 </div>
 

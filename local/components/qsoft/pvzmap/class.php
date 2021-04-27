@@ -9,7 +9,7 @@ use Qsoft\Pvzmap\PVZFactory;
 class PVZMap extends ComponentHelper
 {
     private $cacheKey = 'PVZ';
-    protected $relativePath = '/qsoft/pvzmap';
+    protected string $relativePath = '/qsoft/pvzmap';
 
     public function onPrepareComponentParams($arParams)
     {

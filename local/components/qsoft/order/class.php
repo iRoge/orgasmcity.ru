@@ -16,9 +16,13 @@ use \Bitrix\Sale\Basket;
 use \Bitrix\Sale\PaySystem\Manager as PayManager;
 use \Bitrix\Sale\Delivery\Services\Manager as DelManager;
 use \Bitrix\Sale\DiscountCouponsManager as CouponsManager;
+use Qsoft\DeliveryWays\WaysByDeliveryServicesTable;
+use Qsoft\DeliveryWays\WaysDeliveryTable;
 use \Qsoft\Helpers\ComponentHelper;
 use Qsoft\Helpers\EventHelper;
 use \Qsoft\Helpers\IBlockHelper;
+use Qsoft\PaymentWays\WaysByPaymentServicesTable;
+use Qsoft\PaymentWays\WaysPaymentTable;
 use Qsoft\Pvzmap\PVZFactory;
 use Qsoft\Pvzmap\PVZTable;
 
@@ -249,6 +253,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->includeComponentTemplate();
         $GLOBALS["BASKET_VIEW"] = $this->arResult["BASKET"];
     }
+
     //обновление авторизованного профиля на сайте информацией из заказа
     private function updateUserProfile()
     {
@@ -326,7 +331,6 @@ class QsoftOrderComponent extends ComponentHelper
             $USER->Update($this->user['ID'], $arFields);
         }
     }
-
 
     // функции возврата данных
     private function returnError($error = false)
@@ -664,12 +668,12 @@ class QsoftOrderComponent extends ComponentHelper
             "UF_FIASCODE"
         ];
 
-        $res = UserTable::GetList(array(
+        $res = UserTable::GetList([
             "select" => $arSelect,
             "filter" => $arFilter,
-        ));
+        ]);
         if ($res->getSelectedRowsCount() > 1) {
-            $arUser = array();
+            $arUser = [];
             while ($arItem = $res->Fetch()) {
                 if ($arItem["PERSONAL_PHONE"] == $arFilter["PERSONAL_PHONE"]) {
                     $arUser = $arItem;
@@ -757,7 +761,6 @@ class QsoftOrderComponent extends ComponentHelper
         }
     }
 
-
     private function checkUserSailplay($newBySite = false)
     {
         $data = [];
@@ -777,7 +780,6 @@ class QsoftOrderComponent extends ComponentHelper
             qsoft_logger($e->getMessage(), 'eventsExceptions.log', true);
         }
     }
-
 
     // функции работы с корзиной
     private function setBasket()
@@ -1060,7 +1062,6 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkBasketAvailability()
     {
-        global $LOCATION;
         if ($this->checkType(array("cart", "offers", "offers2", "coupon", "basketDel", "order"))) {
             $full = true;
         } else {
@@ -1823,29 +1824,6 @@ class QsoftOrderComponent extends ComponentHelper
             $this->clearPropsPVZ();
         } else {
             unset($this->postProps['PVZ_ID']);
-        }
-
-        // Устанавливаем свойства по продавцу
-        if (!empty($_COOKIE['seller_id'])) {
-            $arSeller = CUser::GetList(
-                ($by='id'),
-                ($direction='asc'),
-                ['WORK_PAGER' => $_COOKIE['seller_id']],
-                [
-                    'FIELDS' => [
-                        'ID',
-                        'WORK_COMPANY',
-                        'WORK_DEPARTMENT',
-                    ]
-                ]
-            )->Fetch();
-            $this->postProps["SELLER_ID"] =  $arSeller['ID'];
-            $this->postProps["SELLER_FILIAL"] = $arSeller['WORK_COMPANY'];
-            $this->postProps["SELLER_MAGAZIN"] = $arSeller['WORK_DEPARTMENT'];
-
-            $seller = $this->getStoreSeller($_COOKIE['seller_id'], $_COOKIE['storeSeller_id']);
-            $this->postProps['sotrudnikSozdalZakaz'] = $seller['UF_SELLER_SELF_CODE'];
-            $this->postProps['seller_FIO'] = $seller['UF_FULL_NAME'];
         }
 
         if (!empty($_COOKIE['_ga'])) {

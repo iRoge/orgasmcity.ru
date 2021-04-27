@@ -1140,13 +1140,6 @@ html, body
   margin-bottom: 15px;
 }
 
-.full_basket-container--regional .basket-border{
-  border: 5px solid #ff0600;
-}
-
-.full_basket-container--local .basket-border{
-  border: 5px solid #ff5e5e;
-}
 .opening-cart {
   display: none;
 }
