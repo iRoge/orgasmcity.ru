@@ -10,36 +10,36 @@ if (!$USER->IsAdmin()) {
     $APPLICATION->AuthForm('Доступ запрещен');
 }
 $aTabs = array(
-    array(
-        "DIV" => "options_popup_fo",
-        "TAB" => 'Диалоговое окно быстрого заказа',
-        "ICON" => "main_user_edit",
-        "TITLE" => 'Настройка параметров отображения окна для пользователей',
-    ),
+//    array(
+//        "DIV" => "options_popup_fo",
+//        "TAB" => 'Диалоговое окно быстрого заказа',
+//        "ICON" => "main_user_edit",
+//        "TITLE" => 'Настройка параметров отображения окна для пользователей',
+//    ),
     array(
         "DIV" => "options_order_resriction",
         "TAB" => 'Ограничения при заказе',
         "ICON" => "main_user_edit",
         "TITLE" => 'Настройка параметров ограничений при заказе',
     ),
-    array(
-        "DIV" => "options_catalo_view",
-        "TAB" => 'Отображение каталога',
-        "ICON" => "main_user_edit",
-        "TITLE" => 'Настройка параметров отображения каталога',
-    ),
-    array(
-        "DIV" => "global_opts",
-        "TAB" => 'Общие настройки',
-        "ICON" => "main_user_edit",
-        "TITLE" => 'Глобальные настройки отображения',
-    ),
-    array(
-        "DIV" => "global_popup_b",
-        "TAB" => 'Всплывающие окна',
-        "ICON" => "main_user_edit",
-        "TITLE" => 'Настройки для всплывающих окон',
-    ),
+//    array(
+//        "DIV" => "options_catalo_view",
+//        "TAB" => 'Отображение каталога',
+//        "ICON" => "main_user_edit",
+//        "TITLE" => 'Настройка параметров отображения каталога',
+//    ),
+//    array(
+//        "DIV" => "global_opts",
+//        "TAB" => 'Общие настройки',
+//        "ICON" => "main_user_edit",
+//        "TITLE" => 'Глобальные настройки отображения',
+//    ),
+//    array(
+//        "DIV" => "global_popup_b",
+//        "TAB" => 'Всплывающие окна',
+//        "ICON" => "main_user_edit",
+//        "TITLE" => 'Настройки для всплывающих окон',
+//    ),
     array(
         'DIV' => 'whatsapp_options',
         'TAB' => 'WhatsApp',
@@ -58,12 +58,6 @@ $returnUrl = $_GET["return_url"] ? "&return_url=" . urlencode($_GET["return_url"
 
 $mainBgFileId = COption::GetOptionInt("likee", "main_slider_bg", 0);
 
-$rshoesData = [];
-$db = \Bitrix\Main\Application::getConnection();
-$results = $db->query('SELECT * FROM likee_rshoes_redirects');
-while ($row = $results->Fetch()) {
-    $rshoesData[$row['id']] = $row;
-}
 
 //Получение ПВЗ
 Loader::includeModule('qsoft.pvzmap');
@@ -229,6 +223,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
           enctype="multipart/form-data" name="editform">
         <?
         $tabControl->Begin();
+        /*
         $tabControl->BeginNextTab();
         ?>
         <tr>
@@ -259,7 +254,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
                                        1
                                    )) and print ' checked' ?> /></td>
         </tr>
-        <?
+        <? */
         $tabControl->BeginNextTab();
         ?>
         <tr>
@@ -348,7 +343,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
             <td width="60%"><textarea style="height: 100px; width: 600px" name="order_success_text_reservation"><?= Option::get("respect", "order_success_text_reservation") ?></textarea></td>
         </tr>
 
-        <?
+        <?/*
         $tabControl->BeginNextTab();
         ?>
         <tr>
@@ -624,7 +619,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
                 </div>
             </td>
         </tr>
-        <?php
+        <?php */
         $tabControl->BeginNextTab();
         ?>
         <tr>

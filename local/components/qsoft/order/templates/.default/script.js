@@ -4,7 +4,6 @@ $(document).ready(function(){
     const arDelIdsJsInt = arDelIdsJs.map(item => parseInt(item));
     var arOnlinePaymentIdsInt = [];
     var lastClickedDeliveryRadio = false;
-    var lastClickedDeliveryRadio2 = false;
     if (arOnlinePaymentIds) {
         arOnlinePaymentIdsInt = arOnlinePaymentIds.map(item => parseInt(item));
     }
@@ -26,8 +25,6 @@ $(document).ready(function(){
             dataType: "json",
             success: function (data) {
                 if (data.status == "ok") {
-                    gtmElem.elem = data.gtmData;
-                    gtmElem.actual = true;
                     updateSmallBasket(data.text);
                     activeAjax = false;
                     let basketPrice = parseInt(data.text);
@@ -116,7 +113,6 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data) {
                 if (data.status == "ok") {
-                    gtmPush('deleteProduct', el.closest('.js-card'));
                     updateSmallBasket(-1);
                     let basketPrice = parseInt(data.text);
                     el.closest('.js-card').slideUp("normal", function() {
@@ -167,135 +163,6 @@ $(document).ready(function(){
         });
     }
 
-    function gtmPush(type = '', item = false, orderData = false) {
-        window.dataLayer = window.dataLayer || [];
-
-        function getGTMelObj(el, plusData) {
-            return {
-                'name': el.attr('data-prod-name'),  // data-prod-name
-                'id': el.attr('data-prod-id'),   // data-prod-id
-                'articul': el.attr('data-prod-articul'), // data-prod-articul
-                'price': el.attr('data-prod-price'),  // data-prod-price
-                'category': el.attr('data-prod-category'), // data-prod-category
-                'variant': el.attr('data-prod-variant'), // data-prod-variant
-                'brand': el.attr('data-prod-brand'),  //  Бренд товара data-prod-brand
-                'top-material': el.attr('data-prod-top-material'),  //  Материал верха data-prod-top-material
-                'lining-material': el.attr('data-prod-lining-material'), //Материал подкладки data-prod-lining-material
-                'season': el.attr('data-prod-season'),  //  Сезон data-prod-season
-                'collection': el.attr('data-prod-collection'),  //  Коллекция data-prod-collection
-                'size': (plusData !== undefined && plusData.size !== undefined) ? plusData.size : el.attr('data-prod-size'), //  Выбранный размер
-                'quantity': 1, //Количество товаров в корзине
-            };
-        }
-
-        function getGTMPushData(basket, action, orderData = false) {
-            let oPush = {
-                'event': 'MTRENDO',
-                'eventCategory': 'EEC',
-                'eventAction': action,
-            };
-
-            let prods = [];
-
-            if (action === 'purchase') {
-                oPush['transaction'] = {
-                    'transaction_id': orderData.id,
-                    'value': orderData.price, // Сумма заказа включая доставку, налоги, примененную скидку, купоны
-                    'tax': orderData.tax,
-                    'shipping': orderData.delivery, // Сумма доставки
-                    'coupon': orderData.coupon, // примененный промокод
-                }
-            }
-
-            if (action === 'checkout') {
-                let deliveryLable = basket.find('.delivery-label');
-                if (deliveryLable.length === 1) {
-                    oPush['checkout-delivery'] = deliveryLable.children('.cart-delivery__header').text().trim();
-                }
-                let paymentLable = basket.find('.payment-label');
-                if (paymentLable.length === 1) {
-                    oPush['checkout-payment'] = paymentLable.children('.cart-delivery__header').text().trim();
-                }
-            }
-
-            if (action === 'add_to_cart' && orderData.item !== undefined) {
-                if (item.hasClass('orders__row--product')) {
-                    oPush['order-type'] = 'Корзина местная';
-                } else {
-                    oPush['order-type'] = 'Корзина неместная';
-                }
-
-                let elem = orderData.item;
-                oPush['eventLabel'] = elem.attr('data-prod-name');
-                prods.push(getGTMelObj(elem, orderData.plusData))
-            }
-
-            if (basket !== false) {
-                basket.find('.js-card').each(function () {
-                    let el = $(this);
-                    prods.push(getGTMelObj(el));
-                });
-            }
-
-            oPush['products'] = prods;
-
-            return oPush;
-        }
-
-        if (type === 'checkout' && item === false) {
-            let localBasket = $('.full_basket-container--local');
-            if (localBasket.length > 0) {
-                let oPushLocal = {};
-                oPushLocal = getGTMPushData(localBasket, 'checkout');
-                oPushLocal['order-type'] = 'Корзина местная'; // Тип корзины
-                dataLayer.push(oPushLocal);
-            }
-
-            let regionalBasket = $('.full_basket-container--regional');
-            if (regionalBasket.length > 0) {
-                let oPushRegional = {};
-                oPushRegional = getGTMPushData(regionalBasket, 'checkout');
-                oPushRegional['order-type'] = 'Корзина не местная'; // Тип корзины
-                dataLayer.push(oPushRegional);
-            }
-        } else if (type === 'deleteProduct' && item !== false) {
-            dataLayer.push({
-                'event': 'MTRENDO',
-                'eventCategory': 'EEC',
-                'eventAction': 'remove_from_cart',
-                'eventLabel': item.attr('data-prod-name'),  // data-prod-name
-                'products': [getGTMelObj(item)]
-            });
-        } else if (type === 'orderSuccess1' && item === false && orderData !== false) {
-            let basket = $('.full_basket-container--local');
-            if (basket.length > 0) {
-                let oPush = {};
-                oPush = getGTMPushData(basket, 'purchase', orderData);
-                dataLayer.push(oPush);
-            }
-        } else if (type === 'orderSuccess2' && item === false && orderData !== false) {
-            let basket = $('.full_basket-container--regional');
-            if (basket.length > 0) {
-                let oPush = {};
-                oPush = getGTMPushData(basket, 'purchase', orderData);
-                dataLayer.push(oPush);
-            }
-        } else if (type === 'add_to_cart' && item !== false) {
-            let oPush = getGTMPushData(false, 'add_to_cart', {'item':item, 'plusData':orderData});
-            dataLayer.push(oPush);
-        }
-    }
-
-    function findAddedProd() {
-        if (gtmElem.actual === true) {
-            let elem = $('[data-prod-id=' + gtmElem.elem.prodId + '][data-prod-size=' + gtmElem.elem.size + ']');
-            if (elem.length !== 0) {
-                gtmElem.actual = false;
-                gtmPush('add_to_cart', elem);
-            }
-        }
-    }
-
     // проверка наличия продуктов на странице
     function checkProduct(basketPrice, checkBasketLocationType) {
         if ($(".orders__row--product").length == 0 && $(".orders__row--product2").length == 0) {
@@ -311,7 +178,6 @@ $(document).ready(function(){
                     activeAjax = false;
                     $("#main-basket-block").html(data);
                     resetJsHandlers();
-                    findAddedProd();
                 },
                 error: function(jqXHR, exception) {
                     activeAjax = false;
@@ -335,7 +201,6 @@ $(document).ready(function(){
                         activeAjax = false;
                         $("#main-basket-block").html(data);
                         resetJsHandlers();
-                        findAddedProd();
                     },
                     error: function(jqXHR, exception) {
                         activeAjax = false;
@@ -382,7 +247,6 @@ $(document).ready(function(){
                         activeAjax = false;
                         $("#main-basket-block").html(data);
                         resetJsHandlers();
-                        findAddedProd();
                      },
                     error: function(jqXHR, exception) {
                         activeAjax = false;
@@ -623,7 +487,6 @@ $(document).ready(function(){
             $("#cart__discount-block2").removeClass("is-hidden");
             $("#cart__discount-price2").html(formatPrice(oldSum2 - sum2));
         }
-        findAddedProd();
     }
 
     // удаление скидки
@@ -1071,8 +934,6 @@ $(document).ready(function(){
                         //         );
                         //     });
                         // }
-
-                        gtmPush('orderSuccess1', false, data.gtmData);
                         window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
                         return false;
                     }

@@ -102,7 +102,7 @@
     }
 }
 .hidden-block {
-    /*display:none;*/
+    display:none;
 }
 
 .needCommentLabel {

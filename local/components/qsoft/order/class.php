@@ -1430,7 +1430,6 @@ class QsoftOrderComponent extends ComponentHelper
                 "PRICE" => $arItem->calculate()->getPrice(),
                 "SORT" => $arItem->getSort(),
             );
-
             if (strpos($arItem->getname(), "ПВЗ") !== false) {
                 $this->arPvzIds[] = $deliveryId;
             }
@@ -1605,28 +1604,15 @@ class QsoftOrderComponent extends ComponentHelper
                 if (in_array($payment['CODE'], ONLINE_PAYMENT_CODES)) {
                     $this->arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"][] = $id;
                 }
-                if (isset($this->arResult["WAYS_DELIVERY"]["NOT_LOCAL"][$delivery['WAY_ID']])) {
-                    if (!in_array($payment['ID'], $this->arResult["WAYS_DELIVERY"]["NOT_LOCAL"][$delivery['WAY_ID']]['ALLOWED_PAYMENTS'])) {
-                        $this->arResult["WAYS_DELIVERY"]["NOT_LOCAL"][$delivery['WAY_ID']]['ALLOWED_PAYMENTS'][] = $payment['ID'];
+                if (isset($this->arResult["WAYS_DELIVERY"][$delivery['WAY_ID']])) {
+                    if (!in_array($payment['ID'], $this->arResult["WAYS_DELIVERY"][$delivery['WAY_ID']]['ALLOWED_PAYMENTS'])) {
+                        $this->arResult["WAYS_DELIVERY"][$delivery['WAY_ID']]['ALLOWED_PAYMENTS'][] = $payment['ID'];
                     }
                     if (in_array($delivery['ID'], $this->arResult["DELIVERY"]["PVZIDS"])) {
                         if (strpos($delivery['NAME'], "ПВЗ") !== false) {
                             foreach ($this->arPVZNames as $name) {
                                 if (strpos($delivery['NAME'], $name['NAME']) !== false) {
-                                    $this->arResult["WAYS_DELIVERY"]["NOT_LOCAL"][$delivery['WAY_ID']]['ALLOWED_PVZ_PAYMENTS'][$name['CLASS_NAME']][] = $payment['ID'];
-                                }
-                            }
-                        }
-                    }
-                } elseif (isset($this->arResult["WAYS_DELIVERY"]["LOCAL"][$delivery['WAY_ID']])) {
-                    if (!in_array($payment['ID'], $this->arResult["WAYS_DELIVERY"]["LOCAL"][$delivery['WAY_ID']]['ALLOWED_PAYMENTS'])) {
-                        $this->arResult["WAYS_DELIVERY"]["LOCAL"][$delivery['WAY_ID']]['ALLOWED_PAYMENTS'][] = $payment['ID'];
-                    }
-                    if (in_array($delivery['ID'], $this->arResult["DELIVERY"]["PVZIDS"])) {
-                        if (strpos($delivery['NAME'], "ПВЗ") !== false) {
-                            foreach ($this->arPVZNames as $name) {
-                                if (strpos($delivery['NAME'], $name['NAME']) !== false) {
-                                    $this->arResult["WAYS_DELIVERY"]["LOCAL"][$delivery['WAY_ID']]['ALLOWED_PVZ_PAYMENTS'][$name['CLASS_NAME']][] = $payment['ID'];
+                                    $this->arResult["WAYS_DELIVERY"][$delivery['WAY_ID']]['ALLOWED_PVZ_PAYMENTS'][$name['CLASS_NAME']][] = $payment['ID'];
                                 }
                             }
                         }
@@ -1656,19 +1642,6 @@ class QsoftOrderComponent extends ComponentHelper
         while ($item = $res->fetch()) {
             if ($item['SALE_LOCATION_LOCATION_EXTERNAL_SERVICE_ID'] == $serviceId) {
                 $isCourier = $item['SALE_LOCATION_LOCATION_EXTERNAL_XML_ID'];
-            }
-        }
-        // удаляем курьера, т.к. регион не городской
-        foreach ($this->arResult["WAYS_DELIVERY"] as $local => $arItem) {
-            foreach ($arItem as $num => $arVal) {
-                if (empty($arVal['DELIVERY'])) {
-                    unset($this->arResult["WAYS_DELIVERY"][$local][$num]);
-                    continue;
-                }
-                if (empty($isCourier) && $arVal['TYPEWAYS'] == 'C') {
-                    unset($this->arResult["WAYS_DELIVERY"][$local][$num]);
-                    continue;
-                }
             }
         }
 
@@ -2049,47 +2022,27 @@ class QsoftOrderComponent extends ComponentHelper
             $arDeliveryWay['DELIVERY'] = $arDeliveryWaysIds[$arDeliveryWay['ID']]['DELIVERY_ID'];
             $arDeliveryWay['PRICES'] = $arDeliveryWaysIds[$arDeliveryWay['ID']]['PRICES'];
             $flag = false;
-            if ($arDeliveryWay['LOCAL'] == 'Y') {
-                foreach ($arDeliveryWay['DELIVERY'] as $delivery) {
-                    if (strpos($this->arResult["DELIVERY"]["ARRAY"][$delivery]['NAME'], 'ПВЗ') !== false) {
-                        if (PVZFactory::checkDeliverySrv($this->arResult["DELIVERY"]["ARRAY"][$delivery], true)) {
-                            $arDeliveryWay['PVZ'] = true;
-                            $flag = true;
-                        };
-                    } else {
+            foreach ($arDeliveryWay['DELIVERY'] as $delivery) {
+                if (strpos($this->arResult["DELIVERY"]["ARRAY"][$delivery]['NAME'], 'ПВЗ') !== false) {
+                    if (PVZFactory::checkDeliverySrv($this->arResult["DELIVERY"]["ARRAY"][$delivery], true)) {
+                        $arDeliveryWay['PVZ'] = true;
                         $flag = true;
-                    }
-                }
-                if ($flag) {
-                    $arDeliveryWays['LOCAL'][$arDeliveryWay['ID']] = $arDeliveryWay;
-                }
-            } else {
-                foreach ($arDeliveryWay['DELIVERY'] as $delivery) {
-                    if (strpos($this->arResult["DELIVERY"]["ARRAY"][$delivery]['NAME'], 'ПВЗ') !== false) {
-                        if (PVZFactory::checkDeliverySrv($this->arResult["DELIVERY"]["ARRAY"][$delivery], false)) {
-                            $arDeliveryWay['PVZ'] = true;
-                            $flag = true;
-                        };
-                    } else {
-                        $flag = true;
-                    }
-                }
-                if ($flag) {
-                    $arDeliveryWays['NOT_LOCAL'][$arDeliveryWay['ID']] = $arDeliveryWay;
+                    };
+                } else {
+                    $flag = true;
                 }
             }
+            if ($flag) {
+                $arDeliveryWays[$arDeliveryWay['ID']] = $arDeliveryWay;
+            }
         }
-        uasort($arDeliveryWays['LOCAL'], function ($a, $b) {
-            return $a['SORT'] <=> $b['SORT'];
-        });
-        uasort($arDeliveryWays['NOT_LOCAL'], function ($a, $b) {
+        uasort($arDeliveryWays, function ($a, $b) {
             return $a['SORT'] <=> $b['SORT'];
         });
 
         $this->arResult['WAYS_DELIVERY'] = $arDeliveryWays;
         //Меняем id первой службы доставки (для выбора по умолчанию в шаблоне)
-        $this->arResult["DELIVERY"]["LOCAL"]["ID"] = reset($arDeliveryWays["LOCAL"])["DELIVERY"][0];
-        $this->arResult["DELIVERY"]["NOT_LOCAL"]["ID"] = reset($arDeliveryWays["NOT_LOCAL"])["DELIVERY"][0];
+        $this->arResult["DELIVERY"]["ID"] = reset($arDeliveryWays)["DELIVERY"][0];
         foreach ($this->arPVZNames as $PVZInfo) {
             $this->arResult["DELIVERY"]['PVZ_HIDE_POSTAMAT'][$PVZInfo['CLASS_NAME']] = $PVZInfo['HIDE_POSTAMAT'];
             $this->arResult["DELIVERY"]['PVZ_HIDE_ONLY_PREPAYMENT'][$PVZInfo['CLASS_NAME']] = $PVZInfo['HIDE_ONLY_PREPAYMENT'];
@@ -2117,14 +2070,10 @@ class QsoftOrderComponent extends ComponentHelper
 
         while ($arPaymentWay = $rsPaymentWays->fetch()) {
             $arPaymentWay['PAYMENT'] = $arPaymentWaysIds[$arPaymentWay['ID']]['PAYMENT_ID'];
-            if ($paymentId && $arPaymentWay['LOCAL'] == $this->postProps["IS_LOCAL"]) {
+            if ($paymentId) {
                 $arPaymentWays = $arPaymentWay;
             } else {
-                if ($arPaymentWay['LOCAL'] == 'Y') {
-                    $arPaymentWays['LOCAL'][$arPaymentWay['ID']] = $arPaymentWay;
-                } else {
-                    $arPaymentWays['NOT_LOCAL'][$arPaymentWay['ID']] = $arPaymentWay;
-                }
+                $arPaymentWays[$arPaymentWay['ID']] = $arPaymentWay;
             }
         }
 

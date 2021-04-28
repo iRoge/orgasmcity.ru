@@ -55,7 +55,7 @@ global $LOCATION, $APPLICATION; ?>
     <div id="full_basket" class="col-xs-12 col-xs-12--padding-sm-0 full_basket">
         <div class="main main--banner full_basket-container full_basket-container--local">
             <div class="checkout ">
-                <form id="b-order" class="checkout__inner clearfix" action="<?= $APPLICATION->GetCurPageParam() ?>" style="<?=empty($arResult['ITEMS']['NOT_LOCAL']) ? 'display: block' : ''?>" method="post">
+                <form id="b-order" class="checkout__inner clearfix" action="<?= $APPLICATION->GetCurPageParam() ?>" style="display: block" method="post">
                     <!-- main -->
                     <div class="checkout__col checkout__col--main col-md-8 left-side-container">
                         <!-- orders -->
@@ -260,13 +260,13 @@ global $LOCATION, $APPLICATION; ?>
                         </div>
                         <div class="left-cart-block-local">
                             <!-- /orders -->
-                            <? if (empty($arResult["ERRORS"]['LOCAL'])) : ?>
+                            <? if (empty($arResult["ERRORS"])) : ?>
                                 <!-- delivery -->
                                 <div class="checkout__block checkout__block--delivery">
                                     <h2 class="checkout__title checkout__title--delivery">Доставка <span class="err-order err-delivery"></span></h2>
-                                    <? if (!empty($arResult["WAYS_DELIVERY"]['LOCAL'])) : ?>
+                                    <? if (!empty($arResult["WAYS_DELIVERY"])) : ?>
                                         <div class="checkout__block checkout__block--flex">
-                                            <? foreach ($arResult["WAYS_DELIVERY"]['LOCAL'] as $arDeliveryWay) : ?>
+                                            <? foreach ($arResult["WAYS_DELIVERY"] as $arDeliveryWay) : ?>
                                                 <div class="form__box form__box--1-2">
                                                     <div class="cart-delivery">
                                                         <div class="cart-delivery__wrapper">
@@ -331,7 +331,7 @@ global $LOCATION, $APPLICATION; ?>
                                                 <div class="checkout__block--payment">
                                                     <h2 class="checkout__title checkout__title--delivery">Оплата <span class="err-order err-payment"></span></h2>
                                                     <div class="checkout__block--flex">
-                                                        <? foreach ($arResult["WAYS_PAYMENT"]['LOCAL'] as $arPaymentWay) :?>
+                                                        <? foreach ($arResult["WAYS_PAYMENT"] as $arPaymentWay) :?>
                                                             <div class="form__box form__box--1-2 payment__type payment__type--disabled">
                                                                 <div class="cart-delivery">
                                                                     <div class="cart-delivery__wrapper">
@@ -447,7 +447,7 @@ global $LOCATION, $APPLICATION; ?>
                     <!-- /main -->
                     <!-- sidebar -->
                     <div class="right-cart-block-local checkout__col checkout__col--sidebar col-md-4">
-                        <? if (empty($arResult["ERRORS"]['LOCAL'])) : ?>
+                        <? if (empty($arResult["ERRORS"])) : ?>
                             <!-- promocode -->
                             <div class="havePromocodeDiv">
                                 <input type="checkbox" class="havePromocode checkbox3" id="havePromocode">
@@ -497,7 +497,7 @@ global $LOCATION, $APPLICATION; ?>
                             <!-- /cost -->
                         <? else : ?>
                             <div class="checkout__error-wrapper">
-                                <? foreach ($arResult["ERRORS"]['LOCAL'] as $error) : ?>
+                                <? foreach ($arResult["ERRORS"] as $error) : ?>
                                     <p class="checkout__error-text"><?= $error ?></p>
                                 <? endforeach ?>
                             </div>

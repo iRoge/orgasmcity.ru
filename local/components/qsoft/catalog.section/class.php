@@ -254,8 +254,6 @@ class QsoftCatalogSection extends ComponentHelper
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
-//        global $CACHE_MANAGER;
-//        $CACHE_MANAGER->clearByTag('catalogAll');
         $this->init();
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
