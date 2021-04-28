@@ -8577,21 +8577,21 @@ padding: 0;
 width: 50%;
 }
 .form__elem::-webkit-input-placeholder {
-color: #cccccc;
+color: #808080;
 font-family: 'firalight';
 }
 .form__elem::-moz-placeholder {
-color: #cccccc;
+color: #808080;
 font-family: 'firalight';
 }
 .form__elem:-ms-input-placeholder {
-color: #cccccc;
+color: #808080;
 font-family: 'firalight';
 }
 
 .form__elem {
-background: #fff5f7;
-border: 1px solid rgba(200, 200, 200);
+background: #fffafa;
+border: 1px solid rgba(200, 200, 200, 1);
 font-family: 'firalight';
 font-size: 16px;
 padding: 12px 20px;

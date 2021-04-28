@@ -101,3 +101,32 @@
         margin-top: 5px;
     }
 }
+.hidden-block {
+    /*display:none;*/
+}
+
+.needCommentLabel {
+    margin-bottom: 20px;
+}
+
+.needCommentLabel,
+.havePromocodeLabel {
+    margin-top: 0 !important;
+}
+
+.needCommentLabel:before,
+.havePromocodeLabel:before {
+    top: -3px !important;
+}
+
+@media (min-width: 768px) {
+    .havePromocodeDiv {
+        margin-left: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .havePromocodeDiv {
+        margin-top: 20px;
+    }
+}
