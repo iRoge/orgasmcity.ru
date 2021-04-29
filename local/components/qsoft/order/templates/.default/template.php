@@ -75,32 +75,15 @@ global $LOCATION, $APPLICATION; ?>
                                     <? $APPLICATION->RestartBuffer() ?>
                                 <? endif ?>
                                 <!-- orders cards rows -->
-                                <? foreach ($arResult['ITEMS']['LOCAL'] as $id => $arItem) : ?>
+                                <? foreach ($arResult['ITEMS'] as $id => $arItem) : ?>
                                     <? $arResult["BASKET"][] = [
                                         "id" => sprintf('%s-%s', $arItem["PRODUCT_ID"], $arResult['BRANCH_ID']),
                                         "price" => $arItem["PRICE"],
                                         "quantity" => $arItem["QUANTITY"],
                                     ];
-
-                                    $propCat = $arItem['RHODEPRODUCT'];
-                                    $propCat .= $arItem['VID'] ? '/' . $arItem['VID'] : '';
-                                    $propCat .= $arItem['TYPEPRODUCT'] ? '/' . $arItem['TYPEPRODUCT'] : '';
-                                    $propCat .= $arItem['SUBTYPEPRODUCT'] ? '/' . $arItem['SUBTYPEPRODUCT'] : '';
                                     ?>
-                                    <div class="flex-product orders__row orders__row--product <?= $arResult["PROBLEM_LOCAL_OFFERS"][$id] ? "orders__row--product--error" : "" ?> js-card"
+                                    <div class="flex-product orders__row orders__row--product <?= $arResult["PROBLEM_OFFERS"][$id] ? "orders__row--product--error" : "" ?> js-card"
                                          data-id="<?= $id ?>"
-                                         data-prod-id="<?= $arItem['PRODUCT_ID'] ?>"
-                                         data-prod-articul="<?= $arItem['ARTICLE'] ?>"
-                                         data-prod-name="<?= $arItem['NAME'] . ($arItem['ARTICLE'] ? ' | ' . $arItem['ARTICLE'] : '') ?>"
-                                         data-prod-brand="<?= $arItem['BRAND'] ?>"
-                                         data-prod-top-material="<?= $arItem['UPPERMATERIAL'] ?>"
-                                         data-prod-lining-material="<?= $arItem['LININGMATERIAL'] ?>"
-                                         data-prod-season="<?= $arItem['SEASON'] ?>"
-                                         data-prod-variant="<?= $arItem['COLORSFILTER'] ?>"
-                                         data-prod-collection="<?= $arItem['COLLECTION'] ?>"
-                                         data-prod-category="<?= $propCat ?>"
-                                         data-prod-price="<?= number_format($arItem['PRICE'], 0, '', ''); ?>"
-                                         data-prod-size="<?= $arItem['SIZE'] ?>"
                                     >
                                         <? //блок изображения ?>
                                         <div class="flex-product--img orders__block orders__block--img">
@@ -203,13 +186,6 @@ global $LOCATION, $APPLICATION; ?>
                                             </div>
 
                                             <div class="orders__col orders__col--annotation">
-                                                <? if ($arItem['BRANCH'] == 'White') : ?>
-                                                    Цена с учетом скидки по бонусной карте.
-                                                <? elseif ($arItem['BRANCH'] == 'Red') : ?>
-                                                    Товар участвует в распродаже. Цена с учетом скидки по бонусной карте.
-                                                <? elseif ($arItem['BRANCH'] == 'Yellow') : ?>
-                                                    Цена с учетом скидки по бонусной карте.
-                                                <? endif ?>
                                                 <? if (isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE']) : ?>
                                                     Применен промокод.
                                                 <? endif ?>
