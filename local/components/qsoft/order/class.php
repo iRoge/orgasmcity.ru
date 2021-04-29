@@ -42,8 +42,6 @@ class QsoftOrderComponent extends ComponentHelper
         "basketAdd",
         "basketDel",
     );
-    // самовывоз
-    private const DELIVERY_PICKUP_ID = 3;
     // ПВЗ
     private $arPvzIds = array();
     // путь кэша
@@ -62,8 +60,6 @@ class QsoftOrderComponent extends ComponentHelper
     private $offers = array();
     // свойства заказа
     private $orderProps;
-    // корзина только местных или неместных товаров (для создания заказа)
-    private $newBasket;
     // корзина
     private $basket;
     // валюта
@@ -144,21 +140,21 @@ class QsoftOrderComponent extends ComponentHelper
         }
         $this->getType();
         // для аякс запроса карточки (когда есть ошибки) ставим флаг аякса
-        if ($this->checkType(array("cart")) && $_POST["ajax"] == "Y") {
+        if ($this->checkType(["cart"]) && $_POST["ajax"] == "Y") {
             $this->ajax = true;
         }
         // для всего, кроме корзины и товаров, ответ в JSON
-        if (!$this->checkType(array("cart", "offers"))) {
+        if (!$this->checkType(["cart", "offers"])) {
             $this->json = true;
         }
-        if ($this->checkType(array("coupon"))) {
+        if ($this->checkType(["coupon"])) {
             // проверяем купон
             $this->checkCoupon();
         }
-        if ($this->checkType(array("basketAdd", "basketDel"))) {
+        if ($this->checkType(["basketAdd", "basketDel"])) {
             // добавляем в корзину
             $offerId = intval($_POST["offerId"]);
-            if ($this->checkType(array("basketAdd"))) {
+            if ($this->checkType(["basketAdd"])) {
                 $quantity = intval($_POST["quantity"]);
                 // добавляем в корзину
                 $this->addToBasket($offerId, $quantity);
@@ -170,7 +166,7 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->deleteFromBasket($offerId);
             }
         }
-        if ($this->checkType(array("order", "1click"))) {
+        if ($this->checkType(["order", "1click"])) {
             // устанавливаем доставку
             $this->setDeliveryId();
             // устанавливаем оплату
@@ -181,13 +177,13 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->returnError();
             }
         }
-        if ($this->checkType(array("cart", "offers", "order", "1click"))) {
+        if ($this->checkType(["cart", "offers", "order", "1click"])) {
             // устанавливаем корзину
             if (!$this->setBasket()) {
                 // при ошибке возвращаем её на фронт в виде JSON
                 $this->returnError();
             }
-            if ($this->checkType(array("cart", "offers"))) {
+            if ($this->checkType(["cart", "offers"])) {
                 // применяем промокоды
                 $this->getCoupon();
             }
@@ -196,13 +192,13 @@ class QsoftOrderComponent extends ComponentHelper
                 // при ошибке возвращаем её на фронт в виде JSON
                 $this->returnError();
             }
-            if ($this->checkType(array("cart", "offers"))) {
+            if ($this->checkType(["cart", "offers"])) {
                 // получаем данные для вывода
                 $this->getItems();
                 $this->getAvailableOffersSizesForItems();
             }
         }
-        if ($this->checkType(array("cart"))) {
+        if ($this->checkType(["cart"])) {
             // получаем поля юзера
             $this->getUser();
             // устанавливаем стандартизированное название региона для dadata
@@ -230,14 +226,14 @@ class QsoftOrderComponent extends ComponentHelper
             // получаем цену карточки с оплатой
             $this->getBasketsPrices();
         }
-        if ($this->checkType(array("order", "1click"))) {
+        if ($this->checkType(["order", "1click"])) {
             // проверяем юзера
             $this->checkUser();
             $this->updateUserProfile();
-            // обновляем подписки юзера Sailplay
-            $this->updateSubscribe();
+//            // обновляем подписки юзера Sailplay
+//            $this->updateSubscribe();
             if (!empty($this->arResult["ERRORS"])) {
-                if (empty($this->arResult['ERRORS']['LOCAL']) && empty($this->arResult['ERRORS']['NOT_LOCAL'])) {
+                if (empty($this->arResult['ERRORS'])) {
                     // при ошибке возвращаем её на фронт в виде JSON
                     $this->returnError();
                 }
@@ -345,7 +341,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->returnJSON($arResult);
     }
 
-    private function returnOk($text = false, $coupon = false, $info = false, $gtmData = false)
+    private function returnOk($text = false, $coupon = false, $info = false)
     {
         $arResult = array(
             "status" => "ok",
@@ -358,9 +354,6 @@ class QsoftOrderComponent extends ComponentHelper
         }
         if ($coupon) {
             $arResult["coupon"] = $coupon;
-        }
-        if ($gtmData) {
-            $arResult["gtmData"] = $gtmData;
         }
         $this->returnJSON($arResult);
     }
@@ -1085,13 +1078,9 @@ class QsoftOrderComponent extends ComponentHelper
     {
         $basketNum = Option::get("respect", "basket_max_art_num", 6);
 
-        $arCountY = array_count_values(array_column($this->offers, 'IS_LOCAL'))['Y'];
-        if (($arCountY + $add > $basketNum) && $arCountY + $add > 0) {
-            $this->arResult["ERRORS"]['LOCAL'][] = str_replace("%NUM%", $basketNum, Option::get("respect", "basket_max_art_num_text", "Максимальное количество позиций в корзине - %NUM% шт"));
-        }
-        $arCountN = array_count_values(array_column($this->offers, 'IS_LOCAL'))['N'];
-        if (($arCountN + $add > $basketNum) && $arCountN + $add > 0) {
-            $this->arResult["ERRORS"]['NOT_LOCAL'][] = str_replace("%NUM%", $basketNum, Option::get("respect", "basket_max_art_num_text", "Максимальное количество позиций в корзине - %NUM% шт"));
+        $arCount = count($this->offers);
+        if (($arCount + $add > $basketNum) && $arCount + $add > 0) {
+            $this->arResult["ERRORS"][] = str_replace("%NUM%", $basketNum, Option::get("respect", "basket_max_art_num_text", "Максимальное количество позиций в корзине - %NUM% шт"));
         }
     }
 
@@ -1309,8 +1298,15 @@ class QsoftOrderComponent extends ComponentHelper
         $prop = $this->getPropByCode("LOCATION");
         $prop->setValue($LOCATION->code);
         // создаем объект доставки
+        $order->setBasket($this->basket);
         $shipmentCollection = $order->getShipmentCollection();
         $shipment = $shipmentCollection->createItem();
+        $shipmentItemCollection = $shipment->getShipmentItemCollection();
+        foreach ($order->getBasket() as $item)
+        {
+            $shipmentItem = $shipmentItemCollection->createItem($item);
+            $shipmentItem->setQuantity($item->getQuantity());
+        }
         $shipment->setField("CURRENCY", $this->currency);
         // получаем доставки с ограничениями
         $res = DelManager::getRestrictedObjectsList($shipment);
@@ -1328,10 +1324,6 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
 
-        // удаляем самовывоз для всего, кроме резервирования
-        if ($this->checkType(['cart', 'order', '1click'])) {
-            unset($arDelivery[self::DELIVERY_PICKUP_ID]);
-        }
         // удаляем ПВЗ для всего, кроме карты
         if ($this->checkType(['1click'])) {
             foreach ($this->arPvzIds as $delId) {
@@ -1514,30 +1506,6 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
 
-        // получение внешних данных для местоположений с указанием кода для проверки возможности курьерской доставки
-        $res = \Bitrix\Sale\Location\ExternalTable::getList(array(
-            'filter' => array(
-                '=SERVICE.CODE' => 'is_courier',
-            )
-        ));
-        while ($item = $res->fetch()) {
-            $serviceId = $item['SERVICE_ID'];
-        }
-
-        $res = \Bitrix\Sale\Location\LocationTable::getList(array(
-            'filter' => array(
-                'CODE' => array($LOCATION->code),
-            ),
-            'select' => array(
-                'EXTERNAL.*',
-            )
-        ));
-        while ($item = $res->fetch()) {
-            if ($item['SALE_LOCATION_LOCATION_EXTERNAL_SERVICE_ID'] == $serviceId) {
-                $isCourier = $item['SALE_LOCATION_LOCATION_EXTERNAL_XML_ID'];
-            }
-        }
-
         return $arPayments;
     }
 
@@ -1564,18 +1532,11 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
         $order = $this->createNewOrder($this->user['ID']);
-        if ($this->checkType(["1click"])) {
-            if (!array_sum($this->basket->getQuantityList())) {
-                die;
-            }
-            $order->setBasket($this->basket);
-        } else {
-            $this->divideBasket();
-            if (!array_sum($this->newBasket->getQuantityList())) {
-                die;
-            }
-            $order->setBasket($this->newBasket);
+        if (!array_sum($this->basket->getQuantityList())) {
+            die;
         }
+        $order->setBasket($this->basket);
+
         // доставка
         $shipmentCollection = $order->getShipmentCollection();
         $shipment = $shipmentCollection->createItem();
@@ -1685,17 +1646,12 @@ class QsoftOrderComponent extends ComponentHelper
         $order->doFinalAction(true);
         $res = $order->save();
         $orderId = $order->getId();
-        $gtmData['id'] = $orderId;
-        $gtmData['tax'] = number_format($order->getTaxPrice(), 0, '', '');
-        $gtmData['price'] = number_format($order->getPrice(), 0, '', '');
-        $gtmData['delivery'] = number_format($order->getDeliveryPrice(), 0, '', '');
-        $gtmData['coupon'] = $this->postProps["DISCOUNT_COUPON"];
         if ($res->isSuccess()) {
             // очищаем купоны из сессии
             $this->delCoupon();
             $_SESSION['NEW_ORDER_ID'] = $orderId;
             $_SESSION['CRITEO_NEW_ORDER_ID'] = $orderId;
-            $this->returnOk($orderId, false, $this->offers, $gtmData);
+            $this->returnOk($orderId, false, $this->offers);
         } else {
             $this->arResult["ERRORS"][] = $res->getErrorMessages();
             $this->returnError();
@@ -1812,25 +1768,6 @@ class QsoftOrderComponent extends ComponentHelper
             $price += $offer['BASKET_PRICE'];
         }
         return $price;
-    }
-
-    private function divideBasket()
-    {
-        $this->newBasket = $this->basket->copy();
-        $basketItems = $this->basket->getBasketItems();
-
-        foreach ($basketItems as $arItem) {
-            $basketPropertyCollection = $arItem->getPropertyCollection();
-            foreach ($basketPropertyCollection as $basketPropertyItem) {
-                if ($basketPropertyItem->getField('CODE') == "IS_LOCAL") {
-                    $isLocal = $basketPropertyItem->getField('VALUE');
-                }
-            }
-            if ($this->postProps["IS_LOCAL"] == $isLocal) {
-                continue;
-            }
-            $this->newBasket->getItemById($arItem->getField('ID'))->delete();
-        }
     }
 
     private function getDeliveryWays(): void
@@ -1960,47 +1897,5 @@ class QsoftOrderComponent extends ComponentHelper
                 unset($arItem);
             }
         }
-    }
-
-    private function getStoreSeller($seller_id, $storeSeller_id)
-    {
-        $storeUser = CUser::GetList(
-            ($by = 'id'),
-            ($order = 'asc'),
-            ['WORK_PAGER' => $seller_id],
-            [
-                'FIELDS' => [
-                    'WORK_COMPANY',
-                    'WORK_DEPARTMENT',
-                ],
-                'SELECT' => [
-                    'UF_STORE',
-                ]
-            ]
-        )->Fetch();
-
-        Loader::includeModule('highloadblock');
-
-        $obSellers = HL::getEntityClassByHLName('Sellers');
-        $arSeller = [];
-
-        if ($obSellers && is_object($obSellers)) {
-            $sellerClass = $obSellers->getDataClass();
-
-            $arSeller = $sellerClass::getList(
-                [
-                    'filter' =>
-                        [
-                            'ID' => $storeSeller_id,
-                            'UF_STORE_ID' => $storeUser['UF_STORE'],
-                            //'UF_FIRED' => 0,
-                        ],
-                    'select' =>
-                        ['ID', 'UF_SURNAME', 'UF_NAME', 'UF_PATRONYMIC', 'UF_FULL_NAME', 'UF_SELLER_SELF_CODE'],
-                ]
-            )->fetch();
-        }
-
-        return $arSeller;
     }
 }

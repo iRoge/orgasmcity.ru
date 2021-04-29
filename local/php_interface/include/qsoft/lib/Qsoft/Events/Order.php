@@ -36,72 +36,17 @@ class Order
         static::log("=============");
         static::log("orderId: ".$orderId);
         $basket = $order->getBasket();
-        $isLocal = $_REQUEST['PROPS']['IS_LOCAL'];
         foreach ($basket as $basketItem) {
             $prodId = $basketItem->getProductId();
             $quantity = $basketItem->getQuantity();
             $status = static::getReservStatus();
-            $storeId = static::getStorageId($prodId, $status, $isLocal);
-            static::log("productId: ".$prodId.", storeId: ".$storeId.", quantity: ".$quantity.", status: ".$status);
+            static::log("productId: ".$prodId.", quantity: ".$quantity.", status: ".$status);
             ReserveStorageTable::add([
                 'PRODUCT_ID' => $prodId,
                 'QUANTITY' => $quantity,
                 'ORDER_ID' => $orderId,
-                'STORAGE_ID' => $storeId,
                 'STATUS' => $status,
             ]);
-        }
-    }
-    private static function getStorageId($productId, $status, $isLocal = 'Y')
-    {
-        global $LOCATION;
-
-        if ($status == "R") {
-            $context = Context::getCurrent();
-            $request = $context->getRequest();
-            $storageId = $request->get('DELIVERY_STORE_ID');
-        } else {
-            if ($isLocal == 'Y') {
-                $arRests = $LOCATION->getRests($productId, 1);
-                // Убираем дефолтные склады
-                $arRests[$productId] = array_diff_key($arRests[$productId], $LOCATION->DEFAULT_STORAGES);
-            } else {
-                $arRests = $LOCATION->getRests($productId, 1, false, false, $LOCATION->DEFAULT_STORAGES);
-            }
-            $arRests = reset($arRests);
-            // получаем все активные склады
-            $res = StoreTable::getList(array(
-                "select" => array(
-                    "ID", "SORT"
-                ),
-                "filter" => array(
-                    "ACTIVE" => "Y",
-                ),
-            ));
-            $arStorages = array();
-            while ($arItem = $res->fetch()) {
-                if (!$arRests[$arItem['ID']]) {
-                    continue;
-                }
-                $arStorages[$arItem['ID']] = $arItem;
-                $arStorages[$arItem['ID']]['REST'] = $arRests[$arItem['ID']];
-            }
-            usort($arStorages, function ($a, $b) {
-                if ($a['SORT'] === $b['SORT']) {
-                    if ($a['REST'] === $b['REST']) {
-                        return ($a['ID'] > $b['ID']) ? 1 : -1;
-                    }
-                    return ($a['REST'] > $b['REST']) ? -1 : 1;
-                }
-                    return ($a['SORT'] > $b['SORT']) ? 1 : -1;
-            });
-            $storageId = $arStorages[0]['ID'];
-        }
-        if ($storageId) {
-            return $storageId;
-        } else {
-            static::log("ОШИБКА: не получен STORAGE_ID");
-            return 0;
         }
     }
     private static function getReservStatus()
@@ -117,76 +62,36 @@ class Order
     }
     public static function OnGetOptimalPriceResultHandler(&$arFields)
     {
-        global $LOCATION;
-        global $USER;
         // если нет ID ТП, то ничего не делаем
         if (!$arFields["PRODUCT_ID"]) {
             return;
         }
         $arOffer = \CIBlockElement::GetList(
-            array(),
-            array(
+            [],
+            [
                 "ID" => $arFields["PRODUCT_ID"],
                 "IBLOCK_ID" => IBLOCK_OFFERS,
                 "ACTIVE" => "Y",
-            ),
+            ],
             false,
-            array(
+            [
                 "nTopCount" => 1,
-            ),
-            array(
+            ],
+            [
                 "ID",
                 "IBLOCK_ID",
                 "PROPERTY_CML2_LINK",
-            )
+                "PROPERTY_CML2_LINK",
+            ]
         )->Fetch();
         // если нет ID товара, то ничего не делаем
         if (!$arOffer["PROPERTY_CML2_LINK_VALUE"]) {
             return;
         }
         $productId = $arOffer["PROPERTY_CML2_LINK_VALUE"];
-        $arPrice = array();
-        $isLocal = 'Y';
-        if ($_REQUEST['isLocal'] === 'N') {
-            $arPrice = $LOCATION->getProductsPrices(array($productId), $LOCATION->DEFAULT_BRANCH);
-        } elseif ($_REQUEST['isLocal'] === 'Y') {
-            $arPrice = $LOCATION->getProductsPrices(array($productId));
-        } elseif (isset($GLOBALS['localBasketFlag'])) {
-            if ($GLOBALS['localBasketFlag'] === 'N') {
-                $arPrice = $LOCATION->getProductsPrices(array($productId), $LOCATION->DEFAULT_BRANCH);
-            } else {
-                $arPrice = $LOCATION->getProductsPrices(array($productId));
-            }
-            unset($GLOBALS['localBasketFlag']);
-        } else {
-            $basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
-            $basketItems = $basket->getBasketItems();
-            foreach ($basketItems as $arItem) {
-                if ($arItem->getProductId() == $arOffer['ID']) {
-                    $basketPropertyCollection = $arItem->getPropertyCollection();
-                    foreach ($basketPropertyCollection as $basketPropertyItem) {
-                        if ($basketPropertyItem->getField('CODE') == "IS_LOCAL") {
-                            $isLocal = $basketPropertyItem->getField('VALUE');
-                        }
-                    }
-                }
-                if ($isLocal === 'N') {
-                    $arPrice = $LOCATION->getProductsPrices(array($productId), $LOCATION->DEFAULT_BRANCH);
-                } else {
-                    $arPrice = $LOCATION->getProductsPrices(array($productId));
-                }
-            }
-        }
-        if ($arPrice[$productId]['PRICE']) {
-            $price = false;
-            if ($arPrice[$productId]['SEGMENT'] == 'White' && in_array($_REQUEST['action'], ['reserv', '1click']) && !$USER->isAuthorized()) {
-                $price = $arPrice[$productId]['OLD_PRICE'];
-            }
-            $arFields['PRICE']['PRICE'] = $price ? $price : $arPrice[$productId]['PRICE'];
-            $arFields['DISCOUNT_PRICE'] = $price ? $price : $arPrice[$productId]['PRICE'];
-            $arFields['RESULT_PRICE']['BASE_PRICE'] = $price ? $price : $arPrice[$productId]['PRICE'];
-            $arFields['RESULT_PRICE']['DISCOUNT_PRICE'] = $price ? $price : $arPrice[$productId]['PRICE'];
-        }
+        $arPrice = [];
+//        pre($arFields);
+//        die;
     }
 
     protected static function log($message)

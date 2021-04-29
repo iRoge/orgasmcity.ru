@@ -484,6 +484,7 @@ global $LOCATION, $APPLICATION; ?>
             </div>
         </div>
     </div>
+</div>
     <? endif; ?>
     <? if ($this->__component->ajax) : ?>
         <? //$APPLICATION->FinalActions() ?>
@@ -501,7 +502,7 @@ global $LOCATION, $APPLICATION; ?>
         <? die() ?>
     <? endif ?>
 <? endif ?>
-</div>
+
 
 <?$APPLICATION->IncludeComponent('qsoft:pvzmap', '');?>
 
