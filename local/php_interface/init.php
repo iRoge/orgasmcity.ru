@@ -77,3 +77,20 @@ if (!function_exists("pre")) {
         <?php
     }
 }
+
+function qsoft_logger($message, string $file = "log.txt", string $path = "/local/logs/", $where_flag = false)
+{
+    $message = (is_array($message) || is_object($message)) ? print_r($message, true) : $message;
+    $log_path = $_SERVER['DOCUMENT_ROOT'] . $path;
+    CheckDirPath($log_path, true);
+    $log_file = $log_path . $file;
+    $str = date('d.m.Y H:i:s') . " - " . $message . "\r\n";
+    if ($where_flag) {
+        $info = debug_backtrace();
+        $info = $info[0];
+        $info['file'] = substr($info['file'], strlen($_SERVER['DOCUMENT_ROOT']));
+        $where = "{$info['file']}:{$info['line']}";
+        $str = $where . "\r\n" . $str;
+    }
+    file_put_contents($log_file, $str, FILE_APPEND);
+}
