@@ -6,3 +6,4 @@
 /cron/orders_status_logs
 /local/vendor
 /local/php_interface/.env
+/import
