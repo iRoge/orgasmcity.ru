@@ -37,6 +37,7 @@ global $LOCATION, $APPLICATION; ?>
     var currentHost = "<?=$arResult['CURRENT_HOST']?>";
     var PVZHidePostamat = <?=CUtil::PhpToJSObject($arResult['DELIVERY']['PVZ_HIDE_POSTAMAT'])?>;
     var PVZHideOnlyPrepayment = <?=CUtil::PhpToJSObject($arResult['DELIVERY']['PVZ_HIDE_ONLY_PREPAYMENT'])?>;
+    var currentLocationCode = <?=$LOCATION->code; ?>;
 </script>
     <? $APPLICATION->addHeadString('<script type="text/javascript" src="/local/templates/respect/cdek_widget/widget.js" id="widget_script"></script>') ?>
 <div id="main-basket-block">
@@ -95,11 +96,6 @@ global $LOCATION, $APPLICATION; ?>
                                             <span class="orders__img-box">
                                                 <img src="<?= $arItem["SRC"][0] ?>" alt="<?= $arItem['NAME'] ?>"
                                                      class="orders__img-pic orders__img-pic--main">
-                                                <? if ($arItem["SRC"][1]) : ?>
-                                                    <img src="<?= $arItem["SRC"][1] ?>"
-                                                         alt="<?= $arItem['NAME'] ?>"
-                                                         class="orders__img-pic orders__img-pic--additional">
-                                                <? endif ?>
                                             </span>
                                                 </a>
                                             </div>

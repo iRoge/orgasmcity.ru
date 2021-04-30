@@ -8784,18 +8784,6 @@ max-height: 100%;
 max-width: 100%;
 }
 
-.orders__img-pic--additional {
-display: none;
-}
-
-.orders__img--multi:hover .orders__img-pic--main {
-display: none;
-}
-
-.orders__img--multi:hover .orders__img-pic--additional {
-display: block;
-}
-
 .orders__title {
 font-size: 1em;
 font-family: inherit;

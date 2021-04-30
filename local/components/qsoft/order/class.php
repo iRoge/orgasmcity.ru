@@ -139,34 +139,16 @@ class QsoftOrderComponent extends ComponentHelper
             return false;
         }
         $this->getType();
-        // для аякс запроса карточки (когда есть ошибки) ставим флаг аякса
-        if ($this->checkType(["cart"]) && $_POST["ajax"] == "Y") {
-            $this->ajax = true;
-        }
         // для всего, кроме корзины и товаров, ответ в JSON
         if (!$this->checkType(["cart", "offers"])) {
             $this->json = true;
         }
-        if ($this->checkType(["coupon"])) {
-            // проверяем купон
-            $this->checkCoupon();
-        }
-        if ($this->checkType(["basketAdd", "basketDel"])) {
-            // добавляем в корзину
-            $offerId = intval($_POST["offerId"]);
-            if ($this->checkType(["basketAdd"])) {
-                $quantity = intval($_POST["quantity"]);
-                // добавляем в корзину
-                $this->addToBasket($offerId, $quantity);
-            } else {
-                // получаем список доставок
-                $this->getDeliveries();
-                $this->getDeliveryWays();
-                // удаляем из корзины
-                $this->deleteFromBasket($offerId);
+        if ($this->checkType(["order"])) {
+            // устанавливаем корзину
+            if (!$this->setBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
             }
-        }
-        if ($this->checkType(["order", "1click"])) {
             // устанавливаем доставку
             $this->setDeliveryId();
             // устанавливаем оплату
@@ -176,29 +158,42 @@ class QsoftOrderComponent extends ComponentHelper
                 // при ошибке возвращаем её на фронт в виде JSON
                 $this->returnError();
             }
-        }
-        if ($this->checkType(["cart", "offers", "order", "1click"])) {
-            // устанавливаем корзину
-            if (!$this->setBasket()) {
-                // при ошибке возвращаем её на фронт в виде JSON
-                $this->returnError();
-            }
-            if ($this->checkType(["cart", "offers"])) {
-                // применяем промокоды
-                $this->getCoupon();
-            }
             // проверяем корзину
             if (!$this->checkBasket()) {
                 // при ошибке возвращаем её на фронт в виде JSON
                 $this->returnError();
             }
-            if ($this->checkType(["cart", "offers"])) {
-                // получаем данные для вывода
-                $this->getItems();
-                $this->getAvailableOffersSizesForItems();
+            // проверяем юзера
+            $this->checkUser();
+            $this->updateUserProfile();
+            if (!empty($this->arResult["ERRORS"])) {
+                if (empty($this->arResult['ERRORS'])) {
+                    // при ошибке возвращаем её на фронт в виде JSON
+                    $this->returnError();
+                }
             }
+            // создаем заказ
+            $this->createOrder();
         }
         if ($this->checkType(["cart"])) {
+            // для аякс запроса карточки (когда есть ошибки) ставим флаг аякса
+            if ($_POST["ajax"] == "Y") {
+                $this->ajax = true;
+            }
+            // устанавливаем корзину
+            if (!$this->setBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
+            // применяем промокоды
+            $this->getCoupon();
+            // проверяем корзину
+            if (!$this->checkBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
+            $this->getItems();
+            $this->getAvailableOffersSizesForItems();
             // получаем поля юзера
             $this->getUser();
             // устанавливаем стандартизированное название региона для dadata
@@ -226,24 +221,71 @@ class QsoftOrderComponent extends ComponentHelper
             // получаем цену карточки с оплатой
             $this->getBasketsPrices();
         }
-        if ($this->checkType(["order", "1click"])) {
+        if ($this->checkType(["coupon"])) {
+            // проверяем купон
+            $this->checkCoupon();
+        }
+        if ($this->checkType(["basketAdd", "basketDel"])) {
+            // добавляем в корзину
+            $offerId = intval($_POST["offerId"]);
+            if ($this->checkType(["basketAdd"])) {
+                $quantity = intval($_POST["quantity"]);
+                // добавляем в корзину
+                $this->addToBasket($offerId, $quantity);
+            } else {
+                // получаем список доставок
+                $this->getDeliveries();
+                $this->getDeliveryWays();
+                // удаляем из корзины
+                $this->deleteFromBasket($offerId);
+            }
+        }
+        if ($this->checkType(["1click"])) {
+            // устанавливаем доставку
+            $this->setDeliveryId();
+            // устанавливаем оплату
+            $this->setPaymentId();
+            // проверяем данные
+            if (!$this->checkData()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
+            // устанавливаем корзину
+            if (!$this->setBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
+            // проверяем корзину
+            if (!$this->checkBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
             // проверяем юзера
             $this->checkUser();
             $this->updateUserProfile();
-//            // обновляем подписки юзера Sailplay
-//            $this->updateSubscribe();
-            if (!empty($this->arResult["ERRORS"])) {
-                if (empty($this->arResult['ERRORS'])) {
-                    // при ошибке возвращаем её на фронт в виде JSON
-                    $this->returnError();
-                }
-            }
             // создаем заказ
             $this->createOrder();
         }
+        if ($this->checkType(["offers"])) {
+            // устанавливаем корзину
+            if (!$this->setBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
+            // применяем промокоды
+            $this->getCoupon();
+            // проверяем корзину
+            if (!$this->checkBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
+            // получаем данные для вывода
+            $this->getItems();
+            $this->getAvailableOffersSizesForItems();
+        }
+
         $this->arResult['DADATA_PROPS'] = $this->arDadataProps;
         $this->includeComponentTemplate();
-        $GLOBALS["BASKET_VIEW"] = $this->arResult["BASKET"];
     }
 
     //обновление авторизованного профиля на сайте информацией из заказа
@@ -273,13 +315,6 @@ class QsoftOrderComponent extends ComponentHelper
                 $data['new']['PHONE'] = $this->postProps['PHONE'];
             }
         }
-        if (!empty($data['new'])) {
-            if ($USER->IsAuthorized()) {
-                $taskManager = new TaskManager();
-                $taskManager->setUser($this->user['ID']);
-                $taskManager->addTask('addInfo', $data);
-            }
-        }
     }
 
     private function getUserInfoCookie()
@@ -295,33 +330,6 @@ class QsoftOrderComponent extends ComponentHelper
         $this->arResult['COOKIE_FIO'] = $fio;
         $this->arResult['COOKIE_EMAIL'] = $email;
         $this->arResult['COOKIE_PHONE'] = $phone;
-    }
-
-    private function updateSubscribe()
-    {
-        global $USER;
-        $data = [];
-        $data['subscribe']['email'] = isset($this->postProps['SUBSCRIBE_EMAIL']) && $this->postProps['SUBSCRIBE_EMAIL'] == 'on';
-        $data['subscribe']['sms'] = isset($this->postProps['SUBSCRIBE_SMS']) && $this->postProps['SUBSCRIBE_SMS'] == 'on';
-        if (!$data['subscribe']['email'] && !$data['subscribe']['sms']) {
-            return;
-        }
-        $data['source'] = $this->type;
-        $taskManager = new TaskManager();
-        $taskManager->setUser($this->user['ID']);
-        $taskManager->addTask('subscribe', $data);
-        //обновление полей юзера
-        $arFields = [];
-        if ($data['subscribe']['sms']) {
-            $arFields['UF_SUBSCRIBE_SMS'] = 1;
-        }
-        if ($data['subscribe']['email']) {
-            $arFields['UF_SUBSCRIBE_EMAIL'] = 1;
-        }
-        if (!empty($arFields)) {
-            EventHelper::killEvents(['OnBeforeUserUpdate', 'OnAfterUserUpdate'], 'main');
-            $USER->Update($this->user['ID'], $arFields);
-        }
     }
 
     // функции возврата данных
@@ -390,57 +398,50 @@ class QsoftOrderComponent extends ComponentHelper
     private function checkCoupon()
     {
         $this->arResult["COUPON"] = $_REQUEST["coupon"];
-        $needLocalCoupon = $_REQUEST["needLocalCoupon"] === 'Y' ? true : false;
         if (!$this->arResult["COUPON"]) {
             $this->arResult["ERRORS"][] = "Промокод не указан";
             $this->returnError();
         }
         // очищаем имеющиеся купоны
-        $this->delCoupon(true, $needLocalCoupon);
+        $this->delCoupon(true);
         // добавляем новый
         $res = CouponsManager::add($this->arResult["COUPON"]);
         if ($res) {
             $arCoupons = CouponsManager::get(true, array(), true, true);
             $arCoupon = array_shift($arCoupons);
-            $this->checkCouponStatus($arCoupon, $needLocalCoupon);
+            $this->checkCouponStatus($arCoupon);
         } else {
             $this->arResult["ERRORS"][] = "Промокод не существует";
             $this->returnError();
         }
     }
 
-    private function delCoupon($check = false, $needLocalCoupon = null)
+    private function delCoupon($check = false)
     {
         $arCoupons = CouponsManager::get(true, array(), true, true);
         if (!empty($arCoupons)) {
             foreach ($arCoupons as $arCoupon) {
                 if ($check && $this->arResult["COUPON"] == $arCoupon["COUPON"]) {
-                    $this->checkCouponStatus($arCoupon, $needLocalCoupon);
+                    $this->checkCouponStatus($arCoupon);
                 }
                 CouponsManager::delete($arCoupon["COUPON"]);
             }
         }
     }
 
-    private function checkCouponStatus($arCoupon, $needLocalCoupon = null)
+    private function checkCouponStatus($arCoupon)
     {
         if ($arCoupon["STATUS"] == CouponsManager::STATUS_NOT_FOUND) {
             $this->arResult["ERRORS"][] = "Промокод не существует";
         } elseif ($arCoupon["STATUS"] == CouponsManager::STATUS_FREEZE) {
             $this->arResult["ERRORS"][] = "Промокод использован максимальное количество раз";
-        } elseif ($arCoupon["STATUS"] == CouponsManager::STATUS_ENTERED || $arCoupon["STATUS"] == CouponsManager::STATUS_NOT_APPLYED || $arCoupon["STATUS"] == CouponsManager::STATUS_APPLYED) {
+        } elseif ($arCoupon["STATUS"] == CouponsManager::STATUS_ENTERED
+            || $arCoupon["STATUS"] == CouponsManager::STATUS_NOT_APPLYED
+            || $arCoupon["STATUS"] == CouponsManager::STATUS_APPLYED
+        ) {
             if ($this->loadBasket()) {
                 $this->applyCoupon();
-                if ($needLocalCoupon !== null) {
-                    if (empty($this->offers)) {
-                        $this->checkBasketAvailability();
-                    }
-                    $this->getItems();
-                    $this->getBasketsPrices();
-                    $this->returnOk($needLocalCoupon ? $this->arResult['PRICE']['LOCAL'] : $this->arResult['PRICE']['NOT_LOCAL'], $this->arResult["COUPON"]);
-                } else {
-                    $this->returnOk(floor($this->basket->getPrice()), $this->arResult["COUPON"]);
-                }
+                $this->returnOk(floor($this->basket->getPrice()), $this->arResult["COUPON"]);
             } else {
                 $this->arResult["ERRORS"][] = "Не удалось применить промокод";
             }
@@ -674,12 +675,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkUser()
     {
-        if ($this->user["ID"]) {
-            $this->checkUserSailplay();
-            return;
-        }
         $this->setNewUserFields();
-        $this->checkUserSailplay(true);
     }
 
     private function setNewUserFields()
@@ -738,26 +734,6 @@ class QsoftOrderComponent extends ComponentHelper
         } else {
             $this->arResult["ERRORS"][] = "Не удалось создать пользователя";
             $this->returnError();
-        }
-    }
-
-    private function checkUserSailplay($newBySite = false)
-    {
-        $data = [];
-        $data['type_order'] = $this->type;
-        $data['order_phone'] = $this->postProps['PHONE'];
-        $data['order_email'] = $this->postProps['EMAIL'];
-        if ($newBySite) {
-            $data['send_register_tag'] = true;
-        }
-        $_SESSION['SUC_REG'] = 'Y';
-
-        $taskManager = new TaskManager();
-        $taskManager->setUser($this->user['ID']);
-        try {
-            $taskManager->addTask('register', $data);
-        } catch (TaskManagerException $e) {
-            qsoft_logger($e->getMessage(), 'eventsExceptions.log', true);
         }
     }
 
@@ -1319,7 +1295,7 @@ class QsoftOrderComponent extends ComponentHelper
                 "PRICE" => $arItem->calculate()->getPrice(),
                 "SORT" => $arItem->getSort(),
             ];
-            if (strpos($arItem->getname(), "ПВЗ") !== false) {
+            if (strpos($arItem->getName(), "ПВЗ") !== false) {
                 $this->arPvzIds[] = $deliveryId;
             }
         }
@@ -1335,21 +1311,18 @@ class QsoftOrderComponent extends ComponentHelper
 
         if (array_intersect($this->arPvzIds, $arDelId)) {
             $flag = false; //Флаг присутствия точек ПВЗ для выбранного города
+            CBitrixComponent::includeComponentClass("qsoft:pvzmap"); // Подлючаем класс чтобы получить список ПВЗ в городе
+            $PVZMap = new PVZMap();
 
-            if (Loader::includeModule('qsoft.pvzmap')) {
-                CBitrixComponent::includeComponentClass("qsoft:pvzmap"); // Подлючаем класс чтобы получить список ПВЗ в городе
-                $PVZMap = new PVZMap();
+            $arPVZ = $PVZMap->getPVZCollectionByCityAsArray();
 
-                $arPVZ = $PVZMap->getPVZCollectionByCityAsArray();
-
-                foreach ($arPVZ['PVZ'] as $pvz) {
-                    if (count($pvz) > 0) {
-                        $flag = true;
-                        break;
-                    }
+            foreach ($arPVZ['PVZ'] as $pvz) {
+                if (count($pvz) > 0) {
+                    $flag = true;
+                    break;
                 }
-                $arDelivery = $this->filterEmptyPVZDeliveries($arDelivery, $arPVZ['PVZ']);
             }
+            $arDelivery = $this->filterEmptyPVZDeliveries($arDelivery, $arPVZ['PVZ']);
 
             if (!$flag) {
                 foreach ($this->arPvzIds as $delId) {
