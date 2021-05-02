@@ -7,6 +7,7 @@ use Bitrix\Main\Loader;
 use Likee\Site\Helper;
 use Likee\Site\Helpers\HL;
 use Qsoft\Helpers\ComponentHelper;
+use Qsoft\Helpers\PriceUtils;
 
 /**
  * Class QsoftCatalogSection
@@ -97,6 +98,7 @@ class QsoftCatalogSection extends ComponentHelper
         "PROPERTY_SIZE",
         "PROPERTY_COLOR",
         "PROPERTY_BASEPRICE",
+        "PROPERTY_BASEWHOLEPRICE",
     ];
 
     /**
@@ -680,6 +682,9 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$this->products[$arItem["PROPERTY_CML2_LINK_VALUE"]]) {
                 continue;
             }
+            if (!isset($arItem['PROPERTY_BASEPRICE_VALUE']) || !isset($arItem['PROPERTY_BASEWHOLEPRICE_VALUE'])) {
+                continue;
+            }
             $sizeRes = CIBlockElement::GetProperty(IBLOCK_OFFERS, $arItem["ID"], "sort", "asc", ['CODE' => 'SIZE']);
             $size = $sizeRes->GetNext();
             $arOffers[$arItem["ID"]] = [
@@ -687,6 +692,7 @@ class QsoftCatalogSection extends ComponentHelper
                 'PROPERTY_SIZE_VALUE' => $size['VALUE'],
                 'PROPERTY_COLOR_VALUE' => $arItem['PROPERTY_COLOR_VALUE'],
                 'PROPERTY_BASEPRICE_VALUE' => $arItem['PROPERTY_BASEPRICE_VALUE'],
+                'PROPERTY_BASEWHOLEPRICE_VALUE' => $arItem['PROPERTY_BASEWHOLEPRICE_VALUE'],
             ];
         }
 
@@ -1349,11 +1355,17 @@ class QsoftCatalogSection extends ComponentHelper
                 $items[$pid] = $this->products[$pid];
             }
 
-            if ($value["PROPERTY_BASEPRICE_VALUE"] && (!isset($items[$pid]['PRICE']) || isset($items[$pid]['PRICE']) && $value["PROPERTY_BASEPRICE_VALUE"] < $items[$pid]['PRICE'])) {
-                $items[$pid]['PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"];
-                $items[$pid]['OLD_PRICE'] = $value["PROPERTY_BASEPRICE_VALUE"] + 1000;
-                $items[$pid]['PERCENT'] = (int)(100 - $items[$pid]['PRICE'] * 100 / $items[$pid]['OLD_PRICE']);
-                $items[$pid]['SEGMENT'] = 'red';
+            $price = PriceUtils::getPrice($value["PROPERTY_BASEWHOLEPRICE_VALUE"], $value["PROPERTY_BASEPRICE_VALUE"]);
+            if (
+                (
+                    !isset($items[$pid]['PRICE'])
+                    || isset($items[$pid]['PRICE'])
+                    && $price['PRICE'] < $items[$pid]['PRICE']
+                )
+            ) {
+                $items[$pid]['PRICE'] = $price['PRICE'];
+                $items[$pid]['OLD_PRICE'] = $price['OLD_PRICE'];
+                $items[$pid]['PERCENT'] = $price['DISCOUNT'];
             }
             $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
             $items[$pid]["COLORS"][] = $value["PROPERTY_COLOR_VALUE"];
@@ -1361,10 +1373,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         foreach ($items as $key => &$item) {
-            if (!isset($item['PRICE']) && !$isFavoritesCatalog) {
-                unset($items[$key]);
-                continue;
-            }
             $item["SIZES"] = array_unique($item["SIZES"]);
             $item["COLORS"] = array_unique($item["COLORS"]);
         }

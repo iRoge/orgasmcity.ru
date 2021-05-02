@@ -1,5 +1,5 @@
 <?
-define('DOMEN_NAME', 'hookahmove.ru');
+define('DOMEN_NAME', 'orgasmcity.ru');
 define('BX_DISABLE_INDEX_PAGE', true);
 
 // ID инфоблоков
@@ -11,8 +11,6 @@ define('MAIN_SECTION_ID', 574);
 
 define('HL_ARTICLES_SKU', 217);
 define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'] . '/local/logs/log.log');
-define('BUY_IN_CREDIT', false); //не забудьте активировать платежную систему
-define('ONLINE_STORE_ID', 209); //особенный склад, он не показывается в списке товаров, для него не доступен самовывоз
 define('OFFER_FILENAME', '/upload/files/offer.pdf'); // Путь к файлу с политикой конфиденциальности
 
 // ID типов местоположений

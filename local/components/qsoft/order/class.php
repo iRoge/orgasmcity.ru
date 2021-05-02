@@ -1,14 +1,10 @@
 <?
 
 use Bitrix\Highloadblock\HighloadBlockTable as HLBT;
-use Bitrix\Main\Type\DateTime as DateTimeAlias;
-use Likee\Site\Helper;
-use Likee\Site\Helpers\HL;
 use \Likee\Site\User;
 use \Bitrix\Main\Loader;
 use \Bitrix\Main\UserTable;
 use \Bitrix\Main\Config\Option;
-use \Bitrix\Catalog\StoreTable;
 use \Bitrix\Currency\CurrencyManager;
 use \Bitrix\Sale\Fuser;
 use \Bitrix\Sale\Order;
@@ -20,7 +16,7 @@ use Qsoft\DeliveryWays\WaysByDeliveryServicesTable;
 use Qsoft\DeliveryWays\WaysDeliveryTable;
 use \Qsoft\Helpers\ComponentHelper;
 use Qsoft\Helpers\EventHelper;
-use \Qsoft\Helpers\IBlockHelper;
+use Qsoft\Helpers\PriceUtils;
 use Qsoft\PaymentWays\WaysByPaymentServicesTable;
 use Qsoft\PaymentWays\WaysPaymentTable;
 use Qsoft\Pvzmap\PVZFactory;
@@ -228,6 +224,8 @@ class QsoftOrderComponent extends ComponentHelper
         if ($this->checkType(["basketAdd", "basketDel"])) {
             // добавляем в корзину
             $offerId = intval($_POST["offerId"]);
+            // загружаем корзину
+            $this->basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
             if ($this->checkType(["basketAdd"])) {
                 $quantity = intval($_POST["quantity"]);
                 // добавляем в корзину
@@ -748,7 +746,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->arResult["ERRORS"] = "Не удалось загрузить корзину";
             return false;
         } else {
-            // получаем ТП из POST и создаем корзину
+            // получаем ТП из POST и создаем корзину в случае 1click
             return $this->getPostItems();
         }
     }
@@ -795,8 +793,6 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function addToBasket($offerId, $quantity)
     {
-        // загружаем корзину
-        $this->basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
         // проверяем корзину на ограничения
         $this->checkBasketPositionLimit(1);
         if (count($this->arResult["ERRORS"]) > 0) {
@@ -828,12 +824,7 @@ class QsoftOrderComponent extends ComponentHelper
                 if ($res->isSuccess()) {
                     $prop = $basketItem->getPropertyCollection();
                     $props = $prop->getPropertyValues();
-                    $this->returnOk(1, false, false, ['offerId' => $offerId,
-                            'prodId' => $props['PRODUCT_ID']['VALUE'],
-                            'price1' => $basketItem->getPrice(),      // Цена за единицу
-                            'price2' => $basketItem->getFinalPrice(),
-                            'size' => $props['SIZE']['VALUE'],
-                        ]);
+                    $this->returnOk(1);
                 }
             }
         }
@@ -843,8 +834,6 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function deleteFromBasket($offerId)
     {
-        // загружаем корзину
-        $this->basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
         // проверяем есть ли ТП с таким ID
         // $this->basket->getExistsItem не работает, тк он сверяет все свойства, а у нас их ещё нет
         $arBasketItems = $this->basket->getBasketItems();
@@ -1005,9 +994,9 @@ class QsoftOrderComponent extends ComponentHelper
         } else {
             $full = false;
         }
-        // получаем ID предложений
-        $this->offers = $this->getOfferIds($full);
-        // если нет ID предложений
+        // получаем предложения из корзины
+        $this->offers = $this->getOffers($full);
+        // если нет предложений
         if (empty($this->offers)) {
             if (!$full) {
                 // при оформлении любым типом корзина не может быть пустой
@@ -1015,11 +1004,9 @@ class QsoftOrderComponent extends ComponentHelper
             }
             return;
         }
-        // получаем данные по ТП из БД
-        $this->offers = $this->getOffers($this->offers, $full);
 
         // формируем ID товаров
-        $arProductIds = $this->getProductIds($this->offers);
+        $arProductIds = array_column($this->offers, 'PRODUCT_ID');
 
         // если нет ID продуктов
         if (empty($arProductIds)) {
@@ -1072,13 +1059,15 @@ class QsoftOrderComponent extends ComponentHelper
     }
 
     // функции товаров
-    private function getOfferIds($full = true)
+    private function getOffers($full = true)
     {
         $basketItems = $this->basket->getBasketItems();
-        $arOffers = array();
+        if (empty($basketItems)) {
+            return null;
+        }
+        $arOffers = [];
         foreach ($basketItems as $arItem) {
             $offerId = $arItem->getProductId();
-            $basketPropertyCollection = $arItem->getPropertyCollection();
             if ($full) {
                 $arOffers[$offerId] = [
                     "QUANTITY" => $arItem->getQuantity(),
@@ -1088,19 +1077,17 @@ class QsoftOrderComponent extends ComponentHelper
                 $arOffers[$offerId] = $offerId;
             }
         }
-        return $arOffers;
-    }
 
-    private function getOffers($arOffers, $full = true)
-    {
-        $arSelect = array(
+        $arSelect = [
             "ID",
             "IBLOCK_ID",
             "PROPERTY_CML2_LINK",
-        );
+        ];
         if ($full) {
             $arSelect[] = "PROPERTY_SIZE";
             $arSelect[] = "PROPERTY_COLOR";
+            $arSelect[] = "PROPERTY_BASEWHOLEPRICE";
+            $arSelect[] = "PROPERTY_BASEPRICE";
         }
         $res = CIBlockElement::GetList(
             [],
@@ -1115,41 +1102,35 @@ class QsoftOrderComponent extends ComponentHelper
         $arOffersNew = [];
         while ($arItem = $res->Fetch()) {
             if ($full) {
-                $arOffersNew[$arItem["ID"]] = array(
+                $price = PriceUtils::getPrice($arItem["PROPERTY_BASEWHOLEPRICE_VALUE"], $arItem["PROPERTY_BASEPRICE_VALUE"]);
+                $arOffersNew[$arItem["ID"]] = [
                     "PRODUCT_ID" => $arItem["PROPERTY_CML2_LINK_VALUE"],
                     "SIZE" => $arItem["PROPERTY_SIZE_VALUE"],
                     "COLOR" => $arItem["PROPERTY_COLOR_VALUE"],
                     "QUANTITY" => $arOffers[$arItem["ID"]]["QUANTITY"],
                     "BASKET_PRICE" => $arOffers[$arItem["ID"]]["BASKET_PRICE"],
-                    "IS_LOCAL" => $arOffers[$arItem["ID"]]["IS_LOCAL"],
-                );
+                    "BRANCH_PRICE" => $price["PRICE"],
+                    "BRANCH_OLD_PRICE" => $price["OLD_PRICE"],
+                ];
             } else {
-                $arOffersNew[$arItem["ID"]] = array(
+                $arOffersNew[$arItem["ID"]] = [
                     "PRODUCT_ID" => $arItem["PROPERTY_CML2_LINK_VALUE"],
-                );
+                ];
             }
         }
+
         return $arOffersNew;
     }
 
     private function getItems()
     {
-        $arProductIds = $this->getProductIds($this->offers);
+        $arProductIds = array_column($this->offers, 'PRODUCT_ID');
         // если нет ID продуктов, то ничего не делаем
         if (empty($arProductIds)) {
             return;
         }
         $arProducts = $this->getProducts($arProductIds);
         $this->setItems($this->offers, $arProducts);
-    }
-
-    private function getProductIds($arOffers)
-    {
-        $arProductIds = array();
-        foreach ($arOffers as $arItem) {
-            $arProductIds[$arItem["PRODUCT_ID"]] = $arItem["PRODUCT_ID"];
-        }
-        return $arProductIds;
     }
 
     private function getProducts($arProductIds)
@@ -1203,13 +1184,10 @@ class QsoftOrderComponent extends ComponentHelper
         $this->arResult["DISCOUNT"] = 0;
         foreach ($arOffers as $id => $value) {
             $src = [];
-            if ($arProducts[$value["PRODUCT_ID"]]["DETAIL_PICTURE"]) {
-                $src[] = $arProducts[$value["PRODUCT_ID"]]["DETAIL_PICTURE"];
-            }
             if ($arProducts[$value["PRODUCT_ID"]]["PREVIEW_PICTURE"]) {
                 $src[] = $arProducts[$value["PRODUCT_ID"]]["PREVIEW_PICTURE"];
             }
-            $value["BASKET_PRICE"] = floor($value["BASKET_PRICE"]);
+            $value["PRICE"] = floor($value["BASKET_PRICE"]);
             $arItem = [
                 "PRODUCT_ID" => $value["PRODUCT_ID"],
                 "CODE" => $arProducts[$value["PRODUCT_ID"]]["CODE"],
@@ -1220,7 +1198,6 @@ class QsoftOrderComponent extends ComponentHelper
                 "QUANTITY" => $value["QUANTITY"],
                 "PRICE" => $value["BASKET_PRICE"],
                 "OLD_CATALOG_PRICE" => $value["BRANCH_OLD_PRICE"],
-                "BRANCH" => $value["BRANCH"],
             ];
             if ($this->arResult["COUPON"]) {
                 $arItem["OLD_PRICE"] = $value["BRANCH_PRICE"];
@@ -1231,6 +1208,7 @@ class QsoftOrderComponent extends ComponentHelper
             if (!in_array($id, $this->arResult['OFFERS'])) {
                 $this->arResult['OFFERS'][] = $id;
             }
+
         }
     }
 

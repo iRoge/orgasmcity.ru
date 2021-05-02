@@ -161,23 +161,11 @@ global $LOCATION, $APPLICATION; ?>
                                             <div class="orders__col">
                                                 <span class="orders__label">Цена:&nbsp;</span>
                                                 <span>
-                                                <? if ($arItem['BRANCH'] == 'Red') : ?>
-                                                    <? if (isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE']) : ?>
-                                                        <span class="orders__old-catalog-price--red"><?= number_format($arItem['OLD_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                    <? else : ?>
-                                                        <span class="orders__old-catalog-price"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                    <? endif ?>
+                                                <? if ($arItem['OLD_CATALOG_PRICE'] == $arItem['PRICE']) : ?>
+                                                    <span class="orders__old-catalog-price--red"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
+                                                <? else : ?>
+                                                    <span class="orders__old-catalog-price--yellow-sale"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
                                                 <? endif ?>
-                                                    <? if ($arItem['BRANCH'] == 'White') : ?>
-                                                        <span class="orders__old-catalog-price--white"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                    <? endif ?>
-                                                    <? if ($arItem['BRANCH'] == 'Yellow') : ?>
-                                                        <? if ($arItem['OLD_CATALOG_PRICE'] == $arItem['PRICE']) : ?>
-                                                            <span class="orders__old-catalog-price--yellow"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                        <? else : ?>
-                                                            <span class="orders__old-catalog-price--yellow-sale"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                        <? endif ?>
-                                                    <? endif ?>
                                             </span>
                                             </div>
 
@@ -190,11 +178,7 @@ global $LOCATION, $APPLICATION; ?>
                                             <div class="orders__col">
                                                 <span class="orders__label">Итого:&nbsp;</span>
                                                 <span>
-                                                <? if ($arItem['BRANCH'] == 'Red') : ?>
-                                                    <span class="orders__result-price--red"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                <? else : ?>
-                                                    <span class="orders__result-price"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                <? endif ?>
+                                                <span class="orders__result-price"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
                                             </span>
                                             </div>
                                         </div>

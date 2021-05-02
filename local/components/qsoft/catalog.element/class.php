@@ -15,6 +15,7 @@ use Likee\Site\Helpers\HL;
 use Qsoft\Helpers\ComponentHelper;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
+use Qsoft\Helpers\PriceUtils;
 
 /**
  * Class QsoftCatalogElement
@@ -102,13 +103,13 @@ class QsoftCatalogElement extends ComponentHelper
                 $this->registerTag('SEO_META');
             }
             $arEntity = $this->$method();
-//            if (!empty($arEntity)) {
-//                $this->endTagCache();
-//                $this->saveToCache($key, $arEntity);
-//            } else {
-//                $this->abortTagCache();
-//                $this->abortCache();
-//            }
+            if (!empty($arEntity)) {
+                $this->endTagCache();
+                $this->saveToCache($key, $arEntity);
+            } else {
+                $this->abortTagCache();
+                $this->abortCache();
+            }
         }
         return $arEntity;
     }
@@ -180,12 +181,18 @@ class QsoftCatalogElement extends ComponentHelper
                 [],
                 ['CODE' => 'BasePrice']
             )['BasePrice'];
-            if (!$basePrice['VALUE']) {
+            $baseWholePrice = $objOffer->GetProperties(
+                [],
+                ['CODE' => 'BasewholePrice']
+            )['BasewholePrice'];
+            if (!$basePrice['VALUE'] || !$baseWholePrice['VALUE']) {
                 continue;
             }
-            $basePrice['OLD_VALUE'] = $basePrice['VALUE'];
-            $basePrice['VALUE'] = $basePrice['VALUE'] - 1000;
-            $basePrice['PERCENT'] = (int)(100 - $basePrice['VALUE'] * 100 / $basePrice['OLD_VALUE']);
+            $price = PriceUtils::getPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
+
+            $basePrice['OLD_VALUE'] = $price['OLD_PRICE'];
+            $basePrice['VALUE'] = $price['PRICE'];
+            $basePrice['PERCENT'] = $price['DISCOUNT'];
             $offerFields = $objOffer->GetFields();
             $arOffers[$offerFields['ID']] = $offerFields;
             $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $basePrice;

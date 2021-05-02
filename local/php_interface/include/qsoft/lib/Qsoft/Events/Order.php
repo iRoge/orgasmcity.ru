@@ -12,6 +12,7 @@ use \Bitrix\Sale\Fuser;
 use Bitrix\Catalog\StoreTable;
 use \Likee\Exchange\Tables\ReserveStorageTable;
 use Bitrix\Sale\Order as Sale;
+use Qsoft\Helpers\PriceUtils;
 use \Qsoft\Sailplay\Tasks\TaskManager;
 
 class Order
@@ -81,17 +82,19 @@ class Order
                 "ID",
                 "IBLOCK_ID",
                 "PROPERTY_CML2_LINK",
-                "PROPERTY_CML2_LINK",
+                'PROPERTY_BASEWHOLEPRICE',
+                'PROPERTY_BASEPRICE',
             ]
         )->Fetch();
         // если нет ID товара, то ничего не делаем
         if (!$arOffer["PROPERTY_CML2_LINK_VALUE"]) {
             return;
         }
-        $productId = $arOffer["PROPERTY_CML2_LINK_VALUE"];
-        $arPrice = [];
-//        pre($arFields);
-//        die;
+        $arPrice = PriceUtils::getPrice($arOffer['PROPERTY_BASEWHOLEPRICE_VALUE'], $arOffer['PROPERTY_BASEPRICE_VALUE']);
+        $arFields['PRICE']['PRICE'] = $arPrice['PRICE'];
+        $arFields['DISCOUNT_PRICE'] = $arPrice['PRICE'];
+        $arFields['RESULT_PRICE']['BASE_PRICE'] = $arPrice['PRICE'];
+        $arFields['RESULT_PRICE']['DISCOUNT_PRICE'] = $arPrice['PRICE'];
     }
 
     protected static function log($message)
