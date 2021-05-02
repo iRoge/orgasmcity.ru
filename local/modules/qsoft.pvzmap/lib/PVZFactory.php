@@ -114,7 +114,7 @@ class PVZFactory
      * @throws \Bitrix\Main\ObjectPropertyException
      * @throws \Bitrix\Main\SystemException
      */
-    public static function checkDeliverySrv($arDeliverySrv, $local)
+    public static function checkDeliverySrv($arDeliverySrv)
     {
         if (empty(self::$arPVZ)) {
             self::$arPVZ = self::getClassMap(self::loadPVZ());
@@ -123,10 +123,9 @@ class PVZFactory
         reset(self::$arPVZ);//Сбрасываем указатель чтобы цикл каждый раз отрабатывал
         foreach (self::$arPVZ as $class_name => $PVZ_name) {
             if (strpos($arDeliverySrv['NAME'], $PVZ_name) !== false) { // если строка точно не найдена
-                $local_key = $local == true ? 'LOCAL' : 'NOT_LOCAL';
                 $GLOBALS['ACCEPTED_PVZ'][$class_name] = self::$arPVZ[$class_name]; //Собираем список ПВЗ доступных для данного местоположения
-                $GLOBALS['PVZ_PRICES'][$local_key][$class_name] = $arDeliverySrv['PRICE']; //В отдельный массив собираем цены сервисов доставок
-                $GLOBALS['PVZ_IDS'][$local_key][$class_name] = $arDeliverySrv['ID'];
+                $GLOBALS['PVZ_PRICES'][$class_name] = $arDeliverySrv['PRICE']; //В отдельный массив собираем цены сервисов доставок
+                $GLOBALS['PVZ_IDS'][$class_name] = $arDeliverySrv['ID'];
                 return true;
             }
         }

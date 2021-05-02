@@ -279,7 +279,6 @@ global $LOCATION, $APPLICATION; ?>
                                 <!-- form -->
                                 <div class="checkout__form hidden-block">
                                     <input type="hidden" name="action" value="order">
-                                    <input type="hidden" name="PROPS[IS_LOCAL]" value="Y" hidden>
                                     <div class="checkout__form-fields form">
                                         <div class="form__errors" id="form__errors-block"></div>
                                         <div class="form__field form__field--payment">

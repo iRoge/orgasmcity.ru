@@ -67,7 +67,6 @@ class PVZMap extends ComponentHelper
         //}
 
         $arReturn['CENTER'] = $LOCATION->getLocationCoords();
-
         //Сборка массива с данными о службах доставки
         $arClasses = array_keys($arReturn['CLASS_MAP']);
         $arReturn['DELIVERY_SERVICES'] = $this->getDeleliveriesArray($arClasses);
@@ -109,16 +108,9 @@ class PVZMap extends ComponentHelper
         $arReturn = [];
 
         foreach ($arClasses as $class_name) {
-            if (isset($GLOBALS['PVZ_IDS']['LOCAL'][$class_name])) {
-                $arReturn['LOCAL'][$class_name]['ID'] = (string)$GLOBALS['PVZ_IDS']['LOCAL'][$class_name];
-                $arReturn['LOCAL'][$class_name]['PRICE'] = (string)$GLOBALS['PVZ_PRICES']['LOCAL'][$class_name];
-            }
-        }
-
-        foreach ($arClasses as $class_name) {
-            if (isset($GLOBALS['PVZ_IDS']['NOT_LOCAL'][$class_name])) {
-                $arReturn['NOT_LOCAL'][$class_name]['ID'] = (string)$GLOBALS['PVZ_IDS']['NOT_LOCAL'][$class_name];
-                $arReturn['NOT_LOCAL'][$class_name]['PRICE'] = (string)$GLOBALS['PVZ_PRICES']['NOT_LOCAL'][$class_name];
+            if (isset($GLOBALS['PVZ_IDS'][$class_name])) {
+                $arReturn[$class_name]['ID'] = (string)$GLOBALS['PVZ_IDS'][$class_name];
+                $arReturn[$class_name]['PRICE'] = (string)$GLOBALS['PVZ_PRICES'][$class_name];
             }
         }
 

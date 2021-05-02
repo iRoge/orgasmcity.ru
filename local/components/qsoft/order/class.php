@@ -1404,6 +1404,7 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"][] = $paymentId;
             }
         }
+        $this->arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"] = array_unique($this->arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"]);
         return $arPayment;
     }
 
@@ -1456,7 +1457,7 @@ class QsoftOrderComponent extends ComponentHelper
                 }
             }
         }
-
+        $this->arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"] = array_unique($this->arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"]);
         return $arPayments;
     }
 
@@ -1749,7 +1750,7 @@ class QsoftOrderComponent extends ComponentHelper
             $flag = false;
             foreach ($arDeliveryWay['DELIVERY'] as $delivery) {
                 if (strpos($this->arResult["DELIVERY"]["ARRAY"][$delivery]['NAME'], 'ПВЗ') !== false) {
-                    if (PVZFactory::checkDeliverySrv($this->arResult["DELIVERY"]["ARRAY"][$delivery], true)) {
+                    if (PVZFactory::checkDeliverySrv($this->arResult["DELIVERY"]["ARRAY"][$delivery])) {
                         $arDeliveryWay['PVZ'] = true;
                         $flag = true;
                     };
