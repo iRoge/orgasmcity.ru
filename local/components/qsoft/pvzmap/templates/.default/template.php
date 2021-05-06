@@ -66,7 +66,7 @@
     <script>
         window.loadPVZMap = function(){
             $('.load-more-btn-loader').show();
-            if (window.pvzmap === undefined){
+            if (window.pvzmap === undefined) {
                 $.ajax({
                     url: '/local/components/qsoft/pvzmap/ajax.php',
                     data: {

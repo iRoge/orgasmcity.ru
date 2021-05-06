@@ -63,7 +63,7 @@ class CDEK implements iPvz
 
     public function getData()
     {
-        //Обертка  prepareData
+        //Обертка prepareData
         return json_encode($this->prepareData());
     }
 

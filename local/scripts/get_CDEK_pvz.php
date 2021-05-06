@@ -1,7 +1,11 @@
 <?php
-$_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__) . "/../../");
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
+$_SERVER['DOCUMENT_ROOT'] = dirname(dirname(__DIR__));
+require_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
+
+while (ob_get_level()) {
+    ob_end_flush();
+}
 
 use Bitrix\Main\Loader;
 

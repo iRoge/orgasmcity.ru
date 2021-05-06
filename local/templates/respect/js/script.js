@@ -789,7 +789,7 @@ $(function() {
     });
     $(document).on('click', '.js-filter-toggle-mobile', function() {
         $('.podlozhka').show();
-        $('body').css('overflow-y', 'hidden');
+        $('body').css('overflow', 'hidden');
         $('.js-filter-mobile-close').show();
         $(".js-filter-col").removeClass("catalog__content-col--sidebar");
     });

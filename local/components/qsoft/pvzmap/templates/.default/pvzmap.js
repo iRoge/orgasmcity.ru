@@ -76,7 +76,7 @@ window.panel = {
     },
 
     choose: function (event, button) {
-        let pvz, id, prepayment, delivery, input, str, address, local, pvzDisabledInputs, pvzEnabledInputs, paymentIds;
+        let pvz, id, prepayment, delivery, input, str, address, pvzDisabledInputs, pvzEnabledInputs, paymentIds;
 
         event.preventDefault();
         pvzmap.map.balloon.close();
@@ -89,27 +89,26 @@ window.panel = {
         window[pvz].choose(id, address);
 
         //Меняем форму отправки
-        local = window.isLocalCart ? 'LOCAL' : 'NOT_LOCAL';
-        delivery = pvzObj.DELIVERY_SERVICES[local][pvz];
-        input = $('.checkout__block--delivery').find('.is-pvz' + (window.isLocalCart ? '' : '2'));
+        delivery = pvzObj.DELIVERY_SERVICES[pvz];
+        input = $('.checkout__block--delivery').find('.is-pvz');
         input.attr('id', 'delivery_' + delivery.ID);
         input.siblings('label').attr('for', 'delivery_' + delivery.ID);
         input.attr('data-price', delivery.PRICE);
         input.val(delivery.ID);
         input.prop('checked', true);
         input.addClass('pvz-checked');
-        pvzDisabledInputs =  $(".js__cdek-disabled" + (window.isLocalCart ? '' : '2'));
+        pvzDisabledInputs =  $(".js__cdek-disabled");
         pvzDisabledInputs.addClass("is-hidden");
-        pvzEnabledInputs =  $(".js__cdek-enabled" + (window.isLocalCart ? '' : '2'));
+        pvzEnabledInputs =  $(".js__cdek-enabled");
         pvzEnabledInputs.removeClass("is-hidden");
-        $('js-payment' + (window.isLocalCart ? '-local' : '-not-local') + ':checked').prop('checked', false);
+        $('js-payment-local:checked').prop('checked', false);
         // Деактивируем оплаты
         paymentIds = input.data('allowed-payments-' + pvz.toLowerCase());
         if (typeof(paymentIds) != 'string') {
             paymentIds = String(paymentIds);
         }
         paymentIds = paymentIds.split(',');
-        let paymentSelector = $('.payment__type' + (window.isLocalCart ? '' : '2'));
+        let paymentSelector = $('.payment__type');
         paymentSelector.each(function(index) {
             $(this).find('input').prop('checked', false);
             if (paymentIds.indexOf($(this).find('input').val()) === -1 || (prepayment === 'Y' && $(this).find('input').data('prepayment') !== 'Y')) {
@@ -130,19 +129,19 @@ window.panel = {
         });
         $(arItems).appendTo(paymentSelector.parent());
 
-        let labels = $('#b-order' + (window.isLocalCart ? '' : '2')).find('.delivery-label');
-        $('#b-order' + (window.isLocalCart ? '' : '2') + ' .err-delivery').html('').removeClass('actual');
+        let labels = $('#b-order').find('.delivery-label');
+        $('#b-order .err-delivery').html('').removeClass('actual');
         labels.each(function() {
             $(this).removeClass('red-border');
         });
 
-        $('#cart__delivery-price' + (window.isLocalCart ? '' : '2')).html(delivery.PRICE > 0 ? formatPrice(delivery.PRICE) : 'Бесплатно');
+        $('#cart__delivery-price').html(delivery.PRICE > 0 ? formatPrice(delivery.PRICE) : 'Бесплатно');
         let sum = 0;
-        $(".orders__price" + (window.isLocalCart ? '' : '2')).each(function() {
-            sum += parseInt($(this).find(".orders__price-num" + (window.isLocalCart ? '' : '2')).data("price"));
+        $(".orders__price").each(function() {
+            sum += parseInt($(this).find(".orders__price-num").data("price"));
         });
         sum = parseInt(delivery.PRICE) + parseInt(sum);
-        $('#cart__total-price' + (window.isLocalCart ? '' : '2')).html(formatPrice(sum));
+        $('#cart__total-price').html(formatPrice(sum));
     }
 };
 
@@ -309,14 +308,13 @@ window.pvzmap = {
     },
 
     addPoints: function () {
-        let local = window.isLocalCart ? 'LOCAL' : 'NOT_LOCAL';
         this.pvzClasses.reverse();
         this.pvzClasses.forEach(function (name) {
             let filter = document.querySelector('label[for=' + name + ']');
             let flag = true;
-            if (!pvzObj.DELIVERY_SERVICES[local].hasOwnProperty(name)) {
+            if (!pvzObj.DELIVERY_SERVICES.hasOwnProperty(name)) {
                 flag = false;
-            } else if (!pvzObj.DELIVERY_SERVICES[local][name].PRICE) {
+            } else if (!pvzObj.DELIVERY_SERVICES[name].PRICE) {
                     flag = false;
             }
             if (flag) {
@@ -394,14 +392,13 @@ window.CDEK = {
         let havePaySystem = '';
         let phone = '';
         let images = '';
-        let local = window.isLocalCart === true ? 'LOCAL' : 'NOT_LOCAL';
-        if (!pvzObj.DELIVERY_SERVICES[local].hasOwnProperty('CDEK')) {
+        if (!pvzObj.DELIVERY_SERVICES.hasOwnProperty('CDEK')) {
             return;
         }
-        if (!pvzObj.DELIVERY_SERVICES[local].CDEK.hasOwnProperty('PRICE')) {
+        if (!pvzObj.DELIVERY_SERVICES.CDEK.hasOwnProperty('PRICE')) {
             return;
         }
-        let price = parseInt(pvzObj.DELIVERY_SERVICES[local].CDEK.PRICE) > 0 ? pvzObj.DELIVERY_SERVICES[local].CDEK.PRICE + ' руб.' : 'Бесплатно';
+        let price = parseInt(pvzObj.DELIVERY_SERVICES.CDEK.PRICE) > 0 ? pvzObj.DELIVERY_SERVICES.CDEK.PRICE + ' руб.' : 'Бесплатно';
         if(item.officeImageList) {
         item.officeImageList.forEach(function (img) {
             images += '<a href="' + img.url + '" target="_blanc"><img src="' + img.url + '" width="130" height="130"></a>'
@@ -474,416 +471,6 @@ window.CDEK = {
         } else {
             // isdressingroom_result = item.isDressingRoom;
             isdressingroom_result = true;
-        }
-
-        if (havepaysystem_result && isdressingroom_result) {
-            this.filtered_list.push(item);
-        }
-    },
-
-    changeFilteredPoints: function (havepaysystem, isdressingroom) {
-        this.createClusterer();
-        this.filtered_list = [];
-        this.getItemsByFilter(havepaysystem, isdressingroom);
-        this.clusterer.removeAll();
-        if (this.filtered_list.length > 0) {
-            this.filtered_list.forEach((item, index) => this.addPoint(item, index));
-        }
-        return this.clusterer;
-    },
-
-    choose: function (id, name) {
-        let input, button;
-
-        input = document.getElementById('cart__delivery-cdek-input' + (window.isLocalCart ? '' : '2'));
-        button = document.getElementById('cart__delivery-cdek-button' + (window.isLocalCart ? '' : '2'));
-        input.value = id;
-        button.value = name;
-        pvzmap.close();
-    }
-};
-
-window.IML = {
-    pvzlist: pvzObj.PVZ.IML,
-    filtered_list: [],
-
-    createClusterer: function () {
-        this.clusterer = new ymaps.Clusterer({
-            gridSize: 64,
-            groupByCoordinates: false,
-            hasBalloon: false,
-            hasHint: false,
-            margin: 10,
-            maxZoom: 14,
-            minClusterSize: 3,
-            showInAlphabeticalOrder: false,
-            viewportMargin: 128,
-            zoomMargin: 0,
-            clusterDisableClickZoom: false,
-            preset: 'islands#yellowClusterIcons',
-        });
-    },
-
-    createPoints: function () {
-        this.createClusterer();
-        this.pvzlist.forEach((item, index) => this.addPoint(item, index));
-        return this.clusterer;
-    },
-
-    addPoint: function (item, index) {
-        let havePaySystem = '';
-        let phone = '';
-        let local = window.isLocalCart ? 'LOCAL' : 'NOT_LOCAL';
-        if (!pvzObj.DELIVERY_SERVICES[local].hasOwnProperty('IML')) {
-            return;
-        }
-        if (!pvzObj.DELIVERY_SERVICES[local].IML.hasOwnProperty('PRICE')) {
-            return;
-        }
-        let price = parseInt(pvzObj.DELIVERY_SERVICES[local].IML.PRICE) > 0 ? pvzObj.DELIVERY_SERVICES[local].IML.PRICE + ' руб.' : 'Бесплатно';
-        let Placemark = new ymaps.Placemark(
-            [item.Latitude, item.Longitude],
-            {
-                balloonContent: '<p class="panel-details__block-head">' + (item.Type == 1 ? 'Пункт выдачи IML' : 'Постамат IML') +'</p>' +
-                    '<div class="panel-details__block"><button class="widget__choose btn" data-label="Выбрать" pvz_name="' + item.Name + ' ' + item.ID + '" pvz_id="' + item.Code + '" pvz="IML" pvz_address=\'' + (item.MetroStation ? 'м.' + item.MetroStation + ' ' : '') + item.Address + '\' only_prepayment="' + (item.PaymentType == 0 ? 'Y' : 'N') + '" onclick="panel.choose(event, this);">Выбрать</button> <span class="panel-details__cost-delivery">' + price + '</span> </div>' +
-                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/location.svg" class="widget__location-icon">' + (item.MetroStation ? 'м. ' + item.MetroStation + ' ' : '') + item.Address + '</p>' +
-                    `${phone = item.Phone ?
-                        '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/icon-phone.svg" class="widget__location-icon">' + item.Phone + '</p>'
-                        : ''
-                    }` +
-                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/time.svg" class="widget__time-icon">'+ item.WorkMode + '</p>' +
-                    `${item.PaymentType == 3 ||  item.PaymentType == 2 ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/card.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата картой при получении</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cardNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты картой</span></p>"
-                    }` +
-                    `${item.PaymentType == 3 || item.PaymentType == 1 ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cash.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата наличными</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cashNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты наличными</span></p>"
-                    }` +
-                    `${item.PaymentType != 3 && item.PaymentType != 2 && item.PaymentType != 1 ?
-                        "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
-                        : ""
-                    }` +
-                    ((item.FittingRoom > 0) ?
-                    "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dress.svg' class='img-icon img-icon--havecashless' alt=''>Есть примерка</span></p>"
-                    : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dressNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет примерки</span></p>"
-                    ) +
-                    '<p class="panel-details__block-text">' + item.HowToGet + '</p>'
-            },
-            {
-                preset: 'islands#yellowIcon',
-                hideIconOnBalloonOpen: false,
-                hasBalloon: true,
-                balloonMinHeight: 120,
-                balloonMaxWidth: 300,
-                balloonPanelMaxMapArea: 48e4,
-            }
-        );
-
-        Placemark.link = index;
-
-        Placemark.events.add(['balloonopen', 'click'], function (metka) {
-            if (panel.element.classList.contains('panel_hidden')) {
-                sidebar.burger.changeIcon();
-            }
-        });
-
-        this.clusterer.add(Placemark);
-    },
-
-    getItemsByFilter: function (havepaysystem, isdressingroom) {
-        this.pvzlist.forEach((item) => this.addItem(item, havepaysystem, isdressingroom));
-    },
-
-    addItem: function (item, havepaysystem, isdressingroom) {
-        let havecashless_result, isdressingroom_result;
-
-        if (havepaysystem == 2) {
-            havecashless_result = true;
-        } else {
-            havecashless_result = item.PaymentType == 1 || item.PaymentType == 2 || item.PaymentType == 3;
-        }
-
-        if (isdressingroom == 2) {
-            isdressingroom_result = true;
-        } else {
-            isdressingroom_result = item.FittingRoom > 0;
-        }
-
-        if (havecashless_result && isdressingroom_result) {
-            this.filtered_list.push(item);
-        }
-    },
-
-    changeFilteredPoints: function (havepaysystem, isdressingroom) {
-        this.createClusterer();
-        this.filtered_list = [];
-        this.getItemsByFilter(havepaysystem, isdressingroom);
-        this.clusterer.removeAll();
-        if (this.filtered_list.length > 0) {
-            this.filtered_list.forEach((item, index) => this.addPoint(item, index));
-        }
-        return this.clusterer;
-    },
-
-    choose: function (id, name) {
-        let input, button;
-
-        input = document.getElementById('cart__delivery-cdek-input' + (window.isLocalCart ? '' : '2'));
-        button = document.getElementById('cart__delivery-cdek-button' + (window.isLocalCart ? '' : '2'));
-
-        input.value = id;
-        button.value = name;
-        pvzmap.close();
-    }
-}
-
-window.Respect = {
-    pvzlist: pvzObj.PVZ.Respect,
-    filtered_list: [],
-
-    createClusterer: function () {
-        this.clusterer = new ymaps.Clusterer({
-            gridSize: 64,
-            groupByCoordinates: false,
-            hasBalloon: false,
-            hasHint: false,
-            margin: 10,
-            maxZoom: 14,
-            minClusterSize: 2,
-            showInAlphabeticalOrder: false,
-            viewportMargin: 128,
-            zoomMargin: 0,
-            clusterDisableClickZoom: false,
-            preset: 'islands#nightClusterIcons'
-        })
-    },
-
-    addPoint: function (item, index) {
-        let haveCashlessMarkup = '';
-        let local = window.isLocalCart === true ? 'LOCAL' : 'NOT_LOCAL';
-        if (!pvzObj.DELIVERY_SERVICES[local].hasOwnProperty('Respect')) {
-            return;
-        }
-        if (!pvzObj.DELIVERY_SERVICES[local].Respect.hasOwnProperty('PRICE')) {
-            return;
-        }
-        let price = parseInt(pvzObj.DELIVERY_SERVICES[local].Respect.PRICE) > 0 ? pvzObj.DELIVERY_SERVICES[local].Respect.PRICE + ' руб.' : 'Бесплатно';
-        let Placemark = new ymaps.Placemark(
-            [item.GPS_N, item.GPS_S],
-            {
-                balloonContent: '<p class="panel-details__block-head">' + item.TITLE + '</p>' +
-                    '<div class="panel-details__block"><button class="widget__choose btn" data-label="Выбрать" pvz_name="' + item.TITLE + '" pvz_id="' + item.XML_ID + '" pvz="Respect" pvz_address="' + item.ADDRESS + '" only_prepayment="' + (item.UF_STORE_PVZ_CASH === '1' || item.UF_STORE_PVZ_CARD === '1' ? 'N' : 'Y') + '" onclick="panel.choose(event, this);">Выбрать</button> <span class="panel-details__cost-delivery">' + price + '</span> </div>' +
-                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/location.svg" class="widget__location-icon">' + item.ADDRESS + '</p>' +
-                    `${item.UF_PHONES !='' ?
-                        '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/icon-phone.svg" class="widget__location-icon">' + item.UF_PHONES + '</p>'
-                        : ''
-                    }` +
-                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/time.svg" class="widget__time-icon">'+ item.SCHEDULE + '</p>' +
-                    `${item.UF_STORE_PVZ_CARD === '1' ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/card.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата картой при получении</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cardNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты картой</span></p>"}` +
-                    `${item.UF_STORE_PVZ_CASH === '1' ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cash.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата наличными</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cashNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты наличными</span></p>"}` +
-                    `${item.UF_STORE_PVZ_CASH === '0' && item.UF_STORE_PVZ_CARD === '0'?
-                        "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
-                        : ""}` +
-                    `${item.UF_STORE_PVZ_DRESS === '1' ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dress.svg' class='img-icon img-icon--havecashless' alt=''>Есть примерка</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dressNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет примерки</span></p>"}` +
-                    '<p class="panel-details__block-text">' + item.UF_STORE_PVZ_TEXT + '</p>'
-            },
-            {
-                iconLayout: 'default#image',
-                iconImageHref: '/local/templates/respect/images/map-marker.png',
-                iconImageSize:  [47, 61],
-                iconImageOffset: [-22, -57],
-                hideIconOnBalloonOpen: false,
-                hasBalloon: true,
-                balloonMinHeight: 120,
-                balloonMaxWidth: 300,
-                balloonPanelMaxMapArea: 48e4,
-                zIndex: 10000,
-            }
-        );
-
-        Placemark.link = index;
-
-        Placemark.events.add(['balloonopen', 'click'], function (metka) {
-            if (panel.element.classList.contains('panel_hidden')) {
-                sidebar.burger.changeIcon();
-            }
-        });
-
-        this.clusterer.add(Placemark);
-    },
-
-    getItemsByFilter: function (havepaysystem, isdressingroom) {
-        this.pvzlist.forEach((item) => this.addItem(item, havepaysystem, isdressingroom));
-    },
-
-    addItem: function (item, havepaysystem, isdressingroom) {
-        let havecashless_result, isdressingroom_result;
-
-        if (havepaysystem == 2) {
-            havecashless_result = true;
-        } else {
-            havecashless_result = item.UF_STORE_PVZ_CARD === '1' || item.UF_STORE_PVZ_CASH === '1';
-        }
-
-        if (isdressingroom == 2) {
-            isdressingroom_result = true;
-        } else {
-            isdressingroom_result = item.UF_STORE_PVZ_DRESS === '1';
-        }
-
-        if (havecashless_result && isdressingroom_result) {
-            this.filtered_list.push(item);
-        }
-    },
-
-    changeFilteredPoints: function (havepaysystem, isdressingroom) {
-        this.createClusterer();
-        this.filtered_list = [];
-        this.getItemsByFilter(havepaysystem, isdressingroom);
-        this.clusterer.removeAll();
-        if (this.filtered_list.length > 0) {
-            this.filtered_list.forEach((item, index) => this.addPoint(item, index));
-        }
-        return this.clusterer;
-    },
-
-    choose: function (id, name) {
-        let input, button;
-
-        input = document.getElementById('cart__delivery-cdek-input' + (window.isLocalCart ? '' : '2'));
-        button = document.getElementById('cart__delivery-cdek-button' + (window.isLocalCart ? '' : '2'));
-        input.value = id;
-        button.value = name;
-        pvzmap.close();
-    }
-};
-
-window.FivePost = {
-
-    pvzlist: pvzObj.PVZ.FivePost,
-    filtered_list: [],
-
-    createClusterer: function () {
-        this.clusterer = new ymaps.Clusterer({
-            gridSize: 64,
-            groupByCoordinates: false,
-            hasBalloon: false,
-            hasHint: false,
-            margin: 10,
-            maxZoom: 14,
-            minClusterSize: 3,
-            showInAlphabeticalOrder: false,
-            viewportMargin: 128,
-            zoomMargin: 0,
-            clusterDisableClickZoom: false,
-            preset: 'islands#blackClusterIcons'
-        })
-    },
-
-    addPoint: function (item, index) {
-        let havePaySystem = '';
-        let phone = '';
-        let local = window.isLocalCart === true ? 'LOCAL' : 'NOT_LOCAL';
-        if (!pvzObj.DELIVERY_SERVICES[local].hasOwnProperty('FivePost')) {
-            return;
-        }
-        if (!pvzObj.DELIVERY_SERVICES[local].FivePost.hasOwnProperty('PRICE')) {
-            return;
-        }
-        let price = parseInt(pvzObj.DELIVERY_SERVICES[local].FivePost.PRICE) > 0 ? pvzObj.DELIVERY_SERVICES[local].FivePost.PRICE + ' руб.' : 'Бесплатно';
-        let workHours = '';
-        let dayWeek = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-        let firstDay = dayWeek[0];
-        let endDay = dayWeek[6];
-        let row = '';
-        item.workHours.reverse().forEach(function (item, i) {
-            if (i === 0){
-                firstDay = dayWeek[i];
-                row = item.opensAt.substr(0,5) + '-' + item.closesAt.substr(0,5)
-                workHours += firstDay + '-' + endDay + ' ' + row;
-            }
-            endDay = dayWeek[i];
-                if(row !== item.opensAt.substr(0,5) + '-' + item.closesAt.substr(0,5)){
-                    workHours += '<br>' + firstDay + '-' + endDay + ' ' + item.opensAt.substr(0,5) + '-' + item.closesAt.substr(0,5);
-                    row = item.opensAt.substr(0,5) + '-' + item.closesAt.substr(0,5);
-                    firstDay = dayWeek[i];
-                }
-         });
-        let Placemark = new ymaps.Placemark(
-            [item.address.lat, item.address.lng],
-            {
-                balloonContent: '<p class="panel-details__block-head">' + (item.type === 'TOBACCO' ? '5post: выдача на кассе магазина «Пятёрочка»' : item.type === 'POSTAMAT' ? '5post: постамат в магазине «Пятёрочка»' : '5post: ПВЗ в магазине «Пятёрочка»') + '</p>' +
-                    '<div class="panel-details__block"><button class="widget__choose btn" data-label="Выбрать" pvz_name="' + item.name + '" pvz_id="' + item.id + '" pvz="FivePost" pvz_address=\'' + item.fullAddress + '\' only_prepayment="' + (item.cashAllowed || item.cardAllowed ? 'N' : 'Y') + '" onclick="panel.choose(event, this);">Выбрать</button> <span class="panel-details__cost-delivery">' + price + '</span> </div>' +
-                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/location.svg" class="widget__location-icon">' + (item.metroStation ? 'м. ' + item.metroStation + ' ' : '') + item.fullAddress + '</p>' +
-                    `${phone = item.phone ?
-                        '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/icon-phone.svg" class="widget__location-icon">' + item.phone + '</p>'
-                        : ''
-                    }` +
-                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/time.svg" class="widget__time-icon">'+
-                    workHours
-                    +
-                    '</p>' +
-                    `${item.cardAllowed ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/card.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата картой при получении</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cardNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты картой</span></p>"
-                    }` +
-                    `${item.cashAllowed ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cash.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата наличными</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cashNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты наличными</span></p>"
-                    }` +
-                    `${!item.cardAllowed && !item.cashAllowed ?
-                        "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
-                        :  ""
-                    }` +
-                    "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dressNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет примерки</span></p>"
-                    +
-                    '<p class="panel-details__block-text">' + item.additional + '</p>'
-            },
-            {
-                preset: 'islands#blackIcon',
-                hideIconOnBalloonOpen: false,
-                hasBalloon: true,
-                balloonMinHeight: 120,
-                balloonMaxWidth: 300,
-                balloonPanelMaxMapArea: 48e4,
-            }
-        );
-
-        Placemark.link = index;
-
-        Placemark.events.add(['balloonopen', 'click'], function (metka) {
-            if (panel.element.classList.contains('panel_hidden')) {
-                sidebar.burger.changeIcon();
-            }
-        });
-
-        this.clusterer.add(Placemark);
-    },
-
-    getItemsByFilter: function (havepaysystem, isdressingroom) {
-        this.pvzlist.forEach((item) => this.addItem(item, havepaysystem, isdressingroom));
-    },
-
-    addItem: function (item, havepaysystem, isdressingroom) {
-        let havepaysystem_result, isdressingroom_result;
-
-        if (havepaysystem == 2) {
-            havepaysystem_result = true;
-        } else {
-            havepaysystem_result = item.cashAllowed || item.cardAllowed;
-        }
-
-        if (isdressingroom == 2) {
-            isdressingroom_result = true;
-        } else {
-            isdressingroom_result = false;
         }
 
         if (havepaysystem_result && isdressingroom_result) {

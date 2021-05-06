@@ -675,14 +675,12 @@ $(document).ready(function(){
         resetSizeSelectorHandlers(true);
         // доставка
         $("#cart__delivery-cdek-button").on("click", function() {
-            window.isLocalCart = true;
             window.loadPVZMap();
         });
         $(".js-delivery").on("click", function() {
             clickedElem = $(this);
 
             if (checkCDEK()) {
-                window.isLocalCart = true;
                 window.loadPVZMap();
             } else {
                 if (checkActiveCheckbox('b-order', 'js-delivery')) {
@@ -736,7 +734,8 @@ $(document).ready(function(){
 
             let valuePush = that.siblings('label').children('.cart-delivery__header').text().trim();
 
-            if ((that.hasClass('js-delivery') || that.hasClass('js-delivery2')) && !that.hasClass('is-pvz2') && !that.hasClass('is-pvz')) {
+            if (that.hasClass('js-delivery') && !that.hasClass('is-pvz'))
+            {
                 type = 'checkout-delivery';
             } else if (that.hasClass('js-payment-local') || that.hasClass('js-payment-not-local')) {
                 type = 'checkout-payment';

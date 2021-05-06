@@ -1290,7 +1290,7 @@ class QsoftOrderComponent extends ComponentHelper
         if (array_intersect($this->arPvzIds, $arDelId)) {
             $flag = false; //Флаг присутствия точек ПВЗ для выбранного города
             CBitrixComponent::includeComponentClass("qsoft:pvzmap"); // Подлючаем класс чтобы получить список ПВЗ в городе
-            $PVZMap = new PVZMap();
+            $PVZMap = new PVZMap;
 
             $arPVZ = $PVZMap->getPVZCollectionByCityAsArray();
 
