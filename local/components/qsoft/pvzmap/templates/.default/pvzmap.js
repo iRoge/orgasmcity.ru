@@ -11,12 +11,6 @@ filtered_form = {
             filtered_form.havepaysystem = 2;
         }
 
-        if (filtered_form.filter_form.elements.haveDressingRoom.checked) {
-            filtered_form.haveDressingRoom = filtered_form.filter_form.elements.haveDressingRoom.value;
-        } else {
-            filtered_form.haveDressingRoom = 2;
-        }
-
         filtered_form.pvz = [];
         if (filtered_form.filter_form.elements.pvz.length > 0) {
             filtered_form.filter_form.elements.pvz.forEach(function (item) {
@@ -30,7 +24,7 @@ filtered_form = {
             }
         }
 
-        return [filtered_form.pvz, filtered_form.havepaysystem, filtered_form.haveDressingRoom];
+        return [filtered_form.pvz, filtered_form.havepaysystem];
     },
 
     button_click: function () {
@@ -48,7 +42,6 @@ filtered_form = {
             filtered_form.filter_form.elements.pvz.checked = true;
         }
         filtered_form.filter_form.elements.havepaysystem.checked = false;
-        filtered_form.filter_form.elements.haveDressingRoom.checked = false;
     }
 };
 
@@ -76,7 +69,7 @@ window.panel = {
     },
 
     choose: function (event, button) {
-        let pvz, id, prepayment, delivery, input, str, address, pvzDisabledInputs, pvzEnabledInputs, paymentIds;
+        let pvz, id, prepayment, delivery, input, address, pvzDisabledInputs, pvzEnabledInputs, paymentIds;
 
         event.preventDefault();
         pvzmap.map.balloon.close();
@@ -101,7 +94,7 @@ window.panel = {
         pvzDisabledInputs.addClass("is-hidden");
         pvzEnabledInputs =  $(".js__cdek-enabled");
         pvzEnabledInputs.removeClass("is-hidden");
-        $('js-payment-local:checked').prop('checked', false);
+        $('js-payment:checked').prop('checked', false);
         // Деактивируем оплаты
         paymentIds = input.data('allowed-payments-' + pvz.toLowerCase());
         if (typeof(paymentIds) != 'string') {
@@ -142,6 +135,11 @@ window.panel = {
         });
         sum = parseInt(delivery.PRICE) + parseInt(sum);
         $('#cart__total-price').html(formatPrice(sum));
+
+        if (checkActiveCheckbox('b-order', 'js-delivery')) {
+            hiddenBlock('close', 'b-order', 'all');
+            hiddenBlock('open', 'b-order', 'checkout__form');
+        }
     }
 };
 
@@ -202,15 +200,7 @@ window.pvzmap = {
             ),
             listBoxItemsArray = [];
             //выводит ПВЗ Respect на первое место
-            let arPVZNames = Object.keys(pvzObj.PVZ).sort(function(a, b) {
-                if(a ===  'Respect'){
-                    return -1;
-                }
-                if(b ===  'Respect'){
-                    return 1;
-                }
-                return 0;
-            });
+            let arPVZNames = Object.keys(pvzObj.PVZ);
 
             arPVZNames.forEach(function (pvzClassName) {
                 let pvzName;
@@ -219,7 +209,7 @@ window.pvzmap = {
                     data: {
                         content: pvzName,
                         name: pvzName,
-                        label: pvzName !== 'Respect' ? 'Пункт выдачи ' + pvz[pvzName] : pvzName,
+                        label: 'Пункт выдачи ' + pvz[pvzName],
                         value: pvzName,
                         class_li: 'pvz__label',
                         name_li:'pvz',
@@ -241,31 +231,19 @@ window.pvzmap = {
                 checked: ''
             }
         })),
-        listBoxItemsArray.push(new ymaps.control.ListBoxItem({
-            data: {
-                class: 'dressing-item',
-                name: 'haveDressingRoom',
-                value: '1',
-                label: 'Возможна примерка',
-                class_li: 'havecashless__label',
-                name_li:'haveDressingRoom',
-                src: 'dressFilter',
-                checked: ''
-            }
-        })),
 
-            listBox = new ymaps.control.ListBox({
-                items: listBoxItemsArray,
-                data: {
-                    content: 'Фильтр'
-                },
-                options: {
-                    itemLayout: ListBoxItemLayout,
-                    layout: ListBoxLayout,
-                    float:'left',
-                    floatIndex: 1
-                }
-            });
+        listBox = new ymaps.control.ListBox({
+            items: listBoxItemsArray,
+            data: {
+                content: 'Фильтр'
+            },
+            options: {
+                itemLayout: ListBoxItemLayout,
+                layout: ListBoxLayout,
+                float:'left',
+                floatIndex: 1
+            }
+        });
 
         this.map.controls.add(listBox, {float: 'left'});
 
@@ -322,7 +300,7 @@ window.pvzmap = {
             } else {
                 filter.style.display = 'none';
             }
-            pvzmap.map.geoObjects.add(window[name].changeFilteredPoints(2, 2));
+            pvzmap.map.geoObjects.add(window[name].changeFilteredPoints(2));
         });
     },
 
@@ -333,7 +311,7 @@ window.pvzmap = {
         params = filtered_form.setFilterParams();
         pvzmap.map.geoObjects.removeAll();
         params[0].forEach(function (name) {
-            pvzmap.map.geoObjects.add(window[name].changeFilteredPoints(params[1], params[2]));
+            pvzmap.map.geoObjects.add(window[name].changeFilteredPoints(params[1]));
         });
     },
 
@@ -425,10 +403,6 @@ window.CDEK = {
                     `${!item.haveCashless && !item.haveCash ? "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
                         : ""
                     }` +
-                    `${item.isDressingRoom ?
-                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dress.svg' class='img-icon img-icon--havecashless' alt=''>Есть примерка</span></p>"
-                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/dressNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет примерки</span></p>"
-                    }` +
                     '<p class="panel-details__block-text">' + item.addressComment + '</p>' +
                     '<div class="pvz__images">' + images + '</div>'
             },
@@ -453,12 +427,12 @@ window.CDEK = {
         this.clusterer.add(Placemark);
     },
 
-    getItemsByFilter: function (havepaysystem, isdressingroom) {
-        this.pvzlist.forEach((item) => this.addItem(item, havepaysystem, isdressingroom));
+    getItemsByFilter: function (havepaysystem) {
+        this.pvzlist.forEach((item) => this.addItem(item, havepaysystem));
     },
 
-    addItem: function (item, havepaysystem, isdressingroom) {
-        let havepaysystem_result, isdressingroom_result;
+    addItem: function (item, havepaysystem) {
+        let havepaysystem_result;
 
         if (havepaysystem == 2) {
             havepaysystem_result = true;
@@ -466,22 +440,15 @@ window.CDEK = {
             havepaysystem_result = item.haveCash || item.haveCashless;
         }
 
-        if (isdressingroom == 2) {
-            isdressingroom_result = true;
-        } else {
-            // isdressingroom_result = item.isDressingRoom;
-            isdressingroom_result = true;
-        }
-
-        if (havepaysystem_result && isdressingroom_result) {
+        if (havepaysystem_result) {
             this.filtered_list.push(item);
         }
     },
 
-    changeFilteredPoints: function (havepaysystem, isdressingroom) {
+    changeFilteredPoints: function (havepaysystem) {
         this.createClusterer();
         this.filtered_list = [];
-        this.getItemsByFilter(havepaysystem, isdressingroom);
+        this.getItemsByFilter(havepaysystem);
         this.clusterer.removeAll();
         if (this.filtered_list.length > 0) {
             this.filtered_list.forEach((item, index) => this.addPoint(item, index));
@@ -492,8 +459,8 @@ window.CDEK = {
     choose: function (id, name) {
         let input, button;
 
-        input = document.getElementById('cart__delivery-cdek-input' + (window.isLocalCart ? '' : '2'));
-        button = document.getElementById('cart__delivery-cdek-button' + (window.isLocalCart ? '' : '2'));
+        input = document.getElementById('cart__delivery-cdek-input');
+        button = document.getElementById('cart__delivery-cdek-button');
         input.value = id;
         button.value = name;
         pvzmap.close();

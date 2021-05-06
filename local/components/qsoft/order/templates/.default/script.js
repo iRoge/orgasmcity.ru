@@ -1,5 +1,5 @@
+var clickedElem;
 $(document).ready(function(){
-    var clickedElem;
     var activeAjax = false;
     const arDelIdsJsInt = arDelIdsJs.map(item => parseInt(item));
     var arOnlinePaymentIdsInt = [];
@@ -577,79 +577,6 @@ $(document).ready(function(){
         });
     }
 
-    // форматирование цены
-    function formatPrice(num) {
-        if (parseInt(num) == 0) {
-            return "Бесплатно";
-        }
-        num = String(num);
-        var format = "";
-        var o;
-        o = num.length % 3;
-        if (o) {
-            format += num.substr(0, o) + " ";
-        }
-        if (num.length >= 3) {
-            format += num.substr(o).replace(/(\d{3})(?=\d)/g, "$1&nbsp;");
-        }
-        format += " р.";
-        return format;
-    }
-
-    function checkActiveCheckbox(bOrder, className) {
-        if (!clickedElem.hasClass('opened')) {
-            $('#' + bOrder + ' .' + className).each(function () {
-                $(this).removeClass('opened');
-            })
-
-            let paymentClass = '';
-
-            if (className === 'js-delivery') {
-                paymentClass = 'js-payment-local';
-            } else if (className === 'js-delivery2') {
-                paymentClass = 'js-payment-not-local';
-            }
-
-            if (paymentClass !== '') {
-                $('#' + bOrder + ' .' + paymentClass).each(function () {
-                    $(this).removeClass('opened');
-                })
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function hiddenBlock(action, bOrder, blockClass) {
-        if (blockClass === 'all') {
-            let blocks = $('#' + bOrder + ' .hidden-block');
-
-            blocks.each(function () {
-                $(this).slideUp().removeClass('active');
-            })
-        } else {
-            let elem = $('#' + bOrder + ' .' + blockClass + '.hidden-block');
-
-            if (action === 'open') {
-                elem.slideDown().addClass('active');
-
-                if (blockClass === 'form__elem--textarea') {
-                    elem.prop('disabled', false);
-                }
-
-                clickedElem.addClass('opened');
-            } else if (action === 'close') {
-                elem.slideUp().removeClass('active');
-
-                if (blockClass === 'form__elem--textarea') {
-                    elem.prop('disabled', true);
-                }
-            }
-        }
-    }
-
     function saveAddressInCookie(bOrder) {
         let address = {
             location_code: currentLocationCode,
@@ -1085,3 +1012,70 @@ $(document).ready(function(){
         }, 200 );
     });
 });
+
+// форматирование цены
+function formatPrice(num) {
+    if (parseInt(num) == 0) {
+        return "Бесплатно";
+    }
+    num = String(num);
+    var format = "";
+    var o;
+    o = num.length % 3;
+    if (o) {
+        format += num.substr(0, o) + " ";
+    }
+    if (num.length >= 3) {
+        format += num.substr(o).replace(/(\d{3})(?=\d)/g, "$1&nbsp;");
+    }
+    format += " р.";
+    return format;
+}
+
+function checkActiveCheckbox(bOrder, className) {
+    if (!clickedElem.hasClass('opened')) {
+        $('#' + bOrder + ' .' + className).each(function () {
+            $(this).removeClass('opened');
+        })
+
+        let paymentClass = 'js-payment-local';
+
+        if (paymentClass !== '') {
+            $('#' + bOrder + ' .' + paymentClass).each(function () {
+                $(this).removeClass('opened');
+            })
+        }
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function hiddenBlock(action, bOrder, blockClass) {
+    if (blockClass === 'all') {
+        let blocks = $('#' + bOrder + ' .hidden-block');
+
+        blocks.each(function () {
+            $(this).slideUp().removeClass('active');
+        })
+    } else {
+        let elem = $('#' + bOrder + ' .' + blockClass + '.hidden-block');
+
+        if (action === 'open') {
+            elem.slideDown().addClass('active');
+
+            if (blockClass === 'form__elem--textarea') {
+                elem.prop('disabled', false);
+            }
+
+            clickedElem.addClass('opened');
+        } else if (action === 'close') {
+            elem.slideUp().removeClass('active');
+
+            if (blockClass === 'form__elem--textarea') {
+                elem.prop('disabled', true);
+            }
+        }
+    }
+}
