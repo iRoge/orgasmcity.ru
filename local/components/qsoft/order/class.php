@@ -228,7 +228,7 @@ class QsoftOrderComponent extends ComponentHelper
             // добавляем в корзину
             $offerId = intval($_POST["offerId"]);
             // загружаем корзину
-            $this->basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
+            $this->setBasket();
             if ($this->checkType(["basketAdd"])) {
                 $quantity = intval($_POST["quantity"]);
                 // добавляем в корзину
@@ -676,6 +676,9 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkUser()
     {
+        if ($this->user["ID"]) {
+            return;
+        }
         $this->setNewUserFields();
     }
 
@@ -741,7 +744,7 @@ class QsoftOrderComponent extends ComponentHelper
     // функции работы с корзиной
     private function setBasket()
     {
-        if ($this->checkType(["cart", "offers", "order"])) {
+        if ($this->checkType(["cart", "offers", "order", "basketAdd", "basketDel"])) {
             // загружаем корзину
             if ($this->loadBasket()) {
                 return true;
@@ -757,6 +760,12 @@ class QsoftOrderComponent extends ComponentHelper
     private function loadBasket(): bool
     {
         $this->basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
+        $arBasketItems = $this->basket->getBasketItems();
+        // Актуализируем цены в корзине
+        foreach ($arBasketItems as $basketItem) {
+            $this->createBasketItem($basketItem->getProductId(), $basketItem->getQuantity());
+            $basketItem->delete();
+        }
         $this->basket->save();
         return (bool)$this->basket;
     }
@@ -1076,7 +1085,7 @@ class QsoftOrderComponent extends ComponentHelper
             if ($full) {
                 $arOffers[$offerId] = [
                     "QUANTITY" => $arItem->getQuantity(),
-                    "BASKET_PRICE" => $arItem->getPrice(),
+                    "BASKET_PRICE" => $arItem->getPrice() * $arItem->getQuantity(),
                 ];
             } else {
                 $arOffers[$offerId] = $offerId;
@@ -1114,8 +1123,8 @@ class QsoftOrderComponent extends ComponentHelper
                     "COLOR" => $arItem["PROPERTY_COLOR_VALUE"],
                     "QUANTITY" => $arOffers[$arItem["ID"]]["QUANTITY"],
                     "BASKET_PRICE" => $arOffers[$arItem["ID"]]["BASKET_PRICE"],
-                    "BRANCH_PRICE" => $price["PRICE"],
-                    "BRANCH_OLD_PRICE" => $price["OLD_PRICE"],
+                    "BRANCH_PRICE" => $price["PRICE"] * $arOffers[$arItem["ID"]]["QUANTITY"],
+                    "BRANCH_OLD_PRICE" => $price["OLD_PRICE"] * $arOffers[$arItem["ID"]]["QUANTITY"],
                 ];
             } else {
                 $arOffersNew[$arItem["ID"]] = [

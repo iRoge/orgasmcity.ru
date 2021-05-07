@@ -141,7 +141,7 @@ global $LOCATION, $APPLICATION; ?>
                                         <? //количество ?>
                                         <div class="flex-product--count orders__col">
                                             <span class="orders__label--only-mobile">Кол-во:</span>
-                                            <input type="text" class="orders__count-input" name="count" value="1" disabled>
+                                            <input type="text" class="orders__count-input" name="count" value="<?=$arItem['QUANTITY']?>" disabled>
                                         </div>
                                         <? //количество end ?>
 
