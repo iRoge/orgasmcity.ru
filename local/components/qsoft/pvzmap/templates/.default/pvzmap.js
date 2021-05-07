@@ -342,6 +342,7 @@ window.pvzmap = {
         pvzmap.map.geoObjects.removeAll();
         widget = document.getElementsByClassName('widget__popup-mask')[0];
         widget.style.display = 'none';
+        $('body').css('overflow', 'auto');
     }
 };
 

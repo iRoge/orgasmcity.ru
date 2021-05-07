@@ -158,18 +158,14 @@ global $LOCATION, $APPLICATION; ?>
                                         </span>
                                         </div>
                                         <div class="flex-product--price">
+                                            <?php if ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) : ?>
                                             <div class="orders__col">
                                                 <span class="orders__label">Цена:&nbsp;</span>
-                                                <span>
-                                                <? if ($arItem['OLD_CATALOG_PRICE'] == $arItem['PRICE']) : ?>
-                                                    <span class="orders__old-catalog-price--red"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                <? else : ?>
-                                                    <span class="orders__old-catalog-price--yellow-sale"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                                <? endif ?>
-                                            </span>
+                                                <span class="orders__old-catalog-price"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
                                             </div>
+                                            <?php endif; ?>
 
-                                            <div class="orders__col orders__col--annotation">
+                                            <div class="orders__col text-success">
                                                 <? if (isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE']) : ?>
                                                     Применен промокод.
                                                 <? endif ?>
@@ -177,9 +173,7 @@ global $LOCATION, $APPLICATION; ?>
 
                                             <div class="orders__col">
                                                 <span class="orders__label">Итого:&nbsp;</span>
-                                                <span>
-                                                <span class="orders__result-price"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                            </span>
+                                                <span class="<?= ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) ? 'orders__result-price--red' : 'orders__result-price'?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
                                             </div>
                                         </div>
                                         <? //стоимость end ?>

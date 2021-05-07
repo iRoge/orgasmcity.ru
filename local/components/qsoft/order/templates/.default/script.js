@@ -28,10 +28,8 @@ $(document).ready(function(){
                     updateSmallBasket(data.text);
                     activeAjax = false;
                     let basketPrice = parseInt(data.text);
-                    reloadProduct(true, offerId);
-                    reloadProduct(false, offerId);
-                    checkProduct(basketPrice, 'Y');
-                    checkProduct(basketPrice, 'N');
+                    reloadProduct(offerId);
+                    checkProduct(basketPrice);
                     return; // возможно это не нужно
                 }
                 let error_text = '<div class="product-preorder-success">'
@@ -49,32 +47,25 @@ $(document).ready(function(){
         });
     }
 
-    function resetSizeSelector(notLocal) {
-        $('select[name=select-size' + notLocal + ']').select2({
-            dropdownParent: $('#select-size-container' + notLocal),
+    function resetSizeSelector() {
+        $('select[name=select-size]').select2({
+            dropdownParent: $('#select-size-container'),
             width: 'resolve',
             minimumResultsForSearch: -1
         })
     }
 
-    function resetSizeSelectorHandlers(isLocal){
-        let notLocal = '';
-        let localBasket = 'Y';
-        if (!isLocal) {
-            notLocal = '2';
-            localBasket = 'N'
-        }
+    function resetSizeSelectorHandlers(){
+        resetSizeSelector();
 
-        resetSizeSelector(notLocal);
-
-        $('select[name=select-size' + notLocal + ']').change(function () {
+        $('select[name=select-size]').change(function () {
             let that = $(this);
             let parentPropElem = that.parents('.js-card');
             basketAddProd(that.val(),true, parentPropElem);
-            delProduct(that.parents('.orders__row').find('.orders__remove'), localBasket);
+            delProduct(that.parents('.orders__row').find('.orders__remove'));
         });
 
-        $('.orders__add-btn' + notLocal).click(function (e) {
+        $('.orders__add-btn').click(function (e) {
             e.preventDefault();
             let parentPropElem = $(this).parents('.js-card');
             let popupContent = $('.js-choose-size').clone(true, true);
@@ -91,7 +82,7 @@ $(document).ready(function(){
     }
 
     // удаление товара
-    function delProduct(el, localBasket) {
+    function delProduct(el) {
         if (activeAjax) {
             return;
         }
@@ -99,11 +90,6 @@ $(document).ready(function(){
         let data = {
             action: "basketDel",
             offerId: parseInt(el.data("id")),
-            needLocalBasketPrice: localBasket,
-        };
-        let dataFlock = {
-            ID: el.data("id").toString(),
-            QUANTITY: 1,
         };
         el.closest('.js-card').slideUp("normal", function() {});//визуально скрываем товар
         $.ajax({
@@ -119,9 +105,6 @@ $(document).ready(function(){
                         $(this).remove();
                         if (basketPrice <= prepayment_min_summ) {
                             let basketType = '';
-                            if (localBasket !== 'Y') {
-                                basketType = 2;
-                            }
                             $('.js-delivery' + basketType).each(function (e){
                                 let delElem = $(this);
                                 let payArr = delElem.attr('data-allowed-payments');
@@ -137,15 +120,14 @@ $(document).ready(function(){
                                 }
                             })
                         }
-                        reloadProduct(true);
-                        reloadProduct(false);
-                        checkProduct(basketPrice, localBasket);
+                        reloadProduct();
+                        checkProduct(basketPrice);
                     });
                 } else if (data.status == "error") {
                     el.closest('.js-card').slideUp("normal", function() {
                         $(this).remove();
-                        let leftBlock = $('.left-cart-block-' + (localBasket === 'Y' ? 'local' : 'not-local'));
-                        let rightBlock = $('.right-cart-block-' + (localBasket === 'Y' ? 'local' : 'not-local'));
+                        let leftBlock = $('.left-cart-block-local');
+                        let rightBlock = $('.right-cart-block-local');
                         leftBlock.empty();
                         rightBlock.empty();
                         rightBlock.append('<div class="checkout__error-wrapper2"><p class="checkout__error-text">' + data.text + '</p></div>');
@@ -164,8 +146,8 @@ $(document).ready(function(){
     }
 
     // проверка наличия продуктов на странице
-    function checkProduct(basketPrice, checkBasketLocationType) {
-        if ($(".orders__row--product").length == 0 && $(".orders__row--product2").length == 0) {
+    function checkProduct(basketPrice) {
+        if ($(".orders__row--product").length == 0) {
             let data = {
                 action: "cart",
                 ajax: "Y",
@@ -184,7 +166,7 @@ $(document).ready(function(){
                     ajaxError(jqXHR, exception);
                 },
             });
-        } else if (checkBasketLocationType == 'Y') {
+        } else {
             if ($(".orders__row--product").length == 0) {
                 $("#full_basket").slideUp("normal", function() {
                     $(this).remove();
@@ -230,53 +212,6 @@ $(document).ready(function(){
                 activeAjax = false;
                 calculatePrice(basketPrice);
             }
-        } else {
-            if ($(".orders__row--product2").length == 0) {
-                $("#full_basket2").slideUp("normal", function() {
-                    $(this).remove();
-                });
-                let data = {
-                    action: "cart",
-                    ajax: "Y",
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "/cart/",
-                    data: data,
-                    success: function(data) {
-                        activeAjax = false;
-                        $("#main-basket-block").html(data);
-                        resetJsHandlers();
-                     },
-                    error: function(jqXHR, exception) {
-                        activeAjax = false;
-                        ajaxError(jqXHR, exception);
-                    },
-                });
-            } else if ($(".checkout__error-wrapper2").length != 0) {
-                let data = {
-                    action: "cart",
-                    ajax: "Y",
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "/cart/",
-                    data: data,
-                    success: function(data) {
-                        activeAjax = false;
-                        $("#main-basket-block").html(data);
-                        resetJsHandlers();
-                    },
-                    error: function(jqXHR, exception) {
-                        activeAjax = false;
-                        ajaxError(jqXHR, exception);
-                    },
-                });
-            } else {
-                activeAjax = false;
-                calculatePrice(basketPrice);
-                resetJsHandlers();
-            }
         }
     }
 
@@ -313,7 +248,7 @@ $(document).ready(function(){
         $(arItems).appendTo(paymentSelector.parent());
     }
 
-    // переключаем блоки при выборе ПВЗ в local корзине
+    // переключаем блоки при выборе ПВЗ
     function checkCDEK() {
         let delId = parseInt($(".js-delivery:checked").val());
         if ($.inArray(delId, arDelIdsJsInt) != -1) {
@@ -365,7 +300,7 @@ $(document).ready(function(){
                         sum += parseInt($(this).data("price"));
                     });
                     if (basketPrice < sum) {
-                        reloadProduct(isLocal);
+                        reloadProduct();
                     } else {
                         if (basketPrice >= sum) {
                             if (coupon == data.coupon && $(".orders__price" + type).find(".orders__old-price-num" + type).data("price")){
@@ -390,62 +325,30 @@ $(document).ready(function(){
         });
     }
 
-    function reloadProduct(isLocal = true, offerId = '') {
-        if (isLocal) {
-            let data = {
-                action: "offers",
-            };
-            $.ajax({
-                type: "POST",
-                url: "/cart/",
-                data: data,
-                success: function (data) {
-                    $("#orders__row-container").html(data);
-                    calculatePrice();
-                    resetSizeSelectorHandlers(isLocal);
-                },
-                error: function (jqXHR, exception) {
-                    ajaxError(jqXHR, exception);
-                },
-            });
-        } else {
-            let data = {
-                action: "offers2",
-            };
-            $.ajax({
-                type: "POST",
-                url: "/cart/",
-                data: data,
-                success: function (data) {
-                    $("#orders__row-container2").html(data);
-                    if(offerId != '') {
-                        if ($('.orders__remove[data-id=' + offerId + ']').length !== 0) {
-                            $('html, body').animate({
-                                scrollTop: $('.orders__remove[data-id=' + offerId + ']').offset().top - 250// класс объекта к которому приезжаем
-                            }, 1000);
-                        } else {
-                            $('html, body').animate({
-                                scrollTop: 0
-                            }, 1000);
-                        }
-                    }
-                    calculatePrice();
-                    resetSizeSelectorHandlers(isLocal);
-                },
-                error: function (jqXHR, exception) {
-                    ajaxError(jqXHR, exception);
-                },
-            });
-        }
+    function reloadProduct(offerId = '') {
+        let data = {
+            action: "offers",
+        };
+        $.ajax({
+            type: "POST",
+            url: "/cart/",
+            data: data,
+            success: function (data) {
+                $("#orders__row-container").html(data);
+                calculatePrice();
+                resetSizeSelectorHandlers();
+            },
+            error: function (jqXHR, exception) {
+                ajaxError(jqXHR, exception);
+            },
+        });
     }
 
     // перерассчёт цены
     function calculatePrice(basketPrice, changeDeliveryBasketNum) {
         basketPrice = basketPrice || 0;
         let sum = 0;
-        let sum2 = 0;
         let oldSum = 0;
-        let oldSum2 = 0;
         $(".orders__price").each(function () {
             sum += parseInt($(this).find(".orders__price-num").data("price"));
             if ($(this).children().length == 2) {
@@ -454,19 +357,10 @@ $(document).ready(function(){
                 oldSum += parseInt($(this).find(".orders__price-num").data("price"));
             }
         });
-        $(".orders__price2").each(function () {
-            sum2 += parseInt($(this).find(".orders__price-num2").data("price"));
-            if ($(this).children().length == 2) {
-                oldSum2 += parseInt($(this).find(".orders__old-price-num2").data("price"));
-            } else {
-                oldSum2 += parseInt($(this).find(".orders__price-num2").data("price"));
-            }
-        });
-        if (basketPrice != 0 && (basketPrice != sum && basketPrice == oldSum || basketPrice != sum2 && basketPrice == oldSum2)) {
+        if (basketPrice != 0 && (basketPrice != sum && basketPrice == oldSum)) {
             return delDiscount();
         }
         let delPrice = $(".js-delivery:checked").attr("data-price") ? parseInt($(".js-delivery:checked").attr("data-price")) : 0;
-        let delPrice2 = $(".js-delivery2:checked").attr("data-price") ? parseInt($(".js-delivery2:checked").attr("data-price")) : 0;
         if (changeDeliveryBasketNum === 1) {
             $("#cart__delivery-price").html(formatPrice(delPrice));
         }
@@ -476,16 +370,6 @@ $(document).ready(function(){
         } else {
             $("#cart__discount-block").removeClass("is-hidden");
             $("#cart__discount-price").html(formatPrice(oldSum - sum));
-        }
-        if (changeDeliveryBasketNum === 2) {
-            $("#cart__delivery-price2").html(formatPrice(delPrice2));
-        }
-        $("#cart__total-price2").html(formatPrice(sum2 + delPrice2));
-        if (oldSum2 == 0 || oldSum2 == sum2) {
-            $("#cart__discount-block2").addClass("is-hidden");
-        } else {
-            $("#cart__discount-block2").removeClass("is-hidden");
-            $("#cart__discount-price2").html(formatPrice(oldSum2 - sum2));
         }
     }
 
@@ -599,7 +483,7 @@ $(document).ready(function(){
 
     // рестартает все события
     function resetJsHandlers() {
-        resetSizeSelectorHandlers(true);
+        resetSizeSelectorHandlers();
         // доставка
         $("#cart__delivery-cdek-button").on("click", function() {
             window.loadPVZMap();
@@ -608,6 +492,7 @@ $(document).ready(function(){
             clickedElem = $(this);
 
             if (checkCDEK()) {
+                $('body').css('overflow', 'hidden');
                 window.loadPVZMap();
             } else {
                 if (checkActiveCheckbox('b-order', 'js-delivery')) {
@@ -664,17 +549,13 @@ $(document).ready(function(){
             if (that.hasClass('js-delivery') && !that.hasClass('is-pvz'))
             {
                 type = 'checkout-delivery';
-            } else if (that.hasClass('js-payment-local') || that.hasClass('js-payment-not-local')) {
+            } else if (that.hasClass('js-payment-local')) {
                 type = 'checkout-payment';
                 if (typeof (prepayment_min_summ) !== "undefined") {
-                    let basketType = '';
-                    if (that.hasClass('js-payment-not-local')) {
-                        basketType = '2';
-                    }
                     if (that.attr('data-prepayment') === 'Y') {
-                        let delElem = $('input.js-delivery' + basketType + ':checked');
+                        let delElem = $('input.js-delivery:checked');
                         let basketPrice = 0;
-                        $(".orders__price" + basketType).each(function () {
+                        $(".orders__price").each(function () {
                             basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
                         });
                         if (basketPrice >= prepayment_min_summ) {
@@ -684,7 +565,7 @@ $(document).ready(function(){
                             calculatePrice(basketPrice, 1);
                         }
                     } else {
-                        let delElems = $('input.js-delivery' + basketType);
+                        let delElems = $('input.js-delivery');
                         delElems.each(function () {
                             let delElem = $(this);
                             if (delElem.attr('data-old-price') !== undefined) {
@@ -833,21 +714,6 @@ $(document).ready(function(){
                 success: function (data) {
                     if (data.status == "ok") {
                         let paymentType = $.inArray(parseInt($('.js-payment-local:checked').val()), arOnlinePaymentIdsInt) == -1 ? 'default' : 'prepayment_s1';
-                        let items = [];
-                        for (var key in data.info) {
-                            if (data.info[key].IS_LOCAL === 'Y') {
-                                items.push({"id": key, "qnt": 1, "price": data.info[key].BASKET_PRICE})
-                            }
-                        }
-                        // RetailRocket
-                        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-                            try {
-                                rrApi.order({
-                                    "transaction": data.text,
-                                    "items": items,
-                                });
-                            } catch(e) {}
-                        });
                         // подписка на рассылки RR
                         // if ($('#one_click_checkbox_subscribe_email_checked1').prop("checked")) {
                         //     let email = $('#b-order[name=\'PROPS[EMAIL]\']').val();
@@ -863,7 +729,7 @@ $(document).ready(function(){
                         window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
                         return false;
                     }
-                    for(key in data.text){
+                    for(let key in data.text){
                         $(bOrder + ' .err-PROPS\\[' + key + '\\]').html(data.text[key]).addClass('actual');
                     }
                     if($(bOrder + ' .err-PROPS\\[PHONE\\]').html() === 'Указанный номер телефона зарегистрирован на другого клиента'){
