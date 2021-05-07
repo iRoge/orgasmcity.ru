@@ -189,7 +189,6 @@ class QsoftCatalogElement extends ComponentHelper
                 continue;
             }
             $price = PriceUtils::getPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
-
             $basePrice['OLD_VALUE'] = $price['OLD_PRICE'];
             $basePrice['VALUE'] = $price['PRICE'];
             $basePrice['PERCENT'] = $price['DISCOUNT'];
@@ -289,7 +288,7 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult = $this->getEntity('product', 'loadProduct');
         $this->arResult['NAME'] = $this->forSEO['NAME'];
         $this->arResult['DETAIL_TEXT'] = $this->forSEO['DETAIL_TEXT'];
-        $this->arResult['OFFERS'] = $this->getEntity('offers', 'loadOffers');
+        $this->arResult['OFFERS'] = $this->loadOffers();
         $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
         $this->arResult['OFFERS'] = $this->filterOffersByRests($this->arResult['OFFERS']);
         $this->arResult['IPROPERTY_VALUES'] = $this->getEntity('iprops', 'loadInheritedProperties');

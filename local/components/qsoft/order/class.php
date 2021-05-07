@@ -1,6 +1,8 @@
 <?
 
 use Bitrix\Highloadblock\HighloadBlockTable as HLBT;
+use Bitrix\Sale\BasketBase;
+use Bitrix\Sale\Internals\CollectableEntity;
 use \Likee\Site\User;
 use \Bitrix\Main\Loader;
 use \Bitrix\Main\UserTable;
@@ -56,6 +58,7 @@ class QsoftOrderComponent extends ComponentHelper
     private $offers = array();
     // свойства заказа
     private $orderProps;
+    /** @var BasketBase */
     // корзина
     private $basket;
     // валюта
@@ -754,6 +757,7 @@ class QsoftOrderComponent extends ComponentHelper
     private function loadBasket(): bool
     {
         $this->basket = Basket::loadItemsForFUser(Fuser::getId(), SITE_ID);
+        $this->basket->save();
         return (bool)$this->basket;
     }
 
@@ -1066,6 +1070,7 @@ class QsoftOrderComponent extends ComponentHelper
             return null;
         }
         $arOffers = [];
+        /** @var CollectableEntity $arItem */
         foreach ($basketItems as $arItem) {
             $offerId = $arItem->getProductId();
             if ($full) {
