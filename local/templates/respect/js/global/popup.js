@@ -36,10 +36,28 @@
       if (Popup.hasPopup()) {
         Popup.hide(true);
         return setTimeout(function() {
-          return Popup["new"](content, options);
+          let popup = Popup["new"](content, options);
+          $('.cls-mail-div').off('click');
+          $('.cls-mail-div').click(function() {
+            $('.podlozhka').hide(0);
+            $('.mail-div').hide(0);
+            $('.auth-div-full').hide(0);
+            $('.popup').hide(0);
+            $('body').removeClass('with--popup');
+          })
+          return popup;
         }, 600);
       } else {
-        return Popup["new"](content, options);
+        let popup = Popup["new"](content, options);
+        $('.cls-mail-div').off('click');
+        $('.cls-mail-div').click(function() {
+          $('.podlozhka').hide(0);
+          $('.mail-div').hide(0);
+          $('.auth-div-full').hide(0);
+          $('.popup').hide(0);
+          $('body').removeClass('with--popup');
+        })
+        return popup;
       }
     };
 

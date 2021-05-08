@@ -227,10 +227,10 @@ class QsoftOrderComponent extends ComponentHelper
         if ($this->checkType(["basketAdd", "basketDel"])) {
             // добавляем в корзину
             $offerId = intval($_POST["offerId"]);
+            $quantity = intval($_POST["quantity"]);
             // загружаем корзину
             $this->setBasket();
             if ($this->checkType(["basketAdd"])) {
-                $quantity = intval($_POST["quantity"]);
                 // добавляем в корзину
                 $this->addToBasket($offerId, $quantity);
             } else {
@@ -238,7 +238,7 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->getDeliveries();
                 $this->getDeliveryWays();
                 // удаляем из корзины
-                $this->deleteFromBasket($offerId);
+                $this->deleteFromBasket($offerId, $quantity);
             }
         }
         if ($this->checkType(["1click"])) {
@@ -336,9 +336,7 @@ class QsoftOrderComponent extends ComponentHelper
     // функции возврата данных
     private function returnError($error = false)
     {
-        if ($this->checkType(array("order")) && (!empty($this->arResult['ERRORS']['LOCAL']) || !empty($this->arResult['ERRORS']['NOT_LOCAL']))) {
-            $text = $_REQUEST['PROPS']['IS_LOCAL'] == 'Y' ? $this->arResult['ERRORS']['LOCAL'] :  $this->arResult['ERRORS']['NOT_LOCAL'];
-        } elseif ($error) {
+        if ($error) {
             $text = $error;
         } else {
             $text = $this->arResult['ERRORS'];
@@ -814,45 +812,56 @@ class QsoftOrderComponent extends ComponentHelper
         // проверяем есть ли ТП с таким ID
         // $this->basket->getExistsItem не работает, тк он сверяет все свойства, а у нас их ещё нет
         $arBasketItems = $this->basket->getBasketItems();
-        $isExist = false;
+        $basketItem = false;
         foreach ($arBasketItems as $arItem) {
             if ($arItem->getProductId() == $offerId) {
-                $isExist = $arItem;
+                $basketItem = $arItem;
                 break;
             }
         }
-        if ($isExist) {
-            // На будущее, когда можно будет заказывать несколько
-            /*
-            $item->setField('QUANTITY', $quantity);
-            $res = $this->basket->save();
-            if ($res->isSuccess()) {
-                $this->returnOk("Товар в корзине успешно обновлён");
-            }
-            //*/
-            $this->returnOk(0);
-        } else {
-            if ($basketItem = $this->createBasketItem($offerId, $quantity)) {
-                $res = $this->basket->save();
-                if ($res->isSuccess()) {
-                    $prop = $basketItem->getPropertyCollection();
-                    $props = $prop->getPropertyValues();
-                    $this->returnOk(1);
-                }
-            }
+
+        $rest = Functions::getRests($offerId)[$offerId];
+        if ($basketItem && (($basketItem->getQuantity() + $quantity) > $rest)) {
+            $this->arResult["ERRORS"][] = "Не достаточно остатка по данному товару.
+             Уменьшите количество добавляемого товара в корзину. У вас в корзине уже " . $basketItem->getQuantity() . " шт. Свободного остатка: " . $rest ?? 0;
+            $this->returnError();
+        } elseif ($quantity > $rest) {
+            $this->arResult["ERRORS"][] = "Не достаточно остатка по данному товару.
+             Уменьшите количество добавляемого товара в корзину. Свободного остатка: " . $rest ?? 0;
+            $this->returnError();
         }
+
+        if ($basketItem) {
+            $basketItem->setField('QUANTITY', $basketItem->getQuantity() + $quantity);
+        } else {
+            $this->createBasketItem($offerId, $quantity);
+        }
+
+        $res = $this->basket->save();
+        if ($res->isSuccess()) {
+            $this->returnOk(1);
+        }
+
         $this->arResult["ERRORS"][] = "Не удалось добавить или обновить товар в коризне";
         $this->returnError();
     }
 
-    private function deleteFromBasket($offerId)
+    private function deleteFromBasket($offerId, $quantity)
     {
         // проверяем есть ли ТП с таким ID
         // $this->basket->getExistsItem не работает, тк он сверяет все свойства, а у нас их ещё нет
         $arBasketItems = $this->basket->getBasketItems();
         foreach ($arBasketItems as $arItem) {
             if ($arItem->getProductId() == $offerId) {
-                $arItem->delete();
+                $resultQty = $arItem->getQuantity() - $quantity;
+                if ($resultQty < 1) {
+                    $arItem->delete();
+                } else {
+                    $arItem->delete();
+                    $arItem = $this->createBasketItem($offerId, $resultQty);
+                }
+//                pre($arItem->getQuantity());
+//                die;
                 $res = $this->basket->save();
                 if (empty($this->offers)) {
                     $this->checkBasketAvailability();
@@ -863,7 +872,7 @@ class QsoftOrderComponent extends ComponentHelper
                     if (!empty($this->arResult['ERRORS'])) {
                         $this->returnError($this->arResult['ERRORS'][0]);
                     } else {
-                        $this->returnOk($price);
+                        $this->returnOk($price, false, $arItem->getQuantity());
                     }
                 }
             }

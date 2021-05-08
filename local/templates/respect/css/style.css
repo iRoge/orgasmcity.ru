@@ -5174,10 +5174,6 @@ label.color-label {
   bottom: 0;
 }
 
-.catalog-element-btn-container {
-  display: flex;
-  justify-content: space-between;
-}
 .cartochka-blue
 {
   padding: 13px 0;
@@ -5202,7 +5198,7 @@ label.color-label {
   font-family: 'firaregular';
   font-size: 16px;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 5px;
   border: 0;
   outline: 0;
 }
@@ -9148,10 +9144,10 @@ padding: 5px;
 }
 
 .flex-product--count {
-order: 4;
-width: 10%;
-justify-content: center;
-padding: 5px;
+  display: block;
+  width: 10%;
+  padding: 5px;
+  order: 4;
 }
 
 .flex-product--price {
@@ -9192,7 +9188,6 @@ padding-left: 0px;
 }
 
 .flex-product--count {
-order: 3;
 width: 40%;
 padding-left: 0px;
 padding-bottom: 0px;

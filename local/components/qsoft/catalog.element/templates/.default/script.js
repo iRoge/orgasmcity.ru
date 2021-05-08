@@ -78,15 +78,12 @@ $(document).ready(function () {
 
     //функция для клика на кнопку "Добавить в корзину"
     function basketHandler() {
-        if ($('#buy-btn').val() == 'В корзине') {
-            return false;
-        }
-
         let offerId = $('#buy-btn').data('offer-id');
+        let quantity = $('.quantity-num').val();
         let data = {
             action: "basketAdd",
             offerId: offerId,
-            quantity: 1,
+            quantity: quantity,
         };
         $.ajax({
             method: "POST",
@@ -96,13 +93,12 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.status == "ok") {
                     updateSmallBasket(data.text);
-                    $('#buy-btn').val('В корзине');
                     respercEvent__add_to_cart();
                     return;
                 }
                 let error_text = '<div class="product-preorder-success">'
                     + '<h2>Ошибка</h2>'
-                    + '<div class="js-size-popup">'
+                    + '<div class="js-size-popup text-danger">'
                     + data.text.join("<br>")
                     + '</div>'
                     + '</div>';
@@ -164,12 +160,6 @@ $(document).ready(function () {
             return;
         }
         oneClickHandler();
-    });
-
-    //проверка размера для кнопки "Добавить в корзину"
-    $('#buy-btn').click(function (e) {
-        e.preventDefault();
-        basketHandler();
     });
 
     $('.js-animate-scroll').on('click', function (event) {
@@ -431,6 +421,25 @@ $(document).ready(function () {
             },
         });
         return false;
+    });
+
+    var $quantityNum = $(".quantity-num");
+    // Увеличение количества для добавления в корзину
+    $(".quantity-arrow-minus").on('click', function (event) {
+        event.preventDefault();
+        if ($quantityNum.val() > 1) {
+            $quantityNum.val(+$quantityNum.val() - 1);
+        }
+    });
+    $(".quantity-arrow-plus").on('click', function (event) {
+        event.preventDefault();
+        $quantityNum.val(+$quantityNum.val() + 1);
+    });
+
+    //проверка размера для кнопки "Добавить в корзину"
+    $('#buy-btn').click(function (e) {
+        e.preventDefault();
+        basketHandler();
     });
 
     // Выставляем дефолтную выборку оффера

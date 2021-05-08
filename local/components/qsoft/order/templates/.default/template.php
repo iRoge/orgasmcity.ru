@@ -22,7 +22,7 @@ global $LOCATION, $APPLICATION; ?>
     var arOnlinePaymentIds = <?=CUtil::PhpToJSObject($arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"])?>;
     var token = "<?=DADATA_TOKEN?>";
     var paymentWayErrorText = "<?= Option::get("respect", "disabled_payment_click_text", "");?>";
-    <? $prepaymentMinSumm = Option::get("respect", "prepayment_min_summ");
+    <? $prepaymentMinSumm = Option::get("respect", "prepayment_min_summ", 3000);
     if ($prepaymentMinSumm > 0) { ?>
     var prepayment_min_summ = <?= $prepaymentMinSumm ?>;
     <? } ?>
@@ -84,7 +84,7 @@ global $LOCATION, $APPLICATION; ?>
                                     ];
                                     ?>
                                     <div class="flex-product orders__row orders__row--product <?= $arResult["PROBLEM_OFFERS"][$id] ? "orders__row--product--error" : "" ?> js-card"
-                                         data-id="<?= $id ?>"
+                                         data-id="<?=$id?>" data-qty="<?=$arItem["QUANTITY"]?>"
                                     >
                                         <? //блок изображения ?>
                                         <div class="flex-product--img orders__block orders__block--img">
@@ -141,7 +141,12 @@ global $LOCATION, $APPLICATION; ?>
                                         <? //количество ?>
                                         <div class="flex-product--count orders__col">
                                             <span class="orders__label--only-mobile">Кол-во:</span>
-                                            <input type="text" class="orders__count-input" name="count" value="<?=$arItem['QUANTITY']?>" disabled>
+                                            <div class="quantity-block">
+                                                <button class="quantity-arrow-plus"> + </button>
+                                                <input data-offer-id="<?=$id?>" class="quantity-num" type="number" value="<?=$arItem['QUANTITY']?>" disabled />
+                                                <button class="quantity-arrow-minus"> - </button>
+                                            </div>
+<!--                                            <input type="text" class="orders__count-input" name="count" value="--><?//=$arItem['QUANTITY']?><!--" disabled>-->
                                         </div>
                                         <? //количество end ?>
 

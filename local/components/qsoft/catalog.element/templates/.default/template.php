@@ -144,8 +144,7 @@ global $APPLICATION;
                                 </div>
                                 <? endif; ?>
                                 <div id="wrap" class="btns-wrap">
-                                    <div id="js-toggle-delivery-ok"
-                                         class="catalog-element-btn-container">
+                                    <div id="js-toggle-delivery-ok">
                                         <?php if ($arResult['SHOW_ONE_CLICK']) :?>
                                         <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                id="one-click-btn"
@@ -153,6 +152,11 @@ global $APPLICATION;
                                                type="button"
                                                value="Купить в 1 клик"/>
                                         <?php endif; ?>
+                                        <div class="quantity-block">
+                                            <button class="quantity-arrow-minus"> - </button>
+                                            <input class="quantity-num" type="number" value="1" />
+                                            <button class="quantity-arrow-plus"> + </button>
+                                        </div>
                                         <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                id="buy-btn"
                                                class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
