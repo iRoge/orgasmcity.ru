@@ -1600,14 +1600,6 @@ class QsoftOrderComponent extends ComponentHelper
             unset($this->postProps['PVZ_ID']);
         }
 
-        if (!empty($_COOKIE['_ga'])) {
-            if (preg_match('/(\d*\.\d*)$/', $_COOKIE['_ga'], $matches)) {
-                $this->postProps['GA_COOKIE'] = $matches;
-            } else {
-                $this->postProps['GA_COOKIE'] = 'кука не соответствует условиям';
-            }
-        }
-
         // устанавливаем все имеющиеся свойства заказу
         foreach ($this->postProps as $key => $value) {
             if (!empty($value)) {
