@@ -21,7 +21,6 @@ $(document).ready(function(){
             dataType: "json",
             success: function (data) {
                 if (data.status == "ok") {
-                    updateSmallBasket(data.text);
                     activeAjax = false;
                 } else {
                     let errorText = '<div class="product-preorder-success">'
