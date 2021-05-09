@@ -3,6 +3,7 @@
 use Bitrix\Highloadblock\HighloadBlockTable as HLBT;
 use Bitrix\Sale\BasketBase;
 use Bitrix\Sale\Internals\CollectableEntity;
+use Likee\Site\Helpers\HL;
 use \Likee\Site\User;
 use \Bitrix\Main\Loader;
 use \Bitrix\Main\UserTable;
@@ -67,59 +68,6 @@ class QsoftOrderComponent extends ComponentHelper
     private $personType;
     // Данные по названию и классу пунктов выдачи из таблицы b_qsoft_pvz
     private $arPVZNames = [];
-    // Массив свойств, получаемых от dadata
-    private $arDadataProps = [
-        'federal_district',
-        'region_fias_id',
-        'region_kladr_id',
-        'region_with_type',
-        'region_type',
-        'region_type_full',
-        'region',
-        'area_fias_id',
-        'area_kladr_id',
-        'area_with_type',
-        'area_type',
-        'area_type_full',
-        'area',
-        'city_fias_id',
-        'city_kladr_id',
-        'city_with_type',
-        'city_type',
-        'city_type_full',
-        'city',
-        'city_area',
-        'city_district_fias_id',
-        'city_district_kladr_id',
-        'city_district_with_type',
-        'city_district_type',
-        'city_district_type_full',
-        'city_district',
-        'settlement_fias_id',
-        'settlement_kladr_id',
-        'settlement_with_type',
-        'settlement_type',
-        'settlement_type_full',
-        'settlement',
-        'street_fias_id',
-        'street_kladr_id',
-        'street_with_type',
-        'street_type',
-        'street_type_full',
-        'street',
-        'house_fias_id',
-        'house_kladr_id',
-        'house_type',
-        'house_type_full',
-        'house',
-        'block_type',
-        'block_type_full',
-        'block',
-        'fias_id',
-        'kladr_id',
-        'beltway_hit',
-        'beltway_distance',
-    ];
 
     public function onPrepareComponentParams($arParams)
     {
@@ -192,7 +140,6 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->returnError();
             }
             $this->getItems();
-            $this->getAvailableOffersSizesForItems();
             // получаем поля юзера
             $this->getUser();
             // устанавливаем стандартизированное название региона для dadata
@@ -282,10 +229,7 @@ class QsoftOrderComponent extends ComponentHelper
             }
             // получаем данные для вывода
             $this->getItems();
-            $this->getAvailableOffersSizesForItems();
         }
-
-        $this->arResult['DADATA_PROPS'] = $this->arDadataProps;
         $this->includeComponentTemplate();
     }
 
@@ -348,18 +292,18 @@ class QsoftOrderComponent extends ComponentHelper
         $this->returnJSON($arResult);
     }
 
-    private function returnOk($text = false, $coupon = false, $info = false)
+    private function returnOk($text = null, $coupon = null, $info = null)
     {
-        $arResult = array(
+        $arResult = [
             "status" => "ok",
-        );
-        if ($info) {
+        ];
+        if ($info !== null) {
             $arResult["info"] = $info;
         }
-        if ($text) {
+        if ($text !== null) {
             $arResult["text"] = $text;
         }
-        if ($coupon) {
+        if ($coupon !== null) {
             $arResult["coupon"] = $coupon;
         }
         $this->returnJSON($arResult);
@@ -860,8 +804,6 @@ class QsoftOrderComponent extends ComponentHelper
                     $arItem->delete();
                     $arItem = $this->createBasketItem($offerId, $resultQty);
                 }
-//                pre($arItem->getQuantity());
-//                die;
                 $res = $this->basket->save();
                 if (empty($this->offers)) {
                     $this->checkBasketAvailability();
@@ -872,7 +814,7 @@ class QsoftOrderComponent extends ComponentHelper
                     if (!empty($this->arResult['ERRORS'])) {
                         $this->returnError($this->arResult['ERRORS'][0]);
                     } else {
-                        $this->returnOk($price, false, $arItem->getQuantity());
+                        $this->returnOk($price, null, $resultQty);
                     }
                 }
             }
@@ -1205,19 +1147,33 @@ class QsoftOrderComponent extends ComponentHelper
     {
         $this->arResult["ITEMS"] = [];
         $this->arResult["DISCOUNT"] = 0;
+        $arColors = $this->getColors();
         foreach ($arOffers as $id => $value) {
             $src = [];
             if ($arProducts[$value["PRODUCT_ID"]]["PREVIEW_PICTURE"]) {
                 $src[] = $arProducts[$value["PRODUCT_ID"]]["PREVIEW_PICTURE"];
             }
             $value["PRICE"] = floor($value["BASKET_PRICE"]);
+            $name = $arProducts[$value["PRODUCT_ID"]]["NAME"];
+            $nameAdditions = [];
+            if ($value["SIZE"]) {
+                $nameAdditions[] = 'Размер: <b>' . $value["SIZE"] . '</b>';
+            }
+            if ($value['COLOR']) {
+                $value['COLOR'] = $arColors[$value['COLOR']];
+                $nameAdditions[] = 'Цвет: <b>' . $value['COLOR'] . '</b>';
+            }
+            if (!empty($nameAdditions)) {
+                $name .= '<br>' . implode(', ', $nameAdditions);
+            }
             $arItem = [
                 "PRODUCT_ID" => $value["PRODUCT_ID"],
                 "CODE" => $arProducts[$value["PRODUCT_ID"]]["CODE"],
                 "SRC" => $src,
                 "ARTICLE" => $arProducts[$value["PRODUCT_ID"]]["ARTICLE"],
-                "NAME" => $arProducts[$value["PRODUCT_ID"]]["NAME"],
+                "NAME" => $name,
                 "SIZE" => $value["SIZE"],
+                "COLOR" => $value["COLOR"],
                 "QUANTITY" => $value["QUANTITY"],
                 "PRICE" => $value["BASKET_PRICE"],
                 "OLD_CATALOG_PRICE" => $value["BRANCH_OLD_PRICE"],
@@ -1233,6 +1189,36 @@ class QsoftOrderComponent extends ComponentHelper
             }
 
         }
+    }
+
+    private function getColors()
+    {
+        $arColors = [];
+        if ($this->initCache('color')) {
+            $arColors = $this->getCachedVars('color');
+        } elseif ($this->startCache()) {
+            $this->startTagCache();
+            $this->registerTag('catalogAll');
+
+            $obEntity = HL::getEntityClassByHLName('Firecolorreference');
+            if ($obEntity && is_object($obEntity)) {
+                $sClass = $obEntity->getDataClass();
+                $rsColors = $sClass::getList(['select' => ['UF_NAME', 'UF_XML_ID']]);
+
+                while ($arColor = $rsColors->fetch()) {
+                    $arColors[$arColor['UF_XML_ID']] = $arColor['UF_NAME'];
+                }
+            }
+            if (!empty($arColors)) {
+                $this->endTagCache();
+                $this->saveToCache('color', $arColors);
+            } else {
+                $this->abortTagCache();
+                $this->abortCache();
+            }
+        }
+
+        return $arColors;
     }
 
     // функции доставки
@@ -1618,7 +1604,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->delCoupon();
             $_SESSION['NEW_ORDER_ID'] = $orderId;
             $_SESSION['CRITEO_NEW_ORDER_ID'] = $orderId;
-            $this->returnOk($orderId, false, $this->offers);
+            $this->returnOk($orderId, null, $this->offers);
         } else {
             $this->arResult["ERRORS"][] = $res->getErrorMessages();
             $this->returnError();
@@ -1824,45 +1810,6 @@ class QsoftOrderComponent extends ComponentHelper
         } else {
             //Меняем id первой службы доставки (для выбора по умолчанию в шаблоне)
             $this->arResult["PAYMENT"]["ID"] = reset($arPaymentWays)['PAYMENT'];
-        }
-    }
-
-    private function getAvailableOffersSizesForItems()
-    {
-        global $LOCATION;
-
-        $arCarts = [
-            'LOCAL' => 'NOT_LOCAL',
-            'NOT_LOCAL' => 'LOCAL',
-        ];
-
-        foreach ($arCarts as $primaryCart => $secondaryCart) {
-            if (isset($this->arResult['ITEMS'][$primaryCart])) {
-                foreach ($this->arResult['ITEMS'][$primaryCart] as $arItem) {
-                    if (!empty($arItem['SIZE'])) {
-                        $arProductsInCart[$arItem['PRODUCT_ID']] = $arItem['PRODUCT_ID'];
-                    }
-                }
-            }
-        }
-
-        if (!empty($arProductsInCart)) {
-            $sizeProducts = $LOCATION->getAmountOffersByProductId($arProductsInCart);
-        }
-
-        foreach ($arCarts as $primaryCart => $secondaryCart) {
-            if (isset($this->arResult['ITEMS'][$primaryCart])) {
-                foreach ($this->arResult['ITEMS'][$primaryCart] as $offerId => &$arItem) {
-                    if (!empty($arItem['SIZE'])) {
-                        foreach ($sizeProducts[$arItem['PRODUCT_ID']] as $availableOffer => $availableSize) {
-                            if (!isset($this->arResult['ITEMS'][$primaryCart][$availableOffer]) && !isset($this->arResult['ITEMS'][$secondaryCart][$availableOffer])) {
-                                $arItem['AVAILABLE_SIZES'][$availableSize] = $availableOffer;
-                            }
-                        }
-                    }
-                }
-                unset($arItem);
-            }
         }
     }
 }

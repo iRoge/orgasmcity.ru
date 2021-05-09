@@ -30,7 +30,6 @@ global $LOCATION, $APPLICATION; ?>
     <? if ($arResult['DADATA_STATUS']) : ?>
     dadata_status = true;
     <?endif;?>
-    var arDadataProps = <?=CUtil::PhpToJSObject($arResult['DADATA_PROPS'])?>;
     var type = "ADDRESS";
     var region = "<?=$arResult['DADATA_REGION_NAME']?>";
     var city = "<?=$arResult['DADATA_CITY_NAME']?>";
@@ -66,7 +65,6 @@ global $LOCATION, $APPLICATION; ?>
                             <div class="orders__row orders__row--header">
                                 <div class="orders__col orders__col--img">Товар</div>
                                 <div class="orders__col orders__col--name"></div>
-                                <div class="orders__col orders__col--size">Размер</div>
                                 <div class="orders__col orders__col--count">Кол-во</div>
                                 <div class="orders__col orders__col--price">Стоимость</div>
                             </div>
@@ -104,101 +102,55 @@ global $LOCATION, $APPLICATION; ?>
 
                                         <? //наименование ?>
                                         <div class="flex-product--name orders__col">
-                                            <span class="orders__article"><?= $arItem['ARTICLE'] ?></span>
+                                            <span class="orders__label--only-pc orders__article"><?= $arItem['ARTICLE'] ?></span>
                                             <h3 class="orders__title"><?= $arItem['NAME'] ?></h3>
                                         </div>
                                         <? //наименование end ?>
-
-                                        <? //селектор размера и кнопка добавления ?>
-                                        <div class="flex-product--size select-size-container">
-                                            <? if (!empty($arItem['AVAILABLE_SIZES'])) : ?>
-                                                <div class="orders__col--select-size-container"
-                                                     id="select-size-container">
-                                                    <select name="select-size" id="select-size-<?= $id ?>">
-                                                        <option value="<?= $id ?>"
-                                                                selected="selected"><?= $arItem['SIZE'] ?></option>
-                                                        <? foreach ($arItem['AVAILABLE_SIZES'] as $size => $offerId) : ?>
-                                                            <option value="<?= $offerId ?>"><?= $size ?></option>
-                                                        <? endforeach ?>
-                                                    </select>
-                                                </div>
-                                                <div class="orders__col orders__col--add-btn-container">
-                                                    <button id="buy-btn-<?= $id ?>" class="orders__add-btn"
-                                                            type="button" value="<?= $id ?>">
-                                                        Добавить размер
-                                                    </button>
-                                                </div>
-                                            <? elseif (!empty($arItem['SIZE'])) : ?>
-                                                <div class="orders__col--select-size-container"
-                                                     id="select-size-container">
-                                                <span title="Размер"
-                                                      class="orders__size"><?= $arItem['SIZE'] ?></span>
-                                                </div>
-                                            <? endif ?>
-                                        </div>
-                                        <? //селектор размера и кнопка добавления end ?>
 
                                         <? //количество ?>
                                         <div class="flex-product--count orders__col">
                                             <span class="orders__label--only-mobile">Кол-во:</span>
                                             <div class="quantity-block">
-                                                <button class="quantity-arrow-plus"> + </button>
-                                                <input data-offer-id="<?=$id?>" class="quantity-num" type="number" value="<?=$arItem['QUANTITY']?>" disabled />
                                                 <button class="quantity-arrow-minus"> - </button>
+                                                <input data-offer-id="<?=$id?>" class="quantity-num" type="number" value="<?=$arItem['QUANTITY']?>" disabled />
+                                                <button class="quantity-arrow-plus"> + </button>
                                             </div>
-<!--                                            <input type="text" class="orders__count-input" name="count" value="--><?//=$arItem['QUANTITY']?><!--" disabled>-->
                                         </div>
                                         <? //количество end ?>
 
                                         <? //стоимость ?>
-                                        <div class="orders__col orders__col--price" style="display: none!important;">
-                                            <span class="orders__label">Стоимость:</span>
-                                            <span class="orders__price">
+                                        <div class="flex-product--price orders__col">
+                                            <?php if ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) : ?>
+                                            <div>
+                                                <span class="orders__label">Цена:&nbsp;</span>
+                                                <span class="orders__old-catalog-price"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
+                                            </div>
+                                            <?php endif; ?>
+
+                                            <div class="text-success">
+                                                <? if (isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE']) : ?>
+                                                    Применен промокод.
+                                                <? endif ?>
+                                            </div>
+
+                                            <div class="">
+                                                <span class="orders__label">Итого:&nbsp;</span>
+                                                <span class="<?= ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) ? 'orders__result-price--red' : 'orders__result-price'?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
+                                            </div>
+
+                                            <div class="orders__col orders__col--price" style="display: none!important;">
+                                                <span class="orders__label">Стоимость:</span>
+                                                <span class="orders__price">
                                             <span class="orders__price-num"
                                                   data-price="<?= $arItem['PRICE'] ?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
                                             <? if ($arItem['OLD_PRICE'] && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
                                                 <s><span class="orders__old-price-num"
                                                          data-price="<?= $arItem['OLD_PRICE'] ?>"><?= number_format($arItem['OLD_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span></s>
                                             <? endif ?>
-                                        </span>
-                                        </div>
-                                        <div class="flex-product--price">
-                                            <?php if ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) : ?>
-                                            <div class="orders__col">
-                                                <span class="orders__label">Цена:&nbsp;</span>
-                                                <span class="orders__old-catalog-price"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
-                                            </div>
-                                            <?php endif; ?>
-
-                                            <div class="orders__col text-success">
-                                                <? if (isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE']) : ?>
-                                                    Применен промокод.
-                                                <? endif ?>
-                                            </div>
-
-                                            <div class="orders__col">
-                                                <span class="orders__label">Итого:&nbsp;</span>
-                                                <span class="<?= ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) ? 'orders__result-price--red' : 'orders__result-price'?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
+                                            </span>
                                             </div>
                                         </div>
                                         <? //стоимость end ?>
-
-                                        <? //попап добавления еще одного размера ?>
-                                        <div style="display: none; width: 100%;"
-                                             class="js-size-selector sizes-<?= $id ?>">
-                                            <input type="hidden" id="del-popup-type" value="">
-                                            <? foreach ($arItem['AVAILABLE_SIZES'] as $size => $offerId) : ?>
-                                                <div class="top-minus">
-                                                    <input type="radio" name="size" id="offer-<?= $offerId ?>"
-                                                           class="radio1"
-                                                           value="<?= $offerId ?>"/>
-                                                    <label class="sizes-input" for="offer-<?= $offerId ?>"
-                                                           data-offer-id="<?= $offerId ?>"><?= $size ?></label>
-                                                </div>
-                                            <? endforeach; ?>
-                                            <div style="clear: both"></div>
-                                        </div>
-                                        <? //попап добавления еще одного размера end ?>
 
                                         <a class="orders__remove js-card-remove"
                                            data-product-id="<?= $arItem["PRODUCT_ID"] ?>"
@@ -379,11 +331,6 @@ global $LOCATION, $APPLICATION; ?>
                                                 <div class="form__field form__field--1-4 js__cdek-disabled">
                                                     <input id="intercom" class="form__elem" type="text" name="PROPS[INTERCOM]" value="<?= $arResult["USER"]["UF_INTERCOM"] ?: ($cookieAddress ? $_COOKIE['user_intercom'] : '')  ?>" placeholder="Домофон">
                                                 </div>
-                                                <? foreach ($arResult['DADATA_PROPS'] as $dadataProp) :?>
-                                                    <div class="form__field js__cdek-disabled" hidden>
-                                                        <input hidden id="<?= $dadataProp ?>"  class="form__elem" type="text" name="PROPS[<?= mb_strtoupper($dadataProp) ?>]" value="<?= $arResult["USER"]["UF_" . mb_strtoupper($dadataProp)] ?>" placeholder="Заполняется автоматически">
-                                                    </div>
-                                                <? endforeach; ?>
                                                 <div class="clear-blocks"></div>
                                             </div>
                                         </div>

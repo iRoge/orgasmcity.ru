@@ -23,21 +23,21 @@ $(document).ready(function(){
                 if (data.status == "ok") {
                     updateSmallBasket(data.text);
                     activeAjax = false;
-                    reloadProducts();
-                    let basketPrice = 0;
-                    $(".orders__price").each(function () {
-                        basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
-                    });
-                    checkProducts(basketPrice);
-                    return;
+                } else {
+                    let errorText = '<div class="product-preorder-success">'
+                        + '<h2>Ошибка</h2>'
+                        + '<div class="js-size-popup text-danger">'
+                        + data.text.join("<br>")
+                        + '</div>'
+                        + '</div>';
+                    Popup.show(errorText, {});
                 }
-                let error_text = '<div class="product-preorder-success">'
-                    + '<h2>Ошибка</h2>'
-                    + '<div class="js-size-popup">'
-                    + data.text.join("<br>")
-                    + '</div>'
-                    + '</div>';
-                Popup.show(error_text, {});
+                reloadProducts();
+                let basketPrice = 0;
+                $(".orders__price").each(function () {
+                    basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
+                });
+                checkProducts(basketPrice);
             },
             error: function (data) {
                 hide_wait();
@@ -89,7 +89,7 @@ $(document).ready(function(){
                         let rightBlock = $('.right-cart-block-local');
                         leftBlock.empty();
                         rightBlock.empty();
-                        rightBlock.append('<div class="checkout__error-wrapper"><p class="checkout__error-text">' + data['text'] + '</p></div>');
+                        rightBlock.append('<div class="checkout__error-wrapper"><p class="checkout__error-text text-danger">' + data['text'] + '</p></div>');
                     });
                     activeAjax = false;
                 } else {
@@ -375,23 +375,6 @@ $(document).ready(function(){
         $(window).resize(function () {
             if ($(window).width() > 768) {
                 $(`.opening-cart`).closest('.checkout').find('.checkout__inner').css('display', '');
-            }
-        });
-    }
-
-    //подбор высоты блока товара
-    function checkHeightProductBlock() {
-        $('.flex-product').each(function () {
-            if ($(window).width() > 767) {
-                $('.flex-product').css('height', 'inherit');
-                return false;
-            }
-            let firstColHeight = $('.flex-product--img', $(this)).height() + $('.flex-product--size', $(this)).height() + $('.flex-product--count', $(this)).height();
-            let twostColHeight = $('.flex-product--name', $(this)).height() + $('.flex-product--price', $(this)).height();
-            if (firstColHeight > twostColHeight) {
-                $(this).css('height', firstColHeight + 15);
-            } else {
-                $(this).css('height', twostColHeight + 15);
             }
         });
     }
@@ -769,20 +752,7 @@ $(document).ready(function(){
         document.cookie = 'user_email=' + $('#b-order').find($('[name = "PROPS[EMAIL]"]')).val() + '~' + $('#b-order2').find($('[name = "PROPS[EMAIL]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
         document.cookie = 'user_phone=' + $('#b-order').find($('[name = "PROPS[PHONE]"]')).val() + '~' + $('#b-order2').find($('[name = "PROPS[PHONE]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
     });
-    let resizeDelayTimeout;
-    $(window).resize(function () {
-        if ($(window).width() > 767) {
-            $('.flex-product').css('height', 'inherit');
-            return false;
-        }
 
-        if (resizeDelayTimeout) {
-            clearTimeout(resizeDelayTimeout);
-        }
-        resizeDelayTimeout = setTimeout( function (){
-            checkHeightProductBlock()
-        }, 200 );
-    });
 });
 
 // форматирование цены
