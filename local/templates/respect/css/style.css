@@ -5033,7 +5033,7 @@ input::-webkit-inner-spin-button {
   position: relative;
   cursor: pointer;
   background: #fff5f7;
-  border: 1px solid #e4e4e4;
+  border: 2px solid #e4e4e4;
   padding: 9px 13px;
   letter-spacing: 0.4px;
   font-family: 'firalight' !important;
