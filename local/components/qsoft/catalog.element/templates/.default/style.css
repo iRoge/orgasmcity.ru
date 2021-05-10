@@ -375,6 +375,16 @@ input[type="number"] {
     border: solid 1px;
     outline: none;
     background-color: #f0a740;
+    display: flex;
+    justify-content: center;
+}
+.quantity-arrow-minus:hover,
+.quantity-arrow-plus:hover {
+    background-color: #ffd35f;
+}
+.quantity-arrow-minus:active,
+.quantity-arrow-plus:active {
+    background-color: #fde910;
 }
 .quantity-num {
     height: 100%;

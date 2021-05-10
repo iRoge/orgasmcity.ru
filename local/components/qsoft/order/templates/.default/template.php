@@ -111,9 +111,9 @@ global $LOCATION, $APPLICATION; ?>
                                         <div class="flex-product--count orders__col">
                                             <span class="orders__label--only-mobile">Кол-во:</span>
                                             <div class="quantity-block">
-                                                <button class="quantity-arrow-minus"> - </button>
+                                                <button class="quantity-arrow-minus">- </span></button>
                                                 <input data-offer-id="<?=$id?>" class="quantity-num" type="number" value="<?=$arItem['QUANTITY']?>" disabled />
-                                                <button class="quantity-arrow-plus"> + </button>
+                                                <button class="quantity-arrow-plus"><span> + </span></button>
                                             </div>
                                         </div>
                                         <? //количество end ?>

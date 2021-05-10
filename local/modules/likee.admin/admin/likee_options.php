@@ -219,6 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"
 $APPLICATION->SetTitle('Настройки для сайта Respect-Shoes');
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 ?>
+    <script src="/local/templates/respect/lib/jquery.js"></script>
+    <script src="/local/templates/respect/js/inputs/jquery.maskedinput.min.js"></script>
     <form method="POST" action="likee_options.php?lang=<?= LANGUAGE_ID ?><?= $returnUrl ?>"
           enctype="multipart/form-data" name="editform">
         <?
@@ -690,21 +692,11 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
                                        ''
                                    ) ?>"></td>
         </tr>
-
-        <tr>
-            <td width="40%">Apikey 5POST</td>
-            <td width="60%"><input type="text" name="apikey_5post" size="30"
-                                   value="<? echo COption::GetOptionString(
-                                       "likee",
-                                       "apikey_5post",
-                                       ''
-                                   ) ?>"></td>
-        </tr>
         <tr>
             <td colspan="2" align="center">
                  <input type="button" onclick="
                      $('#cdek-result').html('Обновление');
-                     BX.ajax.post('/local/scripts/get_CDEK_pvz.php', false, function(response) {
+                     BX.ajax.post('/local/scripts/getCDEKpvz.php', false, function(response) {
                         $('#cdek-result').html(response);
                      });" value="Обновить CDEK через API" >
                 <span id="cdek-result" style="margin-left: 40px">
@@ -716,38 +708,12 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
         <tr>
             <td colspan="2" align="center">
                 <input type="button" onclick="
-                     $('#iml-result').html('Обновление');
-                     BX.ajax.post('/local/scripts/get_IML_pvz.php', false, function(response) {
-                        $('#iml-result').html(response);
-                     });" value="Обновить IML через API" >
-                <span id="iml-result" style="margin-left: 40px">
-                    <?= "Обновлено: " . date("d-m-Y H:i:s", filemtime($_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/IML.pvz'));
-                    ?>
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="button" onclick="
-                     $('#5post-result').html('Обновление');
-                     BX.ajax.post('/local/scripts/get_5post_pvz.php', false, function(response) {
-                        $('#5post-result').html(response);
-                     });" value="Обновить 5Post через API" >
-                <span id="5post-result" style="margin-left: 40px">
-                    <?= "Обновлено: " . date("d-m-Y H:i:s", filemtime($_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/5POST.pvz'));
-                    ?>
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="button" onclick="
-                     $('#respect-result').html('Обновление');
-                     BX.ajax.post('/local/scripts/get_respect_pvz.php', false, function(response) {
-                        $('#respect-result').html(response);
-                     });" value="Обновить Respect из БД" >
-                <span id="respect-result" style="margin-left: 40px">
-                    <?= "Обновлено: " . date("d-m-Y H:i:s", filemtime($_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/RESPECT.pvz'));
+                     $('#pickpoint-result').html('Обновление');
+                     BX.ajax.post('/local/scripts/getPickPointPVZ.php', false, function(response) {
+                        $('#pickpoint-result').html(response);
+                     });" value="Обновить PickPoint через API" >
+                <span id="pickpoint-result" style="margin-left: 40px">
+                    <?= "Обновлено: " . date("d-m-Y H:i:s", filemtime($_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/PickPoint.pvz'));
                     ?>
                 </span>
             </td>
