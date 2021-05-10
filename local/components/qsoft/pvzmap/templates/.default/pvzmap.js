@@ -209,7 +209,7 @@ window.pvzmap = {
                     data: {
                         content: pvzName,
                         name: pvzName,
-                        label: 'Пункт выдачи ' + pvz[pvzName],
+                        label: pvz[pvzName],
                         value: pvzName,
                         class_li: 'pvz__label',
                         name_li:'pvz',
@@ -371,17 +371,18 @@ window.CDEK = {
         let havePaySystem = '';
         let phone = '';
         let images = '';
-        if (!pvzObj.DELIVERY_SERVICES.hasOwnProperty('CDEK')) {
+        if (!pvzObj['DELIVERY_SERVICES'].hasOwnProperty('CDEK')) {
             return;
         }
-        if (!pvzObj.DELIVERY_SERVICES.CDEK.hasOwnProperty('PRICE')) {
+        if (!pvzObj['DELIVERY_SERVICES']['CDEK'].hasOwnProperty('PRICE')) {
             return;
         }
-        let price = parseInt(pvzObj.DELIVERY_SERVICES.CDEK.PRICE) > 0 ? pvzObj.DELIVERY_SERVICES.CDEK.PRICE + ' руб.' : 'Бесплатно';
-        if(item.officeImageList) {
-        item.officeImageList.forEach(function (img) {
-            images += '<a href="' + img.url + '" target="_blanc"><img src="' + img.url + '" width="130" height="130"></a>'
-        })}
+        let price = parseInt(pvzObj['DELIVERY_SERVICES']['CDEK']['PRICE']) > 0 ? pvzObj['DELIVERY_SERVICES']['CDEK']['PRICE'] + ' руб.' : 'Бесплатно';
+        if (item.officeImageList) {
+            item.officeImageList.forEach(function (img) {
+                images += '<a href="' + img.url + '" target="_blanc"><img src="' + img.url + '" width="130" height="130"></a>'
+            })
+        }
         let Placemark = new ymaps.Placemark(
             [item.coordY, item.coordX],
             {
@@ -439,6 +440,131 @@ window.CDEK = {
             havepaysystem_result = true;
         } else {
             havepaysystem_result = item.haveCash || item.haveCashless;
+        }
+
+        if (havepaysystem_result) {
+            this.filtered_list.push(item);
+        }
+    },
+
+    changeFilteredPoints: function (havepaysystem) {
+        this.createClusterer();
+        this.filtered_list = [];
+        this.getItemsByFilter(havepaysystem);
+        this.clusterer.removeAll();
+        if (this.filtered_list.length > 0) {
+            this.filtered_list.forEach((item, index) => this.addPoint(item, index));
+        }
+        return this.clusterer;
+    },
+
+    choose: function (id, name) {
+        let input, button;
+
+        input = document.getElementById('cart__delivery-cdek-input');
+        button = document.getElementById('cart__delivery-cdek-button');
+        input.value = id;
+        button.value = name;
+        pvzmap.close();
+    }
+};
+
+window.PickPoint = {
+    pvzlist: pvzObj.PVZ.PickPoint,
+    filtered_list: [],
+
+    createClusterer: function () {
+        this.clusterer = new ymaps.Clusterer({
+            gridSize: 64,
+            groupByCoordinates: false,
+            hasBalloon: false,
+            hasHint: false,
+            margin: 10,
+            maxZoom: 14,
+            minClusterSize: 3,
+            showInAlphabeticalOrder: false,
+            viewportMargin: 128,
+            zoomMargin: 0,
+            clusterDisableClickZoom: false,
+            preset: 'islands#brownClusterIcons'
+        })
+    },
+
+    addPoint: function (item, index) {
+        let images = '';
+        if (!pvzObj['DELIVERY_SERVICES'].hasOwnProperty('PickPoint')) {
+            return;
+        }
+        if (!pvzObj['DELIVERY_SERVICES']['PickPoint'].hasOwnProperty('PRICE')) {
+            return;
+        }
+        let price = parseInt(pvzObj['DELIVERY_SERVICES']['PickPoint']['PRICE']) > 0 ? pvzObj['DELIVERY_SERVICES']['PickPoint']['PRICE'] + ' руб.' : 'Бесплатно';
+        if (item['File0']) {
+            let url = "https://e-solution.pickpoint.ru/api/" + item['File0'];
+            images += '<a href="' + url + '" target="_blanc"><img src="' + url + '" width="130" height="130"></a>'
+        }
+        if (item['File1']) {
+            let url = "https://e-solution.pickpoint.ru/api/" + item['File1'];
+            images += '<a href="' + url + '" target="_blanc"><img src="' + url + '" width="130" height="130"></a>'
+        }
+        if (item['File2']) {
+            let url = "https://e-solution.pickpoint.ru/api/" + item['File2'];
+            images += '<a href="' + url + '" target="_blanc"><img src="' + url + '" width="130" height="130"></a>'
+        }
+        let Placemark = new ymaps.Placemark(
+            [item['Latitude'], item['Longitude']],
+            {
+                balloonContent: '<p class="panel-details__block-head">' + (item['TypeTitle'] === 'ПВЗ' ? 'Пункт выдачи PickPoint' : 'Постамат PickPoint') + '</p>' +
+                    '<div class="panel-details__block"><button class="widget__choose btn" data-label="Выбрать" pvz_name="' + item['Name'] + '" pvz_id="' + item['Number'] + '" pvz="PickPoint" pvz_address=\'' + (item['Metro'] ? 'м.' + item['Metro'] + ' ' : '') + item['Address'] + '\' only_prepayment="' + (item['Cash'] === '0' && (item['Card'] === '2' || item['Card'] === '0') ? 'Y' : 'N') + '" onclick="panel.choose(event, this);">Выбрать</button> <span class="panel-details__cost-delivery">' + price + '</span> </div>' +
+                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/location.svg" class="widget__location-icon">' + (item['Metro'] ? 'м. ' + item['Metro'] + ' ' : '') + item['Address'] + '</p>'
+                     +
+                    '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/time.svg" class="widget__time-icon">'+ item['WorkTimeSMS'] + '</p>' +
+                    `${item['Card'] ?
+                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/card.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата картой при получении</span></p>"
+                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cardNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты картой</span></p>"
+                    }` +
+                    `${item['Cash'] === '1' ?
+                        "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cash.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата наличными</span></p>"
+                        : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cashNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты наличными</span></p>"
+                    }` +
+                    `${(item['Cash'] === '0' || item['Cash'] === '2') && !item['Card'] ? "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
+                        : ""
+                    }` +
+                    '<p class="panel-details__block-text">' + item['OutDescription'] + ' ' + item['InDescription'] + '</p>' +
+                    '<div class="pvz__images">' + images + '</div>'
+            },
+            {
+                preset: 'islands#brownIcon',
+                hideIconOnBalloonOpen: false,
+                hasBalloon: true,
+                balloonMinHeight: 120,
+                balloonMaxWidth: 300,
+                balloonPanelMaxMapArea: 48e4,
+            }
+        );
+
+        Placemark.link = index;
+
+        Placemark.events.add(['balloonopen', 'click'], function (metka) {
+            if (panel.element.classList.contains('panel_hidden')) {
+                sidebar.burger.changeIcon();
+            }
+        });
+
+        this.clusterer.add(Placemark);
+    },
+
+    getItemsByFilter: function (havepaysystem) {
+        this.pvzlist.forEach((item) => this.addItem(item, havepaysystem));
+    },
+
+    addItem: function (item, havepaysystem) {
+        let havepaysystem_result;
+
+        if (havepaysystem == 2) {
+            havepaysystem_result = true;
+        } else {
+            havepaysystem_result = item['Cash'] || item['Card'] === '1';
         }
 
         if (havepaysystem_result) {

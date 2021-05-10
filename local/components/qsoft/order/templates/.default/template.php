@@ -388,11 +388,11 @@ global $LOCATION, $APPLICATION; ?>
                                     <div class="form__field">
                                         <input id="cart__order-button" class="form__btn bttn" type="submit" name="submit" value="Отправить заказ">
                                     </div>
-                                    <div id="basket_checkbox_policy" class="col-xs-12">
-                                        <div class="err-order err-policy"></div>
-                                        <input id="cart__order-policy" type="checkbox" name="basket_checkbox_policy" class="checkbox3 js-required" checked="">
-                                        <label for="cart__order-policy" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="<?= OFFER_FILENAME ?>">политикой конфиденциальности</a>.</label>
-                                    </div>
+<!--                                    <div id="basket_checkbox_policy" class="col-xs-12">-->
+<!--                                        <div class="err-order err-policy"></div>-->
+<!--                                        <input id="cart__order-policy" type="checkbox" name="basket_checkbox_policy" class="checkbox3 js-required" checked="">-->
+<!--                                        <label for="cart__order-policy" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="--><?//= OFFER_FILENAME ?><!--">политикой конфиденциальности</a>.</label>-->
+<!--                                    </div>-->
                                 </div>
                             </div>
                             <!-- /cost -->

@@ -83,7 +83,6 @@
 .img-icon--havecashless{
     height: 16px;
     margin-right: 5px;
-    margin-left: 10px;
 }
 
 
@@ -257,6 +256,7 @@ input[type="checkbox"]:checked + .havecashless__label span::before
     font-size: 17px;
     line-height: 17px;
     display: flex;
+    justify-content: start;
     align-items: center;
     margin-bottom: 16px;
     padding-left: 10px;
