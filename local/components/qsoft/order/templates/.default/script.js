@@ -743,7 +743,7 @@ $(document).ready(function(){
     resetJsHandlers();
     //клик на деактивированный способ оплаты
     $(document).on('click', '.payment__type--disabled', function() {
-        Popup.show('<div style="text-align: center; padding: 0px 40px;"><article style="font-size: 1.4em;">' + paymentWayErrorText + '</article></div>');
+        Popup.show('<div class="text-danger" style="text-align: center; padding: 0px 40px;"><article style="font-size: 1.4em;">' + paymentWayErrorText + '</article></div>');
     });
     openCart();
     $('.cart-city-input').click(function() {

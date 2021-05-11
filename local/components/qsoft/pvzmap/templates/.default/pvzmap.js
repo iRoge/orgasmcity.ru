@@ -515,19 +515,19 @@ window.PickPoint = {
             [item['Latitude'], item['Longitude']],
             {
                 balloonContent: '<p class="panel-details__block-head">' + (item['TypeTitle'] === 'ПВЗ' ? 'Пункт выдачи PickPoint' : 'Постамат PickPoint') + '</p>' +
-                    '<div class="panel-details__block"><button class="widget__choose btn" data-label="Выбрать" pvz_name="' + item['Name'] + '" pvz_id="' + item['Number'] + '" pvz="PickPoint" pvz_address=\'' + (item['Metro'] ? 'м.' + item['Metro'] + ' ' : '') + item['Address'] + '\' only_prepayment="' + (item['Cash'] === '0' && (item['Card'] === '2' || item['Card'] === '0') ? 'Y' : 'N') + '" onclick="panel.choose(event, this);">Выбрать</button> <span class="panel-details__cost-delivery">' + price + '</span> </div>' +
+                    '<div class="panel-details__block"><button class="widget__choose btn" data-label="Выбрать" pvz_name="' + item['Name'] + '" pvz_id="' + item['Number'] + '" pvz="PickPoint" pvz_address=\'' + (item['Metro'] ? 'м.' + item['Metro'] + ' ' : '') + item['Address'] + '\' only_prepayment="' + ((item['Cash'] || item['Card'] === 1) ? 'N' : 'Y') + '" onclick="panel.choose(event, this);">Выбрать</button> <span class="panel-details__cost-delivery">' + price + '</span> </div>' +
                     '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/location.svg" class="widget__location-icon">' + (item['Metro'] ? 'м. ' + item['Metro'] + ' ' : '') + item['Address'] + '</p>'
                      +
                     '<p class="panel-details__block-text panel-details__block-text--left-padding"><img src="/local/templates/respect/img/svg/time.svg" class="widget__time-icon">'+ item['WorkTimeSMS'] + '</p>' +
-                    `${item['Card'] ?
+                    `${item['Card'] === 1 ?
                         "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/card.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата картой при получении</span></p>"
                         : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cardNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты картой</span></p>"
                     }` +
-                    `${item['Cash'] === '1' ?
+                    `${item['Cash'] ?
                         "<p class='panel-details__block-text panel-details__block-text--blue panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cash.svg' class='img-icon img-icon--havecashless' alt=''>Возможна оплата наличными</span></p>"
                         : "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/cashNo.svg' class='img-icon img-icon--havecashless' alt=''>Нет оплаты наличными</span></p>"
                     }` +
-                    `${(item['Cash'] === '0' || item['Cash'] === '2') && !item['Card'] ? "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
+                    `${!(item['Cash'] || item['Card'] === 1) ? "<p class='panel-details__block-text panel-details__block-text--red panel-details__block-text--left-padding'><span><img src='/local/templates/respect/img/svg/onlyPrepayment.svg' class='img-icon img-icon--havecashless' alt=''>Возможна только предоплата</span></p>"
                         : ""
                     }` +
                     '<p class="panel-details__block-text">' + item['OutDescription'] + ' ' + item['InDescription'] + '</p>' +
@@ -564,7 +564,7 @@ window.PickPoint = {
         if (havepaysystem == 2) {
             havepaysystem_result = true;
         } else {
-            havepaysystem_result = item['Cash'] || item['Card'] === '1';
+            havepaysystem_result = item['Cash'] || item['Card'] === 1;
         }
 
         if (havepaysystem_result) {

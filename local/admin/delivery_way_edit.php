@@ -199,7 +199,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
                                            value="C"<? if ($arValues['TYPEWAYS'] == "C") {
                                                 echo " checked";
                                                     } ?> /></td>
-                    <td width="90%" style="padding-top: 4px;">Курьер</td>
+                    <td width="90%" style="padding-top: 4px;">Обычный блок</td>
 
                 </tr>
                 <tr>
@@ -207,7 +207,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
                                            value="S"<? if ($arValues['TYPEWAYS'] == "S") {
                                                 echo " checked";
                                                     } ?> /></td>
-                    <td width="90%" style="padding-top: 4px;">Самовывоз из ПВЗ</td>
+                    <td width="90%" style="padding-top: 4px;">С картой ПВЗ</td>
 
                 </tr>
             </table>
