@@ -1,7 +1,7 @@
 var clickedElem;
 $(document).ready(function(){
     var activeAjax = false;
-    const arDelIdsJsInt = arDelIdsJs.map(item => parseInt(item));
+    const arPVZDeliveryIds = arDelIdsJs.map(item => parseInt(item));
     var arOnlinePaymentIdsInt = [];
     var lastClickedDeliveryRadio = false;
     if (arOnlinePaymentIds) {
@@ -152,12 +152,12 @@ $(document).ready(function(){
     }
 
     // переключаем блоки способа оплаты при выборе способа доставки
-    function checkPaymentWay(nonLocal, paymentIds) {
+    function checkPaymentWay(paymentIds) {
         if (typeof(paymentIds) != 'string') {
            paymentIds = String(paymentIds);
         }
         paymentIds = paymentIds.split(',');
-        $('.payment__type' + nonLocal).each(function(index) {
+        $('.payment__type').each(function(index) {
             let that = $(this);
             that.find('input').prop('checked', false);
             if(paymentIds.indexOf(that.find('input').val()) === -1){
@@ -168,12 +168,12 @@ $(document).ready(function(){
                 that.find('input').prop('disabled', false);
             }
         });
-        sortPaymentWay(nonLocal);
+        sortPaymentWay();
     }
 
     //сортировка способов оплаты
-    function sortPaymentWay(nonLocal){
-        let paymentSelector = $('.payment__type' + nonLocal)
+    function sortPaymentWay(){
+        let paymentSelector = $('.payment__type')
         let arItems = $.makeArray(paymentSelector);
         arItems.sort(function(a, b) {
             if($(a).find('input').prop('disabled') == $(b).find('input').prop('disabled')){
@@ -185,9 +185,9 @@ $(document).ready(function(){
     }
 
     // переключаем блоки при выборе ПВЗ
-    function checkCDEK() {
+    function checkPVZ() {
         let delId = parseInt($(".js-delivery:checked").val());
-        if ($.inArray(delId, arDelIdsJsInt) != -1) {
+        if ($.inArray(delId, arPVZDeliveryIds) != -1) {
             if (!$(".is-pvz").hasClass('pvz-checked')) {
                 $(".is-pvz").prop('checked', false);
                 if (lastClickedDeliveryRadio) {
@@ -196,9 +196,14 @@ $(document).ready(function(){
             }
             return true;
         } else {
-            $(".js__cdek-disabled").removeClass("is-hidden");
+            if (delId === deliveryMoscowSelfId) {
+                $(".js__pvz-disabled").addClass("is-hidden");
+                $(".js__pvz-enabled").addClass("is-hidden");
+            } else {
+                $(".js__pvz-disabled").removeClass("is-hidden");
+                $(".js__pvz-enabled").addClass("is-hidden");
+            }
             $(".is-pvz").removeClass("pvz-checked");
-            $(".js__cdek-enabled").addClass("is-hidden");
             lastClickedDeliveryRadio = $(".js-delivery:checked");
             return false;
         }
@@ -423,53 +428,53 @@ $(document).ready(function(){
         $(".js-delivery").on("click", function() {
             clickedElem = $(this);
 
-            if (checkCDEK()) {
+            if (checkPVZ()) {
                 $('body').css('overflow', 'hidden');
                 window.loadPVZMap();
             } else {
-                if (checkActiveCheckbox('b-order', 'js-delivery')) {
-                    hiddenBlock('close', 'b-order', 'all', 'js-delivery');
+                if (checkIfCheckboxIsActive('js-delivery')) {
+                    hiddenBlock('close','all');
                     calculatePrice(false, 1);
                     let labels = $('#b-order').find('.delivery-label');
                     labels.each(function () {
                         $(this).removeClass('red-border');
                     });
-                    checkPaymentWay('', $(this).data('allowedPayments'));
+                    checkPaymentWay($(this).data('allowedPayments'));
 
-                    hiddenBlock('open', 'b-order', 'checkout__form', 'js-delivery');
+                    hiddenBlock('open','checkout__form');
                 }
             }
         });
         $(".js-payment-local").on("click", function() {
             clickedElem = $(this);
 
-            if (checkActiveCheckbox('b-order', 'js-payment-local')) {
-                hiddenBlock('close', 'b-order', 'checkout__block--contact-info', 'js-payment-local');
-                hiddenBlock('close', 'b-order', 'basket-textarea', 'js-payment-local');
+            if (checkIfCheckboxIsActive('js-payment-local')) {
+                hiddenBlock('close', 'checkout__block--contact-info');
+                hiddenBlock('close', 'basket-textarea');
 
                 let labels = $('#b-order').find('.payment-label');
                 labels.each(function () {
                     $(this).removeClass('red-border');
                 });
 
-                hiddenBlock('open', 'b-order', 'checkout__block--contact-info', 'js-payment-local');
-                hiddenBlock('open', 'b-order', 'basket-textarea', 'js-payment-local');
+                hiddenBlock('open', 'checkout__block--contact-info');
+                hiddenBlock('open', 'basket-textarea');
             }
         });
         $('.needComment').on('change', function () {
             clickedElem = $(this);
             if ($(this).prop('checked') === true) {
-                hiddenBlock('open', 'b-order', 'form__elem--textarea');
+                hiddenBlock('open', 'form__elem--textarea');
             } else {
-                hiddenBlock('close', 'b-order', 'form__elem--textarea');
+                hiddenBlock('close', 'form__elem--textarea');
             }
         });
         $('.havePromocode').on('change', function () {
             clickedElem = $(this);
             if ($(this).prop('checked') === true) {
-                hiddenBlock('open', 'b-order', 'coupon-container');
+                hiddenBlock('open', 'coupon-container');
             } else {
-                hiddenBlock('close', 'b-order', 'coupon-container');
+                hiddenBlock('close', 'coupon-container');
             }
         });
 
@@ -488,12 +493,8 @@ $(document).ready(function(){
             let errorCount = 0;
             let errorText = '';
 
-            if (typeof checkStoreSellerCookie === "function" && !checkStoreSellerCookie()) {
-                return false;
-            }
-
             let delId = parseInt($(".js-delivery:checked").val());
-            if ($.inArray(delId, arDelIdsJsInt) == -1) {
+            if ($.inArray(delId, arPVZDeliveryIds) == -1) {
                 if ($(bOrder + ' .err-PROPS\\[STREET_USER\\]').html() === 'Выберите адрес из выпадающего списка') {
                     errorCount++;
                 }
@@ -505,8 +506,8 @@ $(document).ready(function(){
                 let that = $(this);
                 if (that.hasClass("js-required")) {
                     let parent = that.parent(".form__field");
-                    if ($.inArray(delId, arDelIdsJsInt) != -1 && (parent.hasClass("js__cdek-enabled") || !parent.hasClass("js__cdek-disabled")) ||
-                        $.inArray(delId, arDelIdsJsInt) == -1 && (!parent.hasClass("js__cdek-enabled") || parent.hasClass("js__cdek-disabled"))) {
+                    if ($.inArray(delId, arPVZDeliveryIds) != -1 && (parent.hasClass("js__pvz-enabled") || !parent.hasClass("js__pvz-disabled")) ||
+                        $.inArray(delId, arPVZDeliveryIds) == -1 && (!parent.hasClass("js__pvz-enabled") || parent.hasClass("js__pvz-disabled"))) {
                         let val = that.val().trim();
                         let flag = false;
                         if (val) {
@@ -539,13 +540,13 @@ $(document).ready(function(){
                     }
                 }
             });
-            if (!($("#cart__order-policy").prop('checked'))) {
-                $(bOrder + ' .err-policy').html('Требуется согласие').addClass('actual');
-                $("#cart__order-policy").siblings('label').addClass("form__error-border");
-                errorCount++;
-            } else {
-                $("#cart__order-policy").siblings('label').removeClass("form__error-border");
-            }
+            // if (!($("#cart__order-policy").prop('checked'))) {
+            //     $(bOrder + ' .err-policy').html('Требуется согласие').addClass('actual');
+            //     $("#cart__order-policy").siblings('label').addClass("form__error-border");
+            //     errorCount++;
+            // } else {
+            //     $("#cart__order-policy").siblings('label').removeClass("form__error-border");
+            // }
             if ($(".js-payment-local:checked").length == 0) {
                 $(bOrder + ' .err-payment').html('Выберите способ оплаты').addClass('actual');
                 let labels = $('#b-order').find('.payment-label');
@@ -593,12 +594,14 @@ $(document).ready(function(){
             }
             $("#cart__order-button").attr("disabled", "");
             saveAddressInCookie(bOrder);
+            console.log(234);
             $.ajax({
                 type: "POST",
                 url: "/cart/",
                 data: $(this).serialize(),
                 dataType: "json",
                 success: function (data) {
+                    console.log(data);
                     if (data.status == "ok") {
                         let paymentType = $.inArray(parseInt($('.js-payment-local:checked').val()), arOnlinePaymentIdsInt) == -1 ? 'default' : 'prepayment_s1';
                         // подписка на рассылки RR
@@ -628,6 +631,8 @@ $(document).ready(function(){
                     $("#cart__order-button").removeAttr("disabled");
                 },
                 error: function(jqXHR, exception) {
+                    console.log(jqXHR);
+                    console.log(exception);
                     $("#cart__order-button").removeAttr("disabled");
                     ajaxError(jqXHR, exception);
                 },
@@ -687,17 +692,11 @@ $(document).ready(function(){
                     $("#street_user").removeClass("form__error-border");
                     $('#b-order .err-PROPS\\[STREET_USER\\]').html('').removeClass('actual');
                     $("#postal_code").val(suggestion.data.postal_code);
-                    arDadataProps.forEach(function(item, i, arr) {
-                        $("#" + item).val(suggestion.data[item]);
-                    });
                 },
                 onSelectNothing: () => {
                     $('#b-order .err-PROPS\\[STREET_USER\\]').html('Выберите адрес из выпадающего списка').addClass('actual');
                     $("#street_user").addClass('form__error-border').html();
                     $("#postal_code").val("");
-                    arDadataProps.forEach(function(item, i, arr) {
-                        $("#" + item).val("");
-                    });
                 }
             });
             // дом
@@ -717,9 +716,6 @@ $(document).ready(function(){
                     $('div.js-dadata-street').find('.dadata-street-select-nothing').remove();
                     $("#street_user").removeClass("js-required");
                     $("#street_user").removeClass('form__error-border');
-                    arDadataProps.forEach(function(item, i, arr) {
-                        $("#" + item).val(suggestion.data[item]);
-                    });
                 },
                 onSelectNothing: () => {
                     $('#b-order .err-PROPS\\[HOUSE_USER\\]').html('Выберите дом из выпадающего списка').addClass('actual');
@@ -728,18 +724,14 @@ $(document).ready(function(){
                     if (!($("#street_user").val())) {
                         $("#street_user").addClass("js-required");
                     }
-                    arDadataProps.forEach(function(item, i, arr) {
-                        $("#" + item).val("");
-                    });
                 }
             });
         }
     }
 
     // Закоменчена проверка первично-выбранных блоков, т.к. сейчас вообще нет первично-выбранных блоков
-    // checkCDEK();
-    // checkCDEK2();
-    sortPaymentWay('');
+    // checkPVZ();
+    sortPaymentWay();
     resetJsHandlers();
     //клик на деактивированный способ оплаты
     $(document).on('click', '.payment__type--disabled', function() {
@@ -773,13 +765,19 @@ function formatPrice(num) {
     return format;
 }
 
-function checkActiveCheckbox(bOrder, className) {
+// проверяет активен ли блок выбора доставки или оплаты
+function checkIfCheckboxIsActive(className) {
+    let bOrder = 'b-order';
     if (!clickedElem.hasClass('opened')) {
         $('#' + bOrder + ' .' + className).each(function () {
             $(this).removeClass('opened');
         })
 
-        let paymentClass = 'js-payment-local';
+        let paymentClass = '';
+
+        if (className === 'js-delivery') {
+            paymentClass = 'js-payment-local';
+        }
 
         if (paymentClass !== '') {
             $('#' + bOrder + ' .' + paymentClass).each(function () {
@@ -793,7 +791,8 @@ function checkActiveCheckbox(bOrder, className) {
     }
 }
 
-function hiddenBlock(action, bOrder, blockClass) {
+function hiddenBlock(action, blockClass) {
+    let bOrder = 'b-order';
     if (blockClass === 'all') {
         let blocks = $('#' + bOrder + ' .hidden-block');
 
@@ -805,7 +804,6 @@ function hiddenBlock(action, bOrder, blockClass) {
 
         if (action === 'open') {
             elem.slideDown().addClass('active');
-
             if (blockClass === 'form__elem--textarea') {
                 elem.prop('disabled', false);
             }

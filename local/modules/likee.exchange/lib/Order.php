@@ -53,58 +53,6 @@ class Order
         11 => 17
     ];
 
-    public static $arDadataProps = [
-        'federal_district',
-        'region_fias_id',
-        'region_kladr_id',
-        'region_with_type',
-        'region_type',
-        'region_type_full',
-        'region',
-        'area_fias_id',
-        'area_kladr_id',
-        'area_with_type',
-        'area_type',
-        'area_type_full',
-        'area',
-        'city_fias_id',
-        'city_kladr_id',
-        'city_with_type',
-        'city_type',
-        'city_type_full',
-        'city',
-        'city_area',
-        'city_district_fias_id',
-        'city_district_kladr_id',
-        'city_district_with_type',
-        'city_district_type',
-        'city_district_type_full',
-        'city_district',
-        'settlement_fias_id',
-        'settlement_kladr_id',
-        'settlement_with_type',
-        'settlement_type',
-        'settlement_type_full',
-        'settlement',
-        'street_fias_id',
-        'street_kladr_id',
-        'street_with_type',
-        'street_type',
-        'street_type_full',
-        'street',
-        'house_fias_id',
-        'house_kladr_id',
-        'house_type',
-        'house_type_full',
-        'house',
-        'block_type',
-        'block_type_full',
-        'block',
-        'fias_id',
-        'kladr_id',
-        'beltway_hit',
-        'beltway_distance',
-    ];
 
     /**
      * Возвращает данные заказа
@@ -182,11 +130,6 @@ class Order
             'products' => $arProducts,
             'total_price' => self::numberFormat($arOrder['PRICE'])
         ];
-
-        //добавляем массив свойств из дадаты
-        foreach (self::$arDadataProps as $dadataProp) {
-            $arData['delivery']['address'][$dadataProp] = $arProps[mb_strtoupper($dadataProp)];
-        }
 
         if ($arPickup) {
             $arData['store']['id'] = $arPickup['XML_ID'];

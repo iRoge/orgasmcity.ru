@@ -69,7 +69,7 @@ window.panel = {
     },
 
     choose: function (event, button) {
-        let pvz, id, prepayment, delivery, input, address, pvzDisabledInputs, pvzEnabledInputs, paymentIds;
+        let pvz, id, prepayment, delivery, input, address, paymentIds;
 
         event.preventDefault();
         pvzmap.map.balloon.close();
@@ -90,10 +90,10 @@ window.panel = {
         input.val(delivery.ID);
         input.prop('checked', true);
         input.addClass('pvz-checked');
-        pvzDisabledInputs =  $(".js__cdek-disabled");
-        pvzDisabledInputs.addClass("is-hidden");
-        pvzEnabledInputs =  $(".js__cdek-enabled");
-        pvzEnabledInputs.removeClass("is-hidden");
+
+        $(".js__pvz-disabled").addClass("is-hidden");
+        $(".js__pvz-enabled").removeClass("is-hidden");
+
         $('js-payment:checked').prop('checked', false);
         // Деактивируем оплаты
         paymentIds = input.data('allowed-payments-' + pvz.toLowerCase());
@@ -136,9 +136,9 @@ window.panel = {
         sum = parseInt(delivery.PRICE) + parseInt(sum);
         $('#cart__total-price').html(formatPrice(sum));
 
-        if (checkActiveCheckbox('b-order', 'js-delivery')) {
-            hiddenBlock('close', 'b-order', 'all');
-            hiddenBlock('open', 'b-order', 'checkout__form');
+        if (checkIfCheckboxIsActive('js-delivery')) {
+            hiddenBlock('close', 'all');
+            hiddenBlock('open', 'checkout__form');
         }
     }
 };

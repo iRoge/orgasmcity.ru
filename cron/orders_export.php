@@ -14,9 +14,13 @@ if ($fp)
 $log_error = "";
 
 $api_key = trim(Fire_Settings::getOption('P5S_API_KEY'));
+// модель работы: DS или SELF (собственная логистика)
 $Model = Fire_Settings::getOption('P5S_SHIPPING_MODEL');
+// email для ошибок
 $ERROR_MAIL = !Fire_Settings::getOption('P5S_NO_ERROR_MAIL')? Fire_Settings::getOption('MONITORING_EMAIL') : NULL;
+// url выгрузки заказов в зависимости от модели работы
 $export_url = ($Model=='SELF'? Fire_Settings::getOption('SETTINGS_ORDER_EXPORT_NODS_URL') : Fire_Settings::getOption('SETTINGS_ORDER_EXPORT_URL'));
+// массив связок доставки с упаковкой в коробку (по дефолту никакие)
 $PackDelivery = Fire_Settings::getOption('P5S_PACK_DELIVERY');
 
 CModule::IncludeModule('sale');
@@ -164,11 +168,12 @@ while ($arOrder = $rsOrders->GetNext())
 		
 	}
 	
-	if($Model=='SELF')
-		$curl_opt = array(
-			"ApiKey" => $api_key,
-			"TestMode" => 0
-		);
+	if ($Model=='SELF') {
+        $curl_opt = array(
+            "ApiKey" => $api_key,
+            "TestMode" => 0
+        );
+    }
 
 	$dbBasketItems = CSaleBasket::GetList(
 			array(

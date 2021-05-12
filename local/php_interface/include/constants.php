@@ -17,6 +17,8 @@ define('OFFER_FILENAME', '/upload/files/offer.pdf'); // Путь к файлу �
 define('LOCATION_TYPE_CITY', 5); //Тип местоположения - город
 define('LOCATION_TYPE_REGION', 3); //Тип местоположения - регион
 
+define('MOSCOW_SELF_DELIVERY_ID', 2); // ID доставки самовывоза в Мск
+
 define('ONLINE_PAYMENT_CODES', array('SBERBANK')); //Массив кодов платежных систем для оплаты онлайн
 define('HOST_USE_TP', true);
 

@@ -19,6 +19,7 @@ global $LOCATION, $APPLICATION; ?>
 <? if (!empty($arResult["ITEMS"])) : ?>
 <script>
     var arDelIdsJs = <?=CUtil::PhpToJSObject($arResult["DELIVERY"]["PVZIDS"])?>;
+    var deliveryMoscowSelfId = <?=MOSCOW_SELF_DELIVERY_ID?>;
     var arOnlinePaymentIds = <?=CUtil::PhpToJSObject($arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"])?>;
     var token = "<?=DADATA_TOKEN?>";
     var paymentWayErrorText = "<?= Option::get("respect", "disabled_payment_click_text", "");?>";
@@ -203,7 +204,7 @@ global $LOCATION, $APPLICATION; ?>
                                                                     <?= min($arDeliveryWay['PRICES']) == max($arDeliveryWay['PRICES']) ? max($arDeliveryWay['PRICES']) == 0 ? 'Бесплатно' : 'Стоимость доставки ' . number_format(max($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р." : 'Стоимость доставки от ' . number_format(min($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р."?>
                                                                 </div>
                                                                 <!--                                                        Закомментировано поле "Желаемое время доставки" по решению заказчика в тикете 117573-->
-                                                                <!--                                                        <div class="form__field form__field--1-2 js__cdek-disabled">-->
+                                                                <!--                                                        <div class="form__field form__field--1-2 js__pvz-disabled">-->
                                                                 <!--                                                            <select class="form__elem form__elem--grey-first" name="PROPS[DELIVERY_TIME]">-->
                                                                 <!--                                                                <option value="" selected>Желаемое время доставки</option>-->
                                                                 <!--                                                                <option value="1" --><?//= $arResult["USER"]["UF_TIME"] == 1 ? "selected" : "" ?>
@@ -303,32 +304,32 @@ global $LOCATION, $APPLICATION; ?>
                                                     )
                                                 ); ?>
                                                 <? if ($arResult["DELIVERY"]["PVZ"]) : ?>
-                                                    <div class="form__field form__field--1-2 js__cdek-enabled is-hidden">
+                                                    <div class="form__field form__field--1-2 js__pvz-enabled is-hidden">
                                                         <input id="cart__delivery-cdek-button" class="form__elem" type="button" value="Выбрать пункт выдачи заказов">
                                                         <input id="cart__delivery-cdek-input" class="form__elem js-required" type="hidden" name="PROPS[PVZ_ID]" value="" placeholder="*Пункт выдачи">
                                                     </div>
                                                 <? endif ?>
-                                                <div class="form__field form__field--1-2 js__cdek-disabled js-dadata-street">
+                                                <div class="form__field form__field--1-2 js__pvz-disabled js-dadata-street">
                                                     <input id="street_user" class="form__elem js-required" type="text" name="PROPS[STREET_USER]" value="<?= $arResult["USER"]["PERSONAL_STREET"] ?: ($cookieAddress ? $_COOKIE['user_street'] : '') ?>" placeholder="*Улица">
                                                     <div class="err-order err-PROPS[STREET_USER]"></div>
                                                 </div>
-                                                <div class="form__field form__field--1-2 js__cdek-disabled js-dadata-house">
+                                                <div class="form__field form__field--1-2 js__pvz-disabled js-dadata-house">
                                                     <input id="house_user" class="form__elem js-required" type="text" name="PROPS[HOUSE_USER]" value="<?= $arResult["USER"]["UF_HOUSE"] ?: ($cookieAddress ? $_COOKIE['user_house'] : '') ?>" placeholder="*Дом, корпус, строение">
                                                     <div class="err-order err-PROPS[HOUSE_USER]"></div>
                                                 </div>
-                                                <div class="form__field form__field--1-2 js__cdek-disabled">
+                                                <div class="form__field form__field--1-2 js__pvz-disabled">
                                                     <input <?=$arResult['DADATA_STATUS'] ? 'readonly ' : ''?>id="postal_code"  class="form__elem" type="number" name="PROPS[POSTALCODE]" value="<?= $arResult["USER"]["UF_POSTALCODE"] ?: ($cookieAddress ? $_COOKIE['user_index'] : '')  ?>" placeholder="<?=$arResult['DADATA_STATUS'] ? 'Индекс, заполняется автоматически' : 'Индекс (не обязательно)'?>">
                                                 </div>
-                                                <div class="form__field form__field--1-4 js__cdek-disabled">
+                                                <div class="form__field form__field--1-4 js__pvz-disabled">
                                                     <input id="flat" class="form__elem" type="text" name="PROPS[FLAT]" value="<?= $arResult["USER"]["UF_APARTMENT"] ?: ($cookieAddress ? $_COOKIE['user_flat'] : '')  ?>" placeholder="Кв/офис">
                                                 </div>
-                                                <div class="form__field form__field--1-4 js__cdek-disabled">
+                                                <div class="form__field form__field--1-4 js__pvz-disabled">
                                                     <input id="porch" class="form__elem" type="text" name="PROPS[PORCH]" value="<?= $arResult["USER"]["UF_ENTRANCE"] ?: ($cookieAddress ? $_COOKIE['user_porch'] : '')  ?>" placeholder="Подъезд">
                                                 </div>
-                                                <div class="form__field form__field--1-4 js__cdek-disabled">
+                                                <div class="form__field form__field--1-4 js__pvz-disabled">
                                                     <input id="floor" class="form__elem" type="text" name="PROPS[FLOOR]" value="<?= $arResult["USER"]["UF_FLOOR"] ?: ($cookieAddress ? $_COOKIE['user_floor'] : '')  ?>" placeholder="Этаж">
                                                 </div>
-                                                <div class="form__field form__field--1-4 js__cdek-disabled">
+                                                <div class="form__field form__field--1-4 js__pvz-disabled">
                                                     <input id="intercom" class="form__elem" type="text" name="PROPS[INTERCOM]" value="<?= $arResult["USER"]["UF_INTERCOM"] ?: ($cookieAddress ? $_COOKIE['user_intercom'] : '')  ?>" placeholder="Домофон">
                                                 </div>
                                                 <div class="clear-blocks"></div>
