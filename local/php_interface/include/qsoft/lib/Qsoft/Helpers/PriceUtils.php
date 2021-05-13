@@ -31,6 +31,7 @@ class PriceUtils
         $price = [];
         $price['OLD_PRICE'] = ceil(($rrcPrice+($rrcPrice * $rrcMarkup/100))/10)*10;
         $price['PRICE'] = $price['OLD_PRICE'] - ($price['OLD_PRICE'] * $discount/100);
+        $price['PRICE'] = ceil(($price['PRICE']-6)/10)*10;
         $price['DISCOUNT'] = $discount;
 
         return $price;

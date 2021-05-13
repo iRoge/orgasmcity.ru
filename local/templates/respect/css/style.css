@@ -8766,12 +8766,6 @@ color: #b8b4b4;
   width: 100%;
 }
 
-.orders__img:after {
-  content: "";
-  display: block;
-  padding-top: 100%;
-}
-
 .orders__img-box {
   align-items: center;
   display: flex;

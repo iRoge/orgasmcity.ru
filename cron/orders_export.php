@@ -1,15 +1,16 @@
-<?
+<?php
 include("config.php");
-
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
+while (ob_get_level()) {
+    ob_end_flush();
+}
 
 CModule::IncludeModule('fire.main');
 
-$fp = @fopen($_SERVER["DOCUMENT_ROOT"]."/cron/logs/orders_export_date.txt","wb");
-if ($fp)
-{
-	@fwrite($fp, date("d.m.Y H:i:s"));
-	fclose($fp);
+$fp = @fopen($_SERVER["DOCUMENT_ROOT"] . "/cron/logs/orders_export_date.txt", "wb");
+if ($fp) {
+    @fwrite($fp, date("d.m.Y H:i:s"));
+    fclose($fp);
 }
 $log_error = "";
 
@@ -17,9 +18,9 @@ $api_key = trim(Fire_Settings::getOption('P5S_API_KEY'));
 // модель работы: DS или SELF (собственная логистика)
 $Model = Fire_Settings::getOption('P5S_SHIPPING_MODEL');
 // email для ошибок
-$ERROR_MAIL = !Fire_Settings::getOption('P5S_NO_ERROR_MAIL')? Fire_Settings::getOption('MONITORING_EMAIL') : NULL;
+$ERROR_MAIL = !Fire_Settings::getOption('P5S_NO_ERROR_MAIL') ? Fire_Settings::getOption('MONITORING_EMAIL') : NULL;
 // url выгрузки заказов в зависимости от модели работы
-$export_url = ($Model=='SELF'? Fire_Settings::getOption('SETTINGS_ORDER_EXPORT_NODS_URL') : Fire_Settings::getOption('SETTINGS_ORDER_EXPORT_URL'));
+$export_url = ($Model == 'SELF' ? Fire_Settings::getOption('SETTINGS_ORDER_EXPORT_NODS_URL') : Fire_Settings::getOption('SETTINGS_ORDER_EXPORT_URL'));
 // массив связок доставки с упаковкой в коробку (по дефолту никакие)
 $PackDelivery = Fire_Settings::getOption('P5S_PACK_DELIVERY');
 
@@ -28,216 +29,220 @@ CModule::IncludeModule('sale');
 $xmlDelivery = false;
 //Соответствие доставок Битрикса доставкам P5S
 $delivery_arr = array(
-	'SELF_PICKUP' => 4,
-	'PVZ_PICKPOINT_FREE' => 5,
-	'PVZ_PICKPOINT' => 5,
-	'COURIER_MOSCOW_FREE' => 1,
-	'COURIER_MOSCOW' => 1,
-	'DPD_FREE' => 8,
-	'DPD' => 8,
-	'RUSPOST_FREE' => 2,
-	'RUSPOST' => 2,
-	'CDEK_FREE' => 10,
-	'CDEK' => 10,
-	'PVZ_CDEK_FREE' => 11,
-	'PVZ_CDEK' => 11
+    'SELF_PICKUP' => 4,
+    'PVZ_PICKPOINT_FREE' => 5,
+    'PVZ_PICKPOINT' => 5,
+    'COURIER_MOSCOW_FREE' => 1,
+    'COURIER_MOSCOW' => 1,
+    'DPD_FREE' => 8,
+    'DPD' => 8,
+    'RUSPOST_FREE' => 2,
+    'RUSPOST' => 2,
+    'CDEK_FREE' => 10,
+    'CDEK' => 10,
+    'PVZ_CDEK_FREE' => 11,
+    'PVZ_CDEK' => 11
 );
 $arFilter = array(
-	"STATUS_ID" => "ZS",
-	"CANCELED" => "N",
+    "STATUS_ID" => "ZS",
+    "CANCELED" => "N",
 );
 $rsOrders = CSaleOrder::GetList(array(), $arFilter);
 $xmlDelivery = false;
-while ($arOrder = $rsOrders->GetNext())
-{
-	//fda2000 XML_ID
-	if($xmlDelivery===false) {
-		$xmlDelivery = [];
-		$res = \Bitrix\Sale\Delivery\Services\Table::getList(['select'=>['ID', 'XML_ID']]);
-		while($arDelivery=$res->fetch())
-			$xmlDelivery[$arDelivery['ID']] = $arDelivery['XML_ID'];
-	}
-	$dsDelivery = $delivery_arr[$xmlDelivery[$arOrder['DELIVERY_ID']]];
-	//
-	
-	$dbProps = CSaleOrderPropsValue::GetList(
-		array("SORT" => "ASC"),
-		array(
-			"ORDER_ID" => $arOrder["ID"],
-		)
-	);
-	$arOrder["LOCATION_NAME"] = "";
-	while ($arProp = $dbProps->Fetch())
-	{
-		if ($arProp["VALUE"] != "")
-		{
-			if ($arProp["CODE"] == "LOCATION")
-			{
-				$res = \Bitrix\Sale\Location\LocationTable::getList(array(
-					'filter' => array(
-						'=ID' => $arProp["VALUE"], 
-						'=PARENTS.NAME.LANGUAGE_ID' => LANGUAGE_ID,
-						'=PARENTS.TYPE.NAME.LANGUAGE_ID' => LANGUAGE_ID,
-					),
-					'select' => array(
-						'I_ID' => 'PARENTS.ID',
-						'I_NAME_RU' => 'PARENTS.NAME.NAME',
-						'I_TYPE_CODE' => 'PARENTS.TYPE.CODE',
-				//        'I_TYPE_NAME_RU' => 'PARENTS.TYPE.NAME.NAME'
-					),
-					'order' => array(
-						'PARENTS.DEPTH_LEVEL' => 'asc'
-					)
-				));
-				while($item = $res->fetch())
-				{
-					if (in_array($item["I_TYPE_CODE"], array("CITY", "VILLAGE", "REGION")))
-					{
-						if ($arOrder["LOCATION_NAME"] != "")
-							$arOrder["LOCATION_NAME"] .= " ";
-						$arOrder["LOCATION_NAME"] .= $item["I_NAME_RU"];
-					}
-				}
 
-/*
-				if ($arLocs = CSaleLocation::GetByID($arProp["VALUE"], LANGUAGE_ID))
-				{
-					//print_r($arLocs);
-					$arOrder["PROPS"]["LOCATION_CITY"] = $arLocs["CITY_NAME"];
-				}
-*/
-			}
-			else
-				$arOrder["PROPS"][$arProp["CODE"]] = $arProp["VALUE"];
-		}
-	}
-	if ($arOrder["PROPS"]["CITY"] != "")
-		$arOrder["LOCATION_NAME"] .= " ".$arOrder["PROPS"]["CITY"];
-	//echo $arOrder["DATE_INSERT"]."<br>";
-	
-	//fda2000 MS
-	if(!$dsDelivery) {
-		CModule::IncludeModule('catalog');
-		$SHOP_IBLOCK_ID = Fire_Settings::getOption('SETTINGS_SHOP_IBLOCK');
-		if($SHOP_IBLOCK_ID) {
-			$rsItems = CIBlockElement::GetList(array(), array("IBLOCK_ID" => $SHOP_IBLOCK_ID, 'PROPERTY_DELIVERY_ID'=>$arOrder["DELIVERY_ID"]), array('ID', 'IBLOCK_ID'));
-			if($arItem = $rsItems->GetNext()) {
-				$prefix = 'ORDER_';
-				$rsItems = CIBlockElement::GetProperty($arItem['IBLOCK_ID'], $arItem['ID'], array(), array('CODE'=>$prefix.'%'));
-				while($arItem = $rsItems->GetNext())
-					if($arItem['CODE']=='ORDER_DELIVERY_ID') {
-						$arOrder['DELIVERY_ID'] = $arItem['VALUE'];
-						$dsDelivery = $delivery_arr[$xmlDelivery[$arOrder['DELIVERY_ID']]];
-					} elseif($arItem['CODE']=='ORDER_LOCATION_NAME')
-						$arOrder["LOCATION_NAME"] = $arItem['VALUE'];
-					else
-						$arOrder["PROPS"][mb_substr($arItem['CODE'], mb_strlen($prefix))] = $arItem['VALUE'];
-			}
-		}
-	}
-	//
-	$curl_opt = array(
-		"ApiKey" => $api_key,
-		"TestMode" => 0,
-		"ExtOrderID" => $arOrder["ACCOUNT_NUMBER"],
-		"ExtOrderPaid" => ($arOrder["PAYED"] == "Y") ? 1 : 0,
-		"ExtDeliveryCost" => intval($arOrder["PRICE_DELIVERY"]),
-		"dsDelivery" => $dsDelivery,
-		"packType" => $PackDelivery[$arOrder["DELIVERY_ID"]]? 2 : 1,
-		"dsFio" => $arOrder["PROPS"]["NAME"]." ".$arOrder["PROPS"]["LAST_NAME"],
-		"dsMobPhone" => $arOrder["PROPS"]["PHONE"],
-		"dsEmail" => $arOrder["PROPS"]["EMAIL"],
+while ($arOrder = $rsOrders->GetNext()) {
+    //fda2000 XML_ID
+    if ($xmlDelivery === false) {
+        $xmlDelivery = [];
+        $res = \Bitrix\Sale\Delivery\Services\Table::getList(['select' => ['ID', 'XML_ID']]);
+        while ($arDelivery = $res->fetch()) {
+            $xmlDelivery[$arDelivery['ID']] = $arDelivery['XML_ID'];
+        }
+    }
+
+    $dsDelivery = $delivery_arr[$xmlDelivery[$arOrder['DELIVERY_ID']]];
+
+
+    $dbProps = CSaleOrderPropsValue::GetList(
+        array("SORT" => "ASC"),
+        array(
+            "ORDER_ID" => $arOrder["ID"],
+        )
+    );
+    $arOrder["LOCATION_NAME"] = "";
+    while ($arProp = $dbProps->Fetch()) {
+        if ($arProp["VALUE"] != "") {
+            if ($arProp["CODE"] == "LOCATION") {
+                $res = \Bitrix\Sale\Location\LocationTable::getList(array(
+                    'filter' => array(
+                        '=ID' => $arProp["VALUE"],
+                        '=PARENTS.NAME.LANGUAGE_ID' => LANGUAGE_ID,
+                        '=PARENTS.TYPE.NAME.LANGUAGE_ID' => LANGUAGE_ID,
+                    ),
+                    'select' => array(
+                        'I_ID' => 'PARENTS.ID',
+                        'I_NAME_RU' => 'PARENTS.NAME.NAME',
+                        'I_TYPE_CODE' => 'PARENTS.TYPE.CODE',
+                        //        'I_TYPE_NAME_RU' => 'PARENTS.TYPE.NAME.NAME'
+                    ),
+                    'order' => array(
+                        'PARENTS.DEPTH_LEVEL' => 'asc'
+                    )
+                ));
+                while ($item = $res->fetch()) {
+                    if (in_array($item["I_TYPE_CODE"], array("CITY", "VILLAGE", "REGION"))) {
+                        if ($arOrder["LOCATION_NAME"] != "")
+                            $arOrder["LOCATION_NAME"] .= " ";
+                        $arOrder["LOCATION_NAME"] .= $item["I_NAME_RU"];
+                    }
+                }
+
+                /*
+                                if ($arLocs = CSaleLocation::GetByID($arProp["VALUE"], LANGUAGE_ID))
+                                {
+                                    //print_r($arLocs);
+                                    $arOrder["PROPS"]["LOCATION_CITY"] = $arLocs["CITY_NAME"];
+                                }
+                */
+            } else {
+                $arOrder["PROPS"][$arProp["CODE"]] = $arProp["VALUE"];
+            }
+        }
+    }
+    if ($arOrder["PROPS"]["CITY"] != "")
+        $arOrder["LOCATION_NAME"] .= " " . $arOrder["PROPS"]["CITY"];
+    //echo $arOrder["DATE_INSERT"]."<br>";
+
+    //fda2000 MS
+    if (!$dsDelivery) {
+        CModule::IncludeModule('catalog');
+        $SHOP_IBLOCK_ID = Fire_Settings::getOption('SETTINGS_SHOP_IBLOCK');
+        if ($SHOP_IBLOCK_ID) {
+            $rsItems = CIBlockElement::GetList(array(), array("IBLOCK_ID" => $SHOP_IBLOCK_ID, 'PROPERTY_DELIVERY_ID' => $arOrder["DELIVERY_ID"]), array('ID', 'IBLOCK_ID'));
+            if ($arItem = $rsItems->GetNext()) {
+                $prefix = 'ORDER_';
+                $rsItems = CIBlockElement::GetProperty($arItem['IBLOCK_ID'], $arItem['ID'], array(), array('CODE' => $prefix . '%'));
+                while ($arItem = $rsItems->GetNext())
+                    if ($arItem['CODE'] == 'ORDER_DELIVERY_ID') {
+                        $arOrder['DELIVERY_ID'] = $arItem['VALUE'];
+                        $dsDelivery = $delivery_arr[$xmlDelivery[$arOrder['DELIVERY_ID']]];
+                    } elseif ($arItem['CODE'] == 'ORDER_LOCATION_NAME')
+                        $arOrder["LOCATION_NAME"] = $arItem['VALUE'];
+                    else
+                        $arOrder["PROPS"][mb_substr($arItem['CODE'], mb_strlen($prefix))] = $arItem['VALUE'];
+            }
+        }
+    }
+    //
+    $curl_opt = array(
+        "ApiKey" => $api_key,
+        "TestMode" => 1,
+        "ExtOrderID" => $arOrder["ID"],
+        "ExtOrderPaid" => ($arOrder["PAYED"] == "Y") ? 1 : 0,
+        "ExtDeliveryCost" => intval($arOrder["PRICE_DELIVERY"]),
+        "dsDelivery" => $dsDelivery,
+        "packType" => $PackDelivery[$arOrder["DELIVERY_ID"]] ? 2 : 1,
+        "dsFio" => $arOrder["PROPS"]["NAME"] . " " . $arOrder["PROPS"]["LAST_NAME"],
+        "dsMobPhone" => $arOrder["PROPS"]["PHONE"],
+        "dsEmail" => $arOrder["PROPS"]["EMAIL"],
 //		"dsCity" => ($arOrder["PROPS"]["LOCATION_CITY"] != "") ? $arOrder["PROPS"]["LOCATION_CITY"] : $arOrder["PROPS"]["CITY"],
-		"dsCity" => $arOrder["LOCATION_NAME"],
-		"dsComments" => $arOrder["USER_DESCRIPTION"]." ".$arOrder["PROPS"]["ADDITIONAL_INFO"]." ".$arOrder["COMMENTS"],
-		"ExtDateOfAdded" => ConvertDateTime($arOrder["DATE_INSERT"], "YYYY-MM-DD HH:MI:SS"),
-	);
-	if ($dsDelivery == 5 or $dsDelivery == 11) // PickPoint
-		$curl_opt["dsPickPointID"] = $arOrder["PROPS"]["PICKPOINT_ID"];
-	
-	if ($dsDelivery == 2 or $dsDelivery == 1 or $dsDelivery == 8 or $dsDelivery == 10) // Почта, Курьер по Москве, Курьер по Питеру, СДЕК
-	{
-		$curl_opt["dsStreet"] = $arOrder["PROPS"]["STREET"];
-		$curl_opt["dsHouse"] = $arOrder["PROPS"]["HOUSE"];
-		$curl_opt["dsFlat"] = $arOrder["PROPS"]["FLAT"];
+        "dsCity" => $arOrder["LOCATION_NAME"],
+        "dsComments" => $arOrder["USER_DESCRIPTION"] . " " . $arOrder["PROPS"]["ADDITIONAL_INFO"] . " " . $arOrder["COMMENTS"],
+        "ExtDateOfAdded" => ConvertDateTime($arOrder["DATE_INSERT"], "YYYY-MM-DD HH:MI:SS"),
+    );
+    if ($dsDelivery == 5 or $dsDelivery == 11) // PickPoint
+        $curl_opt["dsPickPointID"] = $arOrder["PROPS"]["PICKPOINT_ID"];
 
-		if ($dsDelivery == 2) // Почта
-		{
-			$curl_opt["dsPostcode"] = $arOrder["PROPS"]["INDEX"];
-		}
-		
-	}
-	
-	if ($Model=='SELF') {
+    if ($dsDelivery == 2 or $dsDelivery == 1 or $dsDelivery == 8 or $dsDelivery == 10) // Почта, Курьер по Москве, Курьер по Питеру, СДЕК
+    {
+        $curl_opt["dsStreet"] = $arOrder["PROPS"]["STREET"];
+        $curl_opt["dsHouse"] = $arOrder["PROPS"]["HOUSE"];
+        $curl_opt["dsFlat"] = $arOrder["PROPS"]["FLAT"];
+
+        if ($dsDelivery == 2) // Почта
+        {
+            $curl_opt["dsPostcode"] = $arOrder["PROPS"]["POSTALCODE"];
+        }
+
+    }
+
+    if ($Model == 'SELF') {
         $curl_opt = array(
             "ApiKey" => $api_key,
             "TestMode" => 0
         );
     }
 
-	$dbBasketItems = CSaleBasket::GetList(
-			array(
-					"NAME" => "ASC",
-					"ID" => "ASC"
-				),
-			array(
-					"ORDER_ID" => $arOrder["ID"]
-				),
-			false,
-			false,
-			array()
-		);
-	$i = 0;
-	$BasketItems = array();
-	while ($arBasketItem = $dbBasketItems->GetNext())
-		$BasketItems[] = $arBasketItem;
-	
-	//fda2000 partial payed order
-	if(!$curl_opt['ExtOrderPaid']) {
-		$order = \Bitrix\Sale\Order::load($arOrder["ID"]);
-		$paid = $order->getSumPaid();
-		if($paid) {
-			$sum = 0;
-			foreach($BasketItems as $arBasketItem)
-				$sum+= $arBasketItem['PRICE']*$arBasketItem["QUANTITY"];
-			
-			$disc = min(1, $paid/$sum);
-			foreach($BasketItems as $key=>$arBasketItem)
-				$BasketItems[$key]['PRICE']-= $disc*$arBasketItem['PRICE'];
-			
-			if($paid>$sum)
-				$curl_opt['ExtDeliveryCost']-= min($curl_opt['ExtDeliveryCost'], $paid-$sum);
-			
-			$curl_opt['dsComments'].= ' Already paid='.$paid;
-		}
-	}
-	//
-	foreach($BasketItems as $arBasketItem) {
-		$db_res = CSaleBasket::GetPropsList(
-				array(
-						"SORT" => "ASC",
-						"NAME" => "ASC"
-					),
-				array(
-					"BASKET_ID" => $arBasketItem["ID"],
-					"CODE" => "PRODUCT.XML_ID"
-				)
-			);
-		if ($ar_res = $db_res->Fetch())
-		{
-			if (($pos = mb_strpos($ar_res["VALUE"], "#")) !== false)
-				$product_xml_id = mb_substr($ar_res["VALUE"], $pos+1);
-			else
-				$product_xml_id = $ar_res["VALUE"];
-			if ($i > 0)
-				$curl_opt["order"] .= ",";
-			$curl_opt["order"] .= $product_xml_id."-".$arBasketItem["QUANTITY"];
-			if($Model!='SELF')
-				$curl_opt["order"].= "-".round($arBasketItem["PRICE"],2);
-		}
-		$i++;
-	}
-//var_dump($curl_opt);die;
+    $dbBasketItems = CSaleBasket::GetList(
+        array(
+            "NAME" => "ASC",
+            "ID" => "ASC"
+        ),
+        array(
+            "ORDER_ID" => $arOrder["ID"]
+        ),
+        false,
+        false,
+        array()
+    );
+    $i = 0;
+    $BasketItems = array();
+    while ($arBasketItem = $dbBasketItems->GetNext()) {
+        $BasketItems[] = $arBasketItem;
+    }
+
+    //fda2000 partial payed order
+    if (!$curl_opt['ExtOrderPaid']) {
+        $order = \Bitrix\Sale\Order::load($arOrder["ID"]);
+        $paid = $order->getSumPaid();
+        if ($paid) {
+            $sum = 0;
+            foreach ($BasketItems as $arBasketItem)
+                $sum += $arBasketItem['PRICE'] * $arBasketItem["QUANTITY"];
+
+            $disc = min(1, $paid / $sum);
+            foreach ($BasketItems as $key => $arBasketItem)
+                $BasketItems[$key]['PRICE'] -= $disc * $arBasketItem['PRICE'];
+
+            if ($paid > $sum)
+                $curl_opt['ExtDeliveryCost'] -= min($curl_opt['ExtDeliveryCost'], $paid - $sum);
+
+            $curl_opt['dsComments'] .= ' Already paid=' . $paid;
+        }
+    }
+    //
+    foreach ($BasketItems as $arBasketItem) {
+        $arSelect = [
+            "ID",
+            "IBLOCK_ID",
+            "XML_ID",
+        ];
+        $res = CIBlockElement::GetList(
+            [],
+            [
+                "ID" => $arBasketItem['PRODUCT_ID'],
+                "IBLOCK_ID" => IBLOCK_OFFERS,
+            ],
+            false,
+            false,
+            $arSelect
+        );
+
+        if ($offer = $res->Fetch()) {
+            $product_xml_id = $offer["XML_ID"];
+
+            if ($i > 0) {
+                $curl_opt["order"] .= ",";
+            }
+            $curl_opt["order"] .= $product_xml_id . "-" . $arBasketItem["QUANTITY"];
+
+            if ($Model != 'SELF') {
+                $curl_opt["order"] .= "-" . round($arBasketItem["PRICE"], 2);
+            }
+        }
+        $i++;
+    }
+
 	$ch = curl_init();
 
 	curl_setopt($ch, CURLOPT_URL, $export_url);

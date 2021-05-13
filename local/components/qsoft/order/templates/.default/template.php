@@ -306,7 +306,7 @@ global $LOCATION, $APPLICATION; ?>
                                                 <? if ($arResult["DELIVERY"]["PVZ"]) : ?>
                                                     <div class="form__field form__field--1-2 js__pvz-enabled is-hidden">
                                                         <input id="cart__delivery-cdek-button" class="form__elem" type="button" value="Выбрать пункт выдачи заказов">
-                                                        <input id="cart__delivery-cdek-input" class="form__elem js-required" type="hidden" name="PROPS[PVZ_ID]" value="" placeholder="*Пункт выдачи">
+                                                        <input id="cart__delivery-cdek-input" class="form__elem js-required" type="hidden" name="PROPS[PICKPOINT_ID]" value="" placeholder="*Пункт выдачи">
                                                     </div>
                                                 <? endif ?>
                                                 <div class="form__field form__field--1-2 js__pvz-disabled js-dadata-street">

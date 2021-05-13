@@ -136,8 +136,8 @@ class Order
             $arData['store']['name'] = $arPickup['TITLE'];
         }
 
-        if (isset($arProps['PVZ_ID'])) {
-            $arData['delivery']['pvz'] = $arProps['PVZ_ID'];
+        if (isset($arProps['PICKPOINT_ID'])) {
+            $arData['delivery']['pvz'] = $arProps['PICKPOINT_ID'];
             $arData['vidzakaza'] = 'пункт выдачи заказа';
         }
 

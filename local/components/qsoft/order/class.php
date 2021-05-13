@@ -479,8 +479,8 @@ class QsoftOrderComponent extends ComponentHelper
                 "EMAIL" => "Не заполнен Email",
             );
             if (in_array($this->arResult["DELIVERY"]["ID"], $this->arPvzIds)) {
-                $props["PVZ_ID"] = "Не выбран ПВЗ";
-            } else {
+                $props["PICKPOINT_ID"] = "Не выбран ПВЗ";
+            } elseif ($this->arResult["DELIVERY"]["ID"] !== MOSCOW_SELF_DELIVERY_ID) {
                 if (!$this->postProps["HOUSE_USER"]) {
                     $props["STREET_USER"] = "Не заполнена улица";
                 }
@@ -589,7 +589,6 @@ class QsoftOrderComponent extends ComponentHelper
             "UF_INTERCOM",
             "UF_TIME",
             "UF_POSTALCODE",
-            "UF_FIASCODE"
         ];
 
         $res = UserTable::GetList([
@@ -626,7 +625,8 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function setNewUserFields()
     {
-        $name = explode(' ', $this->postProps['FIO']);
+        $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
+        $name = explode(' ', $fio);
         $pass = randString(8);
         $this->user = array(
             "GROUP_ID" => [2, 3, 5],
@@ -649,7 +649,6 @@ class QsoftOrderComponent extends ComponentHelper
             "UF_INTERCOM" => "", // домофон
             "UF_TIME" => $this->postProps['DELIVERY_TIME'], // желаемое время доставки
             "UF_POSTALCODE" => $this->postProps['POSTALCODE'],
-            "UF_FIASCODE" => $this->postProps['FIASCODE'],
         );
         // создаем пользователя
         $this->createUser();
@@ -1551,47 +1550,35 @@ class QsoftOrderComponent extends ComponentHelper
             $this->postProps['EMAIL_PROFILE'] = $this->user['EMAIL'] ? $this->user['EMAIL'] : '';
             $this->postProps['PHONE_PROFILE'] = $this->user['PERSONAL_PHONE'] ? $this->user['PERSONAL_PHONE'] : '';
         }
-        $this->postProps['PRODUCT_REGION'] = 'Москва';
-        $this->postProps['PRODUCT_CITY'] = 'Москва';
 
         if (empty($this->postProps['STREET'])) {
             $this->postProps['STREET'] = $this->postProps['STREET_USER'];
         }
         // парсим номер дома на дом, корпус и строение
-        if ($LOCATION->getDadataStatus()) {
-            $this->postProps['HOUSE_NUM'] = preg_match(
-                '/д\s*(\S+)/im',
-                $this->postProps['HOUSE_USER'],
-                $matches
-            ) ? $matches[1] : ""; // Дом
-        } else {
-            $this->postProps['HOUSE_NUM'] = $this->postProps['HOUSE_USER'];
-            $this->postProps['HOUSE'] = $this->postProps['HOUSE_USER'];
-        }
-        $this->postProps['HOUSING'] = preg_match(
-            '/к\s*(\S+)/im',
-            $this->postProps['HOUSE_USER'],
-            $matches
-        ) ? $matches[1] : ""; // Корпус
-        $this->postProps['STRUCTURE'] = preg_match(
-            '/стр\s*(\S+)/im',
-            $this->postProps['HOUSE_USER'],
-            $matches
-        ) ? $matches[1] : ""; // Строение
+        $this->postProps['HOUSE'] = $this->postProps['HOUSE_USER'];
 
         if (in_array($this->arResult["DELIVERY"]["ID"], $this->arPvzIds)) {
             // очищаем ненужные свойства для ПВЗ
             $this->clearPropsPVZ();
         } else {
-            unset($this->postProps['PVZ_ID']);
+            unset($this->postProps['PICKPOINT_ID']);
         }
 
         // устанавливаем все имеющиеся свойства заказу
         foreach ($this->postProps as $key => $value) {
             if (!empty($value)) {
-                $prop = $this->getPropByCode($key);
-                if ($prop) {
-                    $prop->setValue($value);
+                if ($key === 'FIO') {
+                    $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
+                    $arFIO = explode(' ', $fio);
+                    $prop = $this->getPropByCode('NAME');
+                    $prop->setValue($arFIO[0]);
+                    $prop = $this->getPropByCode('LAST_NAME');
+                    $prop->setValue($arFIO[1]);
+                } else {
+                    $prop = $this->getPropByCode($key);
+                    if ($prop) {
+                        $prop->setValue($value);
+                    }
                 }
             }
         }
@@ -1616,6 +1603,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->setPersonType();
         $this->setCurrency();
         $order = Order::create(SITE_ID, $userId, $this->currency);
+        $order->setField('STATUS_ID', 'ZS'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
         $order->setPersonTypeId($this->personType);
         return $order;
     }
@@ -1658,7 +1646,20 @@ class QsoftOrderComponent extends ComponentHelper
             case "1click":
                 return "Заказ создан через один клик";
             default:
-                return $_REQUEST['USER_DESCRIPTION'] ?: '';
+                $addInfo = [];
+                if ($_REQUEST['PROPS']['PORCH']) {
+                    $addInfo[] = 'подъезд ' . $_REQUEST['PROPS']['PORCH'];
+                }
+                if ($_REQUEST['PROPS']['FLOOR']) {
+                    $addInfo[] = 'этаж ' . $_REQUEST['PROPS']['FLOOR'];
+                }
+                if ($_REQUEST['PROPS']['INTERCOM']) {
+                    $addInfo[] = 'код домофона ' . $_REQUEST['PROPS']['INTERCOM'];
+                }
+                $addInfo = implode(', ', $addInfo);
+                return $_REQUEST['USER_DESCRIPTION'] ? $_REQUEST['USER_DESCRIPTION']
+                    . ($addInfo ? '| Дополнительная информация: ' . $addInfo : '')
+                    : ($addInfo ? '| Дополнительная информация: ' . $addInfo : '');
         }
     }
 
@@ -1678,7 +1679,7 @@ class QsoftOrderComponent extends ComponentHelper
             "FIO" => true,
             "EMAIL" => true,
             "PHONE" => true,
-            "PVZ_ID" => true,
+            "PICKPOINT_ID" => true,
             "DISCOUNT_COUPON" => true,
             "SALE_DISCOUNT" => true,
             "ORDER_REVENUE" => true,

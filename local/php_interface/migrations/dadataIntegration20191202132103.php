@@ -18,14 +18,7 @@ class dadataIntegration20191202132103 extends Version
     {
         $helper = $this->getHelperManager();
 
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_REGIONFIAS', 'Код ФИАС региона'));
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_AREAFIAS', 'Код ФИАС района в регионе'));
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_CITYFIAS', 'Код ФИАС города'));
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_DISTRICTFIAS', 'Код ФИАС района города (заполняется, только если район есть в ФИАС)'));
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_SETTLEMENTFIAS', 'Код ФИАС нас. пункта'));
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_STREETFIAS', 'Код ФИАС улицы'));
         $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_POSTALCODE', 'Почтовый индекс'));
-        $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_FIASCODE', 'ФИАС код'));
 
         $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_HOUSE', 'Номер дома'));
         $helper->UserTypeEntity()->saveUserTypeEntity($this->getUserFieldArray('UF_ST', 'Строение'));
@@ -58,28 +51,8 @@ class dadataIntegration20191202132103 extends Version
                     ]
                 );
             }
-            $arFields = $this->getOrderFieldArray("REGIONFIAS", "Код ФИАС региона", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
-
-            $arFields = $this->getOrderFieldArray("AREAFIAS", "Код ФИАС района в регионе", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
-
-            $arFields = $this->getOrderFieldArray("CITYFIAS", "Код ФИАС города", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
-
-            $arFields = $this->getOrderFieldArray("DISTRICTFIAS", "Код ФИАС района города (заполняется, только если район есть в ФИАС)", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
-
-            $arFields = $this->getOrderFieldArray("SETTLEMENTFIAS", "Код ФИАС нас. пункта", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
-
-            $arFields = $this->getOrderFieldArray("STREETFIAS", "Код ФИАС улицы", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
 
             $arFields = $this->getOrderFieldArray("POSTALCODE", "Почтовый индекс", $arType['ID'], $iGroup);
-            \CSaleOrderProps::Add($arFields);
-
-            $arFields = $this->getOrderFieldArray("FIASCODE", "ФИАС код", $arType['ID'], $iGroup);
             \CSaleOrderProps::Add($arFields);
 
             $arFields = $this->getOrderFieldArray("HOUSE_NUM", "Номер дома (без строения и корпуса)", $arType['ID'], $iGroup);
@@ -92,15 +65,7 @@ class dadataIntegration20191202132103 extends Version
         $helper = $this->getHelperManager();
 
         try {
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_REGIONFIAS');
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_AREAFIAS');
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_CITYFIAS');
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_DISTRICTFIAS');
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_SETTLEMENTFIAS');
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_STREETFIAS');
             $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_POSTALCODE');
-            $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_FIASCODE');
-
             $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_HOUSE');
             $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_ST');
             $helper->UserTypeEntity()->deleteUserTypeEntityIfExists('USER', 'UF_HOUSING');
@@ -114,14 +79,7 @@ class dadataIntegration20191202132103 extends Version
                 [],
                 [
                     "CODE" => array(
-                        "REGIONFIAS",
-                        "AREAFIAS",
-                        "CITYFIAS",
-                        "DISTRICTFIAS",
-                        "SETTLEMENTFIAS",
-                        "STREETFIAS",
                         "POSTALCODE",
-                        "FIASCODE",
                         "HOUSE_NUM",
                     ),
                 ]

@@ -506,8 +506,11 @@ $(document).ready(function(){
                 let that = $(this);
                 if (that.hasClass("js-required")) {
                     let parent = that.parent(".form__field");
-                    if ($.inArray(delId, arPVZDeliveryIds) != -1 && (parent.hasClass("js__pvz-enabled") || !parent.hasClass("js__pvz-disabled")) ||
-                        $.inArray(delId, arPVZDeliveryIds) == -1 && (!parent.hasClass("js__pvz-enabled") || parent.hasClass("js__pvz-disabled"))) {
+                    if (
+                        ( delId === deliveryMoscowSelfId && !parent.hasClass("js__pvz-enabled") && !parent.hasClass("js__pvz-disabled") ) ||
+                        ( delId !== deliveryMoscowSelfId && $.inArray(delId, arPVZDeliveryIds) != -1 && (parent.hasClass("js__pvz-enabled") || !parent.hasClass("js__pvz-disabled")) ) ||
+                        ( delId !== deliveryMoscowSelfId && $.inArray(delId, arPVZDeliveryIds) == -1 && (!parent.hasClass("js__pvz-enabled") || parent.hasClass("js__pvz-disabled")) )
+                    ) {
                         let val = that.val().trim();
                         let flag = false;
                         if (val) {
@@ -594,28 +597,14 @@ $(document).ready(function(){
             }
             $("#cart__order-button").attr("disabled", "");
             saveAddressInCookie(bOrder);
-            console.log(234);
             $.ajax({
                 type: "POST",
                 url: "/cart/",
                 data: $(this).serialize(),
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
                     if (data.status == "ok") {
                         let paymentType = $.inArray(parseInt($('.js-payment-local:checked').val()), arOnlinePaymentIdsInt) == -1 ? 'default' : 'prepayment_s1';
-                        // подписка на рассылки RR
-                        // if ($('#one_click_checkbox_subscribe_email_checked1').prop("checked")) {
-                        //     let email = $('#b-order[name=\'PROPS[EMAIL]\']').val();
-                        //     (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-                        //         rrApi.setEmail(
-                        //             email,
-                        //             {
-                        //                 "stockId": userShowcase
-                        //             }
-                        //         );
-                        //     });
-                        // }
                         window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
                         return false;
                     }
