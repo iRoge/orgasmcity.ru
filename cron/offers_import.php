@@ -319,7 +319,6 @@ $res = CIBlockSection::GetList(
     ]
 );
 while ($arItem = $res->GetNext()) {
-    echo $arItem['SECTION_PAGE_URL'] . PHP_EOL;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, DOMEN_NAME . $arItem['SECTION_PAGE_URL']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -328,11 +327,9 @@ while ($arItem = $res->GetNext()) {
     curl_setopt($ch, CURLOPT_HEADER, 0);
 
     $output = curl_exec($ch);
-    echo $output;
     curl_close($ch);
 }
 $ch = curl_init();
-echo '/catalog/favorites' . PHP_EOL;
 curl_setopt($ch, CURLOPT_URL, DOMEN_NAME . '/catalog/favorites');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -340,7 +337,6 @@ curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
 curl_setopt($ch, CURLOPT_HEADER, 0);
 
 $output = curl_exec($ch);
-echo $output;
 curl_close($ch);
 
 $end_time = time();
