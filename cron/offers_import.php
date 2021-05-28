@@ -9,6 +9,9 @@ define("BX_CAT_CRON", true);
 define('NO_AGENT_CHECK', true);
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+while (ob_get_level()) {
+    ob_end_flush();
+}
 ini_set('memory_limit', '2048M');
 //fda2000 MS
 CModule::IncludeModule('catalog');
@@ -57,7 +60,7 @@ if (CModule::IncludeModule("catalog"))
 	$IBLOCK_ID = intval($profile_params["IBLOCK_ID"]);
 	if ($IBLOCK_ID <= 0)
 		die("No IBLOCK ID");
-	
+
 	$catalog = $catalog_props = $profile_fileds = $head = $head_remap = [];
 	for($i=0; $i<1000; $i++)
 		if(!$profile_params['field_'.$i])
@@ -69,11 +72,11 @@ if (CModule::IncludeModule("catalog"))
 				$add++;
 			$profile_fileds[$i] = $val.($add? '+'.$add : $add);
 		}
-	
+
 	$res = CIBlock::GetProperties($IBLOCK_ID);
 	while($arr = $res->Fetch())
 		$catalog_props[mb_strtoupper($arr['CODE'])] = $arr['ID'];
-	
+
 	$BaseID = CCatalogGroup::GetBaseGroup();
 	$BaseID = $BaseID['ID'];
 	if(!$BaseID)
@@ -89,7 +92,7 @@ if (CModule::IncludeModule("catalog"))
 			if ($import_price_type != 1 and $import_price_type != 2)
 				$import_price_type = 1;
 			$import_rrc = Fire_Settings::getOption('IMPORT_PRODUCT_RRC');
-			
+
 			$csv_data = '';
 			while (($str_data = fgets($import_data)) !== false) {
 				$csv_data = str_getcsv($str_data, ';');
@@ -130,7 +133,7 @@ if (CModule::IncludeModule("catalog"))
 								$add++;
 							$head_remap[$key] = $val.($add? '+'.$add : $add);
 						}
-					
+
 					if($profile_params['first_names_r']==='Y') {
 						$fileds = [];
 						foreach($profile_fileds as $val) {
@@ -141,21 +144,21 @@ if (CModule::IncludeModule("catalog"))
 						}
 						fputcsv($fp, $fileds, ';');
 					}
-					
+
 					if($cont)
 						continue;
 				}
 				$csv_data_remap = array_combine($head_remap, $csv_data);
 				$csv_data = array_combine($head, $csv_data);
-				
+
 				//fda2000 MS
 				if($exclude[$csv_data['sku']])
 					continue;
 				//
-				
+
 				$exclude[$csv_data['sku']] = $csv_data['sku'];
 				$csv_data_remap['IP_PROP'.$catalog_props['SUPPLIER']] = 'p5s';
-				
+
 				$opt_price = isset($csv_data['WholePrice'])? $csv_data['WholePrice'] : $csv_data['basewholeprice'];
 				$price = $import_price_type!=1? $opt_price : $csv_data['price'];
 				foreach($import_nacenka as $p=>$d)
@@ -165,14 +168,14 @@ if (CModule::IncludeModule("catalog"))
 					}
 				if($import_rrc && $csv_data['StopPromo'] && $price<$csv_data['price']) //fda2000 RRC
 					$price = $csv_data['price'];
-				
+
 				/*if($val = $exclude[$data['sku']]) {
 					$data[4] = $val[0];
 					$price = $val[1];
 				}*/
 				$price = round($price, 2);
 				//
-				
+
 				if($shipping24) {
 					$t = MakeTimeStamp($csv_data_remap['IP_PROP'.$catalog_props['SHIPPING_DATE']]);
 					if(!$csv_data_remap['IP_PROP'.$catalog_props['SHIPPING_DATE']] || !$t || ($t-time())/60/60 > 28)
@@ -180,7 +183,7 @@ if (CModule::IncludeModule("catalog"))
 				}
 				if($minstock>0 && $csv_data_remap['CP_QUANTITY']<$minstock)
 					$csv_data_remap['CP_QUANTITY'] = 0;
-				
+
 				$csv_data_remap['CV_PRICE_'.$BaseID] = $price;
 				$csv_data_remap['CP_PURCHASING_PRICE'] = $opt_price;
 				$csv_data_remap['CP_PURCHASING_CURRENCY'] = $csv_data['currency'];
@@ -188,11 +191,11 @@ if (CModule::IncludeModule("catalog"))
 					$csv_data_remap['IP_PROP'.$catalog_props['BASEPRICE']] = $price;
 				if($catalog_props['BASEWHOLEPRICE'])
 					$csv_data_remap['IP_PROP'.$catalog_props['BASEWHOLEPRICE']] = $opt_price;
-				
+
 				$data = [];
 				foreach($profile_fileds as $val)
 					$data[] = $csv_data_remap[$val];
-				
+
 				fputcsv($fp, $data, ';');
 			}
 			@fclose($fp);
@@ -202,16 +205,16 @@ if (CModule::IncludeModule("catalog"))
 	}
 	if ($success === false)
 		exit;
-	
+
 	//remove not exist in import
 	if($profile_params['outFileAction']=='F') {
 		$rsItems = CIBlockElement::GetList([], ['IBLOCK_ID' => $IBLOCK_ID, /*'!XML_ID'=>$exclude,*/ '=PROPERTY_supplier_VALUE'=>'p5s'], false, false, array('ID', 'XML_ID'));
-		while($arItem = $rsItems->Fetch()) 
+		while($arItem = $rsItems->Fetch())
 			if(!$exclude[$arItem['XML_ID']])
 				CIBlockElement::Delete($arItem['ID']);
 	}
 	//
-	
+
 	$strFile = CATALOG_PATH2IMPORTS.$ar_profile["FILE_NAME"]."_run.php";
 	if (!file_exists($_SERVER["DOCUMENT_ROOT"].$strFile))
 	{
@@ -268,7 +271,7 @@ if (CModule::IncludeModule("catalog"))
 		)
 	);
 	@copy($data_file, $_SERVER["DOCUMENT_ROOT"]."/import/offers/offers_".date("d.m.Y H i").".csv");
-	
+
 	//fda2000 MS Profile deactivate void
 	foreach($restore as $ID=>$QUANTITY)
 		CCatalogProduct::Update($ID, array('QUANTITY'=>$QUANTITY));
@@ -293,9 +296,52 @@ if (CModule::IncludeModule("catalog"))
 	{
 		@fwrite($fp, date("d.m.Y H:i:s"));
 		fclose($fp);
-	}	
+	}
 }
+
+// Чистим кэш и отправляем запрос на каждую страницу каталога для автогенерации кеша
+$CACHE_MANAGER->ClearByTag("catalogAll");
+$mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
+$res = CIBlockSection::GetList(
+    [
+        "SORT" => "ASC",
+    ],
+    [
+        "IBLOCK_ID" => IBLOCK_CATALOG,
+        ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
+        "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
+    ],
+    false,
+    [
+        "ID",
+        "NAME",
+        "SECTION_PAGE_URL",
+    ]
+);
+while ($arItem = $res->GetNext()) {
+    echo $arItem['SECTION_PAGE_URL'] . PHP_EOL;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, DOMEN_NAME . $arItem['SECTION_PAGE_URL']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+
+    $output = curl_exec($ch);
+    echo $output;
+    curl_close($ch);
+}
+$ch = curl_init();
+echo '/catalog/favorites' . PHP_EOL;
+curl_setopt($ch, CURLOPT_URL, DOMEN_NAME . '/catalog/favorites');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+
+$output = curl_exec($ch);
+echo $output;
+curl_close($ch);
 
 $end_time = time();
 echo "work_time ".ceil(($end_time - $start_time)/60)." minutes\n";
-?>

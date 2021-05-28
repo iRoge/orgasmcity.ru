@@ -260,7 +260,7 @@ class QsoftCatalogSection extends ComponentHelper
         //Загружаем фильтры из URL заранее, чтобы можно было считать для остатков по складам
         $this->getFilterFromUrl();
 
-        $this->arResult['FAVORITES'] = $this->getFavorites(); //загружаем избранное
+        $this->arResult['FAVORITES_PROD_IDS'] = $this->getFavorites(); //загружаем избранное
 
         if ($this->checkActionFavorite()) {
             Functions::exitJson($this->addOrDelFavorite());
@@ -358,7 +358,7 @@ class QsoftCatalogSection extends ComponentHelper
             case self::TYPE_SALE:
             case self::TYPE_NEW:
             case self::TYPE_FAVORITES:
-                if (empty($this->arResult['FAVORITES'])) {
+                if (empty($this->arResult['FAVORITES_PROD_IDS'])) {
                     $this->getSeo();
                     $this->includeComponentTemplate();
                     return false;
@@ -702,13 +702,13 @@ class QsoftCatalogSection extends ComponentHelper
     private function getFavoritesProductsAndOffers()
     {
         foreach ($this->offers as $offerID => $offer) {
-            if (isset($this->arResult['FAVORITES'][$offer['PROPERTY_CML2_LINK_VALUE']])) {
+            if (isset($this->arResult['FAVORITES_PROD_IDS'][$offer['PROPERTY_CML2_LINK_VALUE']])) {
                 $favOffers[$offerID] = $offer;
             }
         }
         $this->offers = $favOffers;
         $this->arResult['FAVORITES_OFFERS_IDS'] = implode(',', array_keys($this->offers));
-        $this->products = array_intersect_key($this->products, $this->arResult['FAVORITES']);
+        $this->products = array_intersect_key($this->products, $this->arResult['FAVORITES_PROD_IDS']);
         setcookie("favorites_count", count($this->products), 0, '/');
     }
 
@@ -723,7 +723,7 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function addOrDelFavorite()
     {
-        $arFavoritesIds = $this->arResult['FAVORITES'];
+        $arFavoritesIds = $this->arResult['FAVORITES_PROD_IDS'];
         if (isset($arFavoritesIds[$_REQUEST['ID']])) {
             unset($arFavoritesIds[$_REQUEST['ID']]);
             $response['res'] = 'delete';
@@ -749,7 +749,7 @@ class QsoftCatalogSection extends ComponentHelper
     {
         global $USER;
 
-        $this->arResult['FAVORITES'] = $arFavoritesIds;
+        $this->arResult['FAVORITES_PROD_IDS'] = $arFavoritesIds;
         if ($USER->IsAuthorized()) { // Для авторизованного пишем в User
             $arFavoritesIds = array_flip($arFavoritesIds);
             $USER->Update($USER->GetID(), array("UF_FAVORITES" => $arFavoritesIds));
@@ -788,8 +788,8 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             }
         }
-        $this->setFavorites(array_intersect_key($this->arResult['FAVORITES'], $arActualProducts));
-        return array_intersect_key($this->arResult['FAVORITES'], $arActualProducts);
+        $this->setFavorites(array_intersect_key($this->arResult['FAVORITES_PROD_IDS'], $arActualProducts));
+        return array_intersect_key($this->arResult['FAVORITES_PROD_IDS'], $arActualProducts);
     }
 
     private function getGroup()
@@ -1335,7 +1335,7 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $isFavoritesCatalog = false;
-        if ($this->type == 'favorites') {
+        if ($this->type == self::TYPE_FAVORITES) {
             $isFavoritesCatalog = true;
         }
         $rests = [];

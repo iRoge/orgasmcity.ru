@@ -240,10 +240,4 @@ class Branch extends Task
             $this->arhivate($file);
         }
     }
-
-    private function clearCache()
-    {
-        global $LOCATION;
-        $LOCATION->refreshPriceCache();
-    }
 }
