@@ -39,18 +39,15 @@ $this->setFrameMode(true);
         <li class="<?= $sClassLi; ?>" id="<?=$levelId ?>">
             <a class="<?= $sClassA; ?> js-top-menu-item" href="<?= $arItem['LINK'] ?>"
             style="
-            <? if ($arItem['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
-                color:#<?=$arItem['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']?>;
-            <?endif;?>
-            <? if ($arItem['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
-                background:#<?=$arItem['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']?>;
+            <? if ($arItem['PARAMS']['PROPS']['TEXT_COLOR']) : ?>
+                color:<?=$arItem['PARAMS']['PROPS']['TEXT_COLOR']?>;
             <?endif;?>"><?= $arItem['TEXT'] ?></a>
         </li>
         <? if ($arItem['IS_PARENT']) : ?>
             <div class="hide-menu" id="div-<?=$levelId ?>">
                 <div class="hide-fake-area">
                     <div class="main">
-                        <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
+                        <? foreach (array_chunk($arItem['ITEMS'], 4) as $chunk) : ?>
                             <?
                                 $class = array(3, 12);
 //                            if (count($arItem2Level['ITEMS']) > $arItem['MAX']) {
@@ -59,27 +56,31 @@ $this->setFrameMode(true);
 //                                $class = array(2, 12);
 //                            }
                             ?>
-                            <div class="col-md-<?=$class[0]?> left-hide-menu">
-                                <? if ($arItem2Level['LINK']) : ?>
-                                    <div class="col-md-12 zagolovok-hide-menu">
-                                        <p><a href="<?=$arItem2Level['LINK']?>"><?= $arItem2Level['TEXT']; ?></a></p>
+                            <div class="row-menu-wrapper">
+                                <? foreach ($chunk as $i => $arItem2Level) : ?>
+                                    <div class="col-md-<?=$class[0]?> left-hide-menu">
+                                        <? if ($arItem2Level['LINK']) : ?>
+                                            <div class="col-md-12 zagolovok-hide-menu">
+                                                <p><a href="<?=$arItem2Level['LINK']?>"><?= $arItem2Level['TEXT']; ?></a></p>
+                                            </div>
+                                        <? else : ?>
+                                            <div class="col-md-12 zagolovok-hide-menu">
+                                                <p><?= $arItem2Level['TEXT']; ?></p>
+                                            </div>
+                                        <? endif; ?>
+                                        <? if ($arItem2Level['IS_PARENT']) : ?>
+                                            <? foreach (array_chunk($arItem2Level['ITEMS'], 25) as $arItem3LevelChunks) : ?>
+                                                <div class="col-md-<?=$class[1]?> lvl3-items-block">
+                                                <? foreach ($arItem3LevelChunks as $arItem3Level) : ?>
+                                                    <a href="<?= $arItem3Level['LINK']; ?>" <?= ($arItem3Level["PARAMS"]["CLASS"] ? ' class="'.$arItem3Level["PARAMS"]["CLASS"].'"' : '') ?>>
+                                                        <span><?= $arItem3Level['TEXT'] ?></span>
+                                                    </a>
+                                                <? endforeach; ?>
+                                                </div>
+                                            <? endforeach; ?>
+                                        <? endif; ?>
                                     </div>
-                                <? else : ?>
-                                    <div class="col-md-12 zagolovok-hide-menu">
-                                        <p><?= $arItem2Level['TEXT']; ?></p>
-                                    </div>
-                                <? endif; ?>
-                                <? if ($arItem2Level['IS_PARENT']) : ?>
-                                    <? foreach (array_chunk($arItem2Level['ITEMS'], $arItem["MAX"]) as $arItem3LevelChunks) : ?>
-                                        <div class="col-md-<?=$class[1]?>">
-                                        <? foreach ($arItem3LevelChunks as $arItem3Level) : ?>
-                                            <a href="<?= $arItem3Level['LINK']; ?>" <?= ($arItem3Level["PARAMS"]["CLASS"] ? ' class="'.$arItem3Level["PARAMS"]["CLASS"].'"' : '') ?>>
-                                                <span><?= $arItem3Level['TEXT'] ?></span>
-                                            </a>
-                                        <? endforeach; ?>
-                                        </div>
-                                    <? endforeach; ?>
-                                <? endif; ?>
+                                <? endforeach; ?>
                             </div>
                         <? endforeach; ?>
                         <div style="clear: both"></div>

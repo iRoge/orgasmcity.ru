@@ -17,8 +17,8 @@ class QsoftCatalogSection extends ComponentHelper
     private const TYPE_ALL_CATALOG = 'all';
     private const TYPE_SECTION = 'section';
     private const TYPE_SEARCH = 'search';
-    private const TYPE_NEW = 'new';
-    private const TYPE_SALE = 'sale';
+    private const TYPE_HITS = 'hits';
+    private const TYPE_SALES = 'sales';
     private const TYPE_FAVORITES = 'favorites';
     private const TYPE_GROUP = 'group';
     private const SORT_PRICE_DESC = 'price_desc';
@@ -214,12 +214,12 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $isSpecial = strpos($sectionUrl, 'catalog') !== false;
         if ($isSpecial) {
-            if (strpos($sectionUrl, '/new/') !== false) {
-                $sectionUrl = str_replace('/catalog/new', '', $sectionUrl);
-                return 'new';
-            } elseif (strpos($sectionUrl, '/sale/') !== false) {
-                $sectionUrl = str_replace('/catalog/sale', '', $sectionUrl);
-                return 'sale';
+            if (strpos($sectionUrl, '/hits/') !== false) {
+                $sectionUrl = str_replace('/catalog/hits', '', $sectionUrl);
+                return 'hits';
+            } elseif (strpos($sectionUrl, '/sales/') !== false) {
+                $sectionUrl = str_replace('/catalog/sales', '', $sectionUrl);
+                return 'sales';
             } elseif (strpos($sectionUrl, '/favorites/') !== false) {
                 $sectionUrl = str_replace('/catalog/favorites', '', $sectionUrl);
                 return 'favorites';
@@ -269,6 +269,7 @@ class QsoftCatalogSection extends ComponentHelper
         if (!$this->loadProductsAndOffers()) {
             return false;
         }
+
         $this->getUserViewSettings();
         $this->prepareCatalogResult();
 
@@ -355,8 +356,6 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->getSearchProducts();
                 $this->getSearchOffers();
                 break;
-            case self::TYPE_SALE:
-            case self::TYPE_NEW:
             case self::TYPE_FAVORITES:
                 if (empty($this->arResult['FAVORITES_PROD_IDS'])) {
                     $this->getSeo();
@@ -370,6 +369,8 @@ class QsoftCatalogSection extends ComponentHelper
                 }
                 $this->getFavoritesProductsAndOffers();
                 break;
+            case self::TYPE_SALES:
+            case self::TYPE_HITS:
             default:
                 $this->loadProducts();
                 $this->loadOffers();
@@ -392,11 +393,11 @@ class QsoftCatalogSection extends ComponentHelper
             $this->props = $this->getPropertyValues();
         }
         $arProducts = [];
-        if ($this->initCache('products')) {
+        if ($this->initCache('products_' . $this->type)) {
             if ($all) {
-                $arProducts = $this->getCachedVars('products');
+                $arProducts = $this->getCachedVars('products_' . $this->type);
             } else {
-                list($arProducts, $this->section) = $this->getCachedVars('products_section');
+                list($arProducts, $this->section) = $this->getCachedVars('products_section_' . $this->type);
             }
         } elseif ($this->startCache()) {
             $this->startTagCache();
@@ -406,8 +407,10 @@ class QsoftCatalogSection extends ComponentHelper
                 "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
             ];
+
             if (!$all) {
                 $currentSection = $this->getCurrentSection($this->code);
+
                 if (!empty($currentSection)) {
                     $currentSection['SAME_SECTIONS'] = $this->getSameSections($currentSection);
                     $this->section = $currentSection;
@@ -430,9 +433,9 @@ class QsoftCatalogSection extends ComponentHelper
             if (!empty($arProducts)) {
                 $this->endTagCache();
                 if ($all) {
-                    $this->saveToCache('products', $arProducts);
+                    $this->saveToCache('products_' . $this->type, $arProducts);
                 } else {
-                    $this->saveToCache('products_section', [$arProducts, $currentSection]);
+                    $this->saveToCache('products_section_' . $this->type, [$arProducts, $currentSection]);
                 }
             } else {
                 $this->abortTagCache();
@@ -560,7 +563,9 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$arItem["DETAIL_PICTURE"]) {
                 continue;
             }
-
+            if ($this->type === self::TYPE_HITS && $arItem["PROPERTY_BESTSELLER_VALUE"] != 1) {
+                continue;
+            }
             $arProducts[$arItem["ID"]] = [
                 "ID" => $arItem["ID"],
                 "NAME" => $arItem['NAME'],
@@ -640,8 +645,8 @@ class QsoftCatalogSection extends ComponentHelper
             return;
         }
         $arOffers = [];
-        if ($this->initCache('offers')) {
-            $arOffers = $this->getCachedVars('offers');
+        if ($this->initCache('offers_' . $this->type)) {
+            $arOffers = $this->getCachedVars('offers_' . $this->type);
         } elseif ($this->startCache()) {
             $this->startTagCache();
             $this->registerTag("catalogAll");
@@ -665,7 +670,7 @@ class QsoftCatalogSection extends ComponentHelper
 
             if (!empty($arOffers)) {
                 $this->endTagCache();
-                $this->saveToCache('offers', $arOffers);
+                $this->saveToCache('offers_' . $this->type, $arOffers);
             } else {
                 $this->abortTagCache();
                 $this->abortCache();
@@ -1349,13 +1354,18 @@ class QsoftCatalogSection extends ComponentHelper
                 continue;
             }
 
+            $price = PriceUtils::getPrice($value["PROPERTY_BASEWHOLEPRICE_VALUE"], $value["PROPERTY_BASEPRICE_VALUE"]);
+
+            if ($this->type === self::TYPE_SALES && !$price['DISCOUNT']) {
+                continue;
+            }
+
             $pid = $value["PROPERTY_CML2_LINK_VALUE"];
 
             if (!$items[$pid]) {
                 $items[$pid] = $this->products[$pid];
             }
 
-            $price = PriceUtils::getPrice($value["PROPERTY_BASEWHOLEPRICE_VALUE"], $value["PROPERTY_BASEPRICE_VALUE"]);
             if (
                 (
                     !isset($items[$pid]['PRICE'])

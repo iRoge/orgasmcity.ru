@@ -29,220 +29,232 @@ if ($arParams['DEPTH_LEVEL'] <= 0) {
     $arParams['DEPTH_LEVEL'] = 1;
 }
 
+global $CACHE_MANAGER;
+$cache = new CPHPCache();
 
-$HLar = array();
-
-$cache = Bitrix\Main\Data\Cache::createInstance();
-if ($cache->initCache($arParams['CACHE_TIME'], 'menu_global', '/menu_global')) {
+if ($cache->InitCache($arParams['CACHE_TIME'], 'menu_global', '/menu_global')) {
     $aMenuLinksNew = $cache->getVars();
 }
 if (empty($aMenuLinksNew)) {
-    $cache->startDataCache();
-    $arResult['SECTIONS'] = array();
-    $arResult['ELEMENT_LINKS'] = array();
+    $cache->StartDataCache();
+    $CACHE_MANAGER->StartTagCache('/menu_global');
+    $CACHE_MANAGER->RegisterTag("catalogAll");
+    $arResult['SECTIONS'] = [];
+    $arResult['ELEMENT_LINKS'] = [];
     if (!Loader::includeModule('iblock')) {
         $this->AbortResultCache();
-    } else {
-        $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
-        $res = CIBlockSection::GetList(
-            [
-                "SORT" => "ASC",
-            ],
-            [
-                "IBLOCK_ID" => IBLOCK_CATALOG,
-                ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
-                "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
-            ],
-            false,
-            [
-                "ID",
-                "NAME",
-            ]
-        );
-        $arMainSectionIds = [];
-        while ($arItem = $res->Fetch()) {
-            $arMainSectionIds[] = $arItem["ID"];
-        }
-        $products = [];
-
-        // Находим все продукты с секциями
-        $rsElements = CIBlockElement::GetList(
-            array(),
-            array(
-                'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-                'IBLOCK_SECTION_ID' => $arMainSectionIds,
-                'ACTIVE' => 'Y',
-                '!DETAIL_PICTURE' => false
-            ),
-            false,
-            false,
-            ['ID', 'IBLOCK_ID', 'IBLOCK_SECTION_ID', 'DETAIL_PICTURE']
-        );
-        $arImageIds = [];
-        while ($arElement = $rsElements->GetNext()) {
-            if (!$arElement["DETAIL_PICTURE"]) {
-                continue;
-            }
-            $arImageIds[] = $arElement["DETAIL_PICTURE"];
-            $products[$arElement['ID']] = $arElement;
-        }
-        if (!empty($arImageIds)) {
-            $res = FileTable::getList(array(
-                "select" => array(
-                    "ID",
-                    "SUBDIR",
-                    "FILE_NAME",
-                ),
-                "filter" => array(
-                    "ID" => $arImageIds,
-                ),
-            ));
-            $arImages = array();
-            while ($arItem = $res->Fetch()) {
-                $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
-                if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
-                    continue;
-                }
-                $arImages[$arItem["ID"]] = $src;
-            }
-            foreach ($products as $id => &$arItem) {
-                if (!empty($arImages[$arItem["DETAIL_PICTURE"]])) {
-                    $arItem["DETAIL_PICTURE"] = $arImages[$arItem["DETAIL_PICTURE"]];
-                } else {
-                    unset($products[$id]);
-                    continue;
-                }
-            }
-        }
-        // Находим все предложения
-        $offers = [];
-        $rsElements = CIBlockElement::GetList(
-            array(),
-            array(
-                'IBLOCK_ID' => $arParams['IBLOCK_OFFERS_ID'],
-                'ACTIVE' => 'Y'
-            ),
-            false,
-            false,
-            ['ID', 'IBLOCK_ID', 'PROPERTY_CML2_LINK']
-        );
-        $prod_keys = array_keys($products);
-        $items = [];
-        while ($arElement = $rsElements->GetNext()) {
-            if (!$products[$arElement['PROPERTY_CML2_LINK_VALUE']]) {
-                continue;
-            }
-            $offers[$arElement['ID']] = $arElement;
-        }
-        $offerIds = array_keys($offers);
-        // Достаем остатки по товарам
-        $rests = Functions::getRests($offerIds);
-
-        foreach ($offers as $offerId => $offer) {
-            if ((!isset($rests[$offerId]) || $rests[$offerId] < 1)) {
-                continue;
-            }
-            $pid = $offer['PROPERTY_CML2_LINK_VALUE'];
-            $items[$pid] = $products[$pid];
-        }
-
-        // Заполняем массив айдишников нужных нам секций
-//        $bSpecSec['MRT'] = false;
-//        $bSpecSec['MLT'] = false;
-        $arSectionsIds = [];
-        $arAvailableMRTSectionsIds = [];
-        $arAvailableMLTSectionsIds = [];
-        $arAvailableSectionsIds = [];
-        foreach ($items as $item) {
-            $arAvailableSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
-//            if ($item['PROPERTY_MRT_VALUE']) {
-//                $bSpecSec['MRT'] = true;
-//                $arAvailableMRTSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
-//            }
-//            if ($item['PROPERTY_MLT_VALUE']) {
-//                $bSpecSec['MLT'] = true;
-//                $arAvailableMLTSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
-//            }
-        }
-        // Находим все секции
-        $arFilter = array(
-            'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-            'GLOBAL_ACTIVE' => 'Y',
-            'IBLOCK_ACTIVE' => 'Y',
-            '<=DEPTH_LEVEL' => $arParams['DEPTH_LEVEL'],
-            '>=DEPTH_LEVEL' => 2
-        );
-
-        $arOrder = array('LEFT_MARGIN' => 'ASC');
-
-        $rsSections = CIBlockSection::GetList(
-            $arOrder,
-            $arFilter,
-            false,
-            array(
-                'ID',
-                'DEPTH_LEVEL',
-                'NAME',
-                'SECTION_PAGE_URL',
-            )
-        );
-
-        $rsSections->SetUrlTemplates('', $arParams['SECTION_URL']);
-
-        while ($arSection = $rsSections->GetNext()) {
-            $arResult['SECTIONS'][] = array(
-                'ID' => $arSection['ID'],
-                'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
-                '~NAME' => $arSection['~NAME'],
-                '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
-            );
-            $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();
-        }
-
-        // Фильтруем секции по массиву $arSectionsIds
-        foreach ($arResult['SECTIONS'] as $key => $section) {
-            if (in_array($section['ID'], $arMainSectionIds) && ($section['DEPTH_LEVEL'] == 1 || $section['DEPTH_LEVEL'] == 2)) {
-                continue;
-            } elseif (!in_array($section['ID'], $arAvailableSectionsIds)) {
-                unset($arResult['SECTIONS'][$key]);
-            }
-        }
-
-        //CUSTOM
-
-//        foreach (['MLT', 'MRT'] as $sCode) {
-//            if ($bSpecSec[$sCode] === false) {
-//                continue;
-//            }
-//            $arResult[$sCode] = [];
-//            $obEntity = \Likee\Site\Helpers\HL::getEntityClassByHLName($sCode);
-//
-//            if (!empty($obEntity) && is_object($obEntity)) {
-//                $sClass = $obEntity->getDataClass();
-//                $arResult[$sCode] = $sClass::getRow([
-//                    'order' => ['UF_DATE_UPDATE' => 'DESC']
-//                ]);
-//                $HLar[$sCode] = $sClass::getRow([
-//                    'order' => ['UF_DATE_UPDATE' => 'DESC'],
-//                    'select' => array('*')
-//                ]);
-//            }
-//        }
-        //END CUSTOM
+        $CACHE_MANAGER->AbortTagCache();
+        return [];
     }
+
+    $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
+    $res = CIBlockSection::GetList(
+        [
+            "SORT" => "ASC",
+        ],
+        [
+            "IBLOCK_ID" => IBLOCK_CATALOG,
+            ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
+            "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
+        ],
+        false,
+        [
+            "ID",
+            "NAME",
+        ]
+    );
+    $arMainSectionIds = [];
+    while ($arItem = $res->Fetch()) {
+        $arMainSectionIds[] = $arItem["ID"];
+    }
+    $products = [];
+
+    // Находим все продукты с секциями
+    $rsElements = CIBlockElement::GetList(
+        [],
+        [
+            'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+            'IBLOCK_SECTION_ID' => $arMainSectionIds,
+            'ACTIVE' => 'Y',
+            '!DETAIL_PICTURE' => false
+        ],
+        false,
+        false,
+        ['ID', 'IBLOCK_ID', 'IBLOCK_SECTION_ID', 'DETAIL_PICTURE', 'PROPERTY_BESTSELLER']
+    );
+    $arImageIds = [];
+    while ($arElement = $rsElements->GetNext()) {
+        if (!$arElement["DETAIL_PICTURE"]) {
+            continue;
+        }
+        $arImageIds[] = $arElement["DETAIL_PICTURE"];
+        $products[$arElement['ID']] = $arElement;
+    }
+    if (!empty($arImageIds)) {
+        $res = FileTable::getList([
+            "select" => [
+                "ID",
+                "SUBDIR",
+                "FILE_NAME",
+            ],
+            "filter" => [
+                "ID" => $arImageIds,
+            ],
+        ]);
+        $arImages = [];
+        while ($arItem = $res->Fetch()) {
+            $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
+            if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
+                continue;
+            }
+            $arImages[$arItem["ID"]] = $src;
+        }
+        foreach ($products as $id => &$arItem) {
+            if (!empty($arImages[$arItem["DETAIL_PICTURE"]])) {
+                $arItem["DETAIL_PICTURE"] = $arImages[$arItem["DETAIL_PICTURE"]];
+            } else {
+                unset($products[$id]);
+                continue;
+            }
+        }
+    }
+    // Находим все предложения
+    $offers = [];
+    $rsElements = CIBlockElement::GetList(
+        [],
+        [
+            'IBLOCK_ID' => $arParams['IBLOCK_OFFERS_ID'],
+            'ACTIVE' => 'Y'
+        ],
+        false,
+        false,
+        ['ID', 'IBLOCK_ID', 'PROPERTY_CML2_LINK', 'PROPERTY_BASEPRICE', 'PROPERTY_BASEWHOLEPRICE']
+    );
+    $prod_keys = array_keys($products);
+    $items = [];
+    while ($arElement = $rsElements->GetNext()) {
+        if (!$products[$arElement['PROPERTY_CML2_LINK_VALUE']]) {
+            continue;
+        }
+        $offers[$arElement['ID']] = $arElement;
+    }
+    $offerIds = array_keys($offers);
+    // Достаем остатки по товарам
+    $rests = Functions::getRests($offerIds);
+
+    foreach ($offers as $offerId => $offer) {
+        if ((!isset($rests[$offerId]) || $rests[$offerId] < 1)) {
+            continue;
+        }
+        $pid = $offer['PROPERTY_CML2_LINK_VALUE'];
+        $items[$pid] = $products[$pid];
+        if (!isset($items[$pid]['DISCOUNT'])) {
+            $items[$pid]['DISCOUNT'] = \Qsoft\Helpers\PriceUtils::getPrice($offer['PROPERTY_BASEWHOLEPRICE_VALUE'], $offer['PROPERTY_BASEPRICE_VALUE'])['DISCOUNT'];
+        }
+    }
+
+    // Заполняем массив айдишников нужных нам секций
+    $bSpecSec['HITS'] = false;
+    $bSpecSec['SALES'] = false;
+    $arSectionsIds = [];
+    $arAvailableHitsSectionsIds = [];
+    $arAvailableHitsItems = [];
+    $arAvailableSalesSectionsIds = [];
+    $arAvailableSalesItems = [];
+    $arAvailableSectionsIds = [];
+    foreach ($items as $item) {
+        $arAvailableSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
+        if ($item['PROPERTY_BESTSELLER_VALUE']) {
+            $bSpecSec['HITS'] = true;
+            $arAvailableHitsSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
+            $arAvailableHitsItems[$item['ID']] = $item;
+        }
+
+        if ($item['DISCOUNT'] > 0) {
+            $bSpecSec['SALES'] = true;
+            $arAvailableSalesSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
+            $arAvailableSalesItems[$item['ID']] = $item;
+        }
+    }
+
+    // Находим все секции
+    $arFilter = array(
+        'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+        'GLOBAL_ACTIVE' => 'Y',
+        'IBLOCK_ACTIVE' => 'Y',
+        '<=DEPTH_LEVEL' => $arParams['DEPTH_LEVEL'],
+        '>=DEPTH_LEVEL' => 2
+    );
+
+    $arOrder = ['LEFT_MARGIN' => 'ASC'];
+
+    $rsSections = CIBlockSection::GetList(
+        $arOrder,
+        $arFilter,
+        false,
+        array(
+            'ID',
+            'DEPTH_LEVEL',
+            'NAME',
+            'SECTION_PAGE_URL',
+        )
+    );
+
+    $rsSections->SetUrlTemplates('', $arParams['SECTION_URL']);
+
+    while ($arSection = $rsSections->GetNext()) {
+        $arResult['SECTIONS'][] = array(
+            'ID' => $arSection['ID'],
+            'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
+            '~NAME' => $arSection['~NAME'],
+            '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
+        );
+        $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();
+    }
+
+    // Фильтруем секции по массиву $arSectionsIds
+    foreach ($arResult['SECTIONS'] as $key => $section) {
+        if (in_array($section['ID'], $arMainSectionIds) && ($section['DEPTH_LEVEL'] == 1 || $section['DEPTH_LEVEL'] == 2)) {
+            continue;
+        } elseif (!in_array($section['ID'], $arAvailableSectionsIds)) {
+            unset($arResult['SECTIONS'][$key]);
+        }
+    }
+
+    //CUSTOM
+    if ($bSpecSec['HITS']) {
+        $arResult['HITS'] = [
+            'UF_NAME' => 'ХИТЫ',
+            'UF_CODE' => 'hits',
+            'PROPS' => [
+                'TEXT_COLOR' => '#005dff'
+            ]
+        ];
+    }
+
+    if ($bSpecSec['SALES']) {
+        $arResult['SALES'] = [
+            'UF_NAME' => 'СКИДКИ',
+            'UF_CODE' => 'sales',
+            'PROPS' => [
+                'TEXT_COLOR' => '#ff002c'
+            ]
+        ];
+    }
+    //END CUSTOM
 
 
     $arVariables = [];
 
     if (($arParams['ID'] > 0) && (intval($arVariables['SECTION_ID']) <= 0) && Loader::includeModule('iblock')) {
-        $arSelect = array('ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'IBLOCK_SECTION_ID');
-        $arFilter = array(
+        $arSelect = ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'IBLOCK_SECTION_ID'];
+        $arFilter = [
             'ID' => $arParams['ID'],
             'ACTIVE' => 'Y',
             'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-        );
+        ];
 
-        $rsElements = CIBlockElement::GetList(array(), $arFilter, false, false, $arSelect);
+        $rsElements = CIBlockElement::GetList([], $arFilter, false, false, $arSelect);
 
         while ($arElement = $rsElements->GetNext()) {
             $arResult['ELEMENT_LINKS'][$arElement['IBLOCK_SECTION_ID']][] = $arElement['~DETAIL_PAGE_URL'];
@@ -252,7 +264,7 @@ if (empty($aMenuLinksNew)) {
     $currentUrl = $APPLICATION->GetCurPage();
     $arMenuCatalogGroups = [];
 
-    $aMenuLinksNew = array();
+    $aMenuLinksNew = [];
     $menuIndex = 0;
     $previousDepthLevel = 1;
 
@@ -302,216 +314,197 @@ if (empty($aMenuLinksNew)) {
     }
 
 //CUSTOM
-//    $arMenuLinkMLT = $arMenuLinkMRT = [];
-//
-//    if (!empty($arResult['MLT'])) {
-//        $arMenuLinkMLT[] = array(
-//            $arResult['MLT']['UF_NAME'],
-//            '/catalog/' . $arResult['MLT']['UF_CODE'] . '/',
-//            array(
-//                '/catalog/' . $arResult['MLT']['UF_CODE'] . '/',
-//            ),
-//            array(
-//                'HIGHLIGHT' => 'Y',
-//                'IS_PARENT' => true,
-//                'FROM_IBLOCK' => true,
-//                'DEPTH_LEVEL' => 1,
-//                'PROPS' => $HLar['MLT']
-//            ),
-//            ''
-//        );
-//
-//        $rsElements = \CIBlockElement::GetList(
-//            [],
-//            [
-//                'IBLOCK_ID' => IBLOCK_CATALOG,
-//                'ACTIVE' => 'Y',
-//                '!PROPERTY_MLT' => false,
-//                '!DETAIL_PICTURE' => false
-//            ]
-//        );
-//
-//        $arMLTSections = [];
-//
-//        while ($arElement = $rsElements->Fetch()) {
-//            $nav = CIBlockSection::GetNavChain(false, $arElement['IBLOCK_SECTION_ID']);
-//
-//            $iDepth = 2;
-//            while ($arSection = $nav->Fetch()) {
-//                $arMLTSections[$iDepth][$arSection['ID']] = $arSection;
-//                $iDepth++;
-//            }
-//        }
-//        krsort($arMLTSections[2]);
-//        // Фильтруем секции по массиву $arSectionsIds
-//        $arAvailable3rdLvlMLTSectionsIds = [];
-//        foreach ($arMLTSections[4] as $key => $section) {
-//            if (!in_array($key, $arAvailableMLTSectionsIds)) {
-//                unset($arMLTSections[4][$key]);
-//                continue;
-//            }
-//            $arAvailable3rdLvlMLTSectionsIds[$section['IBLOCK_SECTION_ID']] = $section['IBLOCK_SECTION_ID'];
-//        }
-//        foreach ($arMLTSections[2] as $arMLTSection2) {
-//            foreach ($arMLTSections[3] as $key => $arMLTSection3) {
-//                if (!in_array($key, $arAvailable3rdLvlMLTSectionsIds)) {
-//                    unset($arMLTSections[3][$key]);
-//                    continue;
-//                }
-//                if ($arMLTSection3['IBLOCK_SECTION_ID'] == $arMLTSection2['ID']) {
-//                    $sPath = '/catalog/' . $arResult['MLT']['UF_CODE'] . '/' . $arMLTSection2['CODE'] . '/' . $arMLTSection3['CODE'] . '/';
-//                    $arMenuLinkMLT[] = array(
-//                        $arMLTSection3['NAME'],
-//                        $sPath,
-//                        array($sPath),
-//                        array(
-//                            'IS_PARENT' => true,
-//                            'DEPTH_LEVEL' => 2,
-//                            'FROM_IBLOCK' => true,
-//                        ),
-//                        ''
-//                    );
-//                    foreach ($arMLTSections[4] as $arMLTSection4) {
-//                        if ($arMLTSection4['IBLOCK_SECTION_ID'] == $arMLTSection3['ID']) {
-//                            $sPath = '/catalog/' . $arResult['MLT']['UF_CODE'] . '/' . $arMLTSection2['CODE'] . '/' . $arMLTSection3['CODE'] . '/' . $arMLTSection4['CODE'] . '/';
-//                            $arMenuLinkMLT[] = array(
-//                                $arMLTSection4['NAME'],
-//                                $sPath,
-//                                array($sPath),
-//                                array(
-//                                    'FROM_IBLOCK' => true,
-//                                    'DEPTH_LEVEL' => 3,
-//                                ),
-//                                ''
-//                            );
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        if (empty($arMLTSections[3])) {
-//            unset($arMenuLinkMLT);
-//        }
-//
-//        if (!empty($arCatalogGroups['MLT'][$arResult['MLT']['UF_XML_ID']])) {
-//            $arMenuLinkMLT[] = ['&nbsp;', '', [], [
-//                'FROM_IBLOCK' => true,
-//                'IS_PARENT' => true,
-//                'DEPTH_LEVEL' => 2,
-//            ]];
-//            $arMenuLinkMLT = array_merge($arMenuLinkMLT, $arCatalogGroups['MLT'][$arResult['MLT']['UF_XML_ID']]);
-//        }
-//    }
+    $arMenuLinkSales = [];
+    $arMenuLinkHits = [];
 
-//    $aMenuLinksNew = array_merge($arMenuLinkMLT, $aMenuLinksNew);
-//
-//    if (!empty($arResult['MRT'])) {
-//        $arMenuLinkMRT[] = array(
-//            $arResult['MRT']['UF_NAME'],
-//            '/catalog/' . $arResult['MRT']['UF_CODE'] . '/',
-//            array(
-//                '/catalog/' . $arResult['MRT']['UF_CODE'] . '/'
-//            ),
-//            array(
-//                'BUTTON' => 'Y',
-//                'IS_PARENT' => true,
-//                'FROM_IBLOCK' => true,
-//                'DEPTH_LEVEL' => 1,
-//                'PROPS' => $HLar['MRT']
-//            ),
-//            ''
-//        );
-//
-//
-//        $rsElements = \CIBlockElement::GetList(
-//            [],
-//            [
-//                'IBLOCK_ID' => IBLOCK_CATALOG,
-//                'ACTIVE' => 'Y',
-//                '!PROPERTY_MRT' => false,
-//                '!DETAIL_PICTURE' => false
-//            ]
-//        );
-//
-//        $arMRTSections = [];
-//
-//        while ($arElement = $rsElements->Fetch()) {
-//            $nav = CIBlockSection::GetNavChain(false, $arElement['IBLOCK_SECTION_ID']);
-//
-//            $iDepth = 2;
-//            while ($arSection = $nav->Fetch()) {
-//                $arMRTSections[$iDepth][$arSection['ID']] = $arSection;
-//                $iDepth++;
-//            }
-//        }
-//
-//        krsort($arMRTSections[2]);
-//        $arAvailable3rdLvlMRTSectionsIds = [];
-//        // Фильтруем секции по массиву $arSectionsIds
-//        foreach ($arMRTSections[4] as $key => $section) {
-//            if (!in_array($key, $arAvailableMRTSectionsIds)) {
-//                unset($arMRTSections[4][$key]);
-//                continue;
-//            }
-//            $arAvailable3rdLvlMRTSectionsIds[$section['IBLOCK_SECTION_ID']] = $section['IBLOCK_SECTION_ID'];
-//        }
-//        foreach ($arMRTSections[2] as $arMRTSection2) {
-//            foreach ($arMRTSections[3] as $key => $arMRTSection3) {
-//                if (!in_array($key, $arAvailable3rdLvlMRTSectionsIds)) {
-//                    unset($arMRTSections[3][$key]);
-//                    continue;
-//                }
-//                if ($arMRTSection3['IBLOCK_SECTION_ID'] == $arMRTSection2['ID']) {
-//                    $sPath = '/catalog/' . $arResult['MRT']['UF_CODE'] . '/' . $arMRTSection2['CODE'] . '/' . $arMRTSection3['CODE'] . '/';
-//                    $arMenuLinkMRT[] = array(
-//                        $arMRTSection3['NAME'],
-//                        $sPath,
-//                        array($sPath),
-//                        array(
-//                            'BUTTON' => 'Y',
-//                            'IS_PARENT' => true,
-//                            'DEPTH_LEVEL' => 2,
-//                            'FROM_IBLOCK' => true,
-//                        ),
-//                        ''
-//                    );
-//                    foreach ($arMRTSections[4] as $arMRTSection4) {
-//                        if ($arMRTSection4['IBLOCK_SECTION_ID'] == $arMRTSection3['ID']) {
-//                            $sPath = '/catalog/' . $arResult['MRT']['UF_CODE'] . '/' . $arMRTSection2['CODE'] . '/' . $arMRTSection3['CODE'] . '/' . $arMRTSection4['CODE'] . '/';
-//                            $arMenuLinkMRT[] = array(
-//                                $arMRTSection4['NAME'],
-//                                $sPath,
-//                                array($sPath),
-//                                array(
-//                                    'BUTTON' => 'Y',
-//                                    'FROM_IBLOCK' => true,
-//                                    'DEPTH_LEVEL' => 3,
-//                                ),
-//                                ''
-//                            );
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        if (empty($arMRTSections[3])) {
-//            unset($arMenuLinkMRT);
-//        }
-//
-//
-//        if (!empty($arCatalogGroups['MRT'][$arResult['MRT']['UF_XML_ID']])) {
-//            $arMenuLinkMRT[] = ['&nbsp;', '', [], [
-//                'BUTTON' => 'Y',
-//                'FROM_IBLOCK' => true,
-//                'IS_PARENT' => true,
-//                'DEPTH_LEVEL' => 2,
-//            ]];
-//            $arMenuLinkMRT = array_merge($arMenuLinkMRT, $arCatalogGroups['MRT'][$arResult['MRT']['UF_XML_ID']]);
-//        }
-//    }
-//    $aMenuLinksNew = array_merge($arMenuLinkMRT, $aMenuLinksNew);
+    if (!empty($arResult['SALES'])) {
+        $arMenuLinkSales[] = array(
+            $arResult['SALES']['UF_NAME'],
+            '/catalog/' . $arResult['SALES']['UF_CODE'] . '/',
+            array(
+                '/catalog/' . $arResult['SALES']['UF_CODE'] . '/',
+            ),
+            array(
+                'HIGHLIGHT' => 'Y',
+                'IS_PARENT' => true,
+                'FROM_IBLOCK' => true,
+                'DEPTH_LEVEL' => 1,
+                'PROPS' => $arResult['SALES']['PROPS']
+            ),
+            ''
+        );
+
+        $arSalesSections = [];
+
+        foreach ($arAvailableSalesItems as $item) {
+            $nav = CIBlockSection::GetNavChain(false, $item['IBLOCK_SECTION_ID']);
+
+            $iDepth = 1;
+            while ($arSection = $nav->Fetch()) {
+                $arSalesSections[$iDepth][$arSection['ID']] = $arSection;
+                $iDepth++;
+            }
+        }
+
+        krsort($arSalesSections[2]);
+        // Фильтруем секции по массиву $arSectionsIds
+        $arAvailable3rdLvlSalesSectionsIds = [];
+        foreach ($arSalesSections[4] as $key => $section) {
+            if (!in_array($key, $arAvailableSalesSectionsIds)) {
+                unset($arSalesSections[4][$key]);
+                continue;
+            }
+            $arAvailable3rdLvlSalesSectionsIds[$section['IBLOCK_SECTION_ID']] = $section['IBLOCK_SECTION_ID'];
+        }
+
+        foreach ($arSalesSections[3] as $key => $section) {
+            if (!in_array($key, $arAvailableSalesSectionsIds)) {
+                continue;
+            }
+            $arAvailable3rdLvlSalesSectionsIds[$section['ID']] = $section['ID'];
+        }
+
+        foreach ($arSalesSections[2] as $arSalesSection2) {
+            foreach ($arSalesSections[3] as $key => $arSalesSection3) {
+                if (!in_array($key, $arAvailable3rdLvlSalesSectionsIds)) {
+                    unset($arSalesSections[3][$key]);
+                    continue;
+                }
+                if ($arSalesSection3['IBLOCK_SECTION_ID'] == $arSalesSection2['ID']) {
+                    $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
+                    $arMenuLinkSales[] = array(
+                        $arSalesSection3['NAME'],
+                        $sPath,
+                        array($sPath),
+                        array(
+                            'IS_PARENT' => true,
+                            'DEPTH_LEVEL' => 2,
+                            'FROM_IBLOCK' => true,
+                        ),
+                        ''
+                    );
+                    foreach ($arSalesSections[4] as $arSalesSection4) {
+                        if ($arSalesSection4['IBLOCK_SECTION_ID'] == $arSalesSection3['ID']) {
+                            $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] .'/' . reset($arSalesSections[1])['CODE'] .  '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/' . $arSalesSection4['CODE'] . '/';
+                            $arMenuLinkSales[] = array(
+                                $arSalesSection4['NAME'],
+                                $sPath,
+                                array($sPath),
+                                array(
+                                    'FROM_IBLOCK' => true,
+                                    'DEPTH_LEVEL' => 3,
+                                ),
+                                ''
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($arSalesSections[3])) {
+            unset($arMenuLinkSales);
+        }
+    }
+
+    if (!empty($arMenuLinkSales)) {
+        $aMenuLinksNew = array_merge($arMenuLinkSales, $aMenuLinksNew);
+    }
+
+    if (!empty($arResult['HITS'])) {
+        $arMenuLinkHits[] = array(
+            $arResult['HITS']['UF_NAME'],
+            '/catalog/' . $arResult['HITS']['UF_CODE'] . '/',
+            array(
+                '/catalog/' . $arResult['HITS']['UF_CODE'] . '/'
+            ),
+            array(
+                'IS_PARENT' => true,
+                'FROM_IBLOCK' => true,
+                'DEPTH_LEVEL' => 1,
+                'PROPS' => $arResult['HITS']['PROPS']
+            ),
+            ''
+        );
+
+        $arHitsSections = [];
+
+        foreach ($arAvailableHitsItems as $item) {
+            $nav = CIBlockSection::GetNavChain(false, $item['IBLOCK_SECTION_ID']);
+
+            $iDepth = 1;
+            while ($arSection = $nav->Fetch()) {
+                $arHitsSections[$iDepth][$arSection['ID']] = $arSection;
+                $iDepth++;
+            }
+        }
+
+
+        krsort($arHitsSections[2]);
+        $arAvailable3rdLvlHitsSectionsIds = [];
+        // Фильтруем секции по массиву $arSectionsIds
+        foreach ($arHitsSections[4] as $key => $section) {
+            if (!in_array($key, $arAvailableHitsSectionsIds)) {
+                unset($arHitsSections[4][$key]);
+                continue;
+            }
+            $arAvailable3rdLvlHitsSectionsIds[$section['IBLOCK_SECTION_ID']] = $section['IBLOCK_SECTION_ID'];
+        }
+
+        foreach ($arHitsSections[3] as $key => $section) {
+            if (!in_array($key, $arAvailableHitsSectionsIds)) {
+                continue;
+            }
+            $arAvailable3rdLvlHitsSectionsIds[$section['ID']] = $section['ID'];
+        }
+
+        foreach ($arHitsSections[2] as $arHitsSection2) {
+            foreach ($arHitsSections[3] as $key => $arHitsSection3) {
+                if (!in_array($key, $arAvailable3rdLvlHitsSectionsIds)) {
+                    unset($arHitsSections[3][$key]);
+                    continue;
+                }
+                if ($arHitsSection3['IBLOCK_SECTION_ID'] == $arHitsSection2['ID']) {
+                    $sPath = '/catalog/' . $arResult['HITS']['UF_CODE'] .'/' . reset($arHitsSections[1])['CODE'] .  '/' . $arHitsSection2['CODE'] . '/' . $arHitsSection3['CODE'] . '/';
+                    $arMenuLinkHits[] = array(
+                        $arHitsSection3['NAME'],
+                        $sPath,
+                        array($sPath),
+                        array(
+                            'IS_PARENT' => true,
+                            'DEPTH_LEVEL' => 2,
+                            'FROM_IBLOCK' => true,
+                        ),
+                        ''
+                    );
+                    foreach ($arHitsSections[4] as $arHitsSection4) {
+                        if ($arHitsSection4['IBLOCK_SECTION_ID'] == $arHitsSection3['ID']) {
+                            $sPath = '/catalog/' . $arResult['HITS']['UF_CODE'] .'/' . reset($arHitsSections[1])['CODE'] .  '/' . $arHitsSection2['CODE'] . '/' . $arHitsSection3['CODE'] . '/' . $arHitsSection4['CODE'] . '/';
+                            $arMenuLinkHits[] = array(
+                                $arHitsSection4['NAME'],
+                                $sPath,
+                                array($sPath),
+                                array(
+                                    'FROM_IBLOCK' => true,
+                                    'DEPTH_LEVEL' => 3,
+                                ),
+                                ''
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($arHitsSections[3])) {
+            unset($arMenuLinkHits);
+        }
+    }
+
+    if (!empty($arMenuLinkHits)) {
+        $aMenuLinksNew = array_merge($arMenuLinkHits, $aMenuLinksNew);
+    }
+
 //END CUSTOM
-
-    $cache->endDataCache($aMenuLinksNew);
+    $cache->EndDataCache($aMenuLinksNew);
+    $CACHE_MANAGER->EndTagCache();
 }
 return $aMenuLinksNew;

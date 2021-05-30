@@ -24,7 +24,7 @@ $aMenuLinksExt = $APPLICATION->IncludeComponent(
 $aMenuLinks = array_merge($aMenuLinksExt, $aMenuLinks);
 
 foreach ($aMenuLinks as $iKey => $arLink) {
-    if (!empty($arLink[3]) && array_key_exists('BUTTON', $arLink[3]) && $arLink[3]['BUTTON'] == 'Y') {
+    if (!empty($arLink[3]) && isset($arLink[3]['BUTTON']) && $arLink[3]['BUTTON'] == 'Y') {
         unset($aMenuLinks[$iKey]);
         $aMenuLinks[] = $arLink;
     }

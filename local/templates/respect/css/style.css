@@ -1110,7 +1110,6 @@ html, body
   border-bottom: 1px solid #ededed;
   background: #fffafa;
   margin-top: 35px;
-  padding-bottom: 75px;
   padding-top: 30px;
 }
 .info--
@@ -1735,6 +1734,18 @@ a.in-zagolovok
   font-size: inherit !important;
   font-family: inherit;
   font-weight: bold;
+}
+
+.lvl3-items-block
+{
+  height: auto;
+}
+
+.row-menu-wrapper
+{
+  display: flex;
+  height: max-content;
+  padding-bottom: 50px;
 }
 
 .info-sel
