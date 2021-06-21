@@ -1365,7 +1365,7 @@ html, body
   color: #4e4e4e;
   font-family: 'firalight';
   font-size: 16px!important;
-  margin-top: 15px;
+  margin-top: 8px;
   padding: 0;
   width: 100%;
   text-transform: none!important;
@@ -1505,7 +1505,7 @@ html, body
 
 .categories
 {
-  background: #fff;
+  background: #fff5f7;
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -1745,7 +1745,7 @@ a.in-zagolovok
 {
   display: flex;
   height: max-content;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 }
 
 .info-sel
