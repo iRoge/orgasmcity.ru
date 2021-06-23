@@ -385,12 +385,6 @@ SmartFilter.prototype.hideFilter = function () {
 
 //Функция сортировки для поднятия активных элементов
 SmartFilter.prototype.sortFilterListUp = function(a, b) {
-    if ($(a).text().trim() ===  'Respect') {
-        return -1;
-    }
-    if ($(b).text().trim() ===  'Respect') {
-        return 1;
-    }
     if ($(a).text().trim() > $(b).text().trim()) {
         return 1;
     } else if ($(a).text().trim() < $(b).text().trim()) {

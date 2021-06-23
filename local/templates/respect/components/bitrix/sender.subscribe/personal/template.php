@@ -26,7 +26,7 @@ foreach ($arResult['RUBRICS'] as $arRubric) {
             <input type="hidden" name="SENDER_SUBSCRIBE_EMAIL" value="<?= $arResult['EMAIL'] ?: $USER->GetEmail(); ?>">
 
             <fieldset>
-                <legend>Подпишитесь на рассылку Respect, чтобы быть в курсе всех акций и новостей</legend>
+                <legend>Подпишитесь на рассылку Orgasmcity, чтобы быть в курсе всех акций и новостей</legend>
                 <div class="input-group">
                     <label class="checkbox">
                         <input class="js-rubrics-agree" type="checkbox" name="agree" value="Y" <?= $bChecked ? ' checked' : ''; ?>>

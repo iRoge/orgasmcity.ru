@@ -216,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"
     LocalRedirect("/bitrix/admin/likee_options.php?lang=" . LANGUAGE_ID . $returnUrl . "&" . $tabControl->ActiveTabParam());
 }
 
-$APPLICATION->SetTitle('Настройки для сайта Respect-Shoes');
+$APPLICATION->SetTitle('Настройки для сайта Orgasmcity');
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 ?>
     <script src="/local/templates/respect/lib/jquery.js"></script>

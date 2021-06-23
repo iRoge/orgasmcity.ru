@@ -21,7 +21,7 @@ if (!empty($arResult)) :?>
     <? $cou=0;
     foreach ($arResult as $arItem) : ?>
         <?$cou++;
-        if ($arItem['TEXT'] == 'Одежда') {?>
+        if ($arItem['TEXT'] == '?????') {?>
             <div class="sex-btn sex-btn-left col-xs-12" >
                 <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
             </div>

@@ -30,11 +30,11 @@ foreach ($arResult['RUBRICS'] as $arRubric) {
             <input type="hidden" name="EMAIL" value="<?= $arResult['SUBSCRIPTION']['EMAIL'] ?: $arResult['REQUEST']['EMAIL']; ?>">
             <input type="hidden" name="FORMAT" value="html">
             <fieldset>
-                <legend>Подпишитесь на рассылку Respect, чтобы быть в курсе всех акций и новостей</legend>
+                <legend>Подпишитесь на рассылку Orgasmcity, чтобы быть в курсе всех акций и новостей</legend>
                 <div class="input-group">
                     <label class="checkbox">
                         <input class="js-rubrics-agree" type="checkbox" name="agree" value="Y" <?= $bChecked ? ' checked' : ''; ?>>
-                        <span>Я хочу получать рассылку Respect</span>
+                        <span>Я хочу получать рассылку Orgasmcity</span>
                     </label>
                 </div>
             </fieldset>

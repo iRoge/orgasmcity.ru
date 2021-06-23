@@ -9,7 +9,7 @@ CHTTP::SetStatus('404 Not Found');
 
 require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 
-$APPLICATION->SetTitle('404 ошибка: Страница не найдена - интернет-магазин Respect Yourself');
+$APPLICATION->SetTitle('404 ошибка: Страница не найдена - секс-шоп Город Оргазма');
 global $LOCATION;
 ?>
     <div class="page-error-404">

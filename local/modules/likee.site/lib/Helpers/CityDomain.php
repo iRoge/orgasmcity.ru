@@ -32,7 +32,7 @@ class CityDomain
                 $cityName = $GLOBALS['arLocation']['CITY_NAME'];
     
                 if (!empty($GLOBALS['CATALOG_ELEMENT_ID'])) {
-                    $APPLICATION->SetPageProperty('title', $title.' | интернет-магазин Respect | '.$cityName);
+                    $APPLICATION->SetPageProperty('title', $title.' | интернет-магазин Orgasmcity | '.$cityName);
                 } elseif (!empty($GLOBALS['CATALOG_SECTION_ID']) || \CSite::InDir(SITE_DIR . 'catalog/') || \CSite::InDir(SITE_DIR . 'actions/')) {
                     $cityNameWhere = $APPLICATION->GetProperty('CITY_NAME_WHERE', $cityName);
                     $APPLICATION->SetPageProperty('title', $title.' в '.$cityNameWhere);

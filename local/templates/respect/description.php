@@ -1,6 +1,6 @@
 <?php
 $arTemplate = array (
-    'NAME' => 'Respect',
+    'NAME' => 'Orgasmcity',
     'DESCRIPTION' => 'Основной шаблон сайта скопированный у респекта',
     'SORT' => '',
     'TYPE' => '',

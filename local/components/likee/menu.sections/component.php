@@ -154,21 +154,13 @@ if (empty($aMenuLinksNew)) {
     }
 
     // Заполняем массив айдишников нужных нам секций
-    $bSpecSec['HITS'] = false;
     $bSpecSec['SALES'] = false;
     $arSectionsIds = [];
-    $arAvailableHitsSectionsIds = [];
-    $arAvailableHitsItems = [];
     $arAvailableSalesSectionsIds = [];
     $arAvailableSalesItems = [];
     $arAvailableSectionsIds = [];
     foreach ($items as $item) {
         $arAvailableSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
-        if ($item['PROPERTY_BESTSELLER_VALUE']) {
-            $bSpecSec['HITS'] = true;
-            $arAvailableHitsSectionsIds[$item['IBLOCK_SECTION_ID']] = $item['IBLOCK_SECTION_ID'];
-            $arAvailableHitsItems[$item['ID']] = $item;
-        }
 
         if ($item['DISCOUNT'] > 0) {
             $bSpecSec['SALES'] = true;
@@ -219,17 +211,6 @@ if (empty($aMenuLinksNew)) {
         } elseif (!in_array($section['ID'], $arAvailableSectionsIds)) {
             unset($arResult['SECTIONS'][$key]);
         }
-    }
-
-    //CUSTOM
-    if ($bSpecSec['HITS']) {
-        $arResult['HITS'] = [
-            'UF_NAME' => 'ХИТЫ',
-            'UF_CODE' => 'hits',
-            'PROPS' => [
-                'TEXT_COLOR' => '#005dff'
-            ]
-        ];
     }
 
     if ($bSpecSec['SALES']) {
@@ -315,7 +296,6 @@ if (empty($aMenuLinksNew)) {
 
 //CUSTOM
     $arMenuLinkSales = [];
-    $arMenuLinkHits = [];
 
     if (!empty($arResult['SALES'])) {
         $arMenuLinkSales[] = array(
@@ -408,99 +388,6 @@ if (empty($aMenuLinksNew)) {
 
     if (!empty($arMenuLinkSales)) {
         $aMenuLinksNew = array_merge($arMenuLinkSales, $aMenuLinksNew);
-    }
-
-    if (!empty($arResult['HITS'])) {
-        $arMenuLinkHits[] = array(
-            $arResult['HITS']['UF_NAME'],
-            '/catalog/' . $arResult['HITS']['UF_CODE'] . '/',
-            array(
-                '/catalog/' . $arResult['HITS']['UF_CODE'] . '/'
-            ),
-            array(
-                'IS_PARENT' => true,
-                'FROM_IBLOCK' => true,
-                'DEPTH_LEVEL' => 1,
-                'PROPS' => $arResult['HITS']['PROPS']
-            ),
-            ''
-        );
-
-        $arHitsSections = [];
-
-        foreach ($arAvailableHitsItems as $item) {
-            $nav = CIBlockSection::GetNavChain(false, $item['IBLOCK_SECTION_ID']);
-
-            $iDepth = 1;
-            while ($arSection = $nav->Fetch()) {
-                $arHitsSections[$iDepth][$arSection['ID']] = $arSection;
-                $iDepth++;
-            }
-        }
-
-
-        krsort($arHitsSections[2]);
-        $arAvailable3rdLvlHitsSectionsIds = [];
-        // Фильтруем секции по массиву $arSectionsIds
-        foreach ($arHitsSections[4] as $key => $section) {
-            if (!in_array($key, $arAvailableHitsSectionsIds)) {
-                unset($arHitsSections[4][$key]);
-                continue;
-            }
-            $arAvailable3rdLvlHitsSectionsIds[$section['IBLOCK_SECTION_ID']] = $section['IBLOCK_SECTION_ID'];
-        }
-
-        foreach ($arHitsSections[3] as $key => $section) {
-            if (!in_array($key, $arAvailableHitsSectionsIds)) {
-                continue;
-            }
-            $arAvailable3rdLvlHitsSectionsIds[$section['ID']] = $section['ID'];
-        }
-
-        foreach ($arHitsSections[2] as $arHitsSection2) {
-            foreach ($arHitsSections[3] as $key => $arHitsSection3) {
-                if (!in_array($key, $arAvailable3rdLvlHitsSectionsIds)) {
-                    unset($arHitsSections[3][$key]);
-                    continue;
-                }
-                if ($arHitsSection3['IBLOCK_SECTION_ID'] == $arHitsSection2['ID']) {
-                    $sPath = '/catalog/' . $arResult['HITS']['UF_CODE'] .'/' . reset($arHitsSections[1])['CODE'] .  '/' . $arHitsSection2['CODE'] . '/' . $arHitsSection3['CODE'] . '/';
-                    $arMenuLinkHits[] = array(
-                        $arHitsSection3['NAME'],
-                        $sPath,
-                        array($sPath),
-                        array(
-                            'IS_PARENT' => true,
-                            'DEPTH_LEVEL' => 2,
-                            'FROM_IBLOCK' => true,
-                        ),
-                        ''
-                    );
-                    foreach ($arHitsSections[4] as $arHitsSection4) {
-                        if ($arHitsSection4['IBLOCK_SECTION_ID'] == $arHitsSection3['ID']) {
-                            $sPath = '/catalog/' . $arResult['HITS']['UF_CODE'] .'/' . reset($arHitsSections[1])['CODE'] .  '/' . $arHitsSection2['CODE'] . '/' . $arHitsSection3['CODE'] . '/' . $arHitsSection4['CODE'] . '/';
-                            $arMenuLinkHits[] = array(
-                                $arHitsSection4['NAME'],
-                                $sPath,
-                                array($sPath),
-                                array(
-                                    'FROM_IBLOCK' => true,
-                                    'DEPTH_LEVEL' => 3,
-                                ),
-                                ''
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        if (empty($arHitsSections[3])) {
-            unset($arMenuLinkHits);
-        }
-    }
-
-    if (!empty($arMenuLinkHits)) {
-        $aMenuLinksNew = array_merge($arMenuLinkHits, $aMenuLinksNew);
     }
 
 //END CUSTOM
