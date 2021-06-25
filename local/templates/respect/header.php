@@ -423,12 +423,13 @@ if (in_array($GLOBALS['device_type'], ['mobile', 'tablet']) && $bMainPage) {
     );
 }?>
 <?
-$bShowTitle = !CSite::InDir(SITE_DIR . 'index.php')
-    && !CSite::InDir(SITE_DIR . 'new/index.php')
-    && !CSite::InDir(SITE_DIR . 'shops/index.php')
-    && !(defined('HIDE_TITLE') && HIDE_TITLE === true);
+$bShowTitle = !CSite::InDir(SITE_DIR . 'index.php') && !(defined('HIDE_TITLE') && HIDE_TITLE === true);
 
-$bContentContainer = $bShowTitle && !CSite::InDir(SITE_DIR . 'personal/') && !CSite::InDir(SITE_DIR . 'refund/') && !CSite::InDir(SITE_DIR . 'actions/') && !CSite::InDir(SITE_DIR . 'shops/');
+$bContentContainer = $bShowTitle
+    && !CSite::InDir(SITE_DIR . 'personal/')
+    && !CSite::InDir(SITE_DIR . 'brands/')
+    && !CSite::InDir(SITE_DIR . 'refund/');
+
 ?>
 
 <? if ($bShowTitle) : ?>
@@ -449,9 +450,9 @@ $bContentContainer = $bShowTitle && !CSite::InDir(SITE_DIR . 'personal/') && !CS
 
     <? if ($bContentContainer) :
         ?>
-<div class="<?= !$bFranchise ? 'col-xs-12 after-st padding-o' : '' ?>" style="<?= !$bFranchise ? 'margin-top: -20px;' : '' ?>">
-    <div class="<?= !$bFranchise ? 'main' : '' ?>">
-        <div class="<?= !$bFranchise ? 'col-md-8 col-md-offset-2' : '' ?>">
+<div class="col-xs-12 after-st padding-o" style="margin-top: -20px;">
+    <div class="main">
+        <div class="col-md-8 col-md-offset-2">
     <? elseif ('N' != $APPLICATION->GetProperty('MAIN_WR', 'N')) : ?>
             <div class="col-xs-12 after-<?= $APPLICATION->GetProperty('MAIN_WR', ''); ?>">
                 <div class="main">

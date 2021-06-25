@@ -104,179 +104,76 @@ global $LOCATION;
             ],
             false
         );
-    }
-//    if (Functions::checkMobileDevice()) {
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "40",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob1",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_1",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 1',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "44",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob2",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_2",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 2',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "47",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob3",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_3",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 3',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "48",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob4",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_4",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 4',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "49",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob5",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_5",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 5',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "50",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob6",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_6",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 6',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "51",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob7",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_7",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 7',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "52",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob8",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_8",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 8',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "53",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob9",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_9",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 9',
-//            ),
-//            false
-//        );
-//        $APPLICATION->IncludeComponent(
-//            "likee:slider",
-//            "home-mob",
-//            array(
-//                "COMPONENT_TEMPLATE" => "home-mob",
-//                "IBLOCK_TYPE" => "CONTENT",
-//                "IBLOCK_ID" => "54",
-//                "COUNT" => "20",
-//                "CACHE_TYPE" => "A",
-//                "CACHE_TIME" => "604800",
-//                "CUSTOM_NUMBER" => "-mob10",
-//                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_10",
-//                "LOCATION" => $LOCATION->getName(),
-//                'BANNER_TYPE' => 'Мобильный слайдер 10',
-//            ),
-//            false
-//        );
-//    } ?>
+    } else {
+        $APPLICATION->IncludeComponent(
+            "likee:slider",
+            "home-mob",
+            array(
+                "COMPONENT_TEMPLATE" => "home-mob",
+                "IBLOCK_TYPE" => "CONTENT",
+                "IBLOCK_ID" => "28",
+                "COUNT" => "20",
+                "CACHE_TYPE" => "A",
+                "CACHE_TIME" => "604800",
+                "CUSTOM_NUMBER" => "-mob1",
+                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_1",
+                "LOCATION" => $LOCATION->getName(),
+                'BANNER_TYPE' => 'Мобильный слайдер 1',
+            ),
+            false
+        );
+        $APPLICATION->IncludeComponent(
+            "likee:slider",
+            "home-mob",
+            array(
+                "COMPONENT_TEMPLATE" => "home-mob",
+                "IBLOCK_TYPE" => "CONTENT",
+                "IBLOCK_ID" => "29",
+                "COUNT" => "20",
+                "CACHE_TYPE" => "A",
+                "CACHE_TIME" => "604800",
+                "CUSTOM_NUMBER" => "-mob2",
+                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_2",
+                "LOCATION" => $LOCATION->getName(),
+                'BANNER_TYPE' => 'Мобильный слайдер 2',
+            ),
+            false
+        );
+        $APPLICATION->IncludeComponent(
+            "likee:slider",
+            "home-mob",
+            array(
+                "COMPONENT_TEMPLATE" => "home-mob",
+                "IBLOCK_TYPE" => "CONTENT",
+                "IBLOCK_ID" => "30",
+                "COUNT" => "20",
+                "CACHE_TYPE" => "A",
+                "CACHE_TIME" => "604800",
+                "CUSTOM_NUMBER" => "-mob3",
+                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_3",
+                "LOCATION" => $LOCATION->getName(),
+                'BANNER_TYPE' => 'Мобильный слайдер 3',
+            ),
+            false
+        );
+        $APPLICATION->IncludeComponent(
+            "likee:slider",
+            "home-mob",
+            array(
+                "COMPONENT_TEMPLATE" => "home-mob",
+                "IBLOCK_TYPE" => "CONTENT",
+                "IBLOCK_ID" => "31",
+                "COUNT" => "20",
+                "CACHE_TYPE" => "A",
+                "CACHE_TIME" => "604800",
+                "CUSTOM_NUMBER" => "-mob4",
+                "AUTOPLAY_CODE" => "home_slider_mobile_autoplay_4",
+                "LOCATION" => $LOCATION->getName(),
+                'BANNER_TYPE' => 'Мобильный слайдер 4',
+            ),
+            false
+        );
+    } ?>
     <div class="clearfix"></div>
     <?php
     $APPLICATION->IncludeComponent(

@@ -1,0 +1,75 @@
+.in-vendor
+{
+    width: 24%;
+    overflow:hidden;
+    text-align: center;
+    margin-top: 15px;
+    padding: 30px;
+    display: inline-block;
+}
+.in-vendor:hover
+{
+    box-shadow: 2px 2px 15px rgba(0,0,0, .15);
+}
+.in-vendor img
+{
+    padding: 0!important;
+}
+.card__img-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 150px;
+}
+.text-in-vendor
+{
+    width: 100%;
+    font-family: 'firalight';
+    color: #4e4e4e;
+    font-size: 14px;
+    height: 50px;
+    padding: 15px 30px!important;
+}
+.text-in-vendor img
+{
+    margin-right: 6px;
+}
+.text-in-vendor h4
+{
+    font-family: 'firamedium';
+    font-size: 16px;
+}
+.text-in-vendor-title
+{
+    color: #4e4e4e;
+}
+
+@media(max-width: 991px)
+{
+    .in-vendor
+    {
+        width: 32%;
+    }
+}
+
+@media(max-width: 767px)
+{
+    .in-vendor
+    {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+.brand-wrap
+{
+    padding: 0!important;
+    text-align: justify;
+}

@@ -1,5 +1,6 @@
 <?php
 
+use Bitrix\Iblock\InheritedProperty\IblockValues;
 use Bitrix\Iblock\InheritedProperty\SectionValues;
 use Bitrix\Main\FileTable;
 use Qsoft\Helpers\ComponentHelper;
@@ -13,10 +14,6 @@ class RdevsBrands extends CBitrixComponent
     private $cacheManager;
     //инфоблок брендов
     private int $brandsIB;
-    //главная секция
-    private array $mainSection;
-    //уникальная витрина
-    private $uniqShowcaseId;
 
     public function onPrepareComponentParams($arParams): array
     {
@@ -26,15 +23,25 @@ class RdevsBrands extends CBitrixComponent
 
         $this->location = $LOCATION;
         $this->cacheManager = $CACHE_MANAGER;
-        $this->brandsIB = Functions::getEnvKey('IBLOCK_BRANDS');
-        $this->uniqShowcaseId = $this->location->getUserShowcase();
+        $this->brandsIB = IBLOCK_VENDORS;
 
         return $arParams;
     }
 
     public function executeComponent(): void
     {
+        $offers = $this->filterOffersByRests($this->getOffers());
+        $products = $this->getProducts(array_unique(array_column($offers, 'PROPERTY_CML2_LINK_VALUE')));
+
+        $brandsXmlIdsAvail = array_unique(array_column($products, 'PROPERTY_VENDOR_VALUE'));
+
         $brands = $this->loadBrandsFromIB();
+
+        foreach ($brands as $id => $brand) {
+            if (!in_array($brand['XML_ID'], $brandsXmlIdsAvail)) {
+                unset($brands[$id]);
+            }
+        }
 
         $this->getSEO();
 
@@ -46,46 +53,37 @@ class RdevsBrands extends CBitrixComponent
     private function loadBrandsFromIB()
     {
         $brandsCache = new CPHPCache();
-        $arRestBrands = array();
+        $arBrands = [];
 
-        if ($brandsCache->initCache(1200, 'brands|' . $this->uniqShowcaseId, 'brands')) {
-            $arRestBrands = $brandsCache->getVars()['array_brands'];
+        if ($brandsCache->initCache(360000, 'brands', 'brands')) {
+            $arBrands = $brandsCache->getVars()['array_brands'];
         } elseif ($brandsCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('brands');
             $this->cacheManager->RegisterTag('catalogAll');
 
-            $arAllOffers = $this->getOffers();
-            $arProducts = $this->getProducts($arAllOffers['PROD_IDS']);
             $arBrands = $this->getBrands();
-            $arRestBrands['MAIN_SECTION'] = $arBrands['MAIN_SECTION'];
-            $restOffers = $this->getRestsOfferIds($arAllOffers['OFFERS']);
 
-            foreach ($restOffers as $offerId) {
-                $brand = $arBrands['BRANDS'][$arBrands['XML'][$arProducts[$arAllOffers['OFFERS'][$offerId]['PROPERTY_CML2_LINK_VALUE']]['PROPERTY_BRAND_VALUE']]];
-
-                if (!empty($brand)) {
-                    $arRestBrands['BRANDS'][$brand['ID']] = $brand;
+            uasort($arBrands, function ($a, $b) {
+                if ($a['PREVIEW_PICTURE'] && !$b['PREVIEW_PICTURE']) {
+                    return -1;
+                } elseif ($b['PREVIEW_PICTURE'] && !$a['PREVIEW_PICTURE']) {
+                    return 1;
+                } else {
+                    return strnatcmp($a['NAME'], $b['NAME']);
                 }
-            }
-
-            uasort($arRestBrands['BRANDS'], function ($a, $b) {
-                return strnatcmp($a['NAME'], $b['NAME']);
             });
 
             $this->cacheManager->endTagCache();
-            $brandsCache->EndDataCache(['array_brands' => $arRestBrands]);
+            $brandsCache->EndDataCache(['array_brands' => $arBrands]);
         }
 
-        $this->mainSection = $arRestBrands['MAIN_SECTION'];
-
-        return $arRestBrands['BRANDS'];
+        return $arBrands;
     }
 
     private function getBrands(): array
     {
-
         $brandCache = new CPHPCache();
-        $arBrands = array();
+        $arBrands = [];
 
         if ($brandCache->InitCache($this->arParams['CACHE_TIME'], 'allBrands', 'brands')) {
             $arBrands = $brandCache->GetVars()['allBrands'];
@@ -93,10 +91,8 @@ class RdevsBrands extends CBitrixComponent
             $this->cacheManager->StartTagCache('brands');
             $this->cacheManager->RegisterTag('catalogAll');
 
-            $res = CIBlockSection::GetList(
-                [
-                    'NAME' => 'ASC',
-                ],
+            $res = CIBlockElement::GetList(
+                false,
                 [
                     "IBLOCK_ID" => $this->brandsIB,
                     'GLOBAL_ACTIVE' => 'Y',
@@ -104,50 +100,33 @@ class RdevsBrands extends CBitrixComponent
                     'IBLOCK_ACTIVE' => 'Y',
                 ],
                 false,
+                false,
                 [
                     "ID",
                     "NAME",
                     "CODE",
                     "SORT",
                     "DESCRIPTION",
-                    "PICTURE",
-                    "DETAIL_PICTURE",
-                    "SECTION_PAGE_URL",
-                    "UF_XML_BRANDS",
-                    'DEPTH_LEVEL',
+                    "PREVIEW_PICTURE",
+                    "XML_ID"
                 ]
             );
 
             while ($arBrand = $res->GetNext(true, false)) {
-                if ($arBrand['DEPTH_LEVEL'] == 1) {
-                    $arBrands['MAIN_SECTION'] = $arBrand;
-                } else {
-                    $arBrands['BRANDS'][$arBrand["ID"]] = $arBrand;
+                $arBrand['SECTION_PAGE_URL'] = '/brands/' . $arBrand['CODE'] . '/';
+                $arBrands[$arBrand["ID"]] = $arBrand;
 
-                    foreach ($arBrand['UF_XML_BRANDS'] as $xml) {
-                        $arBrands['XML'][$xml] = $arBrand["ID"];
-                    }
-
-                    if (!empty($arBrand["PICTURE"])) {
-                        $arImageIds[] = $arBrand["PICTURE"];
-                    }
-
-                    if (!empty($arBrand["DETAIL_PICTURE"])) {
-                        $arImageIds[] = $arBrand["DETAIL_PICTURE"];
-                    }
+                if (!empty($arBrand["PREVIEW_PICTURE"])) {
+                    $arImageIds[] = $arBrand["PREVIEW_PICTURE"];
                 }
             }
 
             if (!empty($arImageIds)) {
                 $arImages = $this->getImages($arImageIds);
 
-                foreach ($arBrands['BRANDS'] as $id => &$arBrand) {
-                    if (!empty($arImages[$arBrand['PICTURE']])) {
-                        $arBrand['PICTURE'] = $arImages[$arBrand['PICTURE']];
-                    }
-
-                    if (!empty($arImages[$arBrand['DETAIL_PICTURE']])) {
-                        $arBrand['DETAIL_PICTURE'] = $arImages[$arBrand['DETAIL_PICTURE']];
+                foreach ($arBrands as $id => &$arBrand) {
+                    if (!empty($arImages[$arBrand['PREVIEW_PICTURE']])) {
+                        $arBrand['PREVIEW_PICTURE'] = $arImages[$arBrand['PREVIEW_PICTURE']];
                     }
                 }
             }
@@ -161,21 +140,21 @@ class RdevsBrands extends CBitrixComponent
 
     private function getImages($arImageIds): array
     {
-        $res = FileTable::getList(array(
-            "select" => array(
+        $res = FileTable::getList([
+            "select" => [
                 "ID",
                 "SUBDIR",
                 "FILE_NAME",
                 "WIDTH",
                 "HEIGHT",
                 "CONTENT_TYPE",
-            ),
-            "filter" => array(
+            ],
+            "filter" => [
                 "ID" => $arImageIds,
-            ),
-        ));
+            ],
+        ]);
 
-        $arImages = array();
+        $arImages = [];
 
         while ($arImage = $res->Fetch()) {
             $src = "/upload/" . $arImage["SUBDIR"] . "/" . $arImage["FILE_NAME"];
@@ -194,13 +173,12 @@ class RdevsBrands extends CBitrixComponent
     {
         global $APPLICATION;
 
-        $mainSection = $this->mainSection;
-        $cache = new CPHPCache();
+        $cache = new CPHPCache;
 
         if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), 'seo')) {
             $seo = $cache->GetVars()['seo'];
         } elseif ($cache->StartDataCache()) {
-            $ipropValues = new SectionValues($this->brandsIB, $mainSection['ID']);
+            $ipropValues = new IblockValues($this->brandsIB);
             $seo = $ipropValues->getValues();
 
             if (!empty($seo)) {
@@ -209,8 +187,6 @@ class RdevsBrands extends CBitrixComponent
                 $cache->AbortDataCache();
             }
         }
-
-        $seo['DESCRIPTION'] = $this->mainSection['DESCRIPTION'];
 
         if (!empty($seo['SECTION_META_TITLE'])) {
             $APPLICATION->SetPageProperty('title', $seo['SECTION_META_TITLE']);
@@ -224,11 +200,6 @@ class RdevsBrands extends CBitrixComponent
             $APPLICATION->SetPageProperty("description", $seo['SECTION_META_DESCRIPTION']);
         }
 
-        if (!empty($seo['DESCRIPTION'])) {
-            $sDescription = '<div class="catalog-section-description">' . $seo['DESCRIPTION'] . '</div>';
-            $APPLICATION->AddViewContent('under_instagram', $sDescription);
-        }
-
         if (!empty($seo['SECTION_PAGE_TITLE'])) {
             $this->arResult['TITLE'] = $seo['SECTION_PAGE_TITLE'];
         }
@@ -236,8 +207,8 @@ class RdevsBrands extends CBitrixComponent
 
     private function getOffers(): array
     {
-        $offerCache = new CPHPCache();
-        $arOffers = array();
+        $offerCache = new CPHPCache;
+        $arOffers = [];
 
         if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'allOffers', 'offers')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
@@ -248,6 +219,7 @@ class RdevsBrands extends CBitrixComponent
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_OFFERS,
                 "ACTIVE" => "Y",
+                "!PROPERTY_CML2_LINK" => false,
             ];
 
             $arSelect = [
@@ -265,8 +237,7 @@ class RdevsBrands extends CBitrixComponent
             );
 
             while ($offer = $resOffers->Fetch()) {
-                $arOffers['OFFERS'][$offer['ID']] = $offer;
-                $arOffers['PROD_IDS'][$offer['PROPERTY_CML2_LINK_VALUE']] = $offer['PROPERTY_CML2_LINK_VALUE'];
+                $arOffers[$offer['ID']] = $offer;
             }
 
             $this->cacheManager->endTagCache();
@@ -276,15 +247,23 @@ class RdevsBrands extends CBitrixComponent
         return $arOffers;
     }
 
-    private function getRestsOfferIds(array $arAllOffers): array
+    private function filterOffersByRests($offers)
     {
-        return array_keys($this->location->getRests(array_keys($arAllOffers)));
+        $rests = Functions::getRests(array_keys($offers));
+
+        foreach ($offers as $id => $offer) {
+            if (!isset($rests[$id]) || !$rests[$id]) {
+                unset($offers[$id]);
+            }
+        }
+
+        return $offers;
     }
 
     private function getProducts(array $arProdIds): array
     {
-        $productsCache = new CPHPCache();
-        $arProducts = array();
+        $productsCache = new CPHPCache;
+        $arProducts = [];
 
         if ($productsCache->InitCache($this->arParams['CACHE_TIME'], 'products', 'products')) {
             $arProducts = $productsCache->GetVars()['products'];
@@ -302,7 +281,7 @@ class RdevsBrands extends CBitrixComponent
                 "ID",
                 "IBLOCK_ID",
                 "NAME",
-                "PROPERTY_BRAND",
+                "PROPERTY_VENDOR",
             ];
 
             $resProducts = CIBlockElement::GetList(

@@ -1046,10 +1046,6 @@ div.product-preorder-success a.button--orange:hover {
         margin-bottom: 10px;
     }
 }
-.metro_width{
-    max-width: 1290px;
-    margin: 0 auto
-}
 .buttonFastBuy-loader{
     background-color: #ff5e5e;
     display:none;
