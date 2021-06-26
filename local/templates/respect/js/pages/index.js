@@ -45,36 +45,6 @@
         dots: true,
         mobileFirst: true
       });
-      $('#main-slider-mob5').slick({
-        arrows: false,
-        dots: true,
-        mobileFirst: true
-      });
-      $('#main-slider-mob6').slick({
-        arrows: false,
-        dots: true,
-        mobileFirst: true
-      });
-      $('#main-slider-mob7').slick({
-        arrows: false,
-        dots: true,
-        mobileFirst: true
-      });
-      $('#main-slider-mob8').slick({
-        arrows: false,
-        dots: true,
-        mobileFirst: true
-      });
-      $('#main-slider-mob9').slick({
-        arrows: false,
-        dots: true,
-        mobileFirst: true
-      });
-      $('#main-slider-mob10').slick({
-        arrows: false,
-        dots: true,
-        mobileFirst: true
-      });
       $('#products-slider').slick({
         arrows: false,
         dots: true,

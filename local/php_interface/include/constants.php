@@ -29,3 +29,7 @@ define('DADATA_MAX_REQUESTS', 10000); // Максимальное количес
 
 // Телефон поддержки
 define('SUPPORT_PHONE', '+7(999)999-99-99'); // Путь к файлу с политикой конфиденциальности
+
+// Размеры картинок в каталоге (большая и маленькая)
+define('CATALOG_SMALL_IMG_HEIGHT', 300);
+define('CATALOG_BIG_IMG_HEIGHT', 600);

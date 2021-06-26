@@ -197,5 +197,12 @@ global $LOCATION;
         ]
     );
     ?>
+    <?php
+    $APPLICATION->IncludeComponent(
+        'orgasmcity:recommended',
+        'home',
+        []
+    );
+    ?>
 </div>
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

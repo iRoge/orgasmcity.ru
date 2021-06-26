@@ -630,4 +630,61 @@ class Functions
 
         return $rests;
     }
+
+    public static function getAllOffers(): array
+    {
+        global $CACHE_MANAGER;
+        $offerCache = new CPHPCache;
+        $arOffers = [];
+
+        if ($offerCache->InitCache(360000, 'allOffers', 'offers')) {
+            $arOffers = $offerCache->GetVars()['allOffers'];
+        } elseif ($offerCache->StartDataCache()) {
+            $CACHE_MANAGER->StartTagCache('offers');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
+
+            $arFilter = [
+                "IBLOCK_ID" => IBLOCK_OFFERS,
+                "ACTIVE" => "Y",
+                "!PROPERTY_CML2_LINK" => false,
+            ];
+
+            $arSelect = [
+                "ID",
+                "IBLOCK_ID",
+                "PROPERTY_CML2_LINK",
+            ];
+
+            $resOffers = CIBlockElement::GetList(
+                ["SORT" => "ASC"],
+                $arFilter,
+                false,
+                false,
+                $arSelect,
+            );
+
+            while ($offer = $resOffers->Fetch()) {
+                $arOffers[$offer['ID']] = $offer;
+            }
+
+            $CACHE_MANAGER
+                ->endTagCache();
+            $offerCache->EndDataCache(['allOffers' => $arOffers]);
+        }
+
+        return $arOffers;
+    }
+
+    public static function filterOffersByRests($offers)
+    {
+        $rests = Functions::getRests(array_keys($offers));
+
+        foreach ($offers as $id => $offer) {
+            if (!isset($rests[$id]) || !$rests[$id]) {
+                unset($offers[$id]);
+            }
+        }
+
+        return $offers;
+    }
 }

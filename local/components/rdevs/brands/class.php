@@ -30,7 +30,7 @@ class RdevsBrands extends CBitrixComponent
 
     public function executeComponent(): void
     {
-        $offers = $this->filterOffersByRests($this->getOffers());
+        $offers = Functions::filterOffersByRests(Functions::getAllOffers());
         $products = $this->getProducts(array_unique(array_column($offers, 'PROPERTY_CML2_LINK_VALUE')));
 
         $brandsXmlIdsAvail = array_unique(array_column($products, 'PROPERTY_VENDOR_VALUE'));
@@ -205,67 +205,12 @@ class RdevsBrands extends CBitrixComponent
         }
     }
 
-    private function getOffers(): array
-    {
-        $offerCache = new CPHPCache;
-        $arOffers = [];
-
-        if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'allOffers', 'offers')) {
-            $arOffers = $offerCache->GetVars()['allOffers'];
-        } elseif ($offerCache->StartDataCache()) {
-            $this->cacheManager->StartTagCache('offers');
-            $this->cacheManager->RegisterTag('catalogAll');
-
-            $arFilter = [
-                "IBLOCK_ID" => IBLOCK_OFFERS,
-                "ACTIVE" => "Y",
-                "!PROPERTY_CML2_LINK" => false,
-            ];
-
-            $arSelect = [
-                "ID",
-                "IBLOCK_ID",
-                "PROPERTY_CML2_LINK",
-            ];
-
-            $resOffers = CIBlockElement::GetList(
-                ["SORT" => "ASC"],
-                $arFilter,
-                false,
-                false,
-                $arSelect,
-            );
-
-            while ($offer = $resOffers->Fetch()) {
-                $arOffers[$offer['ID']] = $offer;
-            }
-
-            $this->cacheManager->endTagCache();
-            $offerCache->EndDataCache(['allOffers' => $arOffers]);
-        }
-
-        return $arOffers;
-    }
-
-    private function filterOffersByRests($offers)
-    {
-        $rests = Functions::getRests(array_keys($offers));
-
-        foreach ($offers as $id => $offer) {
-            if (!isset($rests[$id]) || !$rests[$id]) {
-                unset($offers[$id]);
-            }
-        }
-
-        return $offers;
-    }
-
     private function getProducts(array $arProdIds): array
     {
         $productsCache = new CPHPCache;
         $arProducts = [];
 
-        if ($productsCache->InitCache($this->arParams['CACHE_TIME'], 'products', 'products')) {
+        if ($productsCache->InitCache($this->arParams['CACHE_TIME'], 'brand_products')) {
             $arProducts = $productsCache->GetVars()['products'];
         } elseif ($productsCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('products');

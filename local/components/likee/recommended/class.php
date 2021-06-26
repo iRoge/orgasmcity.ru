@@ -13,17 +13,17 @@ class LikeeRecommendedComponent extends CCatalogRecommendedProductsComponent
     protected function getRecommendedIds($productId, $propertyName)
     {
         if (!$productId)
-            return array();
+            return [];
 
         $elementIterator = CIBlockElement::getList(
-            array(),
-            array('ID' => $productId),
+            [],
+            ['ID' => $productId],
             false,
             false,
-            array('ID', 'IBLOCK_ID', 'IBLOCK_SECTION_ID')
+            ['ID', 'IBLOCK_ID', 'IBLOCK_SECTION_ID']
         );
 
-        $linked = array();
+        $linked = [];
         $element = $elementIterator->getNextElement();
 
         if (!$element)
@@ -46,14 +46,14 @@ class LikeeRecommendedComponent extends CCatalogRecommendedProductsComponent
         }
 
         $productIterator = CIBlockElement::getList(
-            array('RAND' => 'ASC'),
+            ['RAND' => 'ASC'],
             $arFilter,
             false,
-            array('nTopCount' => $this->arParams['PAGE_ELEMENT_COUNT']),
-            array('ID')
+            ['nTopCount' => $this->arParams['PAGE_ELEMENT_COUNT']],
+            ['ID']
         );
 
-        $ids = array();
+        $ids = [];
         while ($item = $productIterator->fetch())
             $ids[] = $item['ID'];
 

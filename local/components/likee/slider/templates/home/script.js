@@ -45,15 +45,6 @@
                     slideImg.attr('src', mobImg);
                 }
             }
-
-        });
-
-        $('a.slides-item[data-title]').on('click', function () {
-            var slideTitle = $(this).attr('data-title');
-
-            if ('undefined' != typeof window.yaCounter18950356) {
-                yaCounter18950356.reachGoal('main_banner', {title: slideTitle});
-            }
         });
     });
 

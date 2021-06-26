@@ -301,6 +301,15 @@ if (CModule::IncludeModule("catalog"))
 
 // Чистим кэш и отправляем запрос на каждую страницу каталога для автогенерации кеша
 $CACHE_MANAGER->ClearByTag("catalogAll");
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, DOMEN_NAME);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+
+$output = curl_exec($ch);
+curl_close($ch);
 $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
 $res = CIBlockSection::GetList(
     [

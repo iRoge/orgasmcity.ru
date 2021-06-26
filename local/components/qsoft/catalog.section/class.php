@@ -161,8 +161,6 @@ class QsoftCatalogSection extends ComponentHelper
     private $isBrandTagCode = null;
     private $resultItems;
 
-    private $smallImgHeight = 300;
-    private $bigImgHeight = 600;
 
     private $filtersScopes = [
         'MAX_PRICE' => 0,
@@ -610,12 +608,12 @@ class QsoftCatalogSection extends ComponentHelper
                 $image = new \Bitrix\Main\File\Image($_SERVER["DOCUMENT_ROOT"] . $src);
                 $k = $image->getExifData()['COMPUTED']['Width'] / $image->getExifData()['COMPUTED']['Height'];
                 $smallSizes = [
-                    'width' => $k < 1 ? $k * $this->smallImgHeight : $this->smallImgHeight,
-                    'height' => $this->smallImgHeight,
+                    'width' => $k < 1 ? $k * CATALOG_SMALL_IMG_HEIGHT : CATALOG_SMALL_IMG_HEIGHT,
+                    'height' => CATALOG_SMALL_IMG_HEIGHT,
                 ];
                 $bigSizes = [
-                    'width' => $k < 1 ? $k * $this->bigImgHeight : $this->bigImgHeight,
-                    'height' => $this->bigImgHeight,
+                    'width' => $k < 1 ? $k * CATALOG_BIG_IMG_HEIGHT : CATALOG_BIG_IMG_HEIGHT,
+                    'height' => CATALOG_BIG_IMG_HEIGHT,
                 ];
                 $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes);
                 $resizeSrcBig = Functions::ResizeImageGet($arItem, $bigSizes);
