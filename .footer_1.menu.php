@@ -24,13 +24,6 @@ $aMenuLinks = array(
         ''
     ),
     array(
-        'Акции',
-        '/events/actions/',
-        array(),
-        array("itemclass" => "forcart"),
-        ''
-    ),
-    array(
         'Вопрос-ответ',
         '/faq/',
         array(),

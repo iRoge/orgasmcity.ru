@@ -14,13 +14,13 @@ $aMenuLinks = Array(
         Array(),
         ""
     ),
-    Array(
-        "Новости",
-        "/events/news/",
-        Array(),
-        Array("itemclass"=>"hideincart"),
-        ""
-    ),
+//    Array(
+//        "Новости",
+//        "/events/news/",
+//        Array(),
+//        Array("itemclass"=>"hideincart"),
+//        ""
+//    ),
     Array(
         "Контакты",
         "/company_contacts/",
