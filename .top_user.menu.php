@@ -26,13 +26,13 @@ $aMenuLinks = array(
         array(),
         '$USER->IsAuthorized()'
     ),
-    array(
-        'Управление рассылкой',
-        '/personal/subscribe/',
-        array(),
-        array(),
-        '$USER->IsAuthorized()'
-    ),
+//    array(
+//        'Управление рассылкой',
+//        '/personal/subscribe/',
+//        array(),
+//        array(),
+//        '$USER->IsAuthorized()'
+//    ),
     array(
         'Выйти',
         $APPLICATION->GetCurPageParam('logout=yes', 'logout'),

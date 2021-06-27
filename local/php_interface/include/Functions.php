@@ -653,6 +653,8 @@ class Functions
                 "ID",
                 "IBLOCK_ID",
                 "PROPERTY_CML2_LINK",
+                "PROPERTY_SIZE",
+                "PROPERTY_COLOR",
             ];
 
             $resOffers = CIBlockElement::GetList(

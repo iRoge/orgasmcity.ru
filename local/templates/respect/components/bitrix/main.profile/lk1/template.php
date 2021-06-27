@@ -65,7 +65,7 @@ global $LOCATION;
                 <input style="width:96.5%;" id="house" type="text" name="UF_HOUSE" value="<? echo $arResult["arUser"]["UF_HOUSE"] ?>" placeholder="Дом, корпус, строение"/>
             </div>
             <div  style="position: relative;float: left;width: 48%;">
-                <input <?=$arResult['DADATA_STATUS'] && COption::GetOptionInt("likee", "dadata_active") ? 'readonly ' : ''?>id="postal_code" style="width:102%;" type="number" name="UF_POSTALCODE" value="<?= $arResult["arUser"]["UF_POSTALCODE"] ?>" placeholder="<?=$arResult['DADATA_STATUS'] && COption::GetOptionInt("likee", "dadata_active") ? 'Индекс, заполняется автоматически' : 'Индекс (не обязательно)'?>">
+                <input <?=$arResult['DADATA_STATUS'] ? 'readonly ' : ''?>id="postal_code" style="width:102%;" type="number" name="UF_POSTALCODE" value="<?= $arResult["arUser"]["UF_POSTALCODE"] ?>" placeholder="<?=$arResult['DADATA_STATUS'] && COption::GetOptionInt("likee", "dadata_active") ? 'Индекс, заполняется автоматически' : 'Индекс (не обязательно)'?>">
             </div>
             <input type="number" name="UF_APARTMENT" value="<? echo $arResult["arUser"]["UF_APARTMENT"] ?>" placeholder="Кв/офис" style="width:49%;"/>
             <input type="number" name="UF_ENTRANCE" value="<? echo $arResult["arUser"]["UF_ENTRANCE"] ?>" placeholder="Подъезд" style="width:49%;"/>
@@ -113,9 +113,9 @@ global $LOCATION;
         <input class="col-xs-12 form-in-after-lk-sub" type="submit" name="save" value="Сохранить информацию"/>
     </div>
 </form>
-<? if ($arResult['DADATA_STATUS'] && COption::GetOptionInt("likee", "dadata_active")) : ?>
+<? if ($arResult['DADATA_STATUS']) : ?>
 <script>
-    var token = "<?=COption::GetOptionString('likee', 'dadata_token', '')?>";
+    var token = "<?=DADATA_TOKEN?>";
 
     var type = "ADDRESS";
     var $street = $("#street");

@@ -1,6 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
 
+$id = (int)$_POST['id'];
 $email = mb_strtolower($_POST['email']);
 $phone = $_POST['personal_phone'];
 $word = $_POST['captcha_word'];
@@ -11,12 +12,19 @@ $arrayAnswer = [
     'captcha' => 1
 ];
 
+$user = $DB->Query("SELECT ID, NAME, EMAIL, PERSONAL_PHONE FROM b_user WHERE ID = '" . $DB->ForSQL($id) . "'")->Fetch();
+$arrayAnswer['userName'] = $user["NAME"];
+$arrayAnswer['userEmail'] = $user["EMAIL"];
+$arrayAnswer['userPhone'] = $user["PERSONAL_PHONE"];
+
 if (strlen($email) <= 0) {
     $arrayAnswer['email'] = "noRemoveClass";
 } else {
-    $resultEmail = $DB->Query("SELECT EMAIL FROM b_user WHERE EMAIL = '" . $DB->ForSQL($email) . "'");
+    $resultEmail = $DB->Query("SELECT ID, EMAIL FROM b_user WHERE EMAIL = '" . $DB->ForSQL($email) . "'");
 
     if (!$array = $resultEmail->Fetch()) {
+        $arrayAnswer['email'] = 0;
+    } elseif (!empty($id) && $array['ID'] == $id){
         $arrayAnswer['email'] = 0;
     }
 }
@@ -24,9 +32,11 @@ if (strlen($email) <= 0) {
 if (strlen($phone) <= 0) {
     $arrayAnswer['phone'] = "noRemoveClass";
 } else {
-    $resultPhone = $DB->Query("SELECT PERSONAL_PHONE FROM b_user WHERE PERSONAL_PHONE = '" . $DB->ForSQL($phone) . "'");
+    $resultPhone = $DB->Query("SELECT ID, PERSONAL_PHONE FROM b_user WHERE PERSONAL_PHONE = '" . $DB->ForSQL($phone) . "'");
 
     if (!$array = $resultPhone->Fetch()) {
+        $arrayAnswer['phone'] = 0;
+    } elseif (!empty($id) && $array['ID'] == $id) {
         $arrayAnswer['phone'] = 0;
     }
 }

@@ -64,49 +64,54 @@
                     <div style="clear: both"></div>
                 </div>
                 <div class="col-md-6 col-sm-4 right-footer-div">
-                    <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
+                    <div class="col-md-6 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
                         <div class="col-sm-12 col-xs-6 num2">
-                            <h3><a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></h3>
-                            <p>Интернет-магазин</p>
+                            <p>Обратная связь<a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></p>
+                            <p><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></p>
+                            <p>г. Москва ул. Автозаводская д.16 к.2 стр.8</p>
+                            <p>Секс-шоп</p>
                         </div>
-                        <div class="col-xs-12 social">
-                            <? $APPLICATION->IncludeComponent(
-                                "likee:social",
-                                "footer",
-                                array(
-                                    "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
-                                    "INSTAGRAM_LINK" => "https://www.instagram.com/respectshoes/",
-                                    "VK_LINK" => "https://vk.com/respectshoess",
-                                    "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
-                                    "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
-                                    "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
-                                    "COMPONENT_TEMPLATE" => "footer",
-                                ),
-                                false
-                            ); ?>
-                        </div>
+<!--                        <div class="col-xs-12 social">-->
+<!--                            --><?// $APPLICATION->IncludeComponent(
+//                                "likee:social",
+//                                "footer",
+//                                array(
+//                                    "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
+//                                    "INSTAGRAM_LINK" => "https://www.instagram.com/respectshoes/",
+//                                    "VK_LINK" => "https://vk.com/respectshoess",
+//                                    "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
+//                                    "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
+//                                    "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
+//                                    "COMPONENT_TEMPLATE" => "footer",
+//                                ),
+//                                false
+//                            ); ?>
+<!--                        </div>-->
                     </div>
-                    <div class="col-md-7 hidden-xs mailsender">
-                        <h4>Подпишитесь на рассылку</h4>
-                        <? $APPLICATION->IncludeComponent(
-                            'qsoft:subscribe',
-                            'footer',
-                            array(),
-                            false
-                        ); ?>
+                    <div class="col-md-6 col-sm-3 col-md-offset-0 col-sm-offset-3 num2">
+                        <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.png" class="logo header__logotype"/></a>
                     </div>
+<!--                    <div class="col-md-7 hidden-xs mailsender">-->
+<!--                        <h4>Подпишитесь на рассылку</h4>-->
+<!--                        --><?// $APPLICATION->IncludeComponent(
+//                            'qsoft:subscribe',
+//                            'footer',
+//                            array(),
+//                            false
+//                        ); ?>
+<!--                    </div>-->
                 </div>
             </div>
         </div>
-        <div class="col-sm-7 hidden-sm mailsender">
-            <h4>Подпишитесь на рассылку</h4>
-            <? $APPLICATION->IncludeComponent(
-                'qsoft:subscribe',
-                'footerm',
-                array(),
-                false
-            ); ?>
-        </div>
+<!--        <div class="col-sm-7 hidden-sm mailsender">-->
+<!--            <h4>Подпишитесь на рассылку</h4>-->
+<!--            --><?// $APPLICATION->IncludeComponent(
+//                'qsoft:subscribe',
+//                'footerm',
+//                array(),
+//                false
+//            ); ?>
+<!--        </div>-->
         <div class="col-sm-12 bottom-mob">
             <p class="copy-shop-mob">
                 <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.

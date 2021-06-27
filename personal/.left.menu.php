@@ -14,13 +14,6 @@ $aMenuLinks = array(
         array(),
         ''
     ),
-    /*array(
-        'ИЗБРАННОЕ',
-        '/catalog/favorites/',
-        array(),
-        array(),
-        ''
-    ),*/
     array(
         'ЛИЧНЫЕ ДАННЫЕ',
         '/personal/',
@@ -28,11 +21,11 @@ $aMenuLinks = array(
         array(),
         ''
     ),
-    array(
-        'УПРАВЛЕНИЕ РАССЫЛКОЙ',
-        '/personal/subscribe/',
-        array(),
-        array(),
-        ''
-    )
+//    array(
+//        'УПРАВЛЕНИЕ РАССЫЛКОЙ',
+//        '/personal/subscribe/',
+//        array(),
+//        array(),
+//        ''
+//    )
 );

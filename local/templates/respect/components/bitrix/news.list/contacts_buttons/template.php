@@ -4,7 +4,6 @@ use Bitrix\Main\Localization\Loc;
 
 $waPhone = COption::GetOptionString('respect', 'whatsapp_phone');
 $waProlog = COption::GetOptionString('respect', 'whatsapp_text');
-
 ?>
 <script>
     //TODO вероятно надо будет удалить или заменить и вызов ниже по коду

@@ -67,8 +67,13 @@ if (!$USER->IsAuthorized()) {
                 <? foreach ($arOrder['BASKET_ITEMS'] as $arProduct) : ?>
                 <a href="/<?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['CODE'] ?>/">
                     <div class="in-one-zkz">
-                        <p class="date-bns"><img src="<?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['PREVIEW_PICTURE'] ?>"
-                                                 alt="<?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['NAME'] ?>"></p>
+                        <div class="date-bns image-box">
+                            <img
+                                    class="image"
+                                    src="<?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['PREVIEW_PICTURE'] ?>"
+                                    alt="<?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['NAME'] ?>"
+                            >
+                        </div>
                         <p class="num-bns"><?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['ARTICLE'] ?: '-'; ?></p>
                         <p class="zach-bns"><?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['NAME'] ?></p>
                         <p class="spis-bns"><?= $arResult['PRODUCTS'][$arProduct['PRODUCT_ID']]['PROPERTY_SIZE_VALUE'] ?

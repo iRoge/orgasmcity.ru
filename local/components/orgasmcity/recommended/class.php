@@ -51,8 +51,12 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             }
         }
 
-        $arItems = array_slice($arItems, 0, 20);
-        return $arItems;
+        $randKeys = array_rand($arItems, 20);
+        $arRandItems = [];
+        foreach ($randKeys as $key) {
+            $arRandItems[] = $arItems[$key];
+        }
+        return $arRandItems;
     }
 
     private function getOffersByProductIds($productIds): array

@@ -1,5 +1,3 @@
-<?
+<?php
 $sSectionName = "О компании";
-$arDirProperties = array(
-);
-?>
+$arDirProperties = [];

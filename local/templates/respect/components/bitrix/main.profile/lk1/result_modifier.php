@@ -2,7 +2,7 @@
     die();
 }
 
-if (substr($arResult["arUser"]["EMAIL"], -10) == '@rshoes.ru') {
+if (substr($arResult["arUser"]["EMAIL"], -14) == '@orgasmcity.ru') {
     unset($arResult["arUser"]["EMAIL"], $arResult["arUser"]["~EMAIL"]);
 }
 

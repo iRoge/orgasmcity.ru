@@ -3536,7 +3536,7 @@ a.in-zagolovok
 .after-lk-in label, .lk-menu__item
 {
   padding: 0px 0px;
-  margin-top: 40px;
+  margin-top: 10px;
   line-height: 28px;
   cursor: pointer;
   position: relative;

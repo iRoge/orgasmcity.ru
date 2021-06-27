@@ -3,6 +3,13 @@
 
 $aMenuLinks = array(
     array(
+        'Гарантия анонимности',
+        '/company_anonymity/',
+        array(),
+        array(),
+        ''
+    ),
+    array(
         'Доставка',
         '/company_delivery/',
         array(),
@@ -23,13 +30,13 @@ $aMenuLinks = array(
         array(),
         ''
     ),
-    array(
-        'Вопрос-ответ',
-        '/faq/',
-        array(),
-        array("itemclass" => "hideincart"),
-        ''
-    ),
+//    array(
+//        'Вопрос-ответ',
+//        '/faq/',
+//        array(),
+//        array("itemclass" => "hideincart"),
+//        ''
+//    ),
     array(
         'Бонусная программа',
         '/company_bonus/',

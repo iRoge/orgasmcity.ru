@@ -33,7 +33,7 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
      * @var string[] Array of fatal errors.
      */
 
-    protected $errorsFatal = array();
+    protected $errorsFatal = [];
     /**
      * Non-fatal error list. Some non-fatal errors may occur during component execution, so certain functions of the component
      * may became defunct. Still, user should stay informed.
@@ -41,21 +41,21 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
      *
      * @var string[] Array of non-fatal errors.
      */
-    protected $errorsNonFatal = array();
+    protected $errorsNonFatal = [];
 
     /**
      * Contains some valuable info from $_REQUEST
      *
      * @var object request info
      */
-    protected $requestData = array();
+    protected $requestData = [];
 
     /**
      * Gathered options that are required
      *
      * @var string[] options
      */
-    protected $options = array();
+    protected $options = [];
 
     protected $useIblock = true;
 
@@ -71,7 +71,7 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
      *
      * @var mixed[] filter
      */
-    protected $filter = array();
+    protected $filter = [];
 
     /**
      * Sort field for query
@@ -87,10 +87,10 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
      */
     protected $sortOrder = false;
 
-    protected $dbResult = array();
+    protected $dbResult = [];
 
-    private array $products;
-    private $dbQueryResult = array();
+    private $products = [];
+    private $dbQueryResult = [];
 
     /**@var Data\Cache $this ->currentCache */
     protected $currentCache = null;
@@ -584,7 +584,7 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
 
             $oldBasket = $oldOrder->getBasket();
             $oldBasketItems = $oldBasket->getBasketItems();
-            $oldPropertiesArray = array();
+            $oldPropertiesArray = [];
 
             /** @var Sale\BasketItem $oldBasketItem */
             foreach ($oldBasketItems as $oldBasketItem) {
@@ -659,7 +659,11 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
                 $listStatusNames = Sale\OrderStatus::getAllStatusesNames();
 
                 foreach ($listStatusNames as $key => $data) {
-                    $cachedData['STATUS'][$key] = array('ID' => $key, 'NAME' => $data);
+                    if ($key == 'ZS') {
+                        $cachedData['STATUS'][$key] = array('ID' => $key, 'NAME' => 'Подтвержден');
+                    } else {
+                        $cachedData['STATUS'][$key] = array('ID' => $key, 'NAME' => $data);
+                    }
                 }
 
                 $cachedData['PAYSYS'] = array();
@@ -875,6 +879,10 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
         while ($arOrder = $this->dbQueryResult['ORDERS']->GetNext()) {
             $listOrders[$arOrder["ID"]] = $arOrder;
             $orderIdList[] = $arOrder["ID"];
+        }
+
+        if (empty($orderIdList)) {
+            return;
         }
 
         $listBaskets = Sale\Basket::getList(array(
@@ -1301,7 +1309,7 @@ class CBitrixPersonalOrderListComponent extends CBitrixComponent
             $arSelect
         );
 
-        $arOffersNew = array();
+        $arOffersNew = [];
 
         while ($arItem = $res->Fetch()) {
             $arOffersNew[$arItem["ID"]] = $arItem;
