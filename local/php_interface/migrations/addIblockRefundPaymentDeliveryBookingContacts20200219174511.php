@@ -447,30 +447,6 @@ class addIblockRefundPaymentDeliveryBookingContacts20200219174511 extends Versio
                 ));
             }
 
-            $helper->Iblock()->saveProperty($iblockId, array(
-                'NAME' => 'Местоположение',
-                'ACTIVE' => 'Y',
-                'SORT' => '500',
-                'CODE' => 'LOCATION',
-                'DEFAULT_VALUE' => '',
-                'PROPERTY_TYPE' => 'S',
-                'ROW_COUNT' => '1',
-                'COL_COUNT' => '30',
-                'LIST_TYPE' => 'L',
-                'MULTIPLE' => 'N',
-                'XML_ID' => '',
-                'FILE_TYPE' => '',
-                'MULTIPLE_CNT' => '5',
-                'LINK_IBLOCK_ID' => '0',
-                'WITH_DESCRIPTION' => 'N',
-                'SEARCHABLE' => 'N',
-                'FILTRABLE' => 'N',
-                'IS_REQUIRED' => 'Y',
-                'VERSION' => '2',
-                'USER_TYPE' => 'ALL_REGION_CODE',
-                'USER_TYPE_SETTINGS' => null,
-                'HINT' => '',
-            ));
             $helper->UserOptions()->saveElementForm($iblockId, array(
                 'Элемент' =>
                     array(
@@ -482,7 +458,6 @@ class addIblockRefundPaymentDeliveryBookingContacts20200219174511 extends Versio
                         'CODE' => 'Символьный код',
                         'XML_ID' => 'Внешний код',
                         'IBLOCK_ELEMENT_PROP_VALUE' => 'Значения свойств',
-                        'PROPERTY_LOCATION' => 'Местоположение',
                     ),
                 'Анонс' =>
                     array(

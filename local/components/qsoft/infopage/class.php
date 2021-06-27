@@ -8,10 +8,6 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 
 class QsoftInfopageComponent extends ComponentHelper
 {
-
-    private $arAllPagesVariant; //варианты страницы для всех местоположений
-    private $arGeo; //массив город - область - регион - страна
-
     public function onPrepareComponentParams($arParams)
     {
         parent::onPrepareComponentParams($arParams);
@@ -21,16 +17,7 @@ class QsoftInfopageComponent extends ComponentHelper
 
     public function executeComponent()
     {
-        global $LOCATION;
-        $this->loadInfopage();
-        $this->arGeo = $LOCATION->getParentCodes();
-        //ищем ближайший подходящий по местоположению вариант страницы
-        foreach ($this->arGeo as $currentGeo) {
-            if (isset($this->arAllPagesVariant[$currentGeo])) {
-                $this->arResult = $this->arAllPagesVariant[$currentGeo];
-                break;
-            }
-        }
+        $this->arResult = $this->loadInfopage();
         $this->setSeo();
         $this->includeComponentTemplate();
     }
@@ -66,6 +53,7 @@ class QsoftInfopageComponent extends ComponentHelper
 
     private function loadInfopage() //получаем варианты страницы для всех местоположений
     {
+        $arResult = [];
         if ($this->initCache('infopage_' . $this->arParams['IBLOCK_CODE'])) {
             $arResult = $this->getCachedVars('allRegionPage');
         } elseif ($this->startCache()) {
@@ -87,46 +75,40 @@ class QsoftInfopageComponent extends ComponentHelper
 
             $res = CIBlockElement::GetList('', $arFilter, false, '', $arSelect);
 
-            while ($arItem = $res->GetNextElement()) {
+            if ($arItem = $res->GetNextElement()) {
                 $arProp = $arItem->GetProperties();
                 $arItem = $arItem->GetFields();
-                $arLocation = $arProp['LOCATION']['VALUE'];
-                foreach ((array)$arLocation as $location) {
-                    if (isset($arResult[$location])) {
-                        continue;
-                    }
-                    $arIdPreview[$location] = $arItem['PREVIEW_PICTURE'];
-                    if (stripos($arItem['PREVIEW_TEXT'], '#BTNS#') != 0) {
-                        $arResult[$location]['SHOW_BUTTONS'] = true;
-                        $elem = explode('#BTNS#', $arItem['PREVIEW_TEXT']);
-                        $arResult[$location]['PREVIEW_TEXT_1'] = $elem[0];
-                        $arResult[$location]['PREVIEW_TEXT_2'] = $elem[1];
+
+                $arIdPreview = $arItem['PREVIEW_PICTURE'];
+                if (stripos($arItem['PREVIEW_TEXT'], '#BTNS#') != 0) {
+                    $arResult['SHOW_BUTTONS'] = true;
+                    $elem = explode('#BTNS#', $arItem['PREVIEW_TEXT']);
+                    $arResult['PREVIEW_TEXT_1'] = $elem[0];
+                    $arResult['PREVIEW_TEXT_2'] = $elem[1];
+                } else {
+                    $arResult['PREVIEW_TEXT'] = $arItem['PREVIEW_TEXT'];
+                }
+                $arResult['PREVIEW_PICTURE'] = $arItem['PREVIEW_PICTURE'];
+                $arResult['ID'] = $arItem['ID'];
+                $arResult['IBLOCK_ID'] = $arItem['IBLOCK_ID'];
+                foreach ($arProp as $propName => $prop) {
+                    preg_match('`SECTION_(.*)_.*`', $propName, $matches);
+                    preg_match('`SECTION_.*_(.*)`', $propName, $val);
+                    if ($val[1] != 'TEXT') {
+                        $arResult['ITEMS'][$matches[1]][$val[1]] = $prop['VALUE'];
                     } else {
-                        $arResult[$location]['PREVIEW_TEXT'] = $arItem['PREVIEW_TEXT'];
-                    }
-                    $arResult[$location]['PREVIEW_PICTURE'] = $arItem['PREVIEW_PICTURE'];
-                    $arResult[$location]['ID'] = $arItem['ID'];
-                    $arResult[$location]['IBLOCK_ID'] = $arItem['IBLOCK_ID'];
-                    foreach ($arProp as $propName => $prop) {
-                        preg_match('`SECTION_(.*)_.*`', $propName, $matches);
-                        preg_match('`SECTION_.*_(.*)`', $propName, $val);
-                        if ($val[1] != 'TEXT') {
-                            $arResult[$location]['ITEMS'][$matches[1]][$val[1]] = $prop['VALUE'];
-                        } else {
-                            $arResult[$location]['ITEMS'][$matches[1]][$val[1]] = $prop['~VALUE']['TEXT'];
-                        }
+                        $arResult['ITEMS'][$matches[1]][$val[1]] = $prop['~VALUE']['TEXT'];
                     }
                 }
             }
 
-            $arImg = CFile::GetList('', array('@ID' => $arIdPreview));
+            $arImg = CFile::GetList('', array('ID' => $arIdPreview));
             while ($arLocationImg = $arImg->GetNext()) {
                 $arNewImg[$arLocationImg['ID']] = '/' . COption::GetOptionString('main', 'upload_dir') .
                     '/' . $arLocationImg['SUBDIR'] . '/' . $arLocationImg['FILE_NAME'];
             }
-            foreach ($arResult as &$arResultNew) {
-                $arResultNew['PREVIEW_PICTURE'] = $arNewImg[$arResultNew['PREVIEW_PICTURE']];
-            }
+
+            $arResult['PREVIEW_PICTURE'] = $arNewImg['PREVIEW_PICTURE'];
 
             if (!empty($arResult)) {
                 $this->endTagCache();
@@ -137,6 +119,6 @@ class QsoftInfopageComponent extends ComponentHelper
             }
         }
 
-        $this->arAllPagesVariant = $arResult;
+        return $arResult;
     }
 }

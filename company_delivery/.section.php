@@ -1,3 +1,3 @@
-<?
-$sSectionName="Доставка товара";
-?>
+<?php
+$sSectionName = "Доставка товара";
+$arDirProperties = [];

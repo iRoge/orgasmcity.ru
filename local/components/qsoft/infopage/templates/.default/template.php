@@ -3,12 +3,11 @@
 }
 ?>
 <div class="infopage-block">
-<!--    --><?// var_dump($arResult); ?>
 <? if (!empty($arResult['PREVIEW_PICTURE'])) : ?>
     <img style="text-align: center" src="<?= $arResult['PREVIEW_PICTURE'];?>"/>
 <? endif; ?>
 <? if (!empty($arResult['PREVIEW_TEXT'])) : ?>
-    <span><?= $arResult['PREVIEW_TEXT'];?></span>
+    <span><?echo $arResult['PREVIEW_TEXT'];?></span>
 <? elseif ($arResult['SHOW_BUTTONS']) : ?>
     <span><?= $arResult['PREVIEW_TEXT_1'];?></span>
     <span>
