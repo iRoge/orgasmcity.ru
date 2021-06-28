@@ -51,7 +51,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             }
         }
 
-        $randKeys = array_rand($arItems, 20);
+        $randKeys = array_rand($arItems, 30);
         $arRandItems = [];
         foreach ($randKeys as $key) {
             $arRandItems[] = $arItems[$key];

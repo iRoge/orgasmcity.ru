@@ -1216,3 +1216,21 @@ div.product-preorder-success a.button--orange:hover {
     color: #fefefe;
     font-family: 'firaregular';
 }
+
+jdiv.button_e311 {
+    width: 50px!important;
+    height: 50px!important;
+    margin-bottom: 0!important;
+}
+
+jdiv._orientationRight_3766 .button_e311 {
+    margin-right: 0!important;
+}
+
+.slick-next {
+    right: -22px;
+}
+
+.slick-prev {
+    left: -20px;
+}

@@ -1,5 +1,6 @@
 <?php
 
+use Bitrix\Iblock\InheritedProperty\ElementValues;
 use Bitrix\Main\Config\Option;
 use Bitrix\Iblock\InheritedProperty\SectionValues;
 use Bitrix\Main\FileTable;
@@ -17,7 +18,6 @@ class QsoftCatalogSection extends ComponentHelper
     private const TYPE_ALL_CATALOG = 'all';
     private const TYPE_SECTION = 'section';
     private const TYPE_SEARCH = 'search';
-    private const TYPE_HITS = 'hits';
     private const TYPE_SALES = 'sales';
     private const TYPE_FAVORITES = 'favorites';
     private const TYPE_GROUP = 'group';
@@ -144,11 +144,11 @@ class QsoftCatalogSection extends ComponentHelper
     /**
      * @var array
      */
-    private array $group;
+    private $group;
     /**
      * @var array
      */
-    private array $section;
+    private $section;
     /**
      * @var array
      */
@@ -225,11 +225,6 @@ class QsoftCatalogSection extends ComponentHelper
         } elseif (strpos($sectionUrl, '/brands/') !== false) {
             $this->isBrand = true;
             $brandUrl = explode('/', rtrim($sectionUrl, '/'));
-
-            if (count($brandUrl) == 4) {
-                $this->isBrandTagCode = $brandUrl[3];
-                $sectionUrl = str_replace($brandUrl[3] . '/', '', $sectionUrl);
-            }
 
             return 'group';
         }
@@ -368,7 +363,6 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->getFavoritesProductsAndOffers();
                 break;
             case self::TYPE_SALES:
-            case self::TYPE_HITS:
             default:
                 $this->loadProducts();
                 $this->loadOffers();
@@ -559,9 +553,6 @@ class QsoftCatalogSection extends ComponentHelper
         $arImageIds = [];
         while ($arItem = $res->Fetch()) {
             if (!$arItem["DETAIL_PICTURE"]) {
-                continue;
-            }
-            if ($this->type === self::TYPE_HITS && $arItem["PROPERTY_BESTSELLER_VALUE"] != 1) {
                 continue;
             }
             $arProducts[$arItem["ID"]] = [
@@ -1107,7 +1098,7 @@ class QsoftCatalogSection extends ComponentHelper
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
-        $cacheTag = 'products_group_' . $this->code . ($this->isBrandTagCode ? '_' . $this->isBrandTagCode : '');
+        $cacheTag = 'products_group_' . $this->code;
         if ($this->initCache($cacheTag)) {
             $products = $this->getCachedVars('products');
         } elseif ($this->startCache()) {
@@ -1145,7 +1136,7 @@ class QsoftCatalogSection extends ComponentHelper
     private function getGroupOffers()
     {
         $offers = [];
-        $cacheTag = 'offers_group_' . $this->code . ($this->isBrandTagCode ? '_' . $this->isBrandTagCode : '');
+        $cacheTag = 'offers_group_' . $this->code;
         if ($this->initCache($cacheTag)) {
             $offers = $this->getCachedVars('offers');
         } elseif ($this->startCache()) {
@@ -2002,6 +1993,12 @@ class QsoftCatalogSection extends ComponentHelper
                     //TODO Надо избравиться от этого запроса. Сделано временно.
                     $seo['DESCRIPTION'] = CIBlockSection::GetList([], ['ID' => $this->section['ID']], false, ['DESCRIPTION'], false)->Fetch()['DESCRIPTION'];
                     break;
+                case self::TYPE_GROUP:
+                    if ($this->isBrand) {
+                        $ipropValues = new ElementValues(IBLOCK_VENDORS, $this->group['ID']);
+                        $seo['DESCRIPTION'] = $this->group['DESCRIPTION'];
+                    }
+                    break;
                 case self::TYPE_SEARCH:
                     $cache->AbortDataCache();
                     $seo['DESCRIPTION'] = $seo['SECTION_META_TITLE'] = $seo['SECTION_PAGE_TITLE'] = substr(
@@ -2013,7 +2010,8 @@ class QsoftCatalogSection extends ComponentHelper
                 default:
                     break;
             }
-            if (!isset($ipropValues) && $this->type != self::TYPE_SEARCH) {
+
+            if (!isset($ipropValues) && !in_array($this->type, [self::TYPE_SEARCH, self::TYPE_SALES, self::TYPE_FAVORITES])) {
                 $cache->AbortDataCache();
                 return;
             }
@@ -2023,8 +2021,17 @@ class QsoftCatalogSection extends ComponentHelper
 
             if (empty($seo['ELEMENT_PAGE_TITLE'])) {
                 switch ($this->type) {
+                    case self::TYPE_GROUP:
+                        $seo['ELEMENT_PAGE_TITLE'] = $this->group['NAME'];
+                        break;
                     case self::TYPE_SECTION:
                         $seo['ELEMENT_PAGE_TITLE'] = $this->section['NAME'];
+                        break;
+                    case self::TYPE_SALES:
+                        $seo['ELEMENT_PAGE_TITLE'] = 'Скидки: ' . $this->section['NAME'];
+                        break;
+                    case self::TYPE_FAVORITES:
+                        $seo['ELEMENT_PAGE_TITLE'] = 'Избранное';
                         break;
                     default:
                         break;
@@ -2038,24 +2045,25 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-//        if (!empty($seo['SECTION_META_TITLE'])) {
-//            $APPLICATION->SetPageProperty('title', $seo['SECTION_META_TITLE']);
-//        } elseif (!empty($seo['ELEMENT_META_TITLE'])) {
-//            $APPLICATION->SetPageProperty('title', $seo['ELEMENT_META_TITLE']);
-//        } elseif (!empty($seo['ELEMENT_PAGE_TITLE'])) {
-//            $APPLICATION->SetPageProperty('title', $seo['ELEMENT_PAGE_TITLE']);
-//        }
-
         if (!empty($seo['SECTION_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['SECTION_META_KEYWORDS']);
         } elseif (!empty($seo['ELEMENT_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['ELEMENT_META_KEYWORDS']);
+        } else {
+            $APPLICATION->SetPageProperty("keywords",
+                'Купить секс-товары,секс-шоп,скидки,низкой цене, ' . ($this->isBrand ? $this->group['NAME'] : $this->section['NAME'])
+            );
         }
 
         if (!empty($seo['SECTION_META_DESCRIPTION'])) {
             $APPLICATION->SetPageProperty("description", $seo['SECTION_META_DESCRIPTION']);
         } elseif (!empty($seo['ELEMENT_META_DESCRIPTION'])) {
             $APPLICATION->SetPageProperty("description", $seo['ELEMENT_META_DESCRIPTION']);
+        } else {
+            $APPLICATION->SetPageProperty("description",
+                'В Городе Оргазма вы можете не дорого со скидкой купить на выбор любой товар '
+                . ($this->isBrand ? 'бренда ' . $this->group['NAME'] : 'из каталога ' . $this->section['NAME'])
+            );
         }
 
         if (!empty($seo['SECTION_PAGE_TITLE'])) {
@@ -2091,6 +2099,9 @@ class QsoftCatalogSection extends ComponentHelper
             $APPLICATION->AddChainItem($item['title'], $item['url']);
         }
         $title .= mb_strtolower(implode(' ', array_column($chain, 'title')));
+        if ($this->isBrand) {
+            $title .= ' ' . $this->group['NAME'];
+        }
         $title .= ' в интернет магазине orgasmcity.ru';
         $APPLICATION->SetPageProperty('title', $title);
     }
@@ -2100,6 +2111,7 @@ class QsoftCatalogSection extends ComponentHelper
         $chain = [];
         switch ($this->type) {
             case self::TYPE_SECTION:
+            case self::TYPE_SALES:
                 $chain = $this->getSectionChain();
                 break;
         }
@@ -2117,8 +2129,8 @@ class QsoftCatalogSection extends ComponentHelper
             }
 //            $ipropValues = new SectionValues(IBLOCK_CATALOG, $arPath["ID"]);
             $chain[] = [
-                'title' => $arPath['NAME'],
-                'url' => $arPath['SECTION_PAGE_URL'],
+                'title' => $this->type == self::TYPE_SALES ? 'Скидки: ' . $arPath['NAME'] : $arPath['NAME'],
+                'url' => $this->type == self::TYPE_SALES ? '/catalog/sales' . $arPath['SECTION_PAGE_URL'] : $arPath['SECTION_PAGE_URL'],
             ];
         }
         return $chain;
@@ -2145,7 +2157,7 @@ class QsoftCatalogSection extends ComponentHelper
     private function getBrand()
     {
         $brand = false;
-        $cacheTag = 'brand_' . $this->code . ($this->isBrandTagCode ? '_' . $this->isBrandTagCode : '');
+        $cacheTag = 'brand_' . $this->code;
         if ($this->initCache($cacheTag)) {
             $brand = $this->getCachedVars('brand');
         } elseif ($this->startCache()) {

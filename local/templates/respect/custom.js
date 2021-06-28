@@ -113,7 +113,7 @@ function sendYandexMetrkiaGoal(goalName)
 
 		if (rightClosestPriorityButtons.length) {
 			positionStep = 6;
-			let right = 3;
+			let right = 1;
 
 			rightClosestPriorityButtons.forEach(function (element) {
                 if (element.state.visible) {
@@ -121,9 +121,9 @@ function sendYandexMetrkiaGoal(goalName)
                 }
             });
 
-			this.element.root.style.right = right + '%';
+			this.element.root.style.right = right + 'rem';
 		} else {
-			this.element.root.style.right = 3 + '%';
+			this.element.root.style.right = 1 + 'rem';
 		}
 	}
 	
@@ -166,24 +166,38 @@ function sendYandexMetrkiaGoal(goalName)
 
 		// Jivosite
 
-		window.jivo_onLoadCallback = function () {
-			let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
+		if (window.matchMedia('(max-width: 768px)').matches) {
+			window.jivo_onLoadCallback = function () {
+				let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
 
-			if (jivositeButtonElement) {
-				let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
+				if (jivositeButtonElement) {
+					let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
 
-				jivositeButton.init();
+					jivositeButton.init();
+				}
+			}
+			window.jivo_onClose = function () {
+				setTimeout(function () {
+					let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
+
+					if (jivositeButtonElement) {
+						let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
+
+						jivositeButton.init();
+					}
+				}, 200);
 			}
 		}
 
-		// Mango
-		if (window.matchMedia('(max-width: 767px)').matches) {
-			let mangoButtonElement = document.querySelector('.mango-false-button');
-			if (mangoButtonElement) {
-				let mangoButton = new StickyButton(mangoButtonElement, 4, null, true);
-				mangoButton.init();
-			}
-		}
+
+		// // Mango
+		// if (window.matchMedia('(max-width: 767px)').matches) {
+		// 	let mangoButtonElement = document.querySelector('.mango-false-button');
+		// 	if (mangoButtonElement) {
+		// 		let mangoButton = new StickyButton(mangoButtonElement, 4, null, true);
+		// 		mangoButton.init();
+		// 	}
+		// }
 		window.StickyButton.update()
 
 	});

@@ -14,6 +14,10 @@
     <title><? $APPLICATION->ShowTitle(); ?></title>
 
     <link rel="icon" href="/favicon.ico" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon.ico">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -104,7 +108,6 @@
 
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
-
     // Получаем количество избранных товаров
     $favoritesCount = 0;
     if ($USER->IsAuthorized()) {
@@ -116,6 +119,7 @@
         }
     }
     ?>
+    <script src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>
     <script type="text/javascript" data-skip-moving="true" >
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(
