@@ -755,11 +755,17 @@ class QsoftOrderComponent extends ComponentHelper
         // проверяем есть ли ТП с таким ID
         // $this->basket->getExistsItem не работает, тк он сверяет все свойства, а у нас их ещё нет
         $arBasketItems = $this->basket->getBasketItems();
+        // Создадим заказ и присвоим ему корзину для применения
+        // промокодов для вычисления точной суммы корзины
+        $order = $this->createNewOrder();
+        $order->setBasket($this->basket);
+
         $basketItem = false;
+        $basketSum = 0;
         foreach ($arBasketItems as $arItem) {
-            if ($arItem->getProductId() == $offerId) {
+            $basketSum += $arItem->getPrice() * $arItem->getQuantity();
+            if (!$basketItem && $arItem->getProductId() == $offerId) {
                 $basketItem = $arItem;
-                break;
             }
         }
 
@@ -777,12 +783,13 @@ class QsoftOrderComponent extends ComponentHelper
         if ($basketItem) {
             $basketItem->setField('QUANTITY', $basketItem->getQuantity() + $quantity);
         } else {
-            $this->createBasketItem($offerId, $quantity);
+            $basketItem = $this->createBasketItem($offerId, $quantity);
         }
 
         $res = $this->basket->save();
         if ($res->isSuccess()) {
-            $this->returnOk(1);
+            $basketSum += $basketItem->getPrice() * $quantity;
+            $this->returnOk($basketSum);
         }
 
         $this->arResult["ERRORS"][] = "Не удалось добавить или обновить товар в коризне";
@@ -808,7 +815,7 @@ class QsoftOrderComponent extends ComponentHelper
                     $this->checkBasketAvailability();
                 }
                 if ($res->isSuccess()) {
-                    $price = $this->getTypePrice($this->offers);
+                    $price = $this->getSumPrice($this->offers);
                     $this->checkBasketSumLimit();
                     if (!empty($this->arResult['ERRORS'])) {
                         $this->returnError($this->arResult['ERRORS'][0]);
@@ -952,7 +959,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkBasketAvailability()
     {
-        if ($this->checkType(array("cart", "offers", "coupon", "basketDel", "order"))) {
+        if ($this->checkType(array("cart", "offers", "coupon", "basketAdd", "basketDel", "order"))) {
             $full = true;
         } else {
             $full = false;
@@ -1012,12 +1019,9 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkBasketSumLimit()
     {
-        $basketSum = Option::get("respect", "basket_min_num", 2500);
-        if (in_array('Y', array_column($this->offers, 'IS_LOCAL')) && $this->getTypePrice($this->offers, 'Y') < $basketSum) {
-            $this->arResult["ERRORS"]['LOCAL'][] = str_replace("%NUM%", $basketSum, Option::get("respect", "basket_min_num_text", "Минимальная сумма заказа - %NUM% р"));
-        }
-        if (in_array('N', array_column($this->offers, 'IS_LOCAL')) && $this->getTypePrice($this->offers, 'N') < $basketSum) {
-            $this->arResult["ERRORS"]['NOT_LOCAL'][] = str_replace("%NUM%", $basketSum, Option::get("respect", "basket_min_num_text", "Минимальная сумма заказа - %NUM% р"));
+        $basketSum = Option::get("respect", "basket_min_num", 1500);
+        if ($this->getSumPrice($this->offers) < $basketSum) {
+            $this->arResult["ERRORS"][] = str_replace("%NUM%", $basketSum, Option::get("respect", "basket_min_num_text", "Минимальная сумма заказа - %NUM% р"));
         }
     }
 
@@ -1518,7 +1522,7 @@ class QsoftOrderComponent extends ComponentHelper
             $paymentWay = $this->getPaymentWays($this->arResult["PAYMENT"]["CURRENT"]["ID"]);
             $checkPrice = $price - $delPrice;
 
-            if (($checkPrice >= Option::get("respect", "prepayment_min_summ")) && $paymentWay['PREPAYMENT'] == 'Y') {
+            if (($checkPrice >= Option::get("respect", "free_delivery_min_summ")) && $paymentWay['PREPAYMENT'] == 'Y') {
                 $shipment->setBasePriceDelivery(0);
                 $price = $checkPrice;
             }
@@ -1715,7 +1719,8 @@ class QsoftOrderComponent extends ComponentHelper
         }
     }
 
-    private function getTypePrice($arOffers)
+    // Вычисляет общую сумму офферов по ключу BASKET_PRICE
+    private function getSumPrice($arOffers)
     {
         $price = 0;
         foreach ($arOffers as $offer) {

@@ -14,14 +14,33 @@ $(document).ready(function(){
             offerId: offerId,
             quantity: quantity,
         };
+        let currentBasketPrice = 0;
+        $(".orders__price").each(function () {
+            currentBasketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
+        });
         $.ajax({
             method: "POST",
             url: "/cart/",
             data: data,
             dataType: "json",
             success: function (data) {
+                let basketPrice = null;
                 if (data.status == "ok") {
                     activeAjax = false;
+                    // Получаем итоговую сумму корзины
+                    basketPrice = parseInt(data['text']);
+                    // Если сумма изменилась до такой сетпени, что доставка стала бесплатной,
+                    // то перезагружаем весь блок корзины
+                    console.log(basketPrice);
+                    console.log(currentBasketPrice);
+                    console.log(freeDeliveryMinSum);
+                    if (
+                        currentBasketPrice > freeDeliveryMinSum && basketPrice < freeDeliveryMinSum
+                        || currentBasketPrice < freeDeliveryMinSum && basketPrice > freeDeliveryMinSum
+                    ) {
+                        reloadBasket();
+                        return;
+                    }
                 } else {
                     let errorText = '<div class="product-preorder-success">'
                         + '<h2>Ошибка</h2>'
@@ -32,10 +51,12 @@ $(document).ready(function(){
                     Popup.show(errorText, {});
                 }
                 reloadProducts();
-                let basketPrice = 0;
-                $(".orders__price").each(function () {
-                    basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
-                });
+                if (basketPrice === null) {
+                    basketPrice = 0;
+                    $(".orders__price").each(function () {
+                        basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
+                    });
+                }
                 checkProducts(basketPrice);
             },
             error: function (data) {
@@ -63,23 +84,42 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data) {
                 if (data['status'] == "ok") {
+                    let currentBasketPrice = 0;
+                    $(".orders__price").each(function () {
+                        currentBasketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
+                    });
                     if (data['info'] < 1) {
                         updateSmallBasket(-1);
                         let basketPrice = parseInt(data['text']);
-                        el.closest('.js-card').slideUp("normal", function () {
-                            $(this).remove();
+                        // Если сумма изменилась до такой сетпени, что доставка стала платной,
+                        // то перезагружаем весь блок корзины
+                        if (
+                            currentBasketPrice > freeDeliveryMinSum && basketPrice < freeDeliveryMinSum
+                            || currentBasketPrice < freeDeliveryMinSum && basketPrice > freeDeliveryMinSum
+                        ) {
+                            reloadBasket();
+                        } else {
+                            el.closest('.js-card').slideUp("normal", function () {
+                                $(this).remove();
+                                reloadProducts();
+                                checkProducts(basketPrice);
+                            });
+                        }
+                    } else {
+                        let basketPrice = parseInt(data['text']);
+                        // Если сумма изменилась до такой сетпени, что доставка стала платной,
+                        // то перезагружаем весь блок корзины
+                        if (
+                            currentBasketPrice > freeDeliveryMinSum && basketPrice < freeDeliveryMinSum
+                            || currentBasketPrice < freeDeliveryMinSum && basketPrice > freeDeliveryMinSum
+                        ) {
+                            reloadBasket();
+                        } else {
+                            let quantityNum = $(this).find(".quantity-num");
+                            quantityNum.val(data['info']);
                             reloadProducts();
                             checkProducts(basketPrice);
-                        });
-                    } else {
-                        let quantityNum = $(this).find(".quantity-num");
-                        quantityNum.val(data['info']);
-                        reloadProducts();
-                        let basketPrice = 0;
-                        $(".orders__price").each(function () {
-                            basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
-                        });
-                        checkProducts(basketPrice);
+                        }
                     }
                 } else if (data['status'] == "error") {
                     el.closest('.js-card').slideUp("normal", function() {
@@ -90,6 +130,7 @@ $(document).ready(function(){
                         rightBlock.empty();
                         rightBlock.append('<div class="checkout__error-wrapper"><p class="checkout__error-text text-danger">' + data['text'] + '</p></div>');
                     });
+                    reloadBasket();
                     activeAjax = false;
                 } else {
                     activeAjax = false;
@@ -103,52 +144,40 @@ $(document).ready(function(){
         });
     }
 
-    // проверка наличия продуктов на странице
+    // обновление блока корзины, в случае отсутствия позиций или наличия ошибок в блоке ошибок
     function checkProducts(basketPrice) {
         if ($(".orders__row--product").length == 0) {
-            let data = {
-                action: "cart",
-                ajax: "Y",
-            };
-            $.ajax({
-                type: "POST",
-                url: "/cart/",
-                data: data,
-                success: function(data) {
-                    activeAjax = false;
-                    $("#main-basket-block").html(data);
-                    resetJsHandlers();
-                },
-                error: function(jqXHR, exception) {
-                    activeAjax = false;
-                    ajaxError(jqXHR, exception);
-                },
-            });
+            reloadBasket();
         } else {
             if ($(".checkout__error-wrapper").length != 0) {
-                let data = {
-                    action: "cart",
-                    ajax: "Y",
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "/cart/",
-                    data: data,
-                    success: function(data) {
-                        activeAjax = false;
-                        $("#main-basket-block").html(data);
-                        resetJsHandlers();
-                    },
-                    error: function(jqXHR, exception) {
-                        activeAjax = false;
-                        ajaxError(jqXHR, exception);
-                    },
-                });
+                reloadBasket();
             } else {
+                // подсчет суммы позиций
                 activeAjax = false;
                 calculatePrice(basketPrice);
             }
         }
+    }
+
+    function reloadBasket() {
+        let data = {
+            action: "cart",
+            ajax: "Y",
+        };
+        $.ajax({
+            type: "POST",
+            url: "/cart/",
+            data: data,
+            success: function(data) {
+                activeAjax = false;
+                $("#main-basket-block").html(data);
+                resetJsHandlers();
+            },
+            error: function(jqXHR, exception) {
+                activeAjax = false;
+                ajaxError(jqXHR, exception);
+            },
+        });
     }
 
     // переключаем блоки способа оплаты при выборе способа доставки
@@ -172,7 +201,7 @@ $(document).ready(function(){
     }
 
     //сортировка способов оплаты
-    function sortPaymentWay(){
+    function sortPaymentWay() {
         let paymentSelector = $('.payment__type')
         let arItems = $.makeArray(paymentSelector);
         arItems.sort(function(a, b) {
@@ -220,7 +249,11 @@ $(document).ready(function(){
             cart_coupon_error.html("Введите промокод");
             return;
         }
-        $("#art__coupon-button" + type).attr("disabled", "disabled");
+        $("#art__coupon-button").attr("disabled", "disabled");
+        let currentBasketPrice = 0;
+        $(".orders__price").each(function () {
+            currentBasketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
+        });
         let data = {
             action: "coupon",
             coupon: coupon,
@@ -233,8 +266,17 @@ $(document).ready(function(){
             success: function(data) {
                 $("#art__coupon-button").removeAttr("disabled");
                 if (data.status == "ok") {
-                    var basketPrice = parseInt(data.text);
-                    var sum = 0;
+                    let basketPrice = parseInt(data.text);
+                    // Если сумма изменилась до такой сетпени, что доставка стала платной,
+                    // то перезагружаем весь блок корзины
+                    if (
+                        currentBasketPrice > freeDeliveryMinSum && basketPrice < freeDeliveryMinSum
+                        || currentBasketPrice < freeDeliveryMinSum && basketPrice > freeDeliveryMinSum
+                    ) {
+                        reloadBasket();
+                        return;
+                    }
+                    let sum = 0;
                     $(".orders__price-num").each(function() {
                         sum += parseInt($(this).data("price"));
                     });
@@ -301,7 +343,7 @@ $(document).ready(function(){
         }
         let delPrice = $(".js-delivery:checked").attr("data-price") ? parseInt($(".js-delivery:checked").attr("data-price")) : 0;
         if (changeDeliveryBasketNum === 1) {
-            $("#cart__delivery-price").html(basketPrice >= prepayment_min_summ ? formatPrice(0) : formatPrice(delPrice));
+            $("#cart__delivery-price").html(basketPrice >= freeDeliveryMinSum ? formatPrice(0) : formatPrice(delPrice));
         }
         $("#cart__total-price").html(formatPrice(sum + delPrice));
         if (oldSum == 0 || oldSum == sum) {
@@ -362,25 +404,6 @@ $(document).ready(function(){
             msg = 'Uncaught Error: '+jqXHR.responseText;
         }
         console.log(msg);
-    }
-
-    //открытие локальной и местной корзины
-    function openCart() {
-        let iOS = navigator.userAgent.match(/iPhone|iPad|iPod/i);
-        let event = "click";
-
-        if(iOS != null) {
-            event = "touchstart";
-        }
-        $(document).on(event, `.opening-cart`, function () {
-            $(this).closest('.checkout').find('.checkout__inner').slideToggle('fast');
-            checkHeightProductBlock();
-        });
-        $(window).resize(function () {
-            if ($(window).width() > 768) {
-                $(`.opening-cart`).closest('.checkout').find('.checkout__inner').css('display', '');
-            }
-        });
     }
 
     function saveAddressInCookie(bOrder) {
@@ -726,7 +749,6 @@ $(document).ready(function(){
     $(document).on('click', '.payment__type--disabled', function() {
         Popup.show('<div class="text-danger" style="text-align: center; padding: 0px 40px;"><article style="font-size: 1.4em;">' + paymentWayErrorText + '</article></div>');
     });
-    openCart();
     $('.cart-city-input').click(function() {
         document.cookie = 'user_fio=' + $('#b-order').find($('[name = "PROPS[FIO]"]')).val() + '~' + $('#b-order2').find($('[name = "PROPS[FIO]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
         document.cookie = 'user_email=' + $('#b-order').find($('[name = "PROPS[EMAIL]"]')).val() + '~' + $('#b-order2').find($('[name = "PROPS[EMAIL]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';

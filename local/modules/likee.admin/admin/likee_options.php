@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"
 
     // сохраняем настройки ограничений
     $names = array(
-        'prepayment_min_summ' => 'int',
+        'free_delivery_min_summ' => 'int',
         "order_max_num" => "int",
         "order_max_num_text" => "text",
         "basket_min_num" => "int",
@@ -260,9 +260,9 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
         $tabControl->BeginNextTab();
         ?>
         <tr>
-            <td width="40%">Сумма заказа для бесплатной доставке по предоплате:</td>
-            <td width="60%"><input type="number" min="0" name="prepayment_min_summ"
-                                   value="<?= Option::get("respect", "prepayment_min_summ") ?>"/>
+            <td width="40%">Сумма заказа для бесплатной доставки:</td>
+            <td width="60%"><input type="number" min="0" name="free_delivery_min_summ"
+                                   value="<?= Option::get("respect", "free_delivery_min_summ") ?>"/>
             </td>
         </tr>
         <tr>

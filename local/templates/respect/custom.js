@@ -123,7 +123,11 @@ function sendYandexMetrkiaGoal(goalName)
 
 			this.element.root.style.right = right + 'rem';
 		} else {
-			this.element.root.style.right = 1 + 'rem';
+			if (window.matchMedia('(min-width: 768px)').matches) {
+				this.element.root.style.right = 5 + 'rem';
+			} else {
+				this.element.root.style.right = 1 + 'rem';
+			}
 		}
 	}
 	

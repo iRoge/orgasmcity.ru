@@ -15,6 +15,8 @@ if ($LOCATION->code == $_COOKIE['user_location_code']) {
     $cookieAddress = true;
 }
 
+$freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
+
 global $LOCATION, $APPLICATION; ?>
 <? if (!empty($arResult["ITEMS"])) : ?>
 <script>
@@ -22,11 +24,8 @@ global $LOCATION, $APPLICATION; ?>
     var deliveryMoscowSelfId = <?=MOSCOW_SELF_DELIVERY_ID?>;
     var arOnlinePaymentIds = <?=CUtil::PhpToJSObject($arResult["PAYMENT"]["ONLINE_PAYMENT_IDS"])?>;
     var token = "<?=DADATA_TOKEN?>";
-    var paymentWayErrorText = "<?= Option::get("respect", "disabled_payment_click_text", "");?>";
-    <? $prepaymentMinSumm = Option::get("respect", "prepayment_min_summ", 3000);
-    if ($prepaymentMinSumm > 0) { ?>
-    var prepayment_min_summ = <?= $prepaymentMinSumm ?>;
-    <? } ?>
+    var paymentWayErrorText = "<?=Option::get("respect", "disabled_payment_click_text", "");?>";
+    var freeDeliveryMinSum = <?=$freeDeliveryMinSum?>;
     var dadata_status = false;
     <? if ($arResult['DADATA_STATUS']) : ?>
     dadata_status = true;
@@ -300,7 +299,6 @@ global $LOCATION, $APPLICATION; ?>
                                                     array(
                                                         'CACHE_TYPE' => 'A',
                                                         'CACHE_TIME' => 31536000,
-                                                        'BASKET_TYPE' => 'LOCAL',
                                                     )
                                                 ); ?>
                                                 <? if ($arResult["DELIVERY"]["PVZ"]) : ?>
@@ -375,15 +373,20 @@ global $LOCATION, $APPLICATION; ?>
                                     <div class="form__field">
                                         <div class="p">
                                             <div class="l">Доставка</div>
-                                            <div id="cart__delivery-price" class="r">Способ доставки не выбран</div>
+                                            <div id="cart__delivery-price" class="r">
+                                                <?=$arResult["PRICE"] > $freeDeliveryMinSum ?
+                                                    'Бесплатно (сумма заказа более ' . $freeDeliveryMinSum . ')'
+                                                    : 'Способ доставки не выбран'
+                                                ?>
+                                            </div>
                                         </div>
-                                        <div id="cart__discount-block" class="p <?= !$arResult["DISCOUNT"]['LOCAL'] ? "is-hidden" : "" ?>">
+                                        <div id="cart__discount-block" class="p <?= !$arResult["DISCOUNT"] ? "is-hidden" : "" ?>">
                                             <div class="l">Скидка</div>
-                                            <div id="cart__discount-price" class="r"><?= number_format($arResult["DISCOUNT"]['LOCAL'], 0, "", "&nbsp;") ?>&nbsp;р.</div>
+                                            <div id="cart__discount-price" class="r"><?= number_format($arResult["DISCOUNT"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
                                         </div>
                                         <div class="p">
                                             <div class="l">Всего к оплате</div>
-                                            <div id="cart__total-price" class="r"><?= number_format($arResult["PRICE"]['LOCAL'], 0, "", "&nbsp;") ?>&nbsp;р.</div>
+                                            <div id="cart__total-price" class="r"><?= number_format($arResult["PRICE"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
                                         </div>
                                     </div>
                                     <div class="form__field">
