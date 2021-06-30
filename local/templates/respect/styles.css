@@ -1217,14 +1217,15 @@ div.product-preorder-success a.button--orange:hover {
     font-family: 'firaregular';
 }
 
-jdiv.button_e311 {
+jdiv[class^="button_"] {
     width: 50px!important;
     height: 50px!important;
     margin-bottom: 0!important;
+    margin-right: 0!important;
 }
 
-jdiv._orientationRight_3766 .button_e311 {
-    margin-right: 0!important;
+.__jivoMobileButton {
+    z-index: 5!important;
 }
 
 .slick-next {
