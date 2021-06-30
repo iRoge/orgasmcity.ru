@@ -3,10 +3,8 @@
 use Bitrix\Main\Config\Option;
 use Bitrix\Sale\Order;
 
-global $LOCATION;
-
 define('HIDE_TITLE', true);
-define('SBERBANK_PAY_SYSTEM_ID', 16);
+define('TINKOFF_PAY_SYSTEM_ID', 10);
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $orderId = intval($_GET["orderId"]);
 $orderType = $_GET["orderType"];
@@ -25,7 +23,7 @@ if (!$orderId) {
         $orderPayments[$payment->getField('PAY_SYSTEM_ID')] = $payment;
     }
 
-    if (!empty($orderPayments[SBERBANK_PAY_SYSTEM_ID])) {
+    if (!empty($orderPayments[TINKOFF_PAY_SYSTEM_ID])) {
         $orderType = 'prepayment_s1';
     } else {
         $orderType = 'default';
@@ -123,7 +121,7 @@ if (!$orderId) {
             Номер вашего заказа <b>№ <?= $orderId ?></b>.<br>
             <?= Option::get("respect", "order_success_text", ""); ?>
             <p>Сумма к оплате: <b><?= number_format($order->getPrice(), 0, '', ' ') . ' p.' ?></b></p>
-            <a href="#" class="bttn pay-button" data-order-id="<?= $orderId ?>">Оплатить</a>
+            <button class="bttn pay-button" data-order-id="<?= $orderId ?>">Оплатить</button>
         </div>
         <?
         $arRRItems = [];
@@ -138,19 +136,6 @@ if (!$orderId) {
             $arRRItems[] = '{id: ' . (int)$arProduct['PRODUCT_ID'] . ', ' .
                 'qnt: ' . (int)$arProduct['QUANTITY'] . ', ' .
                 'price: ' . (int)$arProduct['PRICE'] . '}';
-
-            //для Criteo
-            $GLOBALS['ORDER_SUCCESS']['ITEMS'][] = [
-                'id' => sprintf('%s-%s', $arProduct['PRODUCT_ID'], $branchId),
-                'price' => $arProduct['PRICE'],
-                'quantity' => $arProduct['QUANTITY']
-            ];
-            //для RTBHouse
-            $GLOBALS['ORDER_SUCCESS_RTBHOUSE']['ITEMS'][] = [
-                'id' => sprintf('%s-%s', $propertyValues['PRODUCT_ID']['VALUE'], $branchId),
-                'price' => $arProduct['PRICE'],
-                'quantity' => $arProduct['QUANTITY']
-            ];
         }
     }
 } ?>

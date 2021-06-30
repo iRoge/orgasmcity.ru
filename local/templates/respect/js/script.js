@@ -485,10 +485,9 @@ $(document).ready(function () {
 
       $.ajax({
         method: "POST",
-        url: "/local/ajax/sberbank_payment.php",
+        url: "/local/ajax/tinkoff_payment.php",
         data: {'orderId': elem.attr('data-order-id')},
         success: function (data) {
-          console.log(data);
           elem.text('Переход');
           window.location.replace(data);
         },
@@ -499,7 +498,7 @@ $(document).ready(function () {
     }
   }
 
-  $('a.pay-button').on('click', function (){
+  $('button.pay-button').on('click', function (){
     onlinePayment($(this));
   })
 

@@ -94,3 +94,35 @@ function qsoft_logger($message, string $file = "log.txt", string $path = "/local
     }
     file_put_contents($log_file, $str, FILE_APPEND);
 }
+
+function myLog($data, $fileName = '1233321')
+{
+    global $APPLICATION, $LOCATION;
+    // if (in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1, 314458, 315911])){
+    $trace = debug_backtrace();
+    $caller = $trace[2];
+    if ($APPLICATION->GetCurPage() != '/bitrix/components/bitrix/pull.request/ajax.php') {
+        file_put_contents(
+            $_SERVER["DOCUMENT_ROOT"] . '/debug/' . $fileName . ".dbg",
+            print_r(
+                [
+                    "time" => date("H:i:s"),
+                    "page" => $APPLICATION->GetCurPage(),
+                    "location" => $LOCATION->getName(),
+                    "function" =>
+                    //                    [
+                    //                    'file' => $caller['file'],
+                    //                    'line' => $caller['line'],
+                    //                    'args' => $caller['args'],
+                    //                    'function' =>
+                        $caller['function'],
+                    //],
+                    "data" => $data,
+                ],
+                1
+            ),
+            FILE_APPEND
+        );
+    }
+    // }
+}
