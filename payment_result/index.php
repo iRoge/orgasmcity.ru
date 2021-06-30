@@ -29,8 +29,17 @@ if ($success) {
                 $errorMsg = 'Ошибка оплаты';
             }
         } else {
-            #TODO:: Перевод заказа в статус оплаченного
-
+            $order = \Bitrix\Sale\Order::load($orderId);
+            if ($order) {
+                $paymentCollection = $order->getPaymentCollection();
+                $onePayment = $paymentCollection[0];
+                $onePayment->setPaid("Y"); // выставляем оплату
+                $order->setField('STATUS_ID', 'ZS'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
+                $order->save();
+            } else {
+                $success = false;
+                $errorMsg = 'Заказ ' . $orderId . ' не найден';
+            }
         }
     }
 } else {

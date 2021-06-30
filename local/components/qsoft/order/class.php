@@ -1476,8 +1476,8 @@ class QsoftOrderComponent extends ComponentHelper
     // функции заказа
     private function createOrder()
     {
-        global $LOCATION;
         global $USER;
+        global $LOCATION;
         // удаляем купоны у резерва и 1 клика
         $arCoupons = CouponsManager::get(true, array(), true, true);
         if (!empty($arCoupons)) {
@@ -1522,9 +1522,12 @@ class QsoftOrderComponent extends ComponentHelper
             $paymentWay = $this->getPaymentWays($this->arResult["PAYMENT"]["CURRENT"]["ID"]);
             $checkPrice = $price - $delPrice;
 
-            if (($checkPrice >= Option::get("respect", "free_delivery_min_summ")) && $paymentWay['PREPAYMENT'] == 'Y') {
-                $shipment->setBasePriceDelivery(0);
-                $price = $checkPrice;
+            if ($paymentWay['PREPAYMENT'] == 'Y') {
+                $order->setField('STATUS_ID', 'N');
+                if (($checkPrice >= Option::get("respect", "free_delivery_min_summ"))) {
+                    $shipment->setBasePriceDelivery(0);
+                    $price = $checkPrice;
+                }
             }
         }
 
