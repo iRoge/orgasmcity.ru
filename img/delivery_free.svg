@@ -1,0 +1,10 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="40" height="40">
+	<title>truck_fast_outline_icon_139003 (1)</title>
+	<defs>
+		<image  width="239" height="172" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO8AAACsAQMAAACpcmk4AAAAAXNSR0IB2cksfwAAAAZQTFRFAAAAAP8ANkNEvQAAAAJ0Uk5TAP9bkSK1AAACPklEQVR4nO3XQW6FIBAGYIwLlx6Bo3A0OBpH8QgsXRhtgRF+ECa8Nk1fmrLwRT8fDCOOKoRvV9VOgW3hWfKseNYsT7WWPPP8CPwlXnl+TPslVt9i/Yv80Pfhuv3zW3NxIe2rXCzT7VVWyG6M83qTyDtGO8JFYTmQDc8hCUXVOpG3AS4rJrLjOUyjLMcG+BjgxhVtxfnkS7RbMdKX2fK88ex67OekeVa0OLp8cCx7d1rkleell9XEhuG5l7bIU2SJF3TPLGJWuxzTxvAuWrcJseJZhr3nbUI/6z39Hl+idZsQLzzPIavP24Q4pq3LlLaC7TjHrGrkDTimrcsxbQrZAa89xiRKnhuL6Z/fm+uz3o5Xw/Gcu2ixzFWuxVeu/g32ReDoc6gwfZZ+z3RZ+b2ty/rKsTU47O09jvXn6HCv/Ql2Go/Lmg0+VLap4rOo+yZehMx7EQPVyswOa+9JtTLzhsX1oMdbZovFdafnV2aD7OgBVfDKsEDe6AFV8DLKlo6O8vlT7OFMWw82bUd4psjHeXrwmjhmzQCbzLrHB7G7DyW29/O6wTEOlXgvX/amEI0mVrTWBLDzEe/EcaUmDjJlvmiTOdwlsTRJH0lRxfVnIBLYzTXTChVpScIrskpLkGMbdmhZwPu3RJ5xJOzP8JySlAPB4VIW8kjQ3z1TDSNBf/dUFHaV+7unIrGr3N8d61plhfq7g1mqrNAf7mDmatrxD+U3u0WeitHUVX9WaOxuveovHonnz4+vrak4X1FSPgDthd0ZrN7qWwAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<use id="Background" href="#img1" x="7" y="42" />
+</svg>

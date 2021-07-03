@@ -1152,3 +1152,18 @@ footer .hide-block {
         display: block;
     }
 }
+
+.free-delivery {
+    height: 33px;
+    background-color: transparent;
+    border: none;
+    z-index: 10;
+    left: 12%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-div {
+    position: absolute;
+    bottom: 85px;
+    width: 100%;
+}
