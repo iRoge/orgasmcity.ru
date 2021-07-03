@@ -19,8 +19,8 @@ class ChangeOrelCityName20200610120429 extends Version
                     'NAME' => 'Orel'
                 ),
             ),
-            'LATITUDE' => '100.970143',
-            'LONGITUDE' => '100.970143',
+            'LATITUDE' => '52.970143',
+            'LONGITUDE' => '36.063397',
         ));
     }
 

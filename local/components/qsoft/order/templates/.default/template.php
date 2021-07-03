@@ -375,7 +375,7 @@ global $LOCATION, $APPLICATION; ?>
                                             <div class="l">Доставка</div>
                                             <div id="cart__delivery-price" class="r">
                                                 <?=$arResult["PRICE"] > $freeDeliveryMinSum ?
-                                                    'Бесплатно (сумма заказа более ' . $freeDeliveryMinSum . ')'
+                                                    'Бесплатно'
                                                     : 'Способ доставки не выбран'
                                                 ?>
                                             </div>

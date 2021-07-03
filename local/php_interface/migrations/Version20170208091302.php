@@ -4,6 +4,7 @@ namespace Sprint\Migration;
 
 
 use Bitrix\Main\UserFieldTable;
+use CUserTypeEntity;
 
 class Version20170208091302 extends Version
 {
@@ -58,9 +59,7 @@ class Version20170208091302 extends Version
 
     public function down()
     {
-        $helper = new HelperManager();
-
-        //your code ...
+        $oUserTypeEntity = new CUserTypeEntity();
 
     }
 
