@@ -397,3 +397,68 @@ input[type="number"] {
     outline: none;
     text-align: center;
 }
+
+.heart__btn {
+    background-color: transparent;
+    border: none;
+    z-index: 10;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    height: 25px;
+}
+
+@media (max-width: 767px) {
+    .heart__btn.active:hover svg {
+        fill: red !important;
+    }
+
+    .heart__btn:hover svg {
+        fill: #c6c1c1 !important
+    }
+}
+
+.heart__btn:focus,
+.heart__btn:active {
+    outline: none;
+}
+
+.heart__btn.active svg,
+.heart__btn.active:hover svg {
+    fill: #ff5e5e;
+}
+
+.heart__btn:hover svg {
+    fill: #ff5e5e;
+}
+
+.heart__btn svg {
+    height: 25px;
+    fill: #c6c1c1;
+    transition: fill 0.2s;
+}
+
+.right-cartochka__top-block .heart__btn {
+    position: inherit;
+    padding: 0px;
+}
+
+.right-cartochka__top-block .heart__btn {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transform: none;
+}
+
+.right-cartochka__top-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.right-cartochka__top-block .heart__btn svg {
+    width: 30px;
+    height: 29px;
+}

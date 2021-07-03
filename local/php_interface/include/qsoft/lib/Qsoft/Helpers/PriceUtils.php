@@ -8,16 +8,16 @@ class PriceUtils
     {
         $markupPercent = ($rrcPrice - $basePrice) * 100 / $rrcPrice;
 
-        if ($markupPercent >= 75) {
+        if ($markupPercent >= 80) {
             // Реальная скидка 16%
             $price = self::getTrickyPrice($rrcPrice, 20, 30);
-        } elseif ($markupPercent < 75 && $markupPercent >= 65) {
+        } elseif ($markupPercent < 80 && $markupPercent >= 70) {
             // Реальная скидка 13.75%
             $price = self::getTrickyPrice($rrcPrice, 15, 25);
-        } elseif ($markupPercent < 65 && $markupPercent >= 50) {
+        } elseif ($markupPercent < 70 && $markupPercent >= 55) {
             // Реальная скидка 12%
             $price = self::getTrickyPrice($rrcPrice, 10, 20);
-        } elseif ($markupPercent < 50 && $markupPercent >= 40) {
+        } elseif ($markupPercent < 55 && $markupPercent >= 45) {
             // Реальная скидка 7.3%
             $price = self::getTrickyPrice($rrcPrice, 3, 10);
         } else {

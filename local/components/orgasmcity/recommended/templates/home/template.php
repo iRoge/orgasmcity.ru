@@ -23,6 +23,9 @@ $this->setFrameMode(true);
                         <div class="card">
                             <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="card__img" target="_blank">
                                 <div class="card__img-box">
+                                    <?php if ($arItem['DISCOUNT']) {?>
+                                        <img class="sale-img" src="/img/sale.png" alt="Скидка">
+                                    <?php }?>
                                     <img
                                             src="<?= $arItem['DETAIL_PICTURE'] ;?>"
                                             class="card__img-pic pic-active pic-one"

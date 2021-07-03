@@ -1700,7 +1700,7 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $sortParams = [
             [
-                'sort_key' => 'SHOW_COUNTER',
+                'sort_key' => 'PROPERTY_BESTSELLER_VALUE',
                 'order' => 'desc'
             ]
         ];

@@ -550,10 +550,12 @@ $(document).ready(function() {
         $('.lds-ring-container-first').css('display', 'none');
     });
 
-    $('.props_icon_img').on('click', function () {
-        var dd = $(this).next().html();
-        Popup.show('</br>' + '<div style="text-align:center">' + dd + '</div>');
-    });
+    if (targetDeviceType === 'mobile') {
+        $('.props-icon-img').on('click', function () {
+            var dd = $(this).next().html();
+            Popup.show('</br>' + '<div style="text-align:center">' + dd + '</div>');
+        });
+    }
 
     $('.js-change-sort').on('change', function () {
         let sort = $(this).val();

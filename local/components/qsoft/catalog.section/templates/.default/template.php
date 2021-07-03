@@ -14,8 +14,10 @@
 
 /** @global CDatabase $DB */
 
+use Bitrix\Main\Config\Option;
 use Bitrix\Main\Page\Asset;
 $curPage = $APPLICATION->GetCurPage(false);
+$freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 if (!$arResult['IS_AJAX']) :
     Asset::getInstance()->addString('<link rel="canonical" href="https://' . SITE_SERVER_NAME . $curPage . '">');
 
@@ -382,6 +384,12 @@ if (!$arResult['IS_AJAX']) :
                                         <div class="cards__item">
                                             <div class="card">
                                                 <div class="btn-div">
+                                                    <?php if ($arItem['PRICE'] >= $freeDeliveryMinSum) { ?>
+                                                        <img class="props-icon-img free-delivery" alt="Бесплатная доставка" src="/img/delivery_free.svg">
+                                                        <div class="icon__tooltip" style="left: 0">
+                                                            Бесплатная доставка для корзин от <?=$freeDeliveryMinSum?> рублей
+                                                        </div>
+                                                    <?php } ?>
                                                     <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES'][$arItem['ID']]) ? ' active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
                                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
                                                                         <g>
@@ -392,40 +400,29 @@ if (!$arResult['IS_AJAX']) :
                                                                         </g>
                                                                     </svg>
                                                     </button>
-                                                    <img class="free-delivery" title="Бесплатная доставка" alt="Бесплатная доставка" src="/img/delivery_free.svg">
+                                                    <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
+                                                        <img class="props-icon-img hit-img" alt="Хит продаж" src="/img/hit.png">
+                                                        <div class="icon__tooltip" style="right: 0">
+                                                            Хит продаж
+                                                        </div>
+                                                    <?php } ?>
                                                 </div>
                                                 <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="card__img" target="_blank">
                                                     <div class="card__img-box">
-<!--                                                        <div class="lds-ring-container-lazyload">-->
-<!--                                                            <div class="lds-ring lds-ring--lazyload">-->
-<!--                                                                <div></div>-->
-<!--                                                                <div></div>-->
-<!--                                                                <div></div>-->
-<!--                                                                <div></div>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                        <style>-->
-<!--                                                            .fig {-->
-<!--                                                                display: block; /* Блочный элемент (для старых браузеров) */-->
-<!--                                                                text-align: center; /* Выравнивание по центру */-->
-<!--                                                                font-style: italic; /* Курсивное начертание */-->
-<!--                                                                margin-top: 0; /* Отступ сверху */-->
-<!--                                                                margin-bottom: 5px; /* Отступ снизу */-->
-<!--                                                                color: #666; /* Цвет подрисуночной подписи */-->
-<!--                                                            }-->
-<!--                                                        </style>-->
-<!--                                                        <figure class="fig">-->
-                                                            <img
-                                                                <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
-                                                                    src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
-                                                                    data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
-                                                                <? else : ?>
-                                                                    src="<?= $arItem['DETAIL_PICTURE'] ;?>"
-                                                                    data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
-                                                                <? endif; ?>
-                                                                class="card__img-pic pic-active pic-one"
-                                                                alt="<?= $arItem['NAME'] ?>">
-<!--                                                        </figure>-->
+                                                        <?php if ($arItem['PERCENT']) {?>
+                                                        <img class="sale-img" src="/img/sale.png" alt="Скидка">
+                                                        <?php }?>
+                                                        <img
+                                                            <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
+                                                                src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
+                                                                data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
+                                                            <? else : ?>
+                                                                src="<?= $arItem['DETAIL_PICTURE'] ;?>"
+                                                                data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
+                                                            <? endif; ?>
+                                                            class="card__img-pic pic-active pic-one"
+                                                            alt="<?= $arItem['NAME'] ?>"
+                                                        >
                                                     </div>
                                                     <div class="card__info">
                                                         <div class="card__meta">

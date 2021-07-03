@@ -432,7 +432,7 @@ footer .hide-block {
 .icon__tooltip {
     position: absolute;
     width: max-content;
-    max-width: 250px;
+    max-width: 200px;
     background: #fff;
     box-shadow: 0 4px 20px rgba(0,0,0,.1);
     border: 0;
@@ -455,7 +455,7 @@ footer .hide-block {
 }
 
 @media (min-width: 768px) {
-    .props_icon_img:hover + .icon__tooltip {
+    .props-icon-img:hover + .icon__tooltip {
         display: block;
     }
 }
@@ -1157,13 +1157,73 @@ footer .hide-block {
     height: 33px;
     background-color: transparent;
     border: none;
+    position: absolute;
     z-index: 10;
-    left: 12%;
+    left: 0;
+    transform: translate(0, -50%);
+}
+
+.heart__btn {
+    background-color: transparent;
+    border: none;
+    z-index: 10;
+    left: 50%;
+    position: absolute;
     transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    height: 25px;
+}
+
+.hit-img {
+    height: 33px;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    transform: translate(0, -50%);
 }
 
 .btn-div {
     position: absolute;
-    bottom: 85px;
+    bottom: 126px;
     width: 100%;
+}
+
+@media (max-width: 767px) {
+    .heart__btn.active:hover svg {
+        fill: red !important;
+    }
+
+    .heart__btn:hover svg {
+        fill: #c6c1c1 !important
+    }
+}
+
+.heart__btn:focus,
+.heart__btn:active {
+    outline: none;
+}
+
+.heart__btn.active svg,
+.heart__btn.active:hover svg {
+    fill: #ff5e5e;
+}
+
+.heart__btn:hover svg {
+    fill: #ff5e5e;
+}
+
+.heart__btn svg {
+    height: 25px;
+    fill: #c6c1c1;
+    transition: fill 0.2s;
+}
+
+.sale-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
 }
