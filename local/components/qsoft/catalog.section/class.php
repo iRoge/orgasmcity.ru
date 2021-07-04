@@ -1827,7 +1827,6 @@ class QsoftCatalogSection extends ComponentHelper
     private function getFilterValues()
     {
         $arFiltersWithValues = [];
-
         foreach ($this->arResult['FILTER'] as $key => $xml_ids) {
             if (array_key_exists($key, $this->props)) {
                 foreach ($xml_ids as $xml_id) {
@@ -1846,7 +1845,6 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             }
         }
-
         return $arFiltersWithValues;
     }
 
@@ -1877,7 +1875,6 @@ class QsoftCatalogSection extends ComponentHelper
 
             $props['SIZES'] = $this->getEnumProps(IBLOCK_OFFERS, 'SIZE');
             $props['COLORS'] = $this->getColorsFilter();
-            $props['MATERIAL'] = $this->getEnumProps(IBLOCK_CATALOG, 'MATERIAL');
             $props['VENDOR'] = $this->getVendorFilter();
 
             $this->endTagCache();
