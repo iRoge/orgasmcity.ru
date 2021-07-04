@@ -134,6 +134,12 @@ $eventManager->addEventHandler('main', 'OnBeforeUserUpdate', 'lowerUserEmail');
 
 function lowerUserEmail(&$arFields)
 {
+    if ($arFields['EMAIL'] == 'no@email.rr') {
+        $arFields['EMAIL'] = $arFields['ID'] . '@rshoes.ru';
+        $arFields['LOGIN'] = $arFields['EMAIL'];
+        $_POST['EMAIL'] = $arFields['EMAIL'];
+    }
+
     if (isset($arFields['EMAIL'])) {
         $arFields['EMAIL'] = mb_strtolower($arFields['EMAIL']);
     }
@@ -240,4 +246,12 @@ function AddButtonByManualStartFeed(&$items)
             }
         }
     }
+}
+
+if (mb_strpos($_SERVER['REQUEST_URI'], '/bitrix/admin') !== false) {
+    $eventManager->AddEventHandler("main", "OnBeforeProlog", "checkAccessRights", 50);
+}
+
+if (in_array($_SERVER['SCRIPT_NAME'], ['/bitrix/admin/iblock_element_edit.php', '/bitrix/admin/iblock_section_edit.php'])) {
+    $eventManager->addEventHandler('main', 'OnAdminTabControlBegin', ['\Qsoft\Events\MenuTabBuilder', 'handleEvent']);
 }
