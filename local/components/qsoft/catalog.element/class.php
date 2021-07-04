@@ -12,6 +12,7 @@ use Bitrix\Main\Type\Collection;
 use Bitrix\Main\UserTable;
 use Likee\Site\Helper;
 use Likee\Site\Helpers\HL;
+use Qsoft\Helpers\BonusSystem;
 use Qsoft\Helpers\ComponentHelper;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
@@ -315,6 +316,13 @@ class QsoftCatalogElement extends ComponentHelper
         }
 
         $this->arResult["FAVORITES"] = $this->checkFavorites($this->arResult['ID']);
+
+        $this->arResult['USER_DISCOUNT'] = 0;
+        global $USER;
+        if ($USER->IsAuthorized()) {
+            $bonusSystemHelper = new BonusSystem($USER->GetID());
+            $this->arResult['USER_DISCOUNT'] = $bonusSystemHelper->getCurrentBonus();
+        }
     }
 
     private function beforeTemplate(): void

@@ -2,12 +2,14 @@
     die();
 }
 
+use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
 
 Asset::getInstance()->addJs('/local/templates/respect/lib/jquery.zoom.min.js');
 global $LOCATION;
 global $APPLICATION;
+$freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 ?>
 <script type="text/javascript">
     const OFFERS = <?=CUtil::PhpToJSObject($arResult['OFFERS'])?>;
@@ -87,6 +89,16 @@ global $APPLICATION;
                                         </p>
                                     </div>
                                 <? endif ?>
+                                <p class="grey-under bonus-text">
+                                    <?php if ($arResult['USER_DISCOUNT']) { ?>
+                                        *скидка по бонусной программе в размере
+                                        <span class="discount-yellow"><b><?=$arResult['USER_DISCOUNT']?>%</b></span>
+                                        включена в общую скидку <br>
+                                    <?php }?>
+                                    <?php if ($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] >= $freeDeliveryMinSum) { ?>
+                                        *по данному товару осуществляется бесплатная доставка
+                                    <?php }?>
+                                </p>
                             </div>
                         <? endif ?>
                         <? if (!empty($arResult['OFFERS']) && !empty($arResult['MIN_PRICE_OFFER'])) : ?>
@@ -167,6 +179,16 @@ global $APPLICATION;
                                 </div>
                             </form>
                         <? endif; ?>
+                    <? $APPLICATION->IncludeComponent(
+                        "qsoft:infopage",
+                        "advantagesInCatalogElement",
+                        array(
+                            "IBLOCK_CODE" => 'advantagesInCatalogElement',
+                            "CACHE_TYPE" => "A",
+                            "CACHE_TIME" => "86400"
+                        ),
+                        false
+                    ); ?>
                     </div>
                     <?if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
                         <div class="col-sm-12 hidden-xs" style="margin-right: 20px;margin-top: 50px">

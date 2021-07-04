@@ -149,7 +149,6 @@
     }
 
     .col-sm-6.right-cartochka__container {
-        border-left: 1px solid #e4e4e4;
         padding-bottom: 20px;
         padding-left: 10px;
         width: 39%;
@@ -4854,6 +4853,8 @@ input::-webkit-inner-spin-button {
 }
 
 .right-cartochka {
+    border-right: 1px solid #e4e4e4;
+    border-left: 1px solid #e4e4e4;
     min-height: 100px !important;
     padding: 15px !important;
 }
@@ -5097,9 +5098,7 @@ label.color-label {
 }
 
 .right-cartochka__container.col-sm-6 {
-    padding-right: 0px !important;
-    padding-left: 15px !important;
-
+    padding-right: 0 !important;
 }
 
 .sp-slides-container:hover .sp-fade-arrows {
@@ -7515,7 +7514,7 @@ label.color-label {
         }
     }
     .right-cartochka__container.col-sm-6 {
-        padding-left: 0 !important;
+        padding-left: 0!important;
     }
 
     .topmenu {

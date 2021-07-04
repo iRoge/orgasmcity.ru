@@ -6,6 +6,7 @@ class BonusSystem
 {
     private $user;
     const BONUSES = [
+        5000 => 1,
         10000 => 3,
         20000 => 6,
         30000 => 10,
