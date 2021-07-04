@@ -28,11 +28,20 @@ class PriceUtils
     }
 
     private static function getTrickyPrice($rrcPrice, $rrcMarkup, $discount) {
+        global $USER;
+        // Достаем персональную скидку
+        $userDiscount = 0;
+        if ($USER->IsAuthorized()) {
+            $bonusSystemHelper = new BonusSystem($USER->GetID());
+            $userDiscount = $bonusSystemHelper->getCurrentBonus();
+            $discount += $userDiscount;
+        }
         $price = [];
         $price['OLD_PRICE'] = ceil(($rrcPrice+($rrcPrice * $rrcMarkup/100))/10)*10;
         $price['PRICE'] = $price['OLD_PRICE'] - ($price['OLD_PRICE'] * $discount/100);
         $price['PRICE'] = ceil(($price['PRICE']-6)/10)*10;
         $price['DISCOUNT'] = $discount;
+        $price['DISCOUNT_WITHOUT_BONUS'] = $discount - $userDiscount;
 
         return $price;
     }

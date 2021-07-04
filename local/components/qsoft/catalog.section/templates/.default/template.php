@@ -409,7 +409,7 @@ if (!$arResult['IS_AJAX']) :
                                                 </div>
                                                 <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="card__img" target="_blank">
                                                     <div class="card__img-box">
-                                                        <?php if ($arItem['PERCENT']) {?>
+                                                        <?php if ($arItem['DISCOUNT_WITHOUT_BONUS']) {?>
                                                         <img class="sale-img" src="/img/sale.png" alt="Скидка">
                                                         <?php }?>
                                                         <img
@@ -432,7 +432,9 @@ if (!$arResult['IS_AJAX']) :
                                                                     <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
                                                                 </span>
                                                                     <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
-                                                                        <span class="card__discount">-<?= $arItem['PERCENT'] ?>%</span>
+                                                                        <span class="card__discount <?=$arResult['HAS_USER_DISCOUNT'] ? 'discount-yellow' : ''?>">
+                                                                            -<?= $arItem['DISCOUNT'] ?>%
+                                                                        </span>
                                                                     <? endif ?>
                                                                 </div>
                                                                 <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>

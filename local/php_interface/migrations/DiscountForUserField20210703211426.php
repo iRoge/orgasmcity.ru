@@ -19,23 +19,14 @@ class DiscountForUserField20210703211426 extends Version
         $helper->UserTypeEntity()->saveUserTypeEntity(array(
             'ENTITY_ID' => 'USER',
             'FIELD_NAME' => 'UF_DISCOUNT',
-            'USER_TYPE_ID' => 'iblock_element',
-            'XML_ID' => 'XML_FAVORITES_FIELD',
+            'USER_TYPE_ID' => 'integer',
             'SORT' => '500',
-            'MULTIPLE' => 'Y',
+            'MULTIPLE' => 'N',
             'MANDATORY' => 'N',
             'SHOW_FILTER' => 'N',
             'SHOW_IN_LIST' => 'Y',
-            'EDIT_IN_LIST' => 'N',
+            'EDIT_IN_LIST' => 'Y',
             'IS_SEARCHABLE' => 'N',
-            'SETTINGS' =>
-                array(
-                    'DISPLAY' => 'LIST',
-                    'LIST_HEIGHT' => 5,
-                    'IBLOCK_ID' => 'catalog:CATALOG',
-                    'DEFAULT_VALUE' => '',
-                    'ACTIVE_FILTER' => 'Y',
-                ),
             'EDIT_FORM_LABEL' =>
                 array(
                     'en' => 'Discount',

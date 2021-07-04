@@ -1,4 +1,7 @@
 <?
+
+use Qsoft\Helpers\BonusSystem;
+
 include("config.php");
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
@@ -96,28 +99,34 @@ while ($arOrder = $rsOrders->GetNext())
 						{
 							//echo $status_arr[$order_status]."<br>";
 							CSaleOrder::StatusOrder($arOrder["ID"], $status_arr[$order_status]);
-							if (in_array($order_status, array(8,10,13)))
-							{
+							if (in_array($order_status, array(8,10,13))) {
 								CSaleOrder::CancelOrder($arOrder["ID"], "Y");
 							}
 							//fda2000 set shipment
 							if(in_array($order_status, array(6, 7, 11))) {
 								$order = Bitrix\Sale\Order::load($arOrder['ID']);
-								foreach($order->getShipmentCollection()->getNotSystemItems() as $shipment)
-										$shipment->setFields([
-											'DEDUCTED'		=>'Y',
-											'STATUS_ID'		=>'DF',
-											'ALLOW_DELIVERY'=>'Y'
-										]);
-								if($order_status==7)
-									if(!$order->isPaid())
-										foreach($order->getPaymentCollection() as $Payment)
-											$Payment->setPaid('Y');
+								foreach ($order->getShipmentCollection()->getNotSystemItems() as $shipment) {
+                                    $shipment->setFields([
+                                        'DEDUCTED' => 'Y',
+                                        'STATUS_ID' => 'DF',
+                                        'ALLOW_DELIVERY' => 'Y'
+                                    ]);
+                                }
+								if ($order_status == 7) {
+                                    if (!$order->isPaid()) {
+                                        foreach ($order->getPaymentCollection() as $Payment) {
+                                            $Payment->setPaid('Y');
+                                        }
+                                    }
+                                }
+
 								$order->save();
-								if($order_status==7 && !$order->isPaid())
-									CSaleOrder::PayOrder($arOrder['ID'], 'Y');
+								if ($order_status == 7 && !$order->isPaid()) {
+                                    CSaleOrder::PayOrder($arOrder['ID'], 'Y');
+                                }
 							}
-							//
+							$bonusSystemHelper = new BonusSystem($arOrder['USER_ID']);
+							$bonusSystemHelper->recalcUserBonus();
 						}
 					}
 				}

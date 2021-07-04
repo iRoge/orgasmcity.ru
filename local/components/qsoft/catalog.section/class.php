@@ -7,6 +7,7 @@ use Bitrix\Main\FileTable;
 use Bitrix\Main\Loader;
 use Likee\Site\Helper;
 use Likee\Site\Helpers\HL;
+use Qsoft\Helpers\BonusSystem;
 use Qsoft\Helpers\ComponentHelper;
 use Qsoft\Helpers\PriceUtils;
 
@@ -281,6 +282,13 @@ class QsoftCatalogSection extends ComponentHelper
         }
         $this->arResult['SECTION_TYPE'] = $this->type;
         $this->arResult['PROPS'] = $this->props;
+
+        global $USER;
+        $this->arResult['HAS_USER_DISCOUNT'] = false;
+        if ($USER->IsAuthorized()) {
+            $bonusSystemHelper = new BonusSystem($USER->GetID());
+            $this->arResult['HAS_USER_DISCOUNT'] = (bool)$bonusSystemHelper->getCurrentBonus();
+        }
         $this->includeComponentTemplate();
 
         $GLOBALS['CATALOG_SECTION_ID'] = $this->arResult['SECTION_ID'];
@@ -1362,9 +1370,7 @@ class QsoftCatalogSection extends ComponentHelper
                     && $price['PRICE'] < $items[$pid]['PRICE']
                 )
             ) {
-                $items[$pid]['PRICE'] = $price['PRICE'];
-                $items[$pid]['OLD_PRICE'] = $price['OLD_PRICE'];
-                $items[$pid]['PERCENT'] = $price['DISCOUNT'];
+                $items[$pid] = array_merge($items[$pid], $price);
             }
             $items[$pid]["SIZES"][] = $value["PROPERTY_SIZE_VALUE"];
             $items[$pid]["COLORS"][] = $value["PROPERTY_COLOR_VALUE"];
@@ -1661,7 +1667,7 @@ class QsoftCatalogSection extends ComponentHelper
         $this->arResult['SORT_ARRAY'] = [
             self::SORT_PRICE_DESC => 'Цена по убыванию',
             self::SORT_PRICE_ASC => 'Цена по возрастанию',
-//            self::SORT_POPULAR => 'По популярности',
+            self::SORT_POPULAR => 'По популярности',
             self::SORT_NEW => 'По новизне',
             self::SORT_DEFAULT => 'По умолчанию',
         ];

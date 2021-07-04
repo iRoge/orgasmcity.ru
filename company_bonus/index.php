@@ -1,8 +1,12 @@
 <?
+
+use Qsoft\Helpers\BonusSystem;
+
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetPageProperty("title", "Бонусная программа");
 $APPLICATION->SetTitle("Бонусная программа");
 $APPLICATION->SetAdditionalCss("/local/templates/respect/css/application.css");
+
 ?>
 <div style="margin-bottom: 30px">
     <span style="font-size: 14pt;">
@@ -10,18 +14,15 @@ $APPLICATION->SetAdditionalCss("/local/templates/respect/css/application.css");
         Регестрируйтесь на сайте и получайте постоянную скидку за осуществление суммарных покупок на определенную сумму:<br>
         <b>
             <ul style="list-style-type: none;">
-                <li>
-                    10000 рублей = <span style="color: green">3%</span> постоянная скидка
-                </li>
-                <li>
-                    20000 рублей = <span style="color: green">6%</span> постоянная скидка
-                </li>
-                <li>
-                    30000 рублей = <span style="color: green">10%</span> постоянная скидка
-                </li>
+                <?php foreach (BonusSystem::BONUSES as $minOrderSum => $discount) {?>
+                    <li>
+                        <?=$minOrderSum?> рублей = <span style="color: green"><?=$discount?>%</span> постоянная скидка
+                    </li>
+                <?php }?>
             </ul>
         </b>
-        Вашу текущую общую сумму покупок и размер скидки вы можете посмотреть в личном кабинете.
+        Вашу текущую общую сумму покупок и размер скидки вы можете посмотреть в <a href="/personal/bonuses/">личном кабинете</a>. <br>
+        Все скидки автоматически суммируются и показываются в каталоге.
     </span>
 </div>
 

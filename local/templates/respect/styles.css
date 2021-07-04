@@ -1235,3 +1235,7 @@ jdiv[class^="button_"] {
 .slick-prev {
     left: -20px;
 }
+
+.discount-yellow {
+    color: #e28400;
+}

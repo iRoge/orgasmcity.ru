@@ -1,4 +1,7 @@
 <?
+
+use Qsoft\Helpers\BonusSystem;
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetPageProperty('NOT_SHOW_NAV_CHAIN', 'Y');
 $orderId = $_REQUEST['OrderId'];
@@ -36,6 +39,9 @@ if ($success) {
                 $onePayment->setPaid("Y"); // выставляем оплату
                 $order->setField('STATUS_ID', 'ZS'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
                 $order->save();
+                global $USER;
+                $bonusHelper = new BonusSystem($USER->GetID());
+                $bonusHelper->recalcUserBonus();
             } else {
                 $success = false;
                 $errorMsg = 'Заказ ' . $orderId . ' не найден';
