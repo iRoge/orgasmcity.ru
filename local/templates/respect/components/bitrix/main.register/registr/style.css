@@ -22,16 +22,6 @@ form#reg-form2 .captcha_block {
     height: 20px;
 }
 
-a.auth-div-desk {
-    cursor: pointer;
-    color: #FD7778;
-    text-decoration: none;
-}
-
-a.auth-div-desk:hover {
-    color: #ff5e5e;
-}
-
 #reg-form2 .form-in-after-lk-sub {
     margin-top: 0;
 }

@@ -11,7 +11,7 @@
         <a href="/personal/orders/">История заказов</a><br />
         <a href="/personal/bonuses/">Бонусы</a><br />
         <a href="/personal/">Личные данные</a><br />
-<!--        <a href="/personal/subscribe/">Управление рассылкой</a><br />-->
+        <a href="/personal/subscribe/">Управление рассылкой</a><br />
         <a href="<?= $APPLICATION->GetCurPage() ?>?logout=yes" id="logout-btn">Выйти</a><br />
     </div>
 <? else : ?>

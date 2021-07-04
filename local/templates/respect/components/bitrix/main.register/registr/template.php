@@ -97,7 +97,7 @@ $arResult["SHOW_FIELDS"] = array(
                             <?
                        break; case "PERSONAL_GENDER":
                             ?>
-                    <div class="input-group--sex">
+                    <div class="input-group--sex" style="margin-bottom: 0px">
                         <div class="top-minus">
                             <input type="radio" name="REGISTER[PERSONAL_GENDER]" value="M"<?= $arResult["VALUES"][$FIELD] == "M" ? " checked=\"checked\"" : "" ?> class="checkbox2 <?=$class?>" id="checkbox1-" />
                             <label for="checkbox1-">Мужчина</label>
@@ -115,14 +115,6 @@ $arResult["SHOW_FIELDS"] = array(
                         <div class="input-group--phone">
                         <input class="registration_phone <?=$class?>" id="REGISTER[<?= $FIELD ?>]" size="30" type="text" placeholder="<?=$name_end?><?= GetMessage("REGISTER_FIELD_".$FIELD) ?>" name="REGISTER[<?= $FIELD ?>]" value="<?= $arResult["VALUES"][$FIELD] ?>" />
                         <div id='err-REGISTER[<?= $FIELD ?>]' class="error-field"></div>
-                            <? if ($arParams['SUBSCRIBE'] != 'N') { ?>
-                            <div class="input-group--sex input-group--feedback js-check-input">
-                                <div class="top-minus--25">
-                                    <input type="checkbox" name="SUBSCRIBE_SMS" id="SUBSCRIBE_SMS" class="checkbox3">
-                                    <label for="SUBSCRIBE_SMS">Подписаться на sms рассылки</label>
-                                </div>
-                            </div>
-                            <? } ?>
                         </div>
                             <?
                        break; default:
@@ -135,14 +127,6 @@ $arResult["SHOW_FIELDS"] = array(
                             } elseif ($FIELD=='EMAIL') {?>
                                 <input size="30" type="text" placeholder="<?=$name_end?><?= GetMessage("REGISTER_FIELD_".$FIELD) ?>" id="REGISTER[<?= $FIELD ?>]" name="REGISTER[<?= $FIELD ?>]" value="<?= $arResult["VALUES"][$FIELD] ?>" class="<?=$class?>"/>
                                 <div id='err-REGISTER[<?= $FIELD ?>]' class="error-field"></div>
-                                <? if ($arParams['SUBSCRIBE'] != 'N') { ?>
-                                <div class="input-group--sex input-group--feedback js-check-input">
-                                    <div class="top-minus--25">
-                                        <input type="checkbox" name="SUBSCRIBE_EMAIL" id="SUBSCRIBE_EMAIL"  class="checkbox3">
-                                        <label for="SUBSCRIBE_EMAIL">Подписаться на e-mail рассылки</label>
-                                    </div>
-                                </div>
-                                <? } ?>
                                 <?
                             } else {?>
                                 <input size="30" type="text" placeholder="<?=$name_end?><?= GetMessage("REGISTER_FIELD_".$FIELD) ?>" id="REGISTER[<?= $FIELD ?>]" name="REGISTER[<?= $FIELD ?>]" value="<?= $arResult["VALUES"][$FIELD] ?>" class="<?=$class?>"/>
@@ -192,7 +176,7 @@ $arResult["SHOW_FIELDS"] = array(
         <div id="registration_checkbox_policy" class="col-xs-12">
             <div id='err-conf' class="error-field"></div>
             <input type="checkbox" id="regform_checked" name="registration_checkbox_policy" class="checkbox3" checked="checked"/>
-            <label for="regform_checked" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="<?= OFFER_FILENAME ?>">политикой конфиденциальности</a>.</label>
+            <label for="regform_checked" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="<?= OFFER_FILENAME ?>">политикой конфиденциальности</a> и <a href="<?= OFERTA_FILENAME ?>">договором оферты</a>.</label>
         </div>
     </form>
     <? endif ?>
