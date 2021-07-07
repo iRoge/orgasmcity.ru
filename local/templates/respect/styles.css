@@ -625,7 +625,12 @@ font-family: 'firaregular';
     text-decoration: none;
     height: inherit;
 }
-.popup__container button.button--primary{
+@media(max-width: 767px){
+    .popup__container a.button--primary, .one-click-form  button {
+        font-size: 13px;
+    }
+}
+.popup__container button.button--primary {
     padding: 12px 0;
     background: #f0a740;
     width: 48%;
@@ -639,6 +644,11 @@ font-family: 'firaregular';
     outline: 0;
     cursor: pointer;
     height: inherit;
+}
+@media(max-width: 767px){
+    .popup__container button.button--primary {
+        font-size: 13px;
+    }
 }
 .skip-check-phone,
 .skip-check-phone2 {
