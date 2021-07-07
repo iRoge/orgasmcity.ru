@@ -134,17 +134,12 @@ $eventManager->addEventHandler('main', 'OnBeforeUserUpdate', 'lowerUserEmail');
 
 function lowerUserEmail(&$arFields)
 {
-    if ($arFields['EMAIL'] == 'no@email.rr') {
-        $arFields['EMAIL'] = $arFields['ID'] . '@rshoes.ru';
-        $arFields['LOGIN'] = $arFields['EMAIL'];
-        $_POST['EMAIL'] = $arFields['EMAIL'];
-    }
-
     if (isset($arFields['EMAIL'])) {
         $arFields['EMAIL'] = mb_strtolower($arFields['EMAIL']);
     }
 
     if (isset($arFields['LOGIN'])) {
+        $arFields['LOGIN'] = $arFields['EMAIL'];
         $arFields['LOGIN'] = mb_strtolower($arFields['LOGIN']);
     }
 }
