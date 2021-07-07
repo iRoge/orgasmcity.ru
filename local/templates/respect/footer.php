@@ -69,27 +69,27 @@
                             <p>Обратная связь<a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></p>
                             <p><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></p>
                             <p>г. Москва ул. Автозаводская д.16 к.2 стр.8</p>
-                            <p>Секс-шоп</p>
+<!--                            <p>Секс-шоп</p>-->
                         </div>
-<!--                        <div class="col-xs-12 social">-->
-<!--                            --><?// $APPLICATION->IncludeComponent(
-//                                "likee:social",
-//                                "footer",
-//                                array(
+                    </div>
+<!--                    <div class="col-xs-12 social">-->
+<!---->
+<!--                    </div>-->
+                    <div class="col-md-6 col-sm-3 col-md-offset-0 col-sm-offset-3 num2">
+                        <? $APPLICATION->IncludeComponent(
+                            "likee:social",
+                            "footer",
+                            array(
 //                                    "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
-//                                    "INSTAGRAM_LINK" => "https://www.instagram.com/respectshoes/",
-//                                    "VK_LINK" => "https://vk.com/respectshoess",
+                                "INSTAGRAM_LINK" => "https://www.instagram.com/orgasmcity.ru/",
+                                "VK_LINK" => "https://vk.com/club205704529",
 //                                    "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
 //                                    "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
 //                                    "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
-//                                    "COMPONENT_TEMPLATE" => "footer",
-//                                ),
-//                                false
-//                            ); ?>
-<!--                        </div>-->
-                    </div>
-                    <div class="col-md-6 col-sm-3 col-md-offset-0 col-sm-offset-3 num2">
-                        <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.png" class="logo header__logotype"/></a>
+                                "COMPONENT_TEMPLATE" => "footer",
+                            ),
+                            false
+                        ); ?>
                     </div>
 <!--                    <div class="col-md-7 hidden-xs mailsender">-->
 <!--                        <h4>Подпишитесь на рассылку</h4>-->

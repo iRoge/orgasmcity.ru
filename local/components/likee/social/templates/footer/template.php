@@ -18,19 +18,19 @@ $this->setFrameMode(true);
 <div class="social-icons">
 
     <? if (!empty($arResult['FACEBOOK_LINK'])): ?>
-        <a target="_blank" href="<?= $arResult['FACEBOOK_LINK']; ?>"><i class="icon icon-facebook"></i></a>
+        <a title="Facebook" target="_blank" href="<?= $arResult['FACEBOOK_LINK']; ?>"><i class="icon icon-facebook"></i></a>
     <? endif; ?>
 
     <? if (!empty($arResult['INSTAGRAM_LINK'])): ?>
-        <a target="_blank" href="<?= $arResult['INSTAGRAM_LINK']; ?>"><i class="icon icon-instagram"></i></a>
+        <a title="Инстаграм" target="_blank" href="<?= $arResult['INSTAGRAM_LINK']; ?>"><i class="icon icon-instagram"></i></a>
     <? endif; ?>
 
     <? if (!empty($arResult['VK_LINK'])): ?>
-        <a target="_blank" href="<?= $arResult['VK_LINK']; ?>"><i class="icon icon-vk"></i></a>
+        <a title="Вконтакте" target="_blank" href="<?= $arResult['VK_LINK']; ?>"><i class="icon icon-vk"></i></a>
     <? endif; ?>
 
     <? if (!empty($arResult['TELEGRAM_LINK'])): ?>
-        <a target="_blank" href="<?= $arResult['TELEGRAM_LINK']; ?>"><i class="icon icon-telegram tele-foot"></i></a>
+        <a title="Telegram" target="_blank" href="<?= $arResult['TELEGRAM_LINK']; ?>"><i class="icon icon-telegram tele-foot"></i></a>
     <? endif; ?>
 
 
