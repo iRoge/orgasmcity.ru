@@ -467,3 +467,8 @@ input[type="number"] {
     width: 30px;
     height: 29px;
 }
+
+.product-preorder-success footer {
+    display: flex;
+    justify-content: space-between;
+}

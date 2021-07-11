@@ -15,7 +15,7 @@
         <a href="<?= $APPLICATION->GetCurPage() ?>?logout=yes">Выйти</a><br />
     </div>
 <? else : ?>
-    <span class="ent" id="auth-button">Войти</span>
+    <span id="auth-button">Войти</span>
 <? endif; ?>
 <? $this->__template->EndViewTarget(); ?>
 <? endif; ?>

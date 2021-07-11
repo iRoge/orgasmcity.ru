@@ -18,6 +18,8 @@
 
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="yandex-verification" content="9150aa1aa386cc50" />
+    <meta name="yandex-verification" content="fbad8d6555dc89a3" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?
     \Bitrix\Main\Loader::includeModule('likee.site');
@@ -170,6 +172,21 @@
             document.location.reload();
         }
     </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(82799680, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/82799680" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
     <? $GLOBALS["PAGE"] = explode("/", $APPLICATION->GetCurPage()); ?>
 </head>
 
@@ -212,7 +229,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
 
 <div class="top col-xs-12 tolltips">
     <div class="main top-border">
-        <div class="col-md-8 col-sm-9 col-xs-12 info">
+        <div class="col-md-8 col-sm-8 col-xs-12 info">
             <? $APPLICATION->IncludeComponent(
                 'qsoft:geolocation',
                 '.default',
@@ -229,51 +246,23 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 </p>
 
             </div>
-            <div class="col-sm-offset-1 col-sm-3 hidden-xs phone-top">
+            <div class="col-sm-3 hidden-xs phone-top">
+                <p class="phone-top-first hidden-sm">
+                    <span>Режим работы телефонной справочной: </span>
+                    <span>с 12.00 - 18.00 СБ, ВС - выходной</a></span>
+                </p>
                 <p class="phone-top-second">
                     <span>Интернет-магазин: </span>
                     <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
                 </p>
-                    <? /*<span class="order-info__btn">Статус заказ</span></p>
-                    <div class="order-info">
-                        <div class="order-info__modal">
-                            <div class="order-info__title">Для того, чтобы узнать статус заказа<br /> введите номер заказа и ваш номер телефона</div>
-                            <div class="order-info__row">
-                                <input class="order-info__col order-info__input" type="text" name="order_number" placeholder="Введите номер заказа">
-                                <input class="order-info__col order-info__input" type="text" name="order_phone" placeholder="Введите номер телефона">
-                            </div>
-
-                            <div class="order-info__row order-info__captcha">
-                                <?
-                                include_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/classes/general/captcha.php");
-                                $cpt = new CCaptcha();
-                                $captchaPass = COption::GetOptionString("main", "captcha_password", "");
-                                if (strlen($captchaPass) <= 0)
-                                {
-                                    $captchaPass = randString(10);
-                                    COption::SetOptionString("main", "captcha_password", $captchaPass);
-                                }
-                                $cpt->SetCodeCrypt($captchaPass);
-                                ?>
-                                <input class="static_input" type="hidden" name="captcha_code" value="<?= htmlspecialchars($cpt->GetCodeCrypt()) ?>">
-
-                                <img class="order-info__col order-info_captcha-img" src="/bitrix/tools/captcha.php?captcha_code=<?= htmlspecialchars($cpt->GetCodeCrypt()) ?>">
-                                <input class="static_input order-info__col order-info__input inputtext" placeholder="Введите текст с картинки" type="text" size="10" name="captcha_word">
-                            </div>
-                            <div class="button button--primary button--outline button--xl button--block order-info__submit">Узнать статус заказа</div>
-
-                            <div class="order-info__result"></div>
-                        </div>
-                    </div>*/ ?>
-
             </div>
 
             <div class="col-sm-5 hidden-xs phone-top-mob">
                 <p>Телефон: <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span></p>
             </div>
         </div>
-        <div class="col-md-4 col-sm-3 col-xs-12 right-block-top">
-            <div class="col-md-6 col-sm-6 hidden-xs auth">
+        <div class="col-md-4 col-sm-4 col-xs-12 right-block-top">
+            <div class="col-md-6 col-sm-6 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
                 ?>
@@ -360,9 +349,9 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     <div class="hidden-sm col-xs-2 mail touch-for-poisk">
                         <img src="<?= SITE_TEMPLATE_PATH; ?>/img/search.png" style="margin-top: 18px;"/>
                     </div>
-                    <div class="hidden-sm col-xs-2 mail auth2">
+                    <div class="hidden-sm col-xs-2 mail auth2<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                         <? if (!$USER->IsAuthorized()) : ?>
-                            <img class="ent" src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
                         <? else : ?>
                             <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
                             <div class="auth-div menu_mob_fly" style="margin-top: 10px!important;">

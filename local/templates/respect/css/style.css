@@ -5496,16 +5496,15 @@ label.color-label {
 
 @media (max-width: 1090px) {
     .phone-top {
-        /* display: none; */
+        display: none;
     }
-
-    /* .phone-top-mob
-  {
-    display: inline-block;
-    font-size: 14px;
-    padding-left: 35px!important;
-    margin-left: 75px;
-  } */
+    .phone-top-mob
+    {
+        display: inline-block;
+        font-size: 14px;
+        padding-left: 35px!important;
+        margin-left: 75px;
+    }
 }
 
 @media (max-width: 991px) {
@@ -5753,9 +5752,8 @@ label.color-label {
     }
 
     .phone-top-mob {
-        display: none;
-        /* padding: 0!important;
-    margin-left: 50px; */
+        padding: 0!important;
+        margin-left: 50px;
     }
 
     .info {

@@ -7,7 +7,7 @@ $this->addExternalJS("/local/templates/respect/js/select2/select2.min.js");
 $this->addExternalJS("/local/templates/respect/js/select2/select2.ru.min.js");
 $this->addExternalCss("/local/templates/respect/js/select2/select2.min.css");
 ?>
-<div class="col-sm-6 col-xs-8 from">
+<div class="col-sm-5 col-xs-8 from">
     <div class="tooltip-window" style="display: <?= $LOCATION->isStranger ? 'flex' : 'none' ?>">
         <p class="tooltip-window__text">Информация о доставке будет отображаться для региона</p>
         <div class="tooltip-window__city"><?= $arResult['LOCATION_NAME'] ?></div>

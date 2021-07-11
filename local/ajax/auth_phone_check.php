@@ -22,8 +22,6 @@ if (empty($email)) {
 $isAuth = $USER->Login($email, $password);
 if ($isAuth !== true) {
     $arrayAnswer['loginError'] = '<p>' . $errorText . '</p>';
-} else {
-    CStatEvent::AddCurrent("auth", $event2);
 }
 
 echo json_encode($arrayAnswer);

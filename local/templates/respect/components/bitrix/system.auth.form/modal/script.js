@@ -63,7 +63,7 @@ $(document).ready(function () {
         if (cou_err !== '') {
             return false;
         }
-        var flag = ajaxAuthPhoneCheck();
+        let flag = ajaxAuthPhoneCheck();
         if (flag.errorText != null) {
             $("#after-auth-in-err").html(flag.errorText);
             if (flag.event === 'phone') {
@@ -102,7 +102,8 @@ function ajaxAuthPhoneCheck() {
             }
         },
 
-        error: function () {
+        error: function (data) {
+            console.log(data);
             $("#after-auth-in-err").html('<p>Ошибка соединения, попробуйте обновить страницу</p>');
         }
     });

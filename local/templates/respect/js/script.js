@@ -1,14 +1,40 @@
 $(document).ready(function () {
+  let regForm   = $('#reg-form-popup'),
+      authForm  = $('#auth-form'),
+      regInput  = $('#vkl20'),
+      authInput = $('#vkl10');
+
+  $('.reg').click(function() {
+    regInput.not(':checked').prop("checked", true);
+    regForm.show();
+    $('.auth-div-full').toggle(0);
+    $('.podlozhka').toggle(0);
+  });
+
+  $('.ent').click(function() {
+    authInput.not(':checked').prop("checked", true);
+    authForm.show();
+    $('.auth-div-full').toggle(0);
+    $('.podlozhka').toggle(0);
+  });
+
+  $('.cls-mail-div, .podlozhka').click(function() {
+    regForm.hide();
+    authForm.hide();
+  })
+
+  regInput.click(function() {
+    authForm.hide();
+    regForm.show();
+  });
+
+  authInput.click(function() {
+    authForm.show();
+    regForm.hide();
+  });
+
   $('.from-ul-li').click(function(){
     $('.from-ul-li-ul').toggle(100);
-  });
-
-  $('.auth').click(function(){
-    $('.auth-div').toggle(100);
-  });
-
-  $('.auth2').click(function(){
-    $('.auth-div').toggle(100);
   });
 
   $('.auth-div-desk').parent().hover(
@@ -29,16 +55,6 @@ $(document).ready(function () {
     $('.mail-div').toggle(0);
     $('.podlozhka').toggle(0);
     $('.mail-div .popup').show(0);
-  });
-
-  $('.ent').click(function(){
-    $('.auth-div-full').toggle(0);
-    $('.podlozhka').toggle(0);
-  });
-
-  $('.reg').click(function(){
-    $('.auth-div-full').toggle(0);
-    $('.podlozhka').toggle(0);
   });
 
   $(document).ready( function() {

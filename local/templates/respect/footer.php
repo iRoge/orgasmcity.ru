@@ -142,36 +142,6 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 <?php endif; ?>
 
 <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
-<script>
-(function () {
-    let regForm   = $('#reg-form-popup'),
-        authForm  = $('#auth-form'),
-        regInput  = $('#vkl20'),
-        authInput = $('#vkl10');
-
-    $('.reg').click(function() {
-        regInput.not(':checked').prop("checked", true);
-        regForm.show();
-    });
-    $('.ent').click(function() {
-        authInput.not(':checked').prop("checked", true);
-        authForm.show();
-    });
-    $('.cls-mail-div, .podlozhka').click(function() {
-        regForm.hide();
-        authForm.hide();
-    })
-    regInput.click(function() {
-        authForm.hide();
-        regForm.show();
-    });
-    authInput.click(function() {
-        authForm.show();
-        regForm.hide();
-    });
-
-})();
-</script>
 <div class="auth-div-full">
     <div class="cls-mail-div"></div>
 
