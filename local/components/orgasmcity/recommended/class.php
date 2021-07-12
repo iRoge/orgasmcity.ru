@@ -51,7 +51,12 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             }
         }
 
-        $randKeys = array_rand($arItems, 12);
+        if ($GLOBALS['device_type'] == 'mobile') {
+            $numImgs = 8;
+        } else {
+            $numImgs = 12;
+        }
+        $randKeys = array_rand($arItems, $numImgs);
         $arRandItems = [];
         foreach ($randKeys as $key) {
             $arRandItems[] = $arItems[$key];

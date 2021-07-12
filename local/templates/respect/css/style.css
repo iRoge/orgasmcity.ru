@@ -1,41 +1,6 @@
 @font-face {
-    src: url('../fonts/Vollkorn-Black.ttf');
-    font-family: 'vollkornblack';
-}
-
-@font-face {
-    src: url('../fonts/Vollkorn-BlackItalic.ttf');
-    font-family: 'vollkornblackitalic';
-}
-
-@font-face {
-    src: url('../fonts/Vollkorn-Bold.ttf');
-    font-family: 'vollkornbold';
-}
-
-@font-face {
-    src: url('../fonts/Vollkorn-BoldItalic.ttf');
-    font-family: 'vollkornbolditalic';
-}
-
-@font-face {
-    src: url('../fonts/Vollkorn-Italic.ttf');
-    font-family: 'vollkornitalic';
-}
-
-@font-face {
-    src: url('../fonts/Vollkorn-Regular.ttf');
-    font-family: 'vollkornregular';
-}
-
-@font-face {
     src: url('../fonts/Vollkorn-Semibold.ttf');
     font-family: 'vollkornsemibold';
-}
-
-@font-face {
-    src: url('../fonts/Vollkorn-SemiboldItalic.ttf');
-    font-family: 'vollkornsemibolditalic';
 }
 
 @font-face {
@@ -56,21 +21,6 @@
 @font-face {
     src: url('../fonts/FiraSans-Regular.otf');
     font-family: 'firaregular';
-}
-
-@font-face {
-    src: url('../fonts/FiraSans-Semibold.otf');
-    font-family: 'firasemibold';
-}
-
-@font-face {
-    src: url('../fonts/FiraSans-Thin.otf');
-    font-family: 'firathin';
-}
-
-@font-face {
-    src: url('../fonts/rouble.otf');
-    font-family: 'alsrbl';
 }
 
 @font-face {
@@ -1083,6 +1033,8 @@ html, body {
     border-left: 2px solid #f4f4f4;
     height: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 /*ibc*/
@@ -9040,4 +8992,8 @@ label.color-label {
     padding-right: 0 !important;
     padding-left: 0 !important;
     border-top: 2px solid #f4f4f4;
+}
+
+.right-block-top {
+    padding-right: 0!important;
 }

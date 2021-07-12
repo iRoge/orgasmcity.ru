@@ -19,16 +19,10 @@ $this->setFrameMode(true);
     <div class="slider col-xs-12 mob-only">
         <div id="main-slider<?= $arParams['CUSTOM_NUMBER'] ?>" class="slides<? !empty($arResult['ITEMS'][0]['VIDEO']) and print ' slides--with-video' ?>"<? !empty($arResult['SLICK']) and print " data-slick='".json_encode($arResult['SLICK'])."'"; ?>>
             <? $counter = 1;
-            foreach ($arResult['ITEMS'] as $arItem) :
-                $dataProps = 'data-rblock-id="' . $arItem['ID'] .'" '; // id баннера
-                $dataProps .= 'data-rblock-name="' . $arParams['BANNER_TYPE'] . '" ';  // Тип баннера
-                //$dataProps .= 'data-prod-brand="Respect" ';  // Бренд баннера
-                $dataProps .= 'data-prod-creative="' . $arItem['NAME'] . ' | ' . $arItem['ACTIVE_FROM'] . '" ';  // Название и начало активности баннера
-                $dataProps .= 'data-prod-position="' . $counter . '" ';  // Номер баннера
-
-                if (!empty($arItem['VIDEO'])) :
+            foreach ($arResult['ITEMS'] as $arItem) {
+                if (!empty($arItem['VIDEO'])) {
                     ?>
-                <div class="slides-item slides-item--video banner_item" <?= $dataProps?>>
+                <div class="slides-item slides-item--video banner_item">
                     <div class="comp-ver">
                         <video class="slides-item__video" loop="loop" <? if ($arItem['PROPS']['AUTOPLAY']['VALUE']) :
                             ?> autoplay data-play="yes" <?
@@ -51,7 +45,7 @@ $this->setFrameMode(true);
                     <?endif;?>
                 </div>
                     <?
-                else :
+                    } else {
                     $bannerImg = '<img src="'.$arItem['PREVIEW_PICTURE']['SRC'].'" alt="" data-mob-img="'.$arItem['MOBILE_SRC'].'" />';
                 /*if (! empty($arItem['MOBILE_SRC'])) {
                     $mobImg = '<img src="'.$arItem['MOBILE_SRC'].'" alt="" />';
@@ -63,13 +57,13 @@ $this->setFrameMode(true);
                     ?>
 
                     <? if (!empty($arItem['LINK'])) : ?>
-                        <a href="<?= $arItem['LINK']; ?>" id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" <?= $dataProps?> data-mob-bg="<?=$arItem['MOBILE_SRC']?>" data-mob-link="<?=$arItem['PROPS']['MOBILE_LINK']['VALUE']?>" data-title="<?= $arItem['NAME']; ?>"><div class="more-btn">Посмотреть</div><?= $bannerImg ?></a>
+                        <a href="<?= $arItem['LINK']; ?>" id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" data-mob-link="<?=$arItem['PROPS']['MOBILE_LINK']['VALUE']?>" data-title="<?= $arItem['NAME']; ?>"><div class="more-btn">Посмотреть</div><?= $bannerImg ?></a>
                     <? else : ?>
-                        <div id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" <?= $dataProps?> data-mob-bg="<?=$arItem['MOBILE_SRC']?>"><?= $bannerImg ?></div>
+                        <div id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');"><?= $bannerImg ?></div>
                     <? endif; ?>
-                <? endif; ?>
+                <?  }?>
                 <? $counter++; ?>
-            <? endforeach; ?>
+            <? } ?>
         </div>
     </div>
 <? endif; ?>
