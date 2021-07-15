@@ -1,5 +1,4 @@
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetPageProperty("title", "Город Оргазма. Секс-шоп №1 в России. Анонимно. Более 30 тысяч товаров");
 $APPLICATION->SetTitle("Главная страница");
 \Likee\Site\Helper::addBodyClass('page--index');
 global $LOCATION;
