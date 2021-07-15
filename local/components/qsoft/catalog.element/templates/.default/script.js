@@ -1,4 +1,15 @@
 $(document).ready(function () {
+    let mainCardData = $('#main-card').data();
+    window.metrikaData.push({
+        "ecommerce": {
+            "currencyCode": "RUB",
+            "detail" : {
+                "products" : [
+                    mainCardData
+                ],
+            }
+        }
+    });
     //функция для клика на кнопку "Купить в 1 клик"
     function oneClickHandler(offerId, isLocal) {
         offerId = offerId || $('#one-click-btn').data('offer-id');
@@ -94,6 +105,17 @@ $(document).ready(function () {
                 if (data.status == "ok") {
                     updateSmallBasket(data.text);
                     respercEvent__add_to_cart();
+                    let productData = mainCardData;
+                    productData['quantity'] = quantity;
+                    window.metrikaData.push({
+                        "ecommerce": {
+                            "add": {
+                                "products": [
+                                    productData
+                                ]
+                            }
+                        },
+                    });
                     return;
                 }
                 let error_text = '<div class="product-preorder-success">'
@@ -224,8 +246,6 @@ $(document).ready(function () {
             }
         });
     });
-    // Виджет примерки
-    $('input#fittin_widget_button.non-authorized').on('click', () => $('#auth-button').trigger('click'));
     //Инициализация слайдера
     $(".sp-image_hide").removeClass("sp-image_hide");
     const isLoop = $(".sp-slide").length > 2 ? true : false;
@@ -444,54 +464,4 @@ $(document).ready(function () {
 
     // Выставляем дефолтную выборку оффера
     setPropsByOffer(previousOffer);
-
-    window.SubwayMapMarker = (function () {
-        function SubwayMapMarker(data, point) {
-            this.data = data;
-            this.point = point;
-            this.marker = $('<div class="map-marker">');
-            this.bubble = $(this._infoWindowTemplate(this.data)).appendTo(this.marker);
-            this.marker.on('click', this.show.bind(this));
-            $(document).on('mouseup', (function (_this) {
-                return function (event) {
-                    if (!_this.marker.is(event.target) && _this.marker.has(event.target).length === 0) {
-                        return _this.hide();
-                    }
-                };
-            })(this));
-        }
-
-        SubwayMapMarker.prototype.appendTo = function (container) {
-            var coordinates, position, svg;
-            $(container).append(this.marker);
-            svg = $('svg', container);
-            coordinates = {
-                top: this.point.offset().top - $(container).offset().top,
-                left: this.point.offset().left - $(container).offset().left
-            };
-            position = {
-                left: ((coordinates.left + this.point.width() / 2) / $(container).width() * 100) + "%",
-                top: ((coordinates.top + this.point.height() / 2) / $(container).outerHeight() * 100) + "%"
-            };
-            return this.marker.css(position);
-        };
-        SubwayMapMarker.prototype.show = function () {
-            store_id = this.data.index;
-            return this.marker.addClass('with-bubble');
-        };
-        SubwayMapMarker.prototype.hide = function () {
-            store_id = 0;
-            return this.marker.removeClass('with-bubble');
-        };
-        SubwayMapMarker.prototype._infoWindowTemplate = function (data) {
-            var template;
-            if ($('*').is('.' + data.subway_trans)) {
-                return $('.' + data.subway_trans).append('<div class="map-bubble__title">' + data.title + '</div>\n  <div class="map-bubble__metro">\n    <i class="icon icon-metro"></i>' + data.subway + '</div>\n  <div class="map-bubble__address">' + data.address + '</div>\n  <ul class="map-bubble__info">\n    <li>\n      <i class="icon icon-clock"></i>\n      <span>' + data.worktime + '</span>\n    </li>\n    <li>\n      <i class="icon icon-phone"></i>\n      <span>' + data.phone + '</span>\n    </li>\n  </ul>');
-            } else {
-                template = _.template('<div class="map-bubble <%=subway_trans%>">\n  <div class="map-bubble__title"><%=title%></div>\n  <div class="map-bubble__metro">\n    <i class="icon icon-metro"></i>\n    <%=subway%>\n  </div>\n  <div class="map-bubble__address"><%=address%></div>\n  <ul class="map-bubble__info">\n    <li>\n      <i class="icon icon-clock"></i>\n      <span><%=worktime%></span>\n    </li>\n    <li>\n      <i class="icon icon-phone"></i>\n      <span><%=phone%></span>\n    </li>\n  </ul>\n</div>');
-                return template(data);
-            }
-        };
-        return SubwayMapMarker;
-    })();
 });

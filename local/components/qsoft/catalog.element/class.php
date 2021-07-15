@@ -44,7 +44,6 @@ class QsoftCatalogElement extends ComponentHelper
     private $thumbSize = ['width' => 96, 'height' => 96];
     private $uploadDir;
     private $forSEO;
-    private bool $isPreorder = false;
 
     public function executeComponent()
     {
@@ -138,7 +137,7 @@ class QsoftCatalogElement extends ComponentHelper
     {
         $arOrder = [];
         $arFilter = [
-            'ACTIVE' => $this->isPreorder ? '' : 'Y',
+            'ACTIVE' => 'Y',
             'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
             'CODE' => $this->arParams['ELEMENT_CODE'],
         ];
@@ -146,6 +145,7 @@ class QsoftCatalogElement extends ComponentHelper
             "ID",
             "IBLOCK_ID",
             "NAME",
+            "XML_ID",
             "DETAIL_PICTURE",
             "PREVIEW_PICTURE",
             "DETAIL_TEXT",
@@ -175,6 +175,7 @@ class QsoftCatalogElement extends ComponentHelper
             'ID',
             'NAME',
             'IBLOCK_ID',
+            'XML_ID'
         ];
         $rsOffers = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
         while ($objOffer = $rsOffers->GetNextElement()) {

@@ -83,7 +83,7 @@
 //                                    "FACEBOOK_LINK" => "https://www.facebook.com/RESPECTSHOES",
                                 "INSTAGRAM_LINK" => "https://www.instagram.com/orgasmcity.ru/",
                                 "VK_LINK" => "https://vk.com/club205704529",
-//                                    "TELEGRAM_LINK" => "https://telegram.me/RespectShoesBot",
+                                "TELEGRAM_LINK" => "https://t.me/Orgasmcity",
 //                                    "PINTEREST_LINK" => "https://www.pinterest.ru/Respect_shoes/",
 //                                    "YOUTUBE_LINK" => "https://www.youtube.com/channel/UCtImAFnNl_WCVasjjcXK4qg",
                                 "COMPONENT_TEMPLATE" => "footer",

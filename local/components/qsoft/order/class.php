@@ -1050,6 +1050,8 @@ class QsoftOrderComponent extends ComponentHelper
             "ID",
             "IBLOCK_ID",
             "PROPERTY_CML2_LINK",
+            "XML_ID",
+            "NAME"
         ];
         if ($full) {
             $arSelect[] = "PROPERTY_SIZE";
@@ -1073,6 +1075,8 @@ class QsoftOrderComponent extends ComponentHelper
                 $price = PriceUtils::getPrice($arItem["PROPERTY_BASEWHOLEPRICE_VALUE"], $arItem["PROPERTY_BASEPRICE_VALUE"]);
                 $arOffersNew[$arItem["ID"]] = [
                     "PRODUCT_ID" => $arItem["PROPERTY_CML2_LINK_VALUE"],
+                    "XML_ID" => $arItem["XML_ID"],
+                    "NAME" => $arItem["NAME"],
                     "SIZE" => $arItem["PROPERTY_SIZE_VALUE"],
                     "COLOR" => $arItem["PROPERTY_COLOR_VALUE"],
                     "QUANTITY" => $arOffers[$arItem["ID"]]["QUANTITY"],
@@ -1083,6 +1087,7 @@ class QsoftOrderComponent extends ComponentHelper
             } else {
                 $arOffersNew[$arItem["ID"]] = [
                     "PRODUCT_ID" => $arItem["PROPERTY_CML2_LINK_VALUE"],
+                    "XML_ID" => $arItem["XML_ID"],
                 ];
             }
         }
@@ -1158,6 +1163,7 @@ class QsoftOrderComponent extends ComponentHelper
             }
             $value["PRICE"] = floor($value["BASKET_PRICE"]);
             $name = $arProducts[$value["PRODUCT_ID"]]["NAME"];
+            $nameWithAdditions = $arProducts[$value["PRODUCT_ID"]]["NAME"];
             $nameAdditions = [];
             if ($value["SIZE"]) {
                 $nameAdditions[] = 'Размер: <b>' . $value["SIZE"] . '</b>';
@@ -1167,14 +1173,16 @@ class QsoftOrderComponent extends ComponentHelper
                 $nameAdditions[] = 'Цвет: <b>' . $value['COLOR'] . '</b>';
             }
             if (!empty($nameAdditions)) {
-                $name .= '<br>' . implode(', ', $nameAdditions);
+                $nameWithAdditions .= '<br>' . implode(', ', $nameAdditions);
             }
             $arItem = [
                 "PRODUCT_ID" => $value["PRODUCT_ID"],
+                "XML_ID" => $value["XML_ID"],
                 "CODE" => $arProducts[$value["PRODUCT_ID"]]["CODE"],
                 "SRC" => $src,
                 "ARTICLE" => $arProducts[$value["PRODUCT_ID"]]["ARTICLE"],
                 "NAME" => $name,
+                "NAME_WITH_ADDITIONS" => $nameWithAdditions,
                 "SIZE" => $value["SIZE"],
                 "COLOR" => $value["COLOR"],
                 "QUANTITY" => $value["QUANTITY"],

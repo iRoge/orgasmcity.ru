@@ -8997,3 +8997,9 @@ label.color-label {
 .right-block-top {
     padding-right: 0!important;
 }
+
+.mobile_soc_icon {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}

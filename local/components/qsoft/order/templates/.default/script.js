@@ -8,10 +8,11 @@ $(document).ready(function(){
         arOnlinePaymentIdsInt = arOnlinePaymentIds.map(item => parseInt(item));
     }
 
-    function basketAddProd(offerId, quantity) {
+    function basketAddProd(el, quantity) {
+        let productData = el.data();
         let data = {
             action: "basketAdd",
-            offerId: offerId,
+            offerId: productData['offerId'],
             quantity: quantity,
         };
         let currentBasketPrice = 0;
@@ -26,14 +27,21 @@ $(document).ready(function(){
             success: function (data) {
                 let basketPrice = null;
                 if (data.status == "ok") {
+                    productData['quantity'] = quantity;
+                    window.metrikaData.push({
+                        "ecommerce": {
+                            "add": {
+                                "products": [
+                                    productData
+                                ]
+                            }
+                        },
+                    });
                     activeAjax = false;
                     // Получаем итоговую сумму корзины
                     basketPrice = parseInt(data['text']);
                     // Если сумма изменилась до такой сетпени, что доставка стала бесплатной,
                     // то перезагружаем весь блок корзины
-                    console.log(basketPrice);
-                    console.log(currentBasketPrice);
-                    console.log(freeDeliveryMinSum);
                     if (
                         currentBasketPrice > freeDeliveryMinSum && basketPrice < freeDeliveryMinSum
                         || currentBasketPrice < freeDeliveryMinSum && basketPrice > freeDeliveryMinSum
@@ -71,10 +79,11 @@ $(document).ready(function(){
         if (activeAjax) {
             return;
         }
+        let productData = el.data();
         activeAjax = true;
         let data = {
             action: "basketDel",
-            offerId: parseInt(el.data("id")),
+            offerId: parseInt(productData["offerId"]),
             quantity: quantity,
         };
         $.ajax({
@@ -84,6 +93,16 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data) {
                 if (data['status'] == "ok") {
+                    productData['quantity'] = quantity;
+                    window.metrikaData.push({
+                        "ecommerce": {
+                            "remove": {
+                                "products": [
+                                    productData
+                                ]
+                            }
+                        },
+                    });
                     let currentBasketPrice = 0;
                     $(".orders__price").each(function () {
                         currentBasketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
@@ -438,7 +457,7 @@ $(document).ready(function(){
         });
         $(".quantity-arrow-plus").on('click', function (event) {
             event.preventDefault();
-            basketAddProd($(this).closest('.js-card').data('id'), 1);
+            basketAddProd($(this).closest('.js-card'), 1);
         });
     }
 
@@ -627,6 +646,27 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function (data) {
                     if (data.status == "ok") {
+                        let productsData = [];
+                        let productsInfo = data['info'];
+                        for (let offerId in productsInfo) {
+                            productsData.push({
+                                "id": productsInfo[offerId]['XML_ID'],
+                                "name": productsInfo[offerId]['NAME'],
+                                "price": productsInfo[offerId]['BASKET_PRICE']/productsInfo[offerId]['QUANTITY'],
+                                "variant": productsInfo[offerId]['COLOR'],
+                                "quantity": productsInfo[offerId]['QUANTITY']
+                            });
+                        }
+                        window.metrikaData.push({
+                            "ecommerce": {
+                                "purchase": {
+                                    "actionField": {
+                                        "id" : data['text']
+                                    },
+                                    "products": productsData
+                                }
+                            }
+                        });
                         let paymentType = $.inArray(parseInt($('.js-payment-local:checked').val()), arOnlinePaymentIdsInt) == -1 ? 'default' : 'prepayment_s1';
                         window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
                         return false;

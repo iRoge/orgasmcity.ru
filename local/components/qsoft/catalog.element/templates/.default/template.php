@@ -2,6 +2,7 @@
     die();
 }
 
+/** @var array $arResult */
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
@@ -15,7 +16,14 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
     const OFFERS = <?=CUtil::PhpToJSObject($arResult['OFFERS'])?>;
     var previousOffer = <?=CUtil::PhpToJSObject($arResult['MIN_PRICE_OFFER'])?>;
 </script>
-<div class="col-xs-12 carto">
+<div id="main-card" class="col-xs-12 carto"
+     data-id="<?=$arResult['MIN_PRICE_OFFER']['XML_ID']?>"
+     data-name="<?=$arResult['NAME']?>"
+     data-price="<?=$arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE']?>"
+     data-brand="<?=$arResult['DISPLAY_PROPERTIES']['vendor']['VALUE']?>"
+     data-category="<?=implode('/', array_column($arResult['PATH'], 'NAME'))?>"
+     data-variant="<?=$arResult['AVAILABLE_OFFER_PROPS']['COLORS'][$arResult['MIN_PRICE_OFFER']['PROPERTIES']['COLOR']['VALUE']]['NAME']?>"
+>
     <div class="main">
         <? if (!empty($arResult)) : ?>
             <? if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) : ?>

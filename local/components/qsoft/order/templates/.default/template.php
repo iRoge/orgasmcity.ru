@@ -81,18 +81,23 @@ global $LOCATION, $APPLICATION; ?>
                                         "quantity" => $arItem["QUANTITY"],
                                     ];
                                     ?>
-                                    <div class="flex-product orders__row orders__row--product <?= $arResult["PROBLEM_OFFERS"][$id] ? "orders__row--product--error" : "" ?> js-card"
-                                         data-id="<?=$id?>" data-qty="<?=$arItem["QUANTITY"]?>"
+                                    <div class="flex-product orders__row orders__row--product<?=$arResult["PROBLEM_OFFERS"][$id] ? " orders__row--product--error" : "" ?> js-card"
+                                         data-offer-id="<?=$id?>"
+                                         data-id="<?=$arItem['XML_ID']?>"
+                                         data-name="<?=$arItem['NAME']?>"
+                                         data-price="<?=$arItem['PRICE']/$arItem["QUANTITY"]?>"
+                                         data-variant="<?=$arItem['COLOR']?>"
+                                         data-quantity="<?=$arItem["QUANTITY"]?>"
                                     >
                                         <? //блок изображения ?>
                                         <div class="flex-product--img orders__block orders__block--img">
                                             <div class="orders__col">
-                                                <a href="/<?= $arItem['CODE'] ?>/"
+                                                <a href="/<?=$arItem['CODE'] ?>/"
                                                    class="orders__img <?= (count($arItem["SRC"]) == 2) ? 'orders__img--multi' : '' ?>"
                                                    title="Перейти на детальную страницу">
 
                                             <span class="orders__img-box">
-                                                <img src="<?= $arItem["SRC"][0] ?>" alt="<?= $arItem['NAME'] ?>"
+                                                <img src="<?=$arItem["SRC"][0] ?>" alt="<?=$arItem['NAME'] ?>"
                                                      class="orders__img-pic orders__img-pic--main">
                                             </span>
                                                 </a>
@@ -103,7 +108,7 @@ global $LOCATION, $APPLICATION; ?>
                                         <? //наименование ?>
                                         <div class="flex-product--name orders__col">
                                             <span class="orders__label--only-pc orders__article"><?= $arItem['ARTICLE'] ?></span>
-                                            <h3 class="orders__title"><?= $arItem['NAME'] ?></h3>
+                                            <h3 class="orders__title"><?= $arItem['NAME_WITH_ADDITIONS'] ?></h3>
                                         </div>
                                         <? //наименование end ?>
 
