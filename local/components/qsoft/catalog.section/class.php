@@ -5,7 +5,6 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Iblock\InheritedProperty\SectionValues;
 use Bitrix\Main\FileTable;
 use Bitrix\Main\Loader;
-use Likee\Site\Helper;
 use Likee\Site\Helpers\HL;
 use Qsoft\Helpers\BonusSystem;
 use Qsoft\Helpers\ComponentHelper;
@@ -1273,14 +1272,14 @@ class QsoftCatalogSection extends ComponentHelper
     private function prepareCatalogResult(): void
     {
         if (isset($_REQUEST['getFilters'])) {
-            if ($this->initCache('resultItems', 3)) {
+            if ($this->initCache('resultItems', 5)) {
                 $this->items = $this->getCachedVars('items');
             } else {
                 $this->getResultItems();
             }
         } else {
             $this->getResultItems();
-            $this->initCache('resultItems', 3);
+            $this->initCache('resultItems', 5);
             $this->startCache();
             $this->saveToCache('items', $this->items);
         }
