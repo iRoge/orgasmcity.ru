@@ -1556,10 +1556,14 @@ class QsoftOrderComponent extends ComponentHelper
         $this->postProps["ORDER_REVENUE"] = $price;
         $this->postProps["ORDER_TYPE"] = $this->getOrderType();
         $this->postProps["LOCATION"] = $LOCATION->code;
+        $this->postProps["UTM_SOURCE"] = $_COOKIE['utm_source'] ? $_COOKIE['utm_source'] : '';
+        $this->postProps["UTM_MEDIUM"] = $_COOKIE['utm_medium'] ? $_COOKIE['utm_medium'] : '';
+        $this->postProps["UTM_CAMPAIGN"] = $_COOKIE['utm_campaign'] ? $_COOKIE['utm_campaign'] : '';
+        $this->postProps["UTM_CONTENT"] = $_COOKIE['utm_content'] ? $_COOKIE['utm_content'] : '';
+        $this->postProps["UTM_TERM"] = $_COOKIE['utm_term'] ? $_COOKIE['utm_term'] : '';
         //$this->postProps["CITY"] = $LOCATION->getName();
         //$this->postProps["AREA"] = $LOCATION->getArea();
         //$this->postProps['REGION'] = $LOCATION->getRegion();
-        $this->postProps['ORDER_REFERER'] = $this->getUTMProps();
 
         if ($USER->IsAuthorized()) {
             $this->postProps['EMAIL_PROFILE'] = $this->user['EMAIL'] ? $this->user['EMAIL'] : '';
@@ -1637,22 +1641,6 @@ class QsoftOrderComponent extends ComponentHelper
             return;
         }
         $this->currency = CurrencyManager::getBaseCurrency();
-    }
-
-    private function getUTMProps(): string
-    {
-        $UTM = [
-            'istochnik' => $_COOKIE['istochnik'] ? $_COOKIE['istochnik'] : '',
-            'utm_source' => $_COOKIE['utm_source'] ? $_COOKIE['utm_source'] : '',
-            'utm_medium' => $_COOKIE['utm_medium'] ? $_COOKIE['utm_medium'] : '',
-            'utm_campaign' => $_COOKIE['utm_campaign'] ? $_COOKIE['utm_campaign'] : '',
-            'utm_content' => $_COOKIE['utm_content'] ? $_COOKIE['utm_content'] : '',
-            'utm_term' => $_COOKIE['utm_term'] ? $_COOKIE['utm_term'] : '',
-        ];
-
-        $queryString = http_build_query($UTM);
-
-        return $queryString;
     }
 
     private function getUserDescriptrion()
