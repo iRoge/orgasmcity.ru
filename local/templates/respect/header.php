@@ -20,6 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <meta name="yandex-verification" content="9150aa1aa386cc50" />
     <meta name="yandex-verification" content="fbad8d6555dc89a3" />
+    <meta name="mailru-verification" content="2e2a6b2c8292fc5b" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?
     \Bitrix\Main\Loader::includeModule('likee.site');
@@ -189,6 +190,15 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/82799680" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+    <!—- Global site tag (gtag.js) - Google Analytics -—>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-202524127-1');
+    </script>
 
     <? $GLOBALS["PAGE"] = explode("/", $APPLICATION->GetCurPage()); ?>
 </head>

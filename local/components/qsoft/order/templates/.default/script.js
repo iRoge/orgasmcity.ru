@@ -315,11 +315,11 @@ $(document).ready(function(){
                     }
                     return;
                 }
-                $("#cart__coupon" + type).addClass("form__error-border");
-                $("#cart__coupon-error" + type).html(data.text);
+                $("#cart__coupon").addClass("form__error-border");
+                $("#cart__coupon-error").html(data.text);
             },
             error: function(jqXHR, exception) {
-                $("#art__coupon-button" + type).removeAttr("disabled");
+                $("#art__coupon-button").removeAttr("disabled");
                 ajaxError(jqXHR, exception);
             },
         });
