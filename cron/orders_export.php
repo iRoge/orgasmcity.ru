@@ -96,14 +96,6 @@ while ($arOrder = $rsOrders->GetNext()) {
                         $arOrder["LOCATION_NAME"] .= $item["I_NAME_RU"];
                     }
                 }
-
-                /*
-                                if ($arLocs = CSaleLocation::GetByID($arProp["VALUE"], LANGUAGE_ID))
-                                {
-                                    //print_r($arLocs);
-                                    $arOrder["PROPS"]["LOCATION_CITY"] = $arLocs["CITY_NAME"];
-                                }
-                */
             } else {
                 $arOrder["PROPS"][$arProp["CODE"]] = $arProp["VALUE"];
             }
@@ -111,18 +103,17 @@ while ($arOrder = $rsOrders->GetNext()) {
     }
     if ($arOrder["PROPS"]["CITY"] != "")
         $arOrder["LOCATION_NAME"] .= " " . $arOrder["PROPS"]["CITY"];
-    //echo $arOrder["DATE_INSERT"]."<br>";
 
     //fda2000 MS
     if (!$dsDelivery) {
         CModule::IncludeModule('catalog');
         $SHOP_IBLOCK_ID = Fire_Settings::getOption('SETTINGS_SHOP_IBLOCK');
         if ($SHOP_IBLOCK_ID) {
-            $rsItems = CIBlockElement::GetList(array(), array("IBLOCK_ID" => $SHOP_IBLOCK_ID, 'PROPERTY_DELIVERY_ID' => $arOrder["DELIVERY_ID"]), array('ID', 'IBLOCK_ID'));
+            $rsItems = CIBlockElement::GetList([], ["IBLOCK_ID" => $SHOP_IBLOCK_ID, 'PROPERTY_DELIVERY_ID' => $arOrder["DELIVERY_ID"]], ['ID', 'IBLOCK_ID']);
             if ($arItem = $rsItems->GetNext()) {
                 $prefix = 'ORDER_';
-                $rsItems = CIBlockElement::GetProperty($arItem['IBLOCK_ID'], $arItem['ID'], array(), array('CODE' => $prefix . '%'));
-                while ($arItem = $rsItems->GetNext())
+                $rsItems = CIBlockElement::GetProperty($arItem['IBLOCK_ID'], $arItem['ID'], [], ['CODE' => $prefix . '%']);
+                while ($arItem = $rsItems->GetNext()) {
                     if ($arItem['CODE'] == 'ORDER_DELIVERY_ID') {
                         $arOrder['DELIVERY_ID'] = $arItem['VALUE'];
                         $dsDelivery = $delivery_arr[$xmlDelivery[$arOrder['DELIVERY_ID']]];
@@ -130,13 +121,14 @@ while ($arOrder = $rsOrders->GetNext()) {
                         $arOrder["LOCATION_NAME"] = $arItem['VALUE'];
                     else
                         $arOrder["PROPS"][mb_substr($arItem['CODE'], mb_strlen($prefix))] = $arItem['VALUE'];
+                }
             }
         }
     }
     //
-    $curl_opt = array(
+    $curl_opt = [
         "ApiKey" => $api_key,
-        "TestMode" => 1,
+        "TestMode" => 0,
         "ExtOrderID" => $arOrder["ID"],
         "ExtOrderPaid" => ($arOrder["PAYED"] == "Y") ? 1 : 0,
         "ExtDeliveryCost" => intval($arOrder["PRICE_DELIVERY"]),
@@ -149,12 +141,12 @@ while ($arOrder = $rsOrders->GetNext()) {
         "dsCity" => $arOrder["LOCATION_NAME"],
         "dsComments" => $arOrder["USER_DESCRIPTION"] . " " . $arOrder["PROPS"]["ADDITIONAL_INFO"] . " " . $arOrder["COMMENTS"],
         "ExtDateOfAdded" => ConvertDateTime($arOrder["DATE_INSERT"], "YYYY-MM-DD HH:MI:SS"),
-    );
-    if ($dsDelivery == 5 or $dsDelivery == 11) // PickPoint
+    ];
+    if ($dsDelivery == 5 or $dsDelivery == 11) {// PickPoint
         $curl_opt["dsPickPointID"] = $arOrder["PROPS"]["PICKPOINT_ID"];
+    }
 
-    if ($dsDelivery == 2 or $dsDelivery == 1 or $dsDelivery == 8 or $dsDelivery == 10) // Почта, Курьер по Москве, Курьер по Питеру, СДЕК
-    {
+    if ($dsDelivery == 2 or $dsDelivery == 1 or $dsDelivery == 8 or $dsDelivery == 10) {// Почта, Курьер по Москве, Курьер по Питеру, СДЕК
         $curl_opt["dsStreet"] = $arOrder["PROPS"]["STREET"];
         $curl_opt["dsHouse"] = $arOrder["PROPS"]["HOUSE"];
         $curl_opt["dsFlat"] = $arOrder["PROPS"]["FLAT"];
@@ -167,26 +159,26 @@ while ($arOrder = $rsOrders->GetNext()) {
     }
 
     if ($Model == 'SELF') {
-        $curl_opt = array(
+        $curl_opt = [
             "ApiKey" => $api_key,
-            "TestMode" => 0
-        );
+            "TestMode" => 0,
+        ];
     }
 
     $dbBasketItems = CSaleBasket::GetList(
-        array(
+        [
             "NAME" => "ASC",
             "ID" => "ASC"
-        ),
-        array(
+        ],
+        [
             "ORDER_ID" => $arOrder["ID"]
-        ),
+        ],
         false,
         false,
-        array()
+        []
     );
     $i = 0;
-    $BasketItems = array();
+    $BasketItems = [];
     while ($arBasketItem = $dbBasketItems->GetNext()) {
         $BasketItems[] = $arBasketItem;
     }
@@ -212,10 +204,31 @@ while ($arOrder = $rsOrders->GetNext()) {
     }
     //
     foreach ($BasketItems as $arBasketItem) {
+        $dbRes = CSaleBasket::GetPropsList(
+            [
+                "SORT" => "ASC",
+                "NAME" => "ASC"
+            ],
+            [
+                "BASKET_ID" => $arBasketItem['ID']
+            ]
+        );
+        $props = [];
+        while ($arRes = $dbRes->Fetch()) {
+            $props[$arRes['CODE']] = [
+                "CODE" => $arRes['CODE'],
+                "NAME" => $arRes['NAME'],
+                "VALUE" => $arRes['VALUE'],
+                "SORT" => $arRes['SORT'],
+            ];
+        }
+
+
         $arSelect = [
             "ID",
             "IBLOCK_ID",
             "XML_ID",
+            "PROPERTY_BASEWHOLEPRICE"
         ];
         $res = CIBlockElement::GetList(
             [],
@@ -239,7 +252,19 @@ while ($arOrder = $rsOrders->GetNext()) {
             if ($Model != 'SELF') {
                 $curl_opt["order"] .= "-" . round($arBasketItem["PRICE"], 2);
             }
+
+            $props['SUPPLIER_PRICE'] = [
+                "CODE" => 'SUPPLIER_PRICE',
+                "NAME" => 'Цена закупки',
+                "VALUE" => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
+                "SORT" => 100,
+            ];
         }
+
+        $arFields = [
+            "PROPS" => $props
+        ];
+        CSaleBasket::Update($arBasketItem['ID'], $arFields);
         $i++;
     }
 
@@ -255,7 +280,7 @@ while ($arOrder = $rsOrders->GetNext()) {
     //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_opt);
-    $prop_values = array();
+    $prop_values = [];
     try {
         $response = curl_exec($ch);
         ?>
@@ -287,11 +312,7 @@ while ($arOrder = $rsOrders->GetNext()) {
             $prop_values["P5S_RESPONSE"] = $response;
             try {
                 $xml = new SimpleXMLElement($response);
-                //var_dump($xml);
                 $status = intval($xml->ResultStatus);
-                //foreach ($xml as $key => $value)
-                //echo $key." ".$value."<br>";
-                //echo $status;
 
                 if ($status == 1) // Выгрузка прошла успешно
                 {
@@ -299,6 +320,7 @@ while ($arOrder = $rsOrders->GetNext()) {
                     {
                         $prop_values["P5S_ID"] = intval($xml->orderID);
                     }
+                    $prop_values["SUPPLIER_COST"] = $xml->totalSum;
                     echo "Номер заказа - " . $xml->orderID;
                 } else {
                     ?>Ошибка<br><?
@@ -345,14 +367,14 @@ while ($arOrder = $rsOrders->GetNext()) {
     if (!empty($prop_values)) {
         foreach ($prop_values as $prop_code => $prop_value) {
             $db_props = CSaleOrderProps::GetList(
-                array(),
-                array(
+                [],
+                [
                     "PERSON_TYPE_ID" => $arOrder["PERSON_TYPE_ID"],
                     "CODE" => $prop_code,
-                ),
+                ],
                 false,
                 false,
-                array()
+                []
             );
             if ($props = $db_props->Fetch()) {
                 $arFields = array(
@@ -375,19 +397,8 @@ while ($arOrder = $rsOrders->GetNext()) {
                         $arFields["VALUE"] = $arVals["VALUE"] . "\n" . $arFields["VALUE"]; //добвляем текст к уже имеющемуся
                     }
                     CSaleOrderPropsValue::Update($arVals["ID"], $arFields);
-                    /*
-                                        ?><pre><?
-                                        print_r($arFields);
-                                        ?></pre><?
-                    */
                 } else {
-
                     CSaleOrderPropsValue::Add($arFields);
-                    /*
-                                        ?><pre><?
-                                        print_r($arFields);
-                                        ?></pre><?
-                    */
                 }
             }
         }
@@ -400,4 +411,3 @@ if ($log_error != "") {
         @fwrite($fp, $log_error);
     }
 }
-?>
