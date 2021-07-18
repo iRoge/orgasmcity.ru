@@ -320,10 +320,10 @@ while ($arOrder = $rsOrders->GetNext()) {
                             $ERROR_MAIL,
                             '=?koi8-r?B?' . base64_encode(iconv("UTF-8", "KOI8-R//IGNORE", 'Выгрузка заказа с ошибкой: ' . $server_name)) . '?=',
                             'Выгрузка заказа №' . $arOrder["ID"] . ' с ошибкой "' . ($error_arr[$status] ? $error_arr[$status] : $status) . '"
-' . $xml->ResultStatusMsg . '
-' . $xml->timestamp . '
-http://' . $server_name . '/bitrix/admin/sale_order_view.php?ID=' . $arOrder["ID"] . '
-',
+                            ' . $xml->ResultStatusMsg . '
+                            ' . $xml->timestamp . '
+                            http://' . $server_name . '/bitrix/admin/sale_order_view.php?ID=' . $arOrder["ID"] . '
+                            ',
                             $headers
                         );
                     }
