@@ -243,179 +243,161 @@ while ($arOrder = $rsOrders->GetNext()) {
         $i++;
     }
 
-	$ch = curl_init();
+    $ch = curl_init();
 
-	curl_setopt($ch, CURLOPT_URL, $export_url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_URL, $export_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-	curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
 
-	//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-	//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_opt);
-	$prop_values = array();
-	try
-	{
-		$response = curl_exec($ch);	
-		?><pre><?
-		echo htmlspecialcharsbx($response);
-		?></pre><?
-		
-		$error_arr = array(
-		"2" => "Bad key, Проверьте корректность Вашего ApiKey",
-		"3" => "Bad order request, Не корректные данные в поле order",
-		"4" => "Order do not placed. Some items not at stock OR some problem in aID., Заказ не размещен, Либо каких-то товаров недостаточное количество на нашем складе, либо какие-то aID не найдены в нашей системе.",
-		"5" => "TestMode. Data was checked. Order have NOT placed. Включен тестовый режим. Данные проверены, но заказ не размещается.",
-		"6" => "Попытка размещения Drop Shipping заказа из под оптового аккаунта не имеющего статус Drop Shipping. Уточните у нашего менеджера - подписан ли Ваш «Договор Прямой Поставки» и зачислен ли депозит на Ваш аккаунт.",
-		"7" => "Внутренний номер DS-заказа (ExtOrderID) не уникален.",
-		"8" => "Не задан внутренний номер заказа (ExtOrderID).",
-		"9" => "Не корректный формат даты размещения заказа ExtDateOfAdded. Корректный формат - YYYY-MM-DD HH:MM:SS.",
-		"10" => "Не указан статус оплаты заказа (ExtOrderPaid).",
-		"11" => "Не корректно указана стоимость доставки ExtDeliveryCost. Значение может быть только числом.",
-		"12" => "Стоимость доставки ExtDeliveryCost не указанa.",
-		"13" => "Не выбран способ доставки заказа dsDelivery.",
-		"14" => "ФИО покупателя (dsFio) - обязательны для заполнения!",
-		"15" => "Телефон покупателя (dsMobPhone) - обязателен для заполнения!",
-		"16" => "Email покупателя (dsEmail) - обязателен для заполнения!",
-		"17" => "Не известный метод доставки. Вероятно вы указали в поле dsDelivery, значение не соответствующее ни одному из обрабатываемых нами.",
-		"18" => "В случае доставки Почтой России, название населенного пункта (dsCity) обязательно для заполнения!",
-		"19" => "В случае доставки через PickPoint, индентификатор постомата или ПВЗ (dsPickPointID) обязателен!",
-		);
-		if (!empty($response))
-		{
-			$prop_values["P5S_RESPONSE"] = $response;
-			try
-			{	
-				$xml = new SimpleXMLElement($response);
-				//var_dump($xml);
-				$status = intval($xml->ResultStatus);
-				//foreach ($xml as $key => $value)
-					//echo $key." ".$value."<br>";
-				//echo $status;
-				
-				if ($status == 1) // Выгрузка прошла успешно
-				{
-					if (CSaleOrder::StatusOrder($arOrder["ID"], "DS")) //Передан в службу доставки
-					{
-						$prop_values["P5S_ID"] = intval($xml->orderID);
-					}
-					echo "Номер заказа - ".$xml->orderID;
-				}
-				else
-				{
-					?>Ошибка<br><?
-					if (isset($error_arr[$status]))
-					{
-						$prop_values["P5S_ERROR"] = $error_arr[$status];
-						echo $error_arr[$status]."<br>";
-					}
-					CSaleOrder::StatusOrder($arOrder["ID"], "ZE"); //Подтвержден, ошибка при выгрузке
-					
-					//fda2000
-					if($ERROR_MAIL) {
-						$email_from = COption::GetOptionString("main", "email_from");
-						$server_name = COption::GetOptionString("main", "server_name");
-						$EOL = CAllEvent::GetMailEOL(); // ограничитель строк, некоторые почтовые сервера требуют \n - подобрать опытным путём
-						$headers   = "From: ".$email_from.$EOL;
-						$headers  .= 'MIME-Version: 1.0'.$EOL;
-						$headers .= 'Content-type: text/plain; charset=utf-8';
-						bxmail(
-							$ERROR_MAIL, 
-							'=?koi8-r?B?'.base64_encode(iconv("UTF-8", "KOI8-R//IGNORE", 'Выгрузка заказа с ошибкой: '.$server_name)).'?=', 
-'Выгрузка заказа №'.$arOrder["ID"].' с ошибкой "'.($error_arr[$status]? $error_arr[$status] : $status).'"
-'.$xml->ResultStatusMsg.'
-'.$xml->timestamp.'
-http://'.$server_name.'/bitrix/admin/sale_order_view.php?ID='.$arOrder["ID"].'
-', 
-							$headers
-						);
-					}
-					//
-					
-				}
-			}
-			catch (Exception $e)
-			{
-				$log_error .= $e."\n";
-				$prop_values["P5S_ERROR"] = $e;
-				echo htmlspecialcharsbx($e);
-			}
-		}
-		else
-			$log_error .= "empty response\n";		
-	}
-	catch (Exception $e)
-	{ 
-		$log_error .= $e."\n";
-		echo $e."<br>";
-		$prop_values["P5S_ERROR"] = $e;
-	}
-	if (!empty($prop_values))
-	{
-		foreach ($prop_values as $prop_code => $prop_value)
-		{
-			$db_props = CSaleOrderProps::GetList(
-				array(),
-				array(
-					"PERSON_TYPE_ID" => $arOrder["PERSON_TYPE_ID"],
-					"CODE" => $prop_code,
-				),
-				false,
-				false,
-				array()
-			);
-			if ($props = $db_props->Fetch())
-			{
-				$arFields = array(
-					"ORDER_ID" => $arOrder["ID"],
-					"ORDER_PROPS_ID" => $props["ID"],
-					"VALUE" => $prop_value,
-					"NAME" => $props["NAME"],
-					"CODE" => $props["CODE"],
-				);
-				$db_vals = CSaleOrderPropsValue::GetList(
-					array("SORT" => "ASC"),
-					array(
-						"ORDER_ID" => $arOrder["ID"],
-						"ORDER_PROPS_ID" => $props["ID"],
-					)
-				);							
-				if ($arVals = $db_vals->Fetch()) // если такое свойство заказа уже заполнено
-				{
-					if (($prop_code == "P5S_ERROR") and $arVals["VALUE"] != "") 
-					{
-						$arFields["VALUE"] = $arVals["VALUE"]."\n".$arFields["VALUE"]; //добвляем текст к уже имеющемуся
-					}
-					CSaleOrderPropsValue::Update($arVals["ID"],$arFields);
-/*					
-					?><pre><?
-					print_r($arFields);
-					?></pre><?
-*/					
-				}
-				else
-				{
-					
-					CSaleOrderPropsValue::Add($arFields);
-/*					
-					?><pre><?
-					print_r($arFields);
-					?></pre><?					
-*/					
-				}
-			}
-		}
-	}
-	curl_close($ch);								
-}								
-if ($log_error != "")
-{
-	$fp = @fopen($_SERVER["DOCUMENT_ROOT"]."/cron/orders_export_logs/".date("Y-m-d").".txt","ab");
-	if ($fp)
-	{
-		@fwrite($fp, $log_error);
-	}
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $curl_opt);
+    $prop_values = array();
+    try {
+        $response = curl_exec($ch);
+        ?>
+        <pre><?
+        echo htmlspecialcharsbx($response);
+        ?></pre><?
+
+        $error_arr = array(
+            "2" => "Bad key, Проверьте корректность Вашего ApiKey",
+            "3" => "Bad order request, Не корректные данные в поле order",
+            "4" => "Order do not placed. Some items not at stock OR some problem in aID., Заказ не размещен, Либо каких-то товаров недостаточное количество на нашем складе, либо какие-то aID не найдены в нашей системе.",
+            "5" => "TestMode. Data was checked. Order have NOT placed. Включен тестовый режим. Данные проверены, но заказ не размещается.",
+            "6" => "Попытка размещения Drop Shipping заказа из под оптового аккаунта не имеющего статус Drop Shipping. Уточните у нашего менеджера - подписан ли Ваш «Договор Прямой Поставки» и зачислен ли депозит на Ваш аккаунт.",
+            "7" => "Внутренний номер DS-заказа (ExtOrderID) не уникален.",
+            "8" => "Не задан внутренний номер заказа (ExtOrderID).",
+            "9" => "Не корректный формат даты размещения заказа ExtDateOfAdded. Корректный формат - YYYY-MM-DD HH:MM:SS.",
+            "10" => "Не указан статус оплаты заказа (ExtOrderPaid).",
+            "11" => "Не корректно указана стоимость доставки ExtDeliveryCost. Значение может быть только числом.",
+            "12" => "Стоимость доставки ExtDeliveryCost не указанa.",
+            "13" => "Не выбран способ доставки заказа dsDelivery.",
+            "14" => "ФИО покупателя (dsFio) - обязательны для заполнения!",
+            "15" => "Телефон покупателя (dsMobPhone) - обязателен для заполнения!",
+            "16" => "Email покупателя (dsEmail) - обязателен для заполнения!",
+            "17" => "Не известный метод доставки. Вероятно вы указали в поле dsDelivery, значение не соответствующее ни одному из обрабатываемых нами.",
+            "18" => "В случае доставки Почтой России, название населенного пункта (dsCity) обязательно для заполнения!",
+            "19" => "В случае доставки через PickPoint, индентификатор постомата или ПВЗ (dsPickPointID) обязателен!",
+        );
+        if (!empty($response)) {
+            $prop_values["P5S_RESPONSE"] = $response;
+            try {
+                $xml = new SimpleXMLElement($response);
+                //var_dump($xml);
+                $status = intval($xml->ResultStatus);
+                //foreach ($xml as $key => $value)
+                //echo $key." ".$value."<br>";
+                //echo $status;
+
+                if ($status == 1) // Выгрузка прошла успешно
+                {
+                    if (CSaleOrder::StatusOrder($arOrder["ID"], "DS")) //Передан в службу доставки
+                    {
+                        $prop_values["P5S_ID"] = intval($xml->orderID);
+                    }
+                    echo "Номер заказа - " . $xml->orderID;
+                } else {
+                    ?>Ошибка<br><?
+                    if (isset($error_arr[$status])) {
+                        $prop_values["P5S_ERROR"] = $error_arr[$status];
+                        echo $error_arr[$status] . "<br>";
+                    }
+                    CSaleOrder::StatusOrder($arOrder["ID"], "ZE"); //Подтвержден, ошибка при выгрузке
+
+                    //fda2000
+                    if ($ERROR_MAIL) {
+                        $email_from = COption::GetOptionString("main", "email_from");
+                        $server_name = COption::GetOptionString("main", "server_name");
+                        $EOL = CAllEvent::GetMailEOL(); // ограничитель строк, некоторые почтовые сервера требуют \n - подобрать опытным путём
+                        $headers = "From: " . $email_from . $EOL;
+                        $headers .= 'MIME-Version: 1.0' . $EOL;
+                        $headers .= 'Content-type: text/plain; charset=utf-8';
+                        bxmail(
+                            $ERROR_MAIL,
+                            '=?koi8-r?B?' . base64_encode(iconv("UTF-8", "KOI8-R//IGNORE", 'Выгрузка заказа с ошибкой: ' . $server_name)) . '?=',
+                            'Выгрузка заказа №' . $arOrder["ID"] . ' с ошибкой "' . ($error_arr[$status] ? $error_arr[$status] : $status) . '"
+' . $xml->ResultStatusMsg . '
+' . $xml->timestamp . '
+http://' . $server_name . '/bitrix/admin/sale_order_view.php?ID=' . $arOrder["ID"] . '
+',
+                            $headers
+                        );
+                    }
+                    //
+
+                }
+            } catch (Exception $e) {
+                $log_error .= $e . "\n";
+                $prop_values["P5S_ERROR"] = $e;
+                echo htmlspecialcharsbx($e);
+            }
+        } else
+            $log_error .= "empty response\n";
+    } catch (Exception $e) {
+        $log_error .= $e . "\n";
+        echo $e . "<br>";
+        $prop_values["P5S_ERROR"] = $e;
+    }
+    if (!empty($prop_values)) {
+        foreach ($prop_values as $prop_code => $prop_value) {
+            $db_props = CSaleOrderProps::GetList(
+                array(),
+                array(
+                    "PERSON_TYPE_ID" => $arOrder["PERSON_TYPE_ID"],
+                    "CODE" => $prop_code,
+                ),
+                false,
+                false,
+                array()
+            );
+            if ($props = $db_props->Fetch()) {
+                $arFields = array(
+                    "ORDER_ID" => $arOrder["ID"],
+                    "ORDER_PROPS_ID" => $props["ID"],
+                    "VALUE" => $prop_value,
+                    "NAME" => $props["NAME"],
+                    "CODE" => $props["CODE"],
+                );
+                $db_vals = CSaleOrderPropsValue::GetList(
+                    array("SORT" => "ASC"),
+                    array(
+                        "ORDER_ID" => $arOrder["ID"],
+                        "ORDER_PROPS_ID" => $props["ID"],
+                    )
+                );
+                if ($arVals = $db_vals->Fetch()) // если такое свойство заказа уже заполнено
+                {
+                    if (($prop_code == "P5S_ERROR") and $arVals["VALUE"] != "") {
+                        $arFields["VALUE"] = $arVals["VALUE"] . "\n" . $arFields["VALUE"]; //добвляем текст к уже имеющемуся
+                    }
+                    CSaleOrderPropsValue::Update($arVals["ID"], $arFields);
+                    /*
+                                        ?><pre><?
+                                        print_r($arFields);
+                                        ?></pre><?
+                    */
+                } else {
+
+                    CSaleOrderPropsValue::Add($arFields);
+                    /*
+                                        ?><pre><?
+                                        print_r($arFields);
+                                        ?></pre><?
+                    */
+                }
+            }
+        }
+    }
+    curl_close($ch);
+}
+if ($log_error != "") {
+    $fp = @fopen($_SERVER["DOCUMENT_ROOT"] . "/cron/orders_export_logs/" . date("Y-m-d") . ".txt", "ab");
+    if ($fp) {
+        @fwrite($fp, $log_error);
+    }
 }
 ?>
