@@ -1,4 +1,4 @@
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetPageProperty("tags", "секс, шоп, интим, товары, магазин, вибратор, купить, кукла, мастурбатор, БДСМ, помпу, дилдо, оргазм");
 $APPLICATION->SetPageProperty("keywords_inner", "секс, шоп, интим, товары, магазин, вибратор, купить, кукла, мастурбатор, БДСМ, помпу, дилдо, оргазм");
 $APPLICATION->SetPageProperty("title", "Город Оргазма. Секс-шоп №1 в России. Анонимно. Более 30 тысяч товаров");
@@ -9,7 +9,7 @@ $APPLICATION->SetTitle("Главная страница");
 global $LOCATION;
 ?>
 <div class="front-blocks">
-    <?
+    <?php
     if (!Functions::checkMobileDevice()) {
         $APPLICATION->IncludeComponent(
             "likee:slider",
@@ -208,4 +208,4 @@ global $LOCATION;
     );
     ?>
 </div>
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

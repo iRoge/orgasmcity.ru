@@ -13,14 +13,14 @@
     <meta charset="UTF-8">
     <title><? $APPLICATION->ShowTitle(); ?></title>
 
-    <link rel="icon" href="/favicon.ico" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/favicon.svg" type="image/svg+xml">
 
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="mailru-verification" content="d9b83fb9577bb7bd" />
     <meta name="yandex-verification" content="9150aa1aa386cc50" />
     <meta name="yandex-verification" content="fbad8d6555dc89a3" />
-    <meta name="mailru-verification" content="2e2a6b2c8292fc5b" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?
     \Bitrix\Main\Loader::includeModule('likee.site');
