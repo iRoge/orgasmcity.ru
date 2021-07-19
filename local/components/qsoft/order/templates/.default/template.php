@@ -158,7 +158,7 @@ global $LOCATION, $APPLICATION; ?>
                                         <? //стоимость end ?>
 
                                         <a class="orders__remove js-card-remove"
-                                           data-product-id="<?= $arItem["PRODUCT_ID"] ?>"
+                                           data-offer-id="<?= $arItem["PRODUCT_ID"] ?>"
                                            data-id="<?= $id ?>"
                                            title="Удалить"></a>
                                     </div>

@@ -959,7 +959,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkBasketAvailability()
     {
-        if ($this->checkType(array("cart", "offers", "coupon", "basketAdd", "basketDel", "order"))) {
+        if ($this->checkType(["cart", "offers", "coupon", "basketAdd", "basketDel", "order"])) {
             $full = true;
         } else {
             $full = false;

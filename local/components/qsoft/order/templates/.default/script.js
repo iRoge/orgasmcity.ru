@@ -448,7 +448,7 @@ $(document).ready(function(){
     function resetCardJsHandlers() {
         // инициируем событие на удаление товара
         $(document).on('click', '.js-card-remove', function() {
-            delProduct($(this), parseInt($(this).parent().data("qty")));
+            delProduct($(this).closest('.js-card'), parseInt($(this).parent().data("quantity")));
         });
         // Увеличение количества для добавления в корзину
         $(".quantity-arrow-minus").on('click', function (event) {
