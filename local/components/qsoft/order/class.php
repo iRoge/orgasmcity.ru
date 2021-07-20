@@ -239,7 +239,7 @@ class QsoftOrderComponent extends ComponentHelper
         global $USER;
         //заменяем техническую почту или заполняем пустую
         if (!empty($this->postProps['EMAIL']) && $this->postProps['EMAIL'] != $this->user['EMAIL']) {
-            if (empty($this->user['EMAIL']) || preg_match('`.*@rshoes.ru`i', $this->user['EMAIL'])) {
+            if (empty($this->user['EMAIL']) || preg_match('`.*@orgasmcity.ru`i', $this->user['EMAIL'])) {
                 //ищем пользователя на сайте с такой почтой
                 $rsUsers = CUser::GetList($by = 'ID', $order = 'ASC', ["EMAIL" => $this->postProps['EMAIL']]); // выбираем пользователей
                 $rsUsersLogin = CUser::GetList($by = 'ID', $order = 'ASC', ["LOGIN" => $this->postProps['EMAIL']]); // выбираем пользователей

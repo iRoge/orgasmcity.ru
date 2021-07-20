@@ -158,8 +158,8 @@ class QsoftCatalogSection extends ComponentHelper
     private $disabledOptions;
     private $props = [];
     private $isBrand = false;
-    private $isBrandTagCode = null;
     private $resultItems;
+    private $middlePrice = 1000;
 
 
     private $filtersScopes = [
@@ -1376,11 +1376,13 @@ class QsoftCatalogSection extends ComponentHelper
             $items[$pid]["ASSORTMENTS"][] = $value;
         }
 
+        $sum = 0;
         foreach ($items as $key => &$item) {
+            $sum += $item['PRICE'];
             $item["SIZES"] = array_unique($item["SIZES"]);
             $item["COLORS"] = array_unique($item["COLORS"]);
         }
-
+        $this->middlePrice = (int)($sum / count($items));
         $this->items = $items;
         return $this->items;
     }
@@ -1650,9 +1652,11 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->sortByNew($items);
                 break;
             case self::SORT_POPULAR:
+                $this->sortByPopular($items);
+                break;
             case self::SORT_DEFAULT:
             default:
-                $this->sortByPopular($items);
+                $this->sortByDistanceFromMiddlePrice($items);
                 break;
         }
 
@@ -1728,6 +1732,16 @@ class QsoftCatalogSection extends ComponentHelper
 
         uasort($items, function ($a, $b) use ($sortParams) {
             return $this->compareBySortParams($a, $b, $sortParams);
+        });
+    }
+
+    private function sortByDistanceFromMiddlePrice(array &$items): void
+    {
+        $middlePrice = $this->middlePrice;
+        uasort($items, function ($a, $b) use ($middlePrice) {
+            $aDiff = abs($a['PRICE'] - $middlePrice);
+            $bDiff = abs($b['PRICE'] - $middlePrice);
+            return $aDiff <=> $bDiff;
         });
     }
 
