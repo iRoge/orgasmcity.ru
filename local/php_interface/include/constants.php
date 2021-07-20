@@ -6,6 +6,7 @@ define('BX_DISABLE_INDEX_PAGE', true);
 define('IBLOCK_CATALOG', 5);
 define('IBLOCK_OFFERS', 6);
 define('IBLOCK_VENDORS', 4);
+define('IBLOCK_MAILING', 54);
 
 define('MAIN_SECTION_ID', 574);
 
