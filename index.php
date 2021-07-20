@@ -1,8 +1,8 @@
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetPageProperty("tags", "секс, шоп, интим, товары, магазин, вибратор, купить, кукла, мастурбатор, БДСМ, помпу, дилдо, оргазм");
-$APPLICATION->SetPageProperty("keywords_inner", "секс, шоп, интим, товары, магазин, вибратор, купить, кукла, мастурбатор, БДСМ, помпу, дилдо, оргазм");
+$APPLICATION->SetPageProperty("tags", DEFAULT_KEYWORDS);
+$APPLICATION->SetPageProperty("keywords_inner", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("title", "Город Оргазма. Секс-шоп №1 в России. Анонимно. Более 30 тысяч товаров");
-$APPLICATION->SetPageProperty("keywords", "секс, шоп, интим, товары, магазин, вибратор, купить, кукла, мастурбатор, БДСМ, помпу, дилдо, оргазм");
+$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("description", "Город Оргазма - это российский секс-шоп с ассортиментом более 30 тысяч товаров для взрослых. Продажа секс товаров с бесплатной доставкой на дом. Огромный выбор продуктов: вибраторы, фаллоимитаторы, вибропули, мастурбаторы, секс-куклы, вакуумные помпы и многое другое");
 $APPLICATION->SetTitle("Главная страница");
 \Likee\Site\Helper::addBodyClass('page--index');

@@ -39,7 +39,7 @@ foreach ($contacts as $contact) {
         "IBLOCK_SECTION_ID" => false,
         "IBLOCK_ID" => IBLOCK_MAILING,
         "PROPERTY_VALUES" => $props,
-        "NAME" => $contact['name'] . $contact['secondName'] . $contact['middleName'],
+        "NAME" => $contact['secondName'] . ' ' . $contact['name'] . ' ' . $contact['middleName'],
         "ACTIVE" => "Y",
     ];
 

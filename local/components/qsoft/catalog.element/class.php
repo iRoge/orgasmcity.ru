@@ -81,7 +81,7 @@ class QsoftCatalogElement extends ComponentHelper
             ['IBLOCK_ID' => IBLOCK_CATALOG, 'CODE' => $this->arParams['ELEMENT_CODE']],
             false,
             false,
-            ['ID', 'IBLOCK_ID', 'DETAIL_TEXT', 'NAME', 'ACTIVE', 'PROPERTY_PREORDER']
+            ['ID', 'IBLOCK_ID', 'DETAIL_TEXT', 'NAME', 'ACTIVE']
         )->Fetch();
         $this->forSEO['DETAIL_TEXT'] = $arItem['DETAIL_TEXT'];
         $this->forSEO['NAME'] = $arItem['NAME'];
@@ -497,23 +497,16 @@ class QsoftCatalogElement extends ComponentHelper
             || $this->arParams["SET_META_KEYWORDS"] === 'Y'
             || $this->arParams["SET_META_DESCRIPTION"] === 'Y'
         ) {
-            $this->arResult["META_TAGS"] = array();
-            $resultCacheKeys[] = "META_TAGS";
+            $this->arResult["META_TAGS"] = [];
 
             if ($this->arParams["SET_TITLE"]) {
-                $this->arResult["META_TAGS"]["TITLE"] = (
-                $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] != ""
-                    ? $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]
-                    : $this->arResult["NAME"]
-                );
+                $this->arResult["META_TAGS"]["TITLE"] =
+                    $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]
+                    ?: "Купить " . mb_strtolower($this->arResult["NAME"]);
             }
 
             if ($this->arParams["ADD_ELEMENT_CHAIN"]) {
-                $this->arResult["META_TAGS"]["ELEMENT_CHAIN"] = (
-                $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] != ""
-                    ? $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]
-                    : $this->arResult["NAME"]
-                );
+                $this->arResult["META_TAGS"]["ELEMENT_CHAIN"] = $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] ?: $this->arResult["NAME"];
             }
 
             if ($this->arParams["SET_BROWSER_TITLE"] === 'Y') {
@@ -567,25 +560,30 @@ class QsoftCatalogElement extends ComponentHelper
         }
 
         if ($this->arParams["SET_BROWSER_TITLE"] === 'Y') {
-            if ($this->arResult["META_TAGS"]["BROWSER_TITLE"] !== '') {
+            if ($this->arResult["META_TAGS"]["BROWSER_TITLE"]) {
                 $APPLICATION->SetPageProperty("title", $this->arResult["META_TAGS"]["BROWSER_TITLE"]);
             }
         }
 
+        pre($this->getKeywordsByString($this->arResult['NAME']));
         if ($this->arParams["SET_META_KEYWORDS"] === 'Y') {
-            if ($this->arResult["META_TAGS"]["KEYWORDS"] !== '') {
+            if ($this->arResult["META_TAGS"]["KEYWORDS"]) {
                 $APPLICATION->SetPageProperty("keywords", $this->arResult["META_TAGS"]["KEYWORDS"]);
+            } else {
+                $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS . ', ' . $this->getKeywordsByString($this->arResult['NAME']));
             }
         }
 
         if ($this->arParams["SET_META_DESCRIPTION"] === 'Y') {
-            if ($this->arResult["META_TAGS"]["DESCRIPTION"] !== '') {
+            if ($this->arResult["META_TAGS"]["DESCRIPTION"]) {
                 $APPLICATION->SetPageProperty("description", $this->arResult["META_TAGS"]["DESCRIPTION"]);
+            } else {
+                $APPLICATION->SetPageProperty("description", mb_strimwidth($this->arResult['DETAIL_TEXT'], 0, 150, "..."));
             }
         }
 
-        if (!empty($seo['ELEMENT_PAGE_TITLE']) || !empty($seo['SECTION_PAGE_TITLE'])) {
-            $APPLICATION->SetTitle($seo['ELEMENT_PAGE_TITLE'] ?: $seo['SECTION_PAGE_TITLE']);
+        if (!empty($seo['ELEMENT_PAGE_TITLE'])) {
+            $APPLICATION->SetTitle($seo['ELEMENT_PAGE_TITLE']);
         }
         if (!empty($seo['ELEMENT_META_TITLE']) || !empty($seo['SECTION_META_TITLE'])) {
             $APPLICATION->SetPageProperty("title", $seo['ELEMENT_META_TITLE'] ?: $seo['SECTION_META_TITLE']);
@@ -593,14 +591,13 @@ class QsoftCatalogElement extends ComponentHelper
         if (!empty($seo['ELEMENT_META_KEYWORDS']) || !empty($seo['SECTION_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['ELEMENT_META_KEYWORDS'] ?: $seo['SECTION_META_KEYWORDS']);
         }
+
         if (!empty($seo['ELEMENT_META_DESCRIPTION']) || !empty($seo['SECTION_META_DESCRIPTION'])) {
             $APPLICATION->SetPageProperty(
                 "description",
                 $seo['ELEMENT_META_DESCRIPTION'] ?: $seo['SECTION_META_DESCRIPTION']
             );
         }
-
-        $APPLICATION->SetPageProperty("title", "Купить " . mb_strtolower($this->arResult["META_TAGS"]["TITLE"]));
 
         if ($this->arParams["ADD_SECTIONS_CHAIN"] && !empty($this->arResult["PATH"]) && is_array($this->arResult["PATH"])) {
             foreach ($this->arResult["PATH"] as $arPath) {
@@ -617,6 +614,26 @@ class QsoftCatalogElement extends ComponentHelper
         if ($this->arParams["ADD_ELEMENT_CHAIN"]) {
             $APPLICATION->AddChainItem($this->arResult["META_TAGS"]["ELEMENT_CHAIN"]);
         }
+    }
+
+    private function getKeywordsByString($string)
+    {
+        $keywords = '';
+        $explode = explode(' ', $string);
+        $additional = '';
+        foreach ($explode as $key => $item) {
+            if ($item == '-' || preg_match("/[\d]+/im", $item)) {
+                continue;
+            }
+            if (!in_array($item, ['без', 'на', 'из', 'к', 'в', 'с'])) {
+                $keywords .= ($additional ? $additional . ' ' : '') . $item . ', ';
+                $additional = '';
+            } else {
+                $additional = $item;
+            }
+        }
+
+        return rtrim($keywords, ', ');
     }
 
     private function returnElementID(): int
