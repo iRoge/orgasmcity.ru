@@ -565,7 +565,6 @@ class QsoftCatalogElement extends ComponentHelper
             }
         }
 
-        pre($this->getKeywordsByString($this->arResult['NAME']));
         if ($this->arParams["SET_META_KEYWORDS"] === 'Y') {
             if ($this->arResult["META_TAGS"]["KEYWORDS"]) {
                 $APPLICATION->SetPageProperty("keywords", $this->arResult["META_TAGS"]["KEYWORDS"]);
