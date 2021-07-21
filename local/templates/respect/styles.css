@@ -1234,6 +1234,11 @@ jdiv[class^="button_"] {
     margin-right: 0!important;
 }
 
+jdiv[class^="popupBlock_"] {
+    padding-bottom: 36px!important;
+    right: -50px!important;
+}
+
 .__jivoMobileButton {
     z-index: 5!important;
 }

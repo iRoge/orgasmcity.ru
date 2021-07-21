@@ -27,6 +27,7 @@ $(document).ready(function(){
             success: function (data) {
                 let basketPrice = null;
                 if (data.status == "ok") {
+                    updateSmallBasket(quantity);
                     productData['quantity'] = quantity;
                     window.metrikaData.push({
                         "ecommerce": {
@@ -107,10 +108,10 @@ $(document).ready(function(){
                     $(".orders__price").each(function () {
                         currentBasketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
                     });
+                    updateSmallBasket(-quantity);
                     if (data['info'] < 1) {
-                        updateSmallBasket(-1);
                         let basketPrice = parseInt(data['text']);
-                        // Если сумма изменилась до такой сетпени, что доставка стала платной,
+                        // Если сумма изменилась до такой степени, что доставка стала платной,
                         // то перезагружаем весь блок корзины
                         if (
                             currentBasketPrice > freeDeliveryMinSum && basketPrice < freeDeliveryMinSum
@@ -657,6 +658,7 @@ $(document).ready(function(){
                                 "quantity": productsInfo[offerId]['QUANTITY']
                             });
                         }
+                        ym(82799680,'reachGoal','order');
                         window.metrikaData.push({
                             "ecommerce": {
                                 "purchase": {

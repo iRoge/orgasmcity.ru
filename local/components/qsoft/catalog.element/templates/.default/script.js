@@ -101,7 +101,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 if (data.status == "ok") {
-                    updateSmallBasket(data.text);
+                    updateSmallBasket(quantity);
                     respercEvent__add_to_cart();
                     let productData = mainCardData;
                     productData['quantity'] = quantity;
