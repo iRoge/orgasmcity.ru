@@ -5,9 +5,9 @@ namespace Sprint\Migration;
 
 use CIBlock;
 
-class mailingInfoblock20210720174521 extends Version
+class AddInfoblockForMailings20210721193715 extends Version
 {
-    protected $description = "Миграция для инфоблока базы данных для рассылки";
+    protected $description = "Добавляет инфоблок рассылок";
 
     protected $moduleVersion = "3.25.1";
 
@@ -18,19 +18,42 @@ class mailingInfoblock20210720174521 extends Version
     public function up()
     {
         $helper = $this->getHelperManager();
+        $helper->Iblock()->saveIblockType(array(
+            'ID' => 'SYSTEM',
+            'SECTIONS' => 'N',
+            'EDIT_FILE_BEFORE' => '',
+            'EDIT_FILE_AFTER' => '',
+            'IN_RSS' => 'N',
+            'SORT' => '150',
+            'LANG' =>
+                array(
+                    'ru' =>
+                        array(
+                            'NAME' => 'Системные',
+                            'SECTION_NAME' => '',
+                            'ELEMENT_NAME' => 'Элементы',
+                        ),
+                    'en' =>
+                        array(
+                            'NAME' => 'System',
+                            'SECTION_NAME' => '',
+                            'ELEMENT_NAME' => 'Elements',
+                        ),
+                ),
+        ));
         $iblockId = $helper->Iblock()->saveIblock(array(
             'IBLOCK_TYPE_ID' => 'SYSTEM',
             'LID' =>
                 array(
                     0 => 's1',
                 ),
-            'CODE' => 'mailing',
+            'CODE' => 'mailings',
             'API_CODE' => NULL,
-            'NAME' => 'Инфоблок почт для рассылки',
+            'NAME' => 'Инфоблок рассылок',
             'ACTIVE' => 'Y',
             'SORT' => '500',
-            'LIST_PAGE_URL' => '',
-            'DETAIL_PAGE_URL' => '',
+            'LIST_PAGE_URL' => '#SITE_DIR#/SYSTEM/index.php?ID=#IBLOCK_ID#',
+            'DETAIL_PAGE_URL' => '#SITE_DIR#/SYSTEM/detail.php?ID=#ELEMENT_ID#',
             'SECTION_PAGE_URL' => NULL,
             'CANONICAL_PAGE_URL' => '',
             'PICTURE' => NULL,
@@ -181,12 +204,12 @@ class mailingInfoblock20210720174521 extends Version
                 array(
                     'NAME' => 'Тип детального описания',
                     'IS_REQUIRED' => 'Y',
-                    'DEFAULT_VALUE' => 'text',
+                    'DEFAULT_VALUE' => 'html',
                 ),
             'DETAIL_TEXT' =>
                 array(
                     'NAME' => 'Детальное описание',
-                    'IS_REQUIRED' => 'N',
+                    'IS_REQUIRED' => 'Y',
                     'DEFAULT_VALUE' => '',
                 ),
             'XML_ID' =>
@@ -312,34 +335,10 @@ class mailingInfoblock20210720174521 extends Version
                 ),
         ));
         $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Имя',
+            'NAME' => 'Serialized почты, куда уже отправлена',
             'ACTIVE' => 'Y',
             'SORT' => '500',
-            'CODE' => 'NAME',
-            'DEFAULT_VALUE' => '',
-            'PROPERTY_TYPE' => 'S',
-            'ROW_COUNT' => '1',
-            'COL_COUNT' => '30',
-            'LIST_TYPE' => 'L',
-            'MULTIPLE' => 'N',
-            'XML_ID' => '',
-            'FILE_TYPE' => '',
-            'MULTIPLE_CNT' => '5',
-            'LINK_IBLOCK_ID' => '0',
-            'WITH_DESCRIPTION' => 'N',
-            'SEARCHABLE' => 'N',
-            'FILTRABLE' => 'N',
-            'IS_REQUIRED' => 'Y',
-            'VERSION' => '1',
-            'USER_TYPE' => NULL,
-            'USER_TYPE_SETTINGS' => NULL,
-            'HINT' => '',
-        ));
-        $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Фамилия',
-            'ACTIVE' => 'Y',
-            'SORT' => '500',
-            'CODE' => 'SECOND_NAME',
+            'CODE' => 'RECEIVED_EMAILS',
             'DEFAULT_VALUE' => '',
             'PROPERTY_TYPE' => 'S',
             'ROW_COUNT' => '1',
@@ -357,109 +356,6 @@ class mailingInfoblock20210720174521 extends Version
             'VERSION' => '1',
             'USER_TYPE' => NULL,
             'USER_TYPE_SETTINGS' => NULL,
-            'HINT' => '',
-        ));
-        $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Отчество',
-            'ACTIVE' => 'Y',
-            'SORT' => '500',
-            'CODE' => 'MIDDLE_NAME',
-            'DEFAULT_VALUE' => '',
-            'PROPERTY_TYPE' => 'S',
-            'ROW_COUNT' => '1',
-            'COL_COUNT' => '30',
-            'LIST_TYPE' => 'L',
-            'MULTIPLE' => 'N',
-            'XML_ID' => '',
-            'FILE_TYPE' => '',
-            'MULTIPLE_CNT' => '5',
-            'LINK_IBLOCK_ID' => '0',
-            'WITH_DESCRIPTION' => 'N',
-            'SEARCHABLE' => 'N',
-            'FILTRABLE' => 'N',
-            'IS_REQUIRED' => 'N',
-            'VERSION' => '1',
-            'USER_TYPE' => NULL,
-            'USER_TYPE_SETTINGS' => NULL,
-            'HINT' => '',
-        ));
-        $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Почта',
-            'ACTIVE' => 'Y',
-            'SORT' => '500',
-            'CODE' => 'EMAIL',
-            'DEFAULT_VALUE' => '',
-            'PROPERTY_TYPE' => 'S',
-            'ROW_COUNT' => '1',
-            'COL_COUNT' => '30',
-            'LIST_TYPE' => 'L',
-            'MULTIPLE' => 'N',
-            'XML_ID' => '',
-            'FILE_TYPE' => '',
-            'MULTIPLE_CNT' => '5',
-            'LINK_IBLOCK_ID' => '0',
-            'WITH_DESCRIPTION' => 'N',
-            'SEARCHABLE' => 'N',
-            'FILTRABLE' => 'N',
-            'IS_REQUIRED' => 'Y',
-            'VERSION' => '1',
-            'USER_TYPE' => NULL,
-            'USER_TYPE_SETTINGS' => NULL,
-            'HINT' => '',
-        ));
-        $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Телефон',
-            'ACTIVE' => 'Y',
-            'SORT' => '500',
-            'CODE' => 'PHONE',
-            'DEFAULT_VALUE' => '',
-            'PROPERTY_TYPE' => 'S',
-            'ROW_COUNT' => '1',
-            'COL_COUNT' => '30',
-            'LIST_TYPE' => 'L',
-            'MULTIPLE' => 'N',
-            'XML_ID' => '',
-            'FILE_TYPE' => '',
-            'MULTIPLE_CNT' => '5',
-            'LINK_IBLOCK_ID' => '0',
-            'WITH_DESCRIPTION' => 'N',
-            'SEARCHABLE' => 'N',
-            'FILTRABLE' => 'N',
-            'IS_REQUIRED' => 'N',
-            'VERSION' => '1',
-            'USER_TYPE' => NULL,
-            'USER_TYPE_SETTINGS' => NULL,
-            'HINT' => '',
-        ));
-        $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Включить рассылку',
-            'ACTIVE' => 'Y',
-            'SORT' => '500',
-            'CODE' => 'SUBSCRIBED',
-            'DEFAULT_VALUE' => 0,
-            'PROPERTY_TYPE' => 'N',
-            'ROW_COUNT' => '1',
-            'COL_COUNT' => '30',
-            'LIST_TYPE' => 'L',
-            'MULTIPLE' => 'N',
-            'XML_ID' => '',
-            'FILE_TYPE' => '',
-            'MULTIPLE_CNT' => '5',
-            'LINK_IBLOCK_ID' => '0',
-            'WITH_DESCRIPTION' => 'N',
-            'SEARCHABLE' => 'N',
-            'FILTRABLE' => 'Y',
-            'IS_REQUIRED' => 'Y',
-            'VERSION' => '1',
-            'USER_TYPE' => 'SASDCheckboxNum',
-            'USER_TYPE_SETTINGS' =>
-                array(
-                    'VIEW' =>
-                        array(
-                            0 => 'Нет',
-                            1 => 'Да',
-                        ),
-                ),
             'HINT' => '',
         ));
 
@@ -467,6 +363,6 @@ class mailingInfoblock20210720174521 extends Version
 
     public function down()
     {
-        CIBlock::Delete(IBLOCK_MAILING);
+        CIBlock::Delete(IBLOCK_MAILINGS);
     }
 }

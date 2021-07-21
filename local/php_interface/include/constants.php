@@ -9,6 +9,7 @@ const IBLOCK_CATALOG = 5;
 const IBLOCK_OFFERS = 6;
 const IBLOCK_VENDORS = 4;
 const IBLOCK_MAILING = 54;
+const IBLOCK_MAILINGS = 55;
 
 const MAIN_SECTION_ID = 574;
 

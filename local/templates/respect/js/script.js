@@ -838,6 +838,7 @@ $(document).ready(function () {
         let count = Number($('.count--heart.in-full').text());
         if (response.res == 'add') {
           $('.count--heart').text(++count);
+          ym(82799680,'reachGoal','favourite_add');
         } else {
           $('.count--heart').text(--count);
         }
