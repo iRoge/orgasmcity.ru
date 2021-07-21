@@ -11,20 +11,18 @@ $(document).ready(function () {
         }
     });
     //функция для клика на кнопку "Купить в 1 клик"
-    function oneClickHandler(offerId, isLocal) {
-        offerId = offerId || $('#one-click-btn').data('offer-id');
-        isLocal = isLocal || $('#one-click-btn').data('is-local');
+    function oneClickHandler() {
+        let offerId = $('#one-click-btn').data('offer-id');
         Popup.show($('#one-click-form').clone(true, true), {
             title: 'Быстрый заказ',
             onShow: (function (_this) {
                 return function (popup) {
-                    onOpenModalFastOrder(offerId, isLocal);
+                    onOpenModalFastOrder(offerId);
                     return CountInput.init();
                 };
             })(this)
         });
         phoneMaskCreate($('.popup').find($('.one_click_phone')));
-        try { rrApi.addToBasket(offerId,{'stockId': userShowcase}) } catch(e) {}
     }
 
     // выставляет радио инпуты в соответствии с оффером
@@ -107,6 +105,7 @@ $(document).ready(function () {
                     respercEvent__add_to_cart();
                     let productData = mainCardData;
                     productData['quantity'] = quantity;
+                    ym(82799680,'reachGoal','add_in_cart');
                     window.metrikaData.push({
                         "ecommerce": {
                             "add": {
@@ -167,7 +166,7 @@ $(document).ready(function () {
         return result;
     }
 
-    function onOpenModalFastOrder(offerId, isLocal) {
+    function onOpenModalFastOrder(offerId) {
         let $form = $('.js-one-click-form');
         let $sizeInput = $form.find('input[name="PRODUCTS[]"]');
         $sizeInput.val(offerId);
@@ -178,7 +177,6 @@ $(document).ready(function () {
         e.preventDefault();
         if (!$(this).data('offer-id')) {
             $("#del-popup-type").val("1click");
-            respercEvent__pushSize($('.delivery-sizes').html());
             return;
         }
         oneClickHandler();

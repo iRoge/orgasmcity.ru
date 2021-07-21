@@ -19,6 +19,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <meta name="mailru-verification" content="d9b83fb9577bb7bd" />
+    <meta name="mailru-verification" content="2e2a6b2c8292fc5b" />
     <meta name="yandex-verification" content="9150aa1aa386cc50" />
     <meta name="yandex-verification" content="fbad8d6555dc89a3" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
