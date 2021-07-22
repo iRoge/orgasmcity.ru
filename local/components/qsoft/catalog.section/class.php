@@ -1656,7 +1656,7 @@ class QsoftCatalogSection extends ComponentHelper
                 break;
             case self::SORT_DEFAULT:
             default:
-                $this->sortByDistanceFromMiddlePrice($items);
+                $this->sortBySmartSorting($items);
                 break;
         }
 
@@ -1735,12 +1735,20 @@ class QsoftCatalogSection extends ComponentHelper
         });
     }
 
-    private function sortByDistanceFromMiddlePrice(array &$items): void
+    private function sortBySmartSorting(array &$items): void
     {
         $middlePrice = $this->middlePrice;
+        pre($middlePrice);
         uasort($items, function ($a, $b) use ($middlePrice) {
             $aDiff = abs($a['PRICE'] - $middlePrice);
             $bDiff = abs($b['PRICE'] - $middlePrice);
+            if (
+                ($aDiff < 750 && $bDiff < 750 || $aDiff > 750 && $bDiff > 750)
+                && $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
+            ) {
+                return $b['PROPERTY_BESTSELLER_VALUE'] <=> $a['PROPERTY_BESTSELLER_VALUE'];
+            }
+
             return $aDiff <=> $bDiff;
         });
     }
