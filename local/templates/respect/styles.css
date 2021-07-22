@@ -1237,10 +1237,11 @@ jdiv[class^="button_"] {
 jdiv[class^="popupBlock_"] {
     padding-bottom: 36px!important;
     right: -50px!important;
+    z-index: 10!important;
 }
 
 .__jivoMobileButton {
-    z-index: 5!important;
+    z-index: 10!important;
 }
 
 .slick-next {
