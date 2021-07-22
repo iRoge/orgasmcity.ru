@@ -281,6 +281,8 @@ input.search-mag {
     font-family: 'firalight';
     font-size: 16px;
     color: #4e4e4e;
+    max-height: 500px;
+    overflow: auto;
 }
 
 .have-tooltip, .have-tooltip-mob {

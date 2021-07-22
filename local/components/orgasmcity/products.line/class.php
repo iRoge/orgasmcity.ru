@@ -32,7 +32,12 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
     public function getItems()
     {
         $arItems = [];
-        $products = $this->getRecommendedProducts();
+        if ($this->arParams['TYPE'] == 'similar') {
+            $products = $this->getSimilarProducts($this->arParams['SECTION_ID']);
+        } else {
+            $products = $this->getBestsellerProducts();
+        }
+
         $offers = Functions::filterOffersByRests($this->getOffersByProductIds(array_keys($products)));
 
         foreach ($offers as $offer) {
@@ -109,7 +114,32 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         return $arOffers;
     }
 
-    private function getRecommendedProducts(): array
+    private function getSimilarProducts($sectionId): array
+    {
+        $productsCache = new CPHPCache;
+        $arProducts = [];
+
+        if ($productsCache->InitCache(86400, 'similar_products|' . $sectionId, 'products')) {
+            $arProducts = $productsCache->GetVars()['products'];
+        } elseif ($productsCache->StartDataCache()) {
+            $this->cacheManager->StartTagCache('products');
+            $this->cacheManager->RegisterTag('catalogAll');
+
+            $arFilter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => "Y",
+                "=SECTION_ID" => $sectionId,
+            ];
+
+            $arProducts = $this->getProductsByFilter($arFilter);
+            $this->cacheManager->endTagCache();
+            $productsCache->EndDataCache(['products' => $arProducts]);
+        }
+
+        return $arProducts;
+    }
+
+    private function getBestsellerProducts(): array
     {
         $productsCache = new CPHPCache;
         $arProducts = [];
@@ -126,72 +156,79 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                 "=PROPERTY_BESTSELLER_VALUE" => "1",
             ];
 
-            $arSelect = [
-                "ID",
-                "IBLOCK_ID",
-                "NAME",
-                "CODE",
-                "PROPERTY_BESTSELLER",
-                "DETAIL_PICTURE"
-            ];
-
-            $resProducts = CIBlockElement::GetList(
-                ["SORT" => "ASC"],
-                $arFilter,
-                false,
-                false,
-                $arSelect,
-            );
-
-            while ($product = $resProducts->Fetch()) {
-                if (!$product["DETAIL_PICTURE"]) {
-                    continue;
-                }
-
-                $product["DETAIL_PAGE_URL"] = "/" . $product["CODE"] . "/";
-                $arProducts[$product['ID']] = $product;
-                $arImageIds[] = $product["DETAIL_PICTURE"];
-            }
-
-            if (!empty($arImageIds)) {
-                $res = FileTable::getList([
-                    "select" => [
-                        "ID",
-                        "SUBDIR",
-                        "FILE_NAME",
-                        "WIDTH",
-                        "HEIGHT",
-                        "CONTENT_TYPE",
-                    ],
-                    "filter" => [
-                        "ID" => $arImageIds,
-                    ],
-                ]);
-                $arImages = [];
-                while ($arItem = $res->Fetch()) {
-                    $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
-                    $image = new \Bitrix\Main\File\Image($_SERVER["DOCUMENT_ROOT"] . $src);
-                    $k = $image->getExifData()['COMPUTED']['Width'] / $image->getExifData()['COMPUTED']['Height'];
-                    $smallSizes = [
-                        'width' => $k < 1 ? $k * CATALOG_SMALL_IMG_HEIGHT : CATALOG_SMALL_IMG_HEIGHT,
-                        'height' => CATALOG_SMALL_IMG_HEIGHT,
-                    ];
-
-                    $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes);
-                    if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
-                        continue;
-                    }
-                    $arImages[$arItem["ID"]] = $resizeSrc['src'] ?: $src;
-                }
-                foreach ($arProducts as $id => &$arItem) {
-                    if (!empty($arImages[$arItem["DETAIL_PICTURE"]])) {
-                        $arItem["DETAIL_PICTURE"] = $arImages[$arItem["DETAIL_PICTURE"]];
-                    }
-                }
-            }
-
+            $arProducts = $this->getProductsByFilter($arFilter);
             $this->cacheManager->endTagCache();
             $productsCache->EndDataCache(['products' => $arProducts]);
+        }
+
+        return $arProducts;
+    }
+
+    private function getProductsByFilter($arFilter)
+    {
+        $arProducts = [];
+        $arSelect = [
+            "ID",
+            "IBLOCK_ID",
+            "NAME",
+            "CODE",
+            "PROPERTY_BESTSELLER",
+            "DETAIL_PICTURE"
+        ];
+
+        $resProducts = CIBlockElement::GetList(
+            ["SORT" => "ASC"],
+            $arFilter,
+            false,
+            false,
+            $arSelect,
+        );
+
+        while ($product = $resProducts->Fetch()) {
+            if (!$product["DETAIL_PICTURE"]) {
+                continue;
+            }
+
+            $product["DETAIL_PAGE_URL"] = "/" . $product["CODE"] . "/";
+            $arProducts[$product['ID']] = $product;
+            $arImageIds[] = $product["DETAIL_PICTURE"];
+        }
+
+        if (!empty($arImageIds)) {
+            $res = FileTable::getList([
+                "select" => [
+                    "ID",
+                    "SUBDIR",
+                    "FILE_NAME",
+                    "WIDTH",
+                    "HEIGHT",
+                    "CONTENT_TYPE",
+                ],
+                "filter" => [
+                    "ID" => $arImageIds,
+                ],
+            ]);
+            $arImages = [];
+            while ($arItem = $res->Fetch()) {
+                $src = "/upload/" . $arItem["SUBDIR"] . "/" . $arItem["FILE_NAME"];
+                $image = new \Bitrix\Main\File\Image($_SERVER["DOCUMENT_ROOT"] . $src);
+                $k = $image->getExifData()['COMPUTED']['Width'] / $image->getExifData()['COMPUTED']['Height'];
+                $smallSizes = [
+                    'width' => $k < 1 ? $k * CATALOG_SMALL_IMG_HEIGHT : CATALOG_SMALL_IMG_HEIGHT,
+                    'height' => CATALOG_SMALL_IMG_HEIGHT,
+                ];
+
+                $resizeSrc = Functions::ResizeImageGet($arItem, $smallSizes);
+                if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
+                    continue;
+                }
+                $arImages[$arItem["ID"]] = $resizeSrc['src'] ?: $src;
+            }
+            foreach ($arProducts as $id => &$arItem) {
+                if (!empty($arImages[$arItem["DETAIL_PICTURE"]])) {
+                    $arItem["DETAIL_PICTURE"] = $arImages[$arItem["DETAIL_PICTURE"]];
+                }
+            }
         }
 
         return $arProducts;
