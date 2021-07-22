@@ -224,8 +224,6 @@ class QsoftCatalogSection extends ComponentHelper
             }
         } elseif (strpos($sectionUrl, '/brands/') !== false) {
             $this->isBrand = true;
-            $brandUrl = explode('/', rtrim($sectionUrl, '/'));
-
             return 'group';
         }
 
