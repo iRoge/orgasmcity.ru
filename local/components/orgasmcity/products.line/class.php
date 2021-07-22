@@ -39,7 +39,6 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         }
 
         $offers = Functions::filterOffersByRests($this->getOffersByProductIds(array_keys($products)));
-
         foreach ($offers as $offer) {
             $product = $products[$offer['PROPERTY_CML2_LINK_VALUE']];
             if (isset($arItems[$offer['PROPERTY_CML2_LINK_VALUE']])) {
@@ -61,11 +60,16 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         } else {
             $numImgs = 12;
         }
-        $randKeys = array_rand($arItems, $numImgs);
-        $arRandItems = [];
-        foreach ($randKeys as $key) {
-            $arRandItems[] = $arItems[$key];
+        if (count($arItems) > $numImgs) {
+            $randKeys = array_rand($arItems, $numImgs);
+            $arRandItems = [];
+            foreach ($randKeys as $key) {
+                $arRandItems[] = $arItems[$key];
+            }
+        } else {
+            $arRandItems = $arItems;
         }
+
         return $arRandItems;
     }
 
@@ -128,6 +132,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
+                "=PROPERTY_BESTSELLER_VALUE" => "1",
                 "=SECTION_ID" => $sectionId,
             ];
 
