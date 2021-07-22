@@ -381,4 +381,15 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
             </div>
         <? endif; ?>
     </div>
+    <?php
+    $APPLICATION->IncludeComponent(
+        'orgasmcity:products.line',
+        'default',
+        [
+            'TITLE' => 'Похожие товары',
+            'TYPE' => 'similar',
+            'SECTION_ID' => 1221,
+        ]
+    );
+    ?>
 </div>

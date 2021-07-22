@@ -1736,7 +1736,6 @@ class QsoftCatalogSection extends ComponentHelper
     private function sortBySmartSorting(array &$items): void
     {
         $middlePrice = $this->middlePrice;
-        pre($middlePrice);
         uasort($items, function ($a, $b) use ($middlePrice) {
             $aDiff = abs($a['PRICE'] - $middlePrice);
             $bDiff = abs($b['PRICE'] - $middlePrice);

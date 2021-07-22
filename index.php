@@ -202,9 +202,12 @@ global $LOCATION;
     ?>
     <?php
     $APPLICATION->IncludeComponent(
-        'orgasmcity:recommended',
-        'home',
-        []
+        'orgasmcity:products.line',
+        'default',
+        [
+            'TITLE' => 'Хиты продаж',
+            'TYPE' => 'hits'
+        ]
     );
     ?>
 </div>
