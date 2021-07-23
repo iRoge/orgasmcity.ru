@@ -10,6 +10,7 @@ use Bitrix\Main\Page\Asset;
 Asset::getInstance()->addJs('/local/templates/respect/lib/jquery.zoom.min.js');
 global $LOCATION;
 global $APPLICATION;
+global $USER;
 $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 ?>
 <script type="text/javascript">
@@ -107,6 +108,9 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                         *по данному товару осуществляется бесплатная доставка
                                     <?php }?>
                                 </p>
+                                <? if ($USER->GetID() == 1) {?>
+                                    (Цена закупки <?=$arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE']?>р.)
+                                <? }?>
                             </div>
                         <? endif ?>
                         <? if (!empty($arResult['OFFERS']) && !empty($arResult['MIN_PRICE_OFFER'])) : ?>

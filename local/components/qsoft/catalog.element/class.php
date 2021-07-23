@@ -194,6 +194,7 @@ class QsoftCatalogElement extends ComponentHelper
             $basePrice['OLD_VALUE'] = $price['OLD_PRICE'];
             $basePrice['VALUE'] = $price['PRICE'];
             $basePrice['PERCENT'] = $price['DISCOUNT'];
+            $basePrice['WHOLEPRICE'] = $price['WHOLEPRICE'];
             $offerFields = $objOffer->GetFields();
             $arOffers[$offerFields['ID']] = $offerFields;
             $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $basePrice;

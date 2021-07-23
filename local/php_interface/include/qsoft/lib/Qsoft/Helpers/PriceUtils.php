@@ -24,10 +24,12 @@ class PriceUtils
             $price = self::getTrickyPrice($rrcPrice, 0, 0);
         }
 
+        $price['WHOLEPRICE'] = $basePrice;
         return $price;
     }
 
-    private static function getTrickyPrice($rrcPrice, $rrcMarkup, $discount) {
+    private static function getTrickyPrice($rrcPrice, $rrcMarkup, $discount)
+    {
         global $USER;
         // Достаем персональную скидку
         $userDiscount = 0;
