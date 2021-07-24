@@ -15,10 +15,10 @@ class PriceUtils
         } elseif ($markupPercent < 180 && $markupPercent >= 160) {
             // Реальная скидка 23%
             $price = self::getTrickyPrice($rrcPrice, 10, 30);
-        } elseif ($markupPercent < 160 && $markupPercent >= 110) {
+        } elseif ($markupPercent < 160 && $markupPercent >= 105) {
             // Реальная скидка 16%
             $price = self::getTrickyPrice($rrcPrice, 5, 20);
-        } elseif ($markupPercent < 110 && $markupPercent >= 90) {
+        } elseif ($markupPercent < 105 && $markupPercent >= 95) {
             // Реальная скидка 0%
             $price = self::getTrickyPrice($rrcPrice, 0, 0);
         } else {
