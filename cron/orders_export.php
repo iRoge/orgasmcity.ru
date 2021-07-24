@@ -128,7 +128,7 @@ while ($arOrder = $rsOrders->GetNext()) {
 
     $curl_opt = [
         "ApiKey" => $api_key,
-        "TestMode" => 1,
+        "TestMode" => 0,
         "ExtOrderID" => $arOrder["ID"],
         "ExtOrderPaid" => ($arOrder["PAYED"] == "Y") ? 1 : 0,
         "ExtDeliveryCost" => $dsDelivery ? intval($arOrder["PRICE_DELIVERY"]) : 0,
