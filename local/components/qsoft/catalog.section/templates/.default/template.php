@@ -16,6 +16,7 @@
 
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Page\Asset;
+global $USER;
 $curPage = $APPLICATION->GetCurPage(false);
 $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 if (!$arResult['IS_AJAX']) :
@@ -428,9 +429,9 @@ if (!$arResult['IS_AJAX']) :
                                                         <div class="card__meta">
                                                             <div class="card__prices">
                                                                 <div class="card__prices-top">
-                                                                <span class="card__price <?= $arItem['PRICE'] < $arItem['OLD_PRICE'] ? " card__price--discount" : "" ?>">
-                                                                    <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
-                                                                </span>
+                                                                    <span class="card__price <?= $arItem['PRICE'] < $arItem['OLD_PRICE'] ? " card__price--discount" : "" ?>">
+                                                                        <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
+                                                                    </span>
                                                                     <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
                                                                         <span class="card__discount <?=$arResult['HAS_USER_DISCOUNT'] ? 'discount-yellow' : ''?>">
                                                                             -<?= $arItem['DISCOUNT'] ?>%
@@ -441,6 +442,9 @@ if (!$arResult['IS_AJAX']) :
                                                                     <span class="card__price-old" style="display:block;"><?= number_format($arItem['OLD_PRICE'], 0, '', ' '); ?> р.</span>
                                                                 <? endif ?>
                                                             </div>
+                                                            <?php if ($USER->GetID() == 1) { ?>
+                                                                <span>Закупка <?=$arItem['WHOLEPRICE']?>р.</span>
+                                                            <?php } ?>
                                                         </div>
                                                         <span class="card__title"><?= $arItem['NAME'] ?></span>
                                                     </div>

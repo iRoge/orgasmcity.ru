@@ -81,14 +81,14 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                             </button>
                         </div>
                         <h1 class="h1-cart"><?= $arResult["NAME"] ?></h1>
-                        <? if (!empty($arResult['MIN_PRICE_OFFER'])) : ?>
+                        <?php if (!empty($arResult['MIN_PRICE_OFFER'])) : ?>
                             <div class="right-cartochka__inner-wrap">
                                 <p class="price price--discount
                                    <?= empty($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) ? " price--short" : "" ?>">
                                     <b><span class="js-price-span"><?= number_format($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'], 0, "", " ") ?></span></b>
                                     <?= Loc::getMessage("RUB") ?>
                                 </p>
-                                <? if (!empty($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) &&
+                                <?php if (!empty($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) &&
                                     $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] < $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) : ?>
                                     <div class="js-old-price-block" style="display: inherit;">
                                         <p class="percents">-<span class="js-price-percent-span"><?= $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['PERCENT'] ?></span>%</p>
@@ -97,7 +97,7 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                             <?= Loc::getMessage("RUB") ?>
                                         </p>
                                     </div>
-                                <? endif ?>
+                                <?php endif ?>
                                 <p class="grey-under bonus-text">
                                     <?php if ($arResult['USER_DISCOUNT']) { ?>
                                         *скидка по бонусной программе в размере
@@ -108,20 +108,20 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                         *по данному товару осуществляется бесплатная доставка
                                     <?php }?>
                                 </p>
-                                <? if ($USER->GetID() == 1) {?>
+                                <?php if ($USER->GetID() == 1) {?>
                                     (Цена закупки <?=$arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE']?>р.)
-                                <? }?>
+                                <?php }?>
                             </div>
-                        <? endif ?>
-                        <? if (!empty($arResult['OFFERS']) && !empty($arResult['MIN_PRICE_OFFER'])) : ?>
+                        <?php endif ?>
+                        <?php if (!empty($arResult['OFFERS']) && !empty($arResult['MIN_PRICE_OFFER'])) : ?>
                             <form method="post" name="name" style="width: 100%; margin-top: 30px;" class="form-after-cart js-action-form">
                                 <input type="hidden" name="action" value="ADD2BASKET">
-                                <? if (!$arResult['SINGLE_SIZE']) : ?>
+                                <?php if (!$arResult['SINGLE_SIZE']) : ?>
                                 <div style="display: block; position: relative">
-                                    <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['SIZES'])) : ?>
+                                    <?php if (!empty($arResult['AVAILABLE_OFFER_PROPS']['SIZES'])) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("SIZE") ?></h3>
                                     <div style="display: block; width: 100%;" class="js-size-selector">
-                                        <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['SIZES'] as $sizeValue) : ?>
+                                        <?php foreach ($arResult['AVAILABLE_OFFER_PROPS']['SIZES'] as $sizeValue) : ?>
                                             <div class="top-minus">
                                                 <input type="radio" name="size" id="size-<?= $sizeValue ?>"
                                                        class="radio1 js-choose-size js-offer js-offer-<?= $sizeValue ?>"
@@ -129,10 +129,10 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                                 <label for="size-<?= $sizeValue ?>"
                                                        data-value="<?= $sizeValue ?>"><?= $sizeValue ?></label>
                                             </div>
-                                        <? endforeach; ?>
+                                        <?php endforeach; ?>
                                         <div style="clear: both"></div>
                                     </div>
-                                    <? endif; ?>
+                                    <?php endif; ?>
 <!--                                    <div class="buttons-wrapper">-->
 <!--                                        <div class="sizes-popup-area">-->
 <!--                                            <a class="sizes-popup" href="#">--><?//= Loc::getMessage("SIZES_INFO") ?><!--</a>-->
