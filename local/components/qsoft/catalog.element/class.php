@@ -5,6 +5,7 @@
 use Bitrix\Iblock\Component\Tools;
 use Bitrix\Iblock\InheritedProperty\ElementValues;
 use Bitrix\Iblock\InheritedProperty\SectionValues;
+use Bitrix\Main\Config\Option;
 use Bitrix\Main\LoaderException;
 use Bitrix\Main\Page\Asset;
 use Bitrix\Main\Page\AssetLocation;
@@ -647,6 +648,10 @@ class QsoftCatalogElement extends ComponentHelper
 
     private function getShowOneClick()
     {
+        $oneClickMinSum = Option::get("respect", "one_click_min", 1000);
+        if ($this->arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] >= $oneClickMinSum) {
+            return true;
+        }
         return false;
     }
 

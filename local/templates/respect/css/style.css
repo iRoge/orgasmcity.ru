@@ -4582,7 +4582,7 @@ input::-webkit-inner-spin-button {
 }
 
 .blue-btn:hover {
-    background: #2a2a2a !important;
+    background: #fa0000 !important;
     transition: 300ms;
     -webkit-transition: 300ms;
 }
@@ -5138,13 +5138,13 @@ label.color-label {
 .cartochka-blue {
     padding: 13px 0;
     background: #ff5e5e;
-    width: 49%;
+    width: 100%;
     text-transform: uppercase;
     color: white;
     font-family: 'firaregular';
     font-size: 16px;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 5px;
     border: 0;
     outline: 0;
 }
@@ -5152,7 +5152,7 @@ label.color-label {
 .cartochka-orange {
     padding: 13px 0;
     background: #f0a740;
-    width: 49%;
+    width: 100%;
     text-transform: uppercase;
     color: white;
     font-family: 'firaregular';

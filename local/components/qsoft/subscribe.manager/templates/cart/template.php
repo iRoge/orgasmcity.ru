@@ -10,7 +10,7 @@
                    name="PROPS[SUBSCRIBE_EMAIL]"
                    class="checkbox3"/>
             <label for="one_click_checkbox_subscribe_email_checked<?=$arParams['CART_NUMBER']?>"
-                   class="checkbox--_"><?= isset($arResult['MAIL']) && !preg_match('`.*@rshoes.ru`i', $arResult['MAIL']) ? 'Подписать ' . $arResult['MAIL'] . ' на e-mail рассылки' : 'Подписаться на e-mail рассылки' ?></label>
+                   class="checkbox--_"><?= isset($arResult['MAIL']) && !preg_match('`.*@orgasmcity.ru`i', $arResult['MAIL']) ? 'Подписать ' . $arResult['MAIL'] . ' на e-mail рассылки' : 'Подписаться на e-mail рассылки' ?></label>
     </div>
     <? endif; ?>
 </div>

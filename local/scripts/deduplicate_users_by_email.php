@@ -274,7 +274,7 @@ function anonymizeUsers($users, &$log)
 
     foreach ($users as $id) {
         try {
-            if ($USER->Update($id, ['EMAIL' => "$id@rshoes.ru"]) === false) {
+            if ($USER->Update($id, ['EMAIL' => "$id@orgasmcity.ru"]) === false) {
                 throw new Exception($APPLICATION->GetException()->msg ?: 'CUser::Update вернул false.');
             }
             $log[$id]['ANONYMIZATION']['RESULT'] = true;

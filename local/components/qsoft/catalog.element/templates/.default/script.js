@@ -377,8 +377,10 @@ $(document).ready(function () {
     });
 
     //Покупка в 1 клик
-    var presetDataPhone = $("input.one_click_phone").data('phone');
+    let presetDataPhone = $("input.one_click_phone").data('phone');
     $("input.one_click_phone").val(presetDataPhone);
+    let presetDataEmail = $("input.one_click_email").data('email');
+    $("input.one_click_email").val(presetDataEmail);
 
     $('#one-click-form').on('submit', function (e) {
         e.preventDefault();
@@ -388,6 +390,10 @@ $(document).ready(function () {
             cou_err++;
             text_html += '<p>Необходимо заполнить поле *Телефон</p>';
             $("input.one_click_phone").addClass("red_border");
+        } else if ($("input.one_click_email").val().trim() == "") {
+            cou_err++;
+            text_html += '<p>Необходимо заполнить поле *Почта</p>';
+            $("input.one_click_email").addClass("red_border");
         } else {
             var inputPhoneValue = $("input.one_click_phone").val().replace(/\D+/g, '');
             if (inputPhoneValue.length - 1 < 10) {
@@ -398,10 +404,10 @@ $(document).ready(function () {
                 $("input.one_click_phone").removeClass("red_border");
             }
         }
-        if (!($("#one_click_checkbox_policy_checked").prop('checked'))) {
-            cou_err++;
-            text_html += "<p>Необходимо согласие с политикой конфиденциальности</p>";
-        }
+        // if (!($("#one_click_checkbox_policy_checked").prop('checked'))) {
+        //     cou_err++;
+        //     text_html += "<p>Необходимо согласие с политикой конфиденциальности</p>";
+        // }
         $("#after-cart-in-err").html(text_html);
         if (cou_err > 0) {
             return false;

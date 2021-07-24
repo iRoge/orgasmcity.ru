@@ -281,7 +281,7 @@ global $LOCATION, $APPLICATION; ?>
                                                 <div class="form__field form__field--1-2">
                                                     <?
                                                     $email = $arResult["USER"]["EMAIL"] ?: ($arResult["COOKIE_EMAIL"][1] ?: ($cookieAddress ? $_COOKIE['user_email'] : ''));
-                                                    $email = !preg_match('`.*@rshoes.ru`i', $email) ? $email : '';
+                                                    $email = !preg_match('`.*@orgasmcity.ru`i', $email) ? $email : '';
                                                     ?>
                                                     <input class="form__elem js-required js-email" type="text" name="PROPS[EMAIL]" value="<?= $email ?>" placeholder="*E-Mail">
                                                     <div class="err-order err-PROPS[EMAIL]"></div>

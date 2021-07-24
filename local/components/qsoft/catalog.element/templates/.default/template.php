@@ -169,13 +169,6 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                 <? endif; ?>
                                 <div id="wrap" class="btns-wrap">
                                     <div id="js-toggle-delivery-ok">
-                                        <?php if ($arResult['SHOW_ONE_CLICK']) :?>
-                                        <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
-                                               id="one-click-btn"
-                                               class="js-one-click cartochka-blue blue-btn"
-                                               type="button"
-                                               value="Купить в 1 клик"/>
-                                        <?php endif; ?>
                                         <div class="quantity-block">
                                             <button class="quantity-arrow-minus"> - </button>
                                             <input class="quantity-num" type="number" value="1" />
@@ -184,9 +177,15 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                         <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                id="buy-btn"
                                                class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
-                                               style="width: <?=$arResult['SHOW_ONE_CLICK'] ? '49%' : '100%!important; margin-left: 0!important;'?>"
                                                type="button"
                                                value="Добавить в корзину"/>
+                                        <?php if ($arResult['SHOW_ONE_CLICK']) :?>
+                                            <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
+                                                   id="one-click-btn"
+                                                   class="js-one-click cartochka-blue blue-btn"
+                                                   type="button"
+                                                   value="Купить в 1 клик"/>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </form>
@@ -288,14 +287,20 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                            data-phone="<?=$arResult['USER']['PERSONAL_PHONE'];?>"
                                            type="text" name="PROPS[PHONE]" placeholder="*Телефон" required>
                                 </div>
+                                <div class="input-group input-group--phone">
+                                    <input style="margin-top: 10px"
+                                           class="one_click_email"
+                                           data-email="<?=$arResult['USER']['EMAIL'];?>"
+                                           type="text" name="PROPS[EMAIL]" placeholder="*Почта" required>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container container--quick-order">
-                        <div class="column-10">
-                            <hr/>
-                        </div>
-                    </div>
+<!--                    <div class="container container--quick-order">-->
+<!--                        <div class="column-10">-->
+<!--                            <hr/>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="container container--quick-order">
                         <div class="column-4 pre-3 column-md-2">
                             <button id="button-one-click"
@@ -307,17 +312,17 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                             </div>
                         </div>
                     </div>
-                    <div class="container container--quick-order product__footer">
+<!--                    <div class="container container--quick-order product__footer">-->
 <!--                        --><?// $APPLICATION->IncludeComponent('qsoft:subscribe.manager', 'popUp', ['SOURCE' => '1click']); ?>
-                        <div id="one_click_checkbox_policy_error"></div>
-                        <div id="one_click_checkbox_policy" class="col-xs-12">
-                            <input type="checkbox" id="one_click_checkbox_policy_checked"
-                                   name="one_click_checkbox_policy"
-                                   class="checkbox3" checked/>
-                            <label for="one_click_checkbox_policy_checked"
-                                   class="checkbox--_"><?= Loc::getMessage('AGREEMENT') ?></label>
-                        </div>
-                    </div>
+<!--                        <div id="one_click_checkbox_policy_error"></div>-->
+<!--                        <div id="one_click_checkbox_policy" class="col-xs-12">-->
+<!--                            <input type="checkbox" id="one_click_checkbox_policy_checked"-->
+<!--                                   name="one_click_checkbox_policy"-->
+<!--                                   class="checkbox3" checked/>-->
+<!--                            <label for="one_click_checkbox_policy_checked"-->
+<!--                                   class="checkbox--_">--><?//= Loc::getMessage('AGREEMENT') ?><!--</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </form>
 
                 <div class="product-preorder-success js-choose-size">
