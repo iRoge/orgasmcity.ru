@@ -91,6 +91,10 @@ class Order
             return;
         }
         $arPrice = PriceUtils::getPrice($arOffer['PROPERTY_BASEWHOLEPRICE_VALUE'], $arOffer['PROPERTY_BASEPRICE_VALUE']);
+        if (!$arPrice) {
+            $arFields = [];
+            return;
+        }
         $arFields['PRICE']['PRICE'] = $arPrice['PRICE'];
         $arFields['DISCOUNT_PRICE'] = $arPrice['PRICE'];
         $arFields['RESULT_PRICE']['BASE_PRICE'] = $arPrice['PRICE'];

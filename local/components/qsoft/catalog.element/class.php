@@ -191,6 +191,9 @@ class QsoftCatalogElement extends ComponentHelper
                 continue;
             }
             $price = PriceUtils::getPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
+            if (!$price) {
+                continue;
+            }
             $basePrice['OLD_VALUE'] = $price['OLD_PRICE'];
             $basePrice['VALUE'] = $price['PRICE'];
             $basePrice['PERCENT'] = $price['DISCOUNT'];

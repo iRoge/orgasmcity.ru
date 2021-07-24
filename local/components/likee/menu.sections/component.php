@@ -143,13 +143,14 @@ if (empty($aMenuLinksNew)) {
     $rests = Functions::getRests($offerIds);
 
     foreach ($offers as $offerId => $offer) {
-        if ((!isset($rests[$offerId]) || $rests[$offerId] < 1)) {
+        $price = \Qsoft\Helpers\PriceUtils::getPrice($offer['PROPERTY_BASEWHOLEPRICE_VALUE'], $offer['PROPERTY_BASEPRICE_VALUE']);
+        if ((!isset($rests[$offerId]) || $rests[$offerId] < 1 || !$price)) {
             continue;
         }
         $pid = $offer['PROPERTY_CML2_LINK_VALUE'];
         $items[$pid] = $products[$pid];
         if (!isset($items[$pid]['DISCOUNT'])) {
-            $items[$pid]['DISCOUNT'] = \Qsoft\Helpers\PriceUtils::getPrice($offer['PROPERTY_BASEWHOLEPRICE_VALUE'], $offer['PROPERTY_BASEPRICE_VALUE'])['DISCOUNT'];
+            $items[$pid]['DISCOUNT'] = $price['DISCOUNT'];
         }
     }
 

@@ -6,22 +6,23 @@ class PriceUtils
 {
     public static function getPrice($basePrice, $rrcPrice)
     {
-        $markupPercent = ($rrcPrice - $basePrice) * 100 / $rrcPrice;
+        $rrcPrice *= 0.85;
+        $markupPercent = ($rrcPrice - $basePrice) * 100 / $basePrice;
 
-        if ($markupPercent >= 80) {
+        if ($markupPercent >= 180) {
+            // Реальная скидка 31%
+            $price = self::getTrickyPrice($rrcPrice, 15, 40);
+        } elseif ($markupPercent < 180 && $markupPercent >= 160) {
+            // Реальная скидка 23%
+            $price = self::getTrickyPrice($rrcPrice, 10, 30);
+        } elseif ($markupPercent < 160 && $markupPercent >= 110) {
             // Реальная скидка 16%
-            $price = self::getTrickyPrice($rrcPrice, 20, 30);
-        } elseif ($markupPercent < 80 && $markupPercent >= 70) {
-            // Реальная скидка 13.75%
-            $price = self::getTrickyPrice($rrcPrice, 15, 25);
-        } elseif ($markupPercent < 70 && $markupPercent >= 55) {
-            // Реальная скидка 12%
-            $price = self::getTrickyPrice($rrcPrice, 10, 20);
-        } elseif ($markupPercent < 55 && $markupPercent >= 45) {
-            // Реальная скидка 7.3%
-            $price = self::getTrickyPrice($rrcPrice, 3, 10);
-        } else {
+            $price = self::getTrickyPrice($rrcPrice, 5, 20);
+        } elseif ($markupPercent < 110 && $markupPercent >= 90) {
+            // Реальная скидка 0%
             $price = self::getTrickyPrice($rrcPrice, 0, 0);
+        } else {
+            return false;
         }
 
         $price['WHOLEPRICE'] = $basePrice;
