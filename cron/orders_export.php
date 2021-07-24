@@ -44,7 +44,7 @@ $delivery_arr = [
     'PVZ_CDEK' => 11
 ];
 $arFilter = array(
-    "STATUS_ID" => "DE",
+    "STATUS_ID" => "ZS",
     "CANCELED" => "N",
 );
 $rsOrders = CSaleOrder::GetList(array(), $arFilter);
