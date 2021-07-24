@@ -461,5 +461,7 @@ $(document).ready(function () {
     });
 
     // Выставляем дефолтную выборку оффера
-    setPropsByOffer(previousOffer);
+    if (OFFERS.length) {
+        setPropsByOffer(previousOffer);
+    }
 });
