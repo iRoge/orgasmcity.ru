@@ -423,6 +423,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 if (data.status == "ok") {
+                    ym(82799680,'reachGoal','1click');
                     let paymentType = 'default';
                     let items = [];
                     for (let key in data.info) {
