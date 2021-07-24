@@ -17,7 +17,7 @@
             <input type="submit" value="Подписаться">
             <input class="checkbox22 js-footer-agreement" id="agreement_mobile" type="checkbox" name="agreement" required checked/>
             <label for="agreement_mobile">
-                Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="<?= OFFER_FILENAME ?>">политикой конфиденциальности</a>.
+                Я соглашаюсь на обработку моих персональных данных</a>.
             </label>
             <ul class="subscribe-errors"></ul>
         </form>

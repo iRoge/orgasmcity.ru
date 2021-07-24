@@ -166,7 +166,7 @@ $arResult["SHOW_FIELDS"] = array(
         <div id="registration_checkbox_policy-reg-form-popup" class="col-xs-12">
             <div id='err-conf-reg-form-popup' class="error-field"></div>
             <input type="checkbox" id="regform_checked-reg-form-popup" name="registration_checkbox_policy" class="checkbox3" checked="checked"/>
-            <label for="regform_checked-reg-form-popup" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="<?= OFFER_FILENAME ?>">политикой конфиденциальности</a> и <a href="<?= OFERTA_FILENAME ?>">договором оферты</a>.</label>
+            <label for="regform_checked-reg-form-popup" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных.</label>
         </div>
     </form>
     <? endif ?>
