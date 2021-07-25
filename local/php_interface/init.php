@@ -48,10 +48,7 @@ $dotenv = Dotenv\Dotenv::create(__DIR__);
 $dotenv->load();
 
 // EVENTS
-include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/search.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/event.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/form.php');
-
 
 AddEventHandler("main", "OnEpilog", "process404");
 function process404()
@@ -67,9 +64,9 @@ function process404()
 if (!function_exists("pre")) {
     function pre($var)
     {
-        if (!in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1])) {
-            return;
-        }
+//        if (!in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1])) {
+//            return;
+//        }
         ob_start();
         var_dump($var);
         $dump = ob_get_clean();

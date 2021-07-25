@@ -21,11 +21,11 @@ $aMenuLinks = array(
         array(),
         ''
     ),
-//    array(
-//        'УПРАВЛЕНИЕ РАССЫЛКОЙ',
-//        '/personal/subscribe/',
-//        array(),
-//        array(),
-//        ''
-//    )
+    array(
+        'УПРАВЛЕНИЕ РАССЫЛКОЙ',
+        '/personal/subscribe/',
+        array(),
+        array(),
+        ''
+    )
 );

@@ -10,11 +10,11 @@ ini_set('memory_limit', '-1');
 
 $result = CIBlockElement::GetList
 (
-    ["ID" => "ASC"],
     [
-        'IBLOCK_ID' => IBLOCK_MAILING,
-        'SECTION_ID' => 0,
-        'INCLUDE_SUBSECTIONS' => 'N'
+        "ID" => "ASC"
+    ],
+    [
+        'IBLOCK_ID' => IBLOCK_SUBSCRIBERS,
     ]
 );
 
@@ -33,13 +33,12 @@ foreach ($contacts as $contact) {
     $props['MIDDLE_NAME'] = $contact['middleName'];
     $props['EMAIL'] = $contact['email'];
     $props['PHONE'] = $contact['phone'];
-    $props['SUBSCRIBE'] = 1;
 
     $arLoadProductArray = [
         "IBLOCK_SECTION_ID" => false,
-        "IBLOCK_ID" => IBLOCK_MAILING,
+        "IBLOCK_ID" => IBLOCK_SUBSCRIBERS,
         "PROPERTY_VALUES" => $props,
-        "NAME" => $contact['secondName'] . ' ' . $contact['name'] . ' ' . $contact['middleName'],
+        "NAME" => $props['EMAIL'],
         "ACTIVE" => "Y",
     ];
 

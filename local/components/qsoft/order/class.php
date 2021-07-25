@@ -20,6 +20,7 @@ use Qsoft\DeliveryWays\WaysDeliveryTable;
 use \Qsoft\Helpers\ComponentHelper;
 use Qsoft\Helpers\EventHelper;
 use Qsoft\Helpers\PriceUtils;
+use Qsoft\Helpers\SubscribeManager;
 use Qsoft\PaymentWays\WaysByPaymentServicesTable;
 use Qsoft\PaymentWays\WaysPaymentTable;
 use Qsoft\Pvzmap\PVZFactory;
@@ -211,6 +212,7 @@ class QsoftOrderComponent extends ComponentHelper
             // проверяем юзера
             $this->checkUser();
             $this->updateUserProfile();
+            $this->updateSubscribe();
             // создаем заказ
             $this->createOrder();
         }
@@ -1587,8 +1589,7 @@ class QsoftOrderComponent extends ComponentHelper
         foreach ($this->postProps as $key => $value) {
             if (!empty($value)) {
                 if ($key === 'FIO') {
-                    $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
-                    $arFIO = explode(' ', $fio);
+                    $arFIO = $this->getArrayFio($this->postProps['FIO']);
                     $prop = $this->getPropByCode('NAME');
                     $prop->setValue($arFIO[0]);
                     $prop = $this->getPropByCode('LAST_NAME');
@@ -1614,6 +1615,41 @@ class QsoftOrderComponent extends ComponentHelper
         } else {
             $this->arResult["ERRORS"][] = $res->getErrorMessages();
             $this->returnError();
+        }
+    }
+
+    private function getArrayFio($fio)
+    {
+        $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
+
+        return explode(' ', $fio);
+    }
+
+    private function updateSubscribe()
+    {
+        $email = $this->postProps['EMAIL'];
+        $mailing = SubscribeManager::getSubscriberByEmail($email);
+        $arFIO = $this->getArrayFio($this->postProps['FIO']);
+
+        if (!$mailing) {
+            SubscribeManager::addSubscriber(
+                $this->postProps['EMAIL'],
+                isset($this->postProps['SUBSCRIBE']) && $this->postProps['SUBSCRIBE'] == 'on',
+                $this->postProps['PHONE'],
+                isset($arFIO[1]) ? $arFIO[1] : $arFIO[0],
+                isset($arFIO[1]) ? $arFIO[0] : false,
+                isset($arFIO[2]) ? $arFIO[2] : false,
+            );
+        } else {
+            SubscribeManager::updateSubscriber(
+                $mailing['ID'],
+                $this->postProps['EMAIL'],
+                isset($this->postProps['SUBSCRIBE']) && $this->postProps['SUBSCRIBE'] == 'on',
+                $this->postProps['PHONE'],
+                isset($arFIO[1]) ? $arFIO[1] : $arFIO[0],
+                isset($arFIO[1]) ? $arFIO[0] : false,
+                isset($arFIO[2]) ? $arFIO[2] : false,
+            );
         }
     }
 

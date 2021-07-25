@@ -431,42 +431,10 @@ class AddMailingInfoblock20210720174521 extends Version
             'USER_TYPE_SETTINGS' => NULL,
             'HINT' => '',
         ));
-        $helper->Iblock()->saveProperty($iblockId, array(
-            'NAME' => 'Включить рассылку',
-            'ACTIVE' => 'Y',
-            'SORT' => '500',
-            'CODE' => 'SUBSCRIBED',
-            'DEFAULT_VALUE' => 0,
-            'PROPERTY_TYPE' => 'N',
-            'ROW_COUNT' => '1',
-            'COL_COUNT' => '30',
-            'LIST_TYPE' => 'L',
-            'MULTIPLE' => 'N',
-            'XML_ID' => '',
-            'FILE_TYPE' => '',
-            'MULTIPLE_CNT' => '5',
-            'LINK_IBLOCK_ID' => '0',
-            'WITH_DESCRIPTION' => 'N',
-            'SEARCHABLE' => 'N',
-            'FILTRABLE' => 'Y',
-            'IS_REQUIRED' => 'Y',
-            'VERSION' => '1',
-            'USER_TYPE' => 'SASDCheckboxNum',
-            'USER_TYPE_SETTINGS' =>
-                array(
-                    'VIEW' =>
-                        array(
-                            0 => 'Нет',
-                            1 => 'Да',
-                        ),
-                ),
-            'HINT' => '',
-        ));
-
     }
 
     public function down()
     {
-        CIBlock::Delete(IBLOCK_MAILING);
+        CIBlock::Delete(IBLOCK_SUBSCRIBERS);
     }
 }
