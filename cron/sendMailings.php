@@ -32,7 +32,7 @@ $mailing = CIBlockElement::GetList(
 )->GetNext();
 
 if ($mailing) {
-    $receivedEmails = unserialize($mailing['PROPERTY_RECEIVED_EMAILS_VALUE']);
+    $receivedEmails = json_decode($mailing['~PROPERTY_RECEIVED_EMAILS_VALUE'], true);
     $result = CIBlockElement::GetList(
         [
             "ID" => "ASC"
@@ -59,7 +59,7 @@ if ($mailing) {
             $limitsForDomainsTypes[$domainType]--;
             $receivedEmails[] = $subscriber['PROPERTY_EMAIL_VALUE'];
             $props = [];
-            $props['RECEIVED_EMAILS'] = serialize($receivedEmails);
+            $props['RECEIVED_EMAILS'] = json_encode($receivedEmails, JSON_FORCE_OBJECT);
             CIBlockElement::SetPropertyValuesEx($mailing['ID'], IBLOCK_MAILINGS, $props);
             echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
         } catch (Exception $e) {
@@ -125,7 +125,11 @@ function sendMail($emailTo, $subscriberID, $subject, $body)
     $mail->Body = $body;
     $mail->AddCustomHeader(
         "List-Unsubscribe",
-        'https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID
+        '<https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID . '&check=1>'
+    );
+    $mail->AddCustomHeader(
+        "List-Unsubscribe-Post",
+        'List-Unsubscribe=One-Click'
     );
     $mail->AddCustomHeader(
         "Precedence",

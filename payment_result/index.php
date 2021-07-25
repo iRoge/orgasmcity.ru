@@ -8,7 +8,7 @@ $orderId = $_REQUEST['OrderId'];
 $tinkoffPaymentId = $_REQUEST['PaymentId'];
 $success = $_REQUEST['Success'];
 $errorMsg = '';
-if ($success) {
+if ($success == 'true') {
     if (!$tinkoffPaymentId || !$orderId) {
         define("ERROR_404", "Y");
     } else {
@@ -49,14 +49,14 @@ if ($success) {
         }
     }
 } else {
-    if (isset($response['Message'])) {
-        $errorMsg = $response['Message'];
+    if (isset($_REQUEST['Message'])) {
+        $errorMsg = $_REQUEST['Message'];
     } else {
         $errorMsg = 'Ошибка оплаты';
     }
 }
 
-if ($success) {
+if ($success == 'true') {
     $APPLICATION->SetPageProperty("title", "Спасибо за оплату заказа!");
     $APPLICATION->SetPageProperty("description", "Спасибо за оплату заказа!");
     $APPLICATION->SetPageProperty('NOT_SHOW_NAV_CHAIN', 'Y');
@@ -73,8 +73,8 @@ if ($success) {
     $APPLICATION->SetTitle("Ошибка");
     ?>
     <div class="page-massage page__message-order">
-        Оплата заказа завершена с ошибкой. <br>
-        Причина ошибки: <span class="text-danger"><b><?=$errorMsg?></b></span> <br>
+        Оплата заказа завершена с ошибкой в системе оплаты. <br>
+        Сообщение от Tinkoff: <span class="text-danger"><b><?=$errorMsg?></b></span> <br>
         Связаться со службой поддержки вы можете по телефону
         <a class="phone-top-link" href="tel:<?=SUPPORT_PHONE?>">
             <?=SUPPORT_PHONE?>
