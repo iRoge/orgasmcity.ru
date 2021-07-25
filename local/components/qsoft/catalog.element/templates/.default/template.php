@@ -174,18 +174,21 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                             <input class="quantity-num" type="number" value="1" />
                                             <button class="quantity-arrow-plus"> + </button>
                                         </div>
-                                        <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
-                                               id="buy-btn"
-                                               class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
-                                               type="button"
-                                               value="Добавить в корзину"/>
-                                        <?php if ($arResult['SHOW_ONE_CLICK']) :?>
+                                        <div style="display: flex; justify-content: space-between">
                                             <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
-                                                   id="one-click-btn"
-                                                   class="js-one-click cartochka-blue blue-btn"
+                                                   id="buy-btn"
+                                                   class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
+                                                   <?=$arResult['SHOW_ONE_CLICK'] ? '' : 'style="width: 100%"'?>
                                                    type="button"
-                                                   value="Купить в 1 клик"/>
-                                        <?php endif; ?>
+                                                   value="Добавить в корзину"/>
+                                            <?php if ($arResult['SHOW_ONE_CLICK']) :?>
+                                                <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
+                                                       id="one-click-btn"
+                                                       class="js-one-click cartochka-blue blue-btn"
+                                                       type="button"
+                                                       value="Купить в 1 клик"/>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

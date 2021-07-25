@@ -5601,8 +5601,7 @@ label.color-label {
     }
 
     .cartochka-orange {
-        width: 44% !important;
-        margin-left: 2%;
+        width: 44%;
     }
 
     .right-cartochka {
@@ -5884,7 +5883,7 @@ label.color-label {
 
     .cartochka-orange {
         font-size: 12px;
-        width: 49% !important;
+        width: 49%;
     }
 
     .cartochka-transparent,
