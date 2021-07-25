@@ -302,7 +302,7 @@ if (CModule::IncludeModule("catalog"))
 // Чистим кэш и отправляем запрос на каждую страницу каталога для автогенерации кеша
 $CACHE_MANAGER->ClearByTag("catalogAll");
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, DOMEN_NAME);
+curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
@@ -329,7 +329,7 @@ $res = CIBlockSection::GetList(
 );
 while ($arItem = $res->GetNext()) {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, DOMEN_NAME . $arItem['SECTION_PAGE_URL']);
+    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . $arItem['SECTION_PAGE_URL']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
@@ -339,7 +339,7 @@ while ($arItem = $res->GetNext()) {
     curl_close($ch);
 }
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, DOMEN_NAME . '/catalog/favorites');
+curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/favorites');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($ch, CURLOPT_MAXREDIRS, 3);

@@ -7,3 +7,5 @@
 /local/vendor
 /local/php_interface/.env
 /import
+/vendor
+/bin
