@@ -1,5 +1,5 @@
 <?php
-const DOMEN_NAME = 'orgasmcity.ru';
+const DOMAIN_NAME = 'orgasmcity.ru';
 const BX_DISABLE_INDEX_PAGE = true;
 
 const DEFAULT_KEYWORDS = 'секс, шоп, магазин эротики, интим товары, интим магазин, город, оргазм';
