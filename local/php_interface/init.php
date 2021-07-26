@@ -66,9 +66,9 @@ function process404()
 if (!function_exists("pre")) {
     function pre($var)
     {
-//        if (!in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1])) {
-//            return;
-//        }
+        if (!in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1])) {
+            return;
+        }
         ob_start();
         var_dump($var);
         $dump = ob_get_clean();

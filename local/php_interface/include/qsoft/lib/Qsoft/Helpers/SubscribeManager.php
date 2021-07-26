@@ -74,7 +74,7 @@ class SubscribeManager
             ],
             [
                 'IBLOCK_ID' => IBLOCK_SUBSCRIBERS,
-                "ID" => $id,
+                'ID' => $id,
             ],
             false,
             false,

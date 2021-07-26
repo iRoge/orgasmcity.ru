@@ -55,8 +55,18 @@ if ($mailing) {
             continue;
         }
 
+        $fields = [
+            'EMAIL' => $subscriber['PROPERTY_EMAIL_VALUE'],
+            'NAME' => $subscriber['PROPERTY_NAME_VALUE'],
+            'SECOND_NAME' => $subscriber['PROPERTY_SECOND_NAME_VALUE'],
+            'MIDDLE_NAME' => $subscriber['PROPERTY_MIDDLE_NAME_VALUE'],
+            'SUBSCRIBER_ID' => $subscriber['ID'],
+            'TITLE' => $mailing['PREVIEW_TEXT'],
+        ];
+        $message = insertFields($mailing['DETAIL_TEXT'], $fields);
+
         try {
-            sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $mailing['PREVIEW_TEXT'], $mailing['DETAIL_TEXT']);
+            sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $message, $mailing['DETAIL_TEXT']);
             echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
             $limitsForDomainsTypesPerScript[$domainType]--;
             $receivedEmails[] = $subscriber['PROPERTY_EMAIL_VALUE'];
@@ -71,7 +81,7 @@ if ($mailing) {
     }
 }
 $result = ob_get_clean();
-orgasm_logger($result, 'mailingsLog', '/cron/logs');
+orgasm_logger($result, 'mailingsLog.log', '/cron/logs/');
 
 function getDomainType($email)
 {
@@ -96,6 +106,15 @@ function getDomainType($email)
     }
 
     return 5;
+}
+
+function insertFields($message, $fields)
+{
+    foreach ($fields as $field => $value) {
+        $message = str_replace('##' . $field . '##', $value, $message);
+    }
+
+    return $message;
 }
 
 /**
