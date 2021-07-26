@@ -9,3 +9,5 @@
 /import
 /vendor
 /bin
+/cron/logs/*
+/import/*.csv
