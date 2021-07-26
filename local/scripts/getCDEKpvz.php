@@ -32,7 +32,7 @@ class GetCDEKPvz
 
     public function prepareData()
     {
-        qsoft_logger('Старт получения ПВЗ CDEK', $this->fileLog);
+        orgasm_logger('Старт получения ПВЗ CDEK', $this->fileLog);
         Loader::includeModule('qsoft.pvzmap');
         //Подготовка данных к нужному формату удаление ненужной инфы. Вернуть json.
         foreach (\Qsoft\Pvzmap\PVZFactory::loadPVZ() as $pvz) {
@@ -77,12 +77,12 @@ class GetCDEKPvz
             $countPVZ++;
         }
         if ($countPVZ > 1000) {
-            qsoft_logger('Получение завершено', $this->fileLog);
-            qsoft_logger('Запись в файл', $this->fileLog);
+            orgasm_logger('Получение завершено', $this->fileLog);
+            orgasm_logger('Запись в файл', $this->fileLog);
             file_put_contents($_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/CDEK.pvz', serialize($arReturn));
-            qsoft_logger('Файл создан ' . $_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/CDEK.pvz', $this->fileLog);
+            orgasm_logger('Файл создан ' . $_SERVER["DOCUMENT_ROOT"] . '/upload/PVZ/CDEK.pvz', $this->fileLog);
         } else {
-            qsoft_logger('HUOMIOTA!!! Получено мало (' . $countPVZ . ') ПВЗ, ожидалось более 1000. Файл не обновлен!', $this->fileLog);
+            orgasm_logger('HUOMIOTA!!! Получено мало (' . $countPVZ . ') ПВЗ, ожидалось более 1000. Файл не обновлен!', $this->fileLog);
         }
 
         return $countPVZ;

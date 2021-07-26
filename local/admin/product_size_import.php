@@ -517,7 +517,7 @@ html;
 
     private function log($message)
     {
-        qsoft_logger($message, date('Y.m.d') . '.log', '/local/logs/importProductProperty/');
+        orgasm_logger($message, date('Y.m.d') . '.log', '/local/logs/importProductProperty/');
     }
 }
 

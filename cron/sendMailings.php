@@ -4,13 +4,14 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.
 while (ob_get_level()) {
     ob_end_flush();
 }
+ob_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 // 1 - яндекс, 2 - майл, 3 - gmail, 4 - rambler, 5 - other
-$limitsForDomainsTypes = [
+$limitsForDomainsTypesPerScript = [
     1 => 1,
     2 => 1,
     3 => 1,
@@ -50,23 +51,27 @@ if ($mailing) {
             continue;
         }
         $domainType = getDomainType($subscriber['PROPERTY_EMAIL_VALUE']);
-        if (!$limitsForDomainsTypes[$domainType]) {
+        if (!$limitsForDomainsTypesPerScript[$domainType]) {
             continue;
         }
 
         try {
             sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $mailing['PREVIEW_TEXT'], $mailing['DETAIL_TEXT']);
-            $limitsForDomainsTypes[$domainType]--;
+            echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
+            $limitsForDomainsTypesPerScript[$domainType]--;
             $receivedEmails[] = $subscriber['PROPERTY_EMAIL_VALUE'];
             $props = [];
             $props['RECEIVED_EMAILS'] = json_encode($receivedEmails, JSON_FORCE_OBJECT);
             CIBlockElement::SetPropertyValuesEx($mailing['ID'], IBLOCK_MAILINGS, $props);
-            echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
+            $el = new CIBlockElement();
+            $el->Update($subscriber['ID'], ['ACTIVE' => 'N']);
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$e->getMessage()}" . PHP_EOL;
         }
     }
 }
+$result = ob_get_clean();
+orgasm_logger($result, 'mailingsLog', '/cron/logs');
 
 function getDomainType($email)
 {
@@ -93,6 +98,9 @@ function getDomainType($email)
     return 5;
 }
 
+/**
+ * @throws Exception
+ */
 function sendMail($emailTo, $subscriberID, $subject, $body)
 {
     $mail = new PHPMailer(true);

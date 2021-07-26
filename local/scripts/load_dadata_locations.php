@@ -236,9 +236,9 @@ class DadataSync
     private function log($message, $error = false, $qc = false)
     {
         if (!$error) {
-            qsoft_logger($message, 'qc_' . $qc . '.log', '/local/logs/dadataSync/' . date('Y.m.d') . '/');
+            orgasm_logger($message, 'qc_' . $qc . '.log', '/local/logs/dadataSync/' . date('Y.m.d') . '/');
         } else {
-            qsoft_logger($message, 'ERRORS.log', '/local/logs/dadataSync/' . date('Y.m.d') . '/');
+            orgasm_logger($message, 'ERRORS.log', '/local/logs/dadataSync/' . date('Y.m.d') . '/');
         }
     }
 }
