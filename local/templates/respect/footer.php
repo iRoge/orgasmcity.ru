@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-             <div class="col-sm-7 hidden-sm mailsender">
+            <div class="col-xs-12 col-sm-7 hidden-sm mailsender">
                 <h4>Подпишитесь на рассылку</h4>
                 <? $APPLICATION->IncludeComponent(
                     'qsoft:subscribe',
@@ -107,7 +107,7 @@
                     false
                 ); ?>
             </div>
-            <div class="col-sm-12 bottom-mob">
+            <div class="col-xs-12 col-sm-12 bottom-mob">
                 <p class="copy-shop-mob">
                     <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
                 </p>

@@ -66,7 +66,7 @@ if ($mailing) {
         $message = insertFields($mailing['DETAIL_TEXT'], $fields);
 
         try {
-            sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $message, $mailing['DETAIL_TEXT']);
+            sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $mailing['PREVIEW_TEXT'], $message);
             echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
             $limitsForDomainsTypesPerScript[$domainType]--;
             $receivedEmails[] = $subscriber['PROPERTY_EMAIL_VALUE'];
