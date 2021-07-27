@@ -561,6 +561,10 @@ html, body {
 }
 
 @media (min-width: 1280px) {
+    .cls-mail-div {
+        z-index: 1001;
+    }
+
     .popup--size-tab {
         width: 40%;
     }
