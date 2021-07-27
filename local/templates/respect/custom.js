@@ -242,61 +242,6 @@ $(document).ready(function () {
 		});
 	});
 
-	if ('undefined' !== typeof RESPECT_OPTIONS) {
-		// banner popup
-		if (RESPECT_OPTIONS.POPUP_BANNER_PATH.length && !BX.getCookie('RESPECT_HIDE_BANNER')) {
-			let utmList = !RESPECT_OPTIONS.POPUP_BANNER_UTM ? [] : RESPECT_OPTIONS.POPUP_BANNER_UTM.split(',');
-			respectOptionsBannersProcess(RESPECT_OPTIONS.POPUP_BANNER_PATH, utmList);
-		}
-
-		// fast order popup
-		if (1 == RESPECT_OPTIONS.POPUP_FO_ACTIVE && ! $('body').hasClass('page--cart')) {
-			let initPopupTimer = RESPECT_OPTIONS.POPUP_FO_PAGE;
-			if ($('body').hasClass('page--list') || $('body').hasClass('page--product')) {
-				initPopupTimer = RESPECT_OPTIONS.POPUP_FO_CATALOG;
-			}
-			let popupOpened = false;
-			let popupTimer = initPopupTimer;
-
-			$('body').mousemove(function(event) {
-				popupTimer = initPopupTimer;
-			});
-
-			setInterval(function() {
-				popupTimer --;
-
-				if (0 === popupTimer && false == popupOpened) {
-					let basketCount = parseInt($('#basket-small span.shortcut-informer').text());
-
-					if (basketCount && (0 == RESPECT_OPTIONS.POPUP_FO_ONCE || !BX.getCookie('RESPECT_POPUP_FO_SHOWN'))) {
-						BX.setCookie('RESPECT_POPUP_FO_SHOWN', 'Y', {expires: 43200});
-
-						$.ajax({
-							method: 'get',
-							url: '/cart/?action=get_one_click',
-							success: function (response) {
-								response = $(response);
-								response.find('.column-5.column-md-2').attr('class', 'column-6 pre-2');
-								response.find('.widget__bonus').parent().remove();
-
-								return Popup.show(response, {
-									title: 'В вашей корзине находятся товары, вы можете их оформить оставив только номер телефона:',
-									className: 'popup--fast-order',
-									onShow: function (popup) {
-										popupOpened = true;
-									},
-									onClose: function (popup) {
-										popupOpened = false;
-									}
-								});
-							}
-						});
-					}
-				}
-			}, 1000);
-		}
-	}
-
 	$('.js-tender-form').on('click', function(e) {
 		e.preventDefault();
 

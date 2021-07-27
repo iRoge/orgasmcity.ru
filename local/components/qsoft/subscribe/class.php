@@ -17,7 +17,11 @@ class QsoftSubscribeComponent extends \CBitrixComponent
         }
 
         if ($this->request->isPost() && check_bitrix_sessid() && $bAjax) {
-            $this->processAjaxRequest();
+            if ($this->request->get('action') == 'subscribeSurprise') {
+                $this->processAjaxRequestSurprise();
+            } else {
+                $this->processAjaxRequest();
+            }
         }
         $this->includeComponentTemplate();
         if ($bAjax) {
@@ -39,5 +43,22 @@ class QsoftSubscribeComponent extends \CBitrixComponent
                 SubscribeManager::updateSubscriber($mailing['ID'], false, true);
             }
         }
+    }
+
+    private function processAjaxRequestSurprise()
+    {
+        $mailing = SubscribeManager::getSubscriberByEmail($this->request->get('EMAIL'));
+        $this->arResult['MESSAGE'] = "Письмо с сюрпризом выслано вам на почту!";
+        $this->sendPromocode($this->request->get('EMAIL'));
+        if (!$mailing) {
+            SubscribeManager::addSubscriber($this->request->get('EMAIL'));
+        } else {
+            SubscribeManager::updateSubscriber($mailing['ID'], false, true);
+        }
+    }
+
+    private function sendPromocode($email)
+    {
+
     }
 }

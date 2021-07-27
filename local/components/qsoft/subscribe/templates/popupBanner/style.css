@@ -1,0 +1,44 @@
+#subscribe-form > .error {
+    margin: 0 0 10px 0;
+}
+input#EMAIL.red_border_sub {
+    border: 1px solid red !important;
+}
+#subscribe-message {
+    pointer-events: auto;
+}
+#subscribe-message a {
+    color: #fd7778;
+    transition: opacity 300ms;
+}
+#subscribe-message a:hover {
+    opacity: 0.8;
+}
+
+.surprise-banner {
+    background: transparent;
+    padding: 0!important;
+}
+
+.surprise-banner .mailsender {
+    position: absolute;
+    display: block;
+    bottom: 14%;
+    right: 1%;
+    width: 52%;
+}
+
+@media screen and (max-width: 767px) {
+    .surprise-banner .mailsender {
+        bottom: 1%;
+    }
+}
+
+.surprise-banner .mailsender input[type="submit"] {
+    margin-top: 5px;
+}
+
+.subscribe-message {
+    color: greenyellow;
+    font-weight: bold;
+}

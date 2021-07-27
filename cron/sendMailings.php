@@ -66,7 +66,7 @@ if ($mailing) {
         $message = insertFields($mailing['DETAIL_TEXT'], $fields);
 
         try {
-            sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $mailing['PREVIEW_TEXT'], $message);
+            Functions::sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $mailing['PREVIEW_TEXT'], $message);
             echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
             $limitsForDomainsTypesPerScript[$domainType]--;
             $receivedEmails[] = $subscriber['PROPERTY_EMAIL_VALUE'];
@@ -115,52 +115,4 @@ function insertFields($message, $fields)
     }
 
     return $message;
-}
-
-/**
- * @throws Exception
- */
-function sendMail($emailTo, $subscriberID, $subject, $body)
-{
-    $mail = new PHPMailer(true);
-    //Server settings
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->isSMTP();
-    $mail->CharSet = 'UTF-8';
-    $mail->Host = 'smtp.orgasmcity.ru';
-    $mail->SMTPAuth = true;
-    $mail->SMTPDebug = 0;
-    $mail->Username = 'market@orgasmcity.ru';
-    $mail->Password = 'org@smcity-market';
-    $mail->SMTPOptions = [
-        'ssl' => [
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true
-        ]
-    ];
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port = 465;
-
-    //Recipients
-    $mail->setFrom('market@orgasmcity.ru', 'Ваш проводник в Городе Оргазма');
-    $mail->addAddress($emailTo);
-
-    //Content
-    $mail->isHTML(true);
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->AddCustomHeader(
-        "List-Unsubscribe",
-        '<https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID . '&check=1>'
-    );
-    $mail->AddCustomHeader(
-        "List-Unsubscribe-Post",
-        'List-Unsubscribe=One-Click'
-    );
-    $mail->AddCustomHeader(
-        "Precedence",
-        'bulk'
-    );
-    $mail->send();
 }
