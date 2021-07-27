@@ -19,6 +19,7 @@ $(document).ready(function(){
         $(".orders__price").each(function () {
             currentBasketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
         });
+        show_wait(el);
         $.ajax({
             method: "POST",
             url: "/cart/",
@@ -67,6 +68,7 @@ $(document).ready(function(){
                     });
                 }
                 checkProducts(basketPrice);
+                hide_wait();
             },
             error: function (data) {
                 hide_wait();
@@ -80,6 +82,7 @@ $(document).ready(function(){
         if (activeAjax) {
             return;
         }
+        show_wait(el);
         let productData = el.data();
         activeAjax = true;
         let data = {
@@ -156,10 +159,12 @@ $(document).ready(function(){
                     activeAjax = false;
                     console.log(data['text']);
                 }
+                hide_wait();
             },
             error: function(jqXHR, exception) {
                 activeAjax = false;
                 ajaxError(jqXHR, exception);
+                hide_wait();
             },
         });
     }

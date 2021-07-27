@@ -5595,15 +5595,6 @@ label.color-label {
         position: relative;
     }
 
-    .cartochka-blue {
-        width: 44% !important;
-        float: left;
-    }
-
-    .cartochka-orange {
-        width: 44%;
-    }
-
     .right-cartochka {
         margin-left: 0px;
         position: relative;
@@ -5874,16 +5865,6 @@ label.color-label {
         padding-right: 0;
         /*padding-bottom: 5%;*/
         display: block;
-    }
-
-    .cartochka-blue {
-        font-size: 12px;
-        width: 49% !important;
-    }
-
-    .cartochka-orange {
-        font-size: 12px;
-        width: 49%;
     }
 
     .cartochka-transparent,

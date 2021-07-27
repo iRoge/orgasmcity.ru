@@ -174,11 +174,10 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                             <input class="quantity-num" type="number" value="1" />
                                             <button class="quantity-arrow-plus"> + </button>
                                         </div>
-                                        <div style="display: flex; justify-content: space-between">
+                                        <div class="btn-flex-box">
                                             <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                    id="buy-btn"
                                                    class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
-                                                   <?=$arResult['SHOW_ONE_CLICK'] ? '' : 'style="width: 100%"'?>
                                                    type="button"
                                                    value="Добавить в корзину"/>
                                             <?php if ($arResult['SHOW_ONE_CLICK']) :?>
