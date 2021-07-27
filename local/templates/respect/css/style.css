@@ -2260,11 +2260,6 @@ a.in-zagolovok {
     width: 16px;
 }
 
-.real-show-hint {
-    cursor: pointer;
-}
-
-
 .full {
     padding-top: 22px;
     padding-bottom: 22px;
@@ -6042,11 +6037,6 @@ label.color-label {
         .shops-page .korpus {
             margin-top: -30px;
         }
-    }
-    #close-sale {
-        position: absolute;
-        right: 0;
-        top: 0;
     }
 
     .right-catalog {

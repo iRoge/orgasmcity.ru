@@ -26,12 +26,6 @@ $(document).on('click', '.js-feedback-btn', function () {
     $('[name="SIMPLE_FORM_1"]').append('<textarea name="form_textarea_2" style="display: none;" class="required">' + $('[name="form_textarea_2"]').val() + vacanciesText.replace(/ +/g, ' ') + '</textarea>');
 });
 
-$('.cls-mail-div').click(function () {
-    $('.feedback-selectize').attr('onmousedown');
-    $('.feedback-selectize').attr('onkeydown');
-    $('.feedback-selectize').val('');
-});
-
 $('.podlozhka').click(function () {
     $('.feedback-selectize').removeAttr('onmousedown');
     $('.feedback-selectize').removeAttr('onkeydown');
