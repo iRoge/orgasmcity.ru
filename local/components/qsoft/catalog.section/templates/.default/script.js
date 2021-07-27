@@ -535,6 +535,69 @@ function resetHandlers() {
 }
 
 $(document).ready(function() {
+    $(document).on('click', '.js-filter-toggle', function() {
+        let $filterToggle = $(this);
+        let $filterCol = $('.js-filter-col');
+        $filterToggle.toggleClass('filter-toggle--hidden');
+        $filterCol.toggleClass('catalog__content-col--hidden');
+    });
+    $(document).on('click', '.js-filter-toggle-mobile', function() {
+        $('.podlozhka').show();
+        $('body').css('overflow', 'hidden');
+        $('.js-filter-mobile-close').show();
+        $(".js-filter-col").removeClass("catalog__content-col--sidebar");
+    });
+    $(document).on('click', '.js-filter-mobile-close', function() {
+        hideFilter();
+        $('body').css('overflow-y', '');
+    });
+    $(document).on('click', '.podlozhka', function() {
+        hideFilter();
+        $('body').css('overflow-y', '');
+    });
+    function hideFilter() {
+        $(".js-filter-col").addClass("catalog__content-col--sidebar");
+        $('.podlozhka').hide();
+        $('body').css('overflow-y', '');
+    }
+    $(document).on('click', '.js-view-item', function() {
+        let $viewItem = $(this);
+        let isCurrentActive = $viewItem.hasClass('view__item--active');
+        if (isCurrentActive) {
+            return;
+        }
+        let $viewItemBox = $viewItem.closest('.js-view');
+        let $viewItems = $viewItemBox.find('.js-view-item');
+        let $cards = $('.js-cards');
+        let viewType = $viewItem.data('view-type');
+        $viewItems.removeClass('view__item--active');
+        $viewItem.addClass('view__item--active');
+        if (viewType === 'big') {
+            $cards.addClass('cards--big');
+            $('.card__img-pic').each(function() {
+                let that = $(this);
+                that.attr('data-src-small', that.attr('src'));
+                if (that.attr('src') != null){
+                    that.attr('src', that.data('src-big'));
+                } else {
+                    that.attr('data-src', that.data('src-big'));
+                }
+            });
+        } else {
+            $cards.removeClass('cards--big');
+            $('.card__img-pic').each(function() {
+                let that = $(this);
+                that.attr('data-src-big', that.attr('src'));
+                if (that.attr('src') != null){
+                    that.attr('src', that.data('src-small'));
+                } else {
+                    that.attr('data-src', that.data('src-small'));
+                }
+            });
+        }
+        saveSettingsInCookie();
+    });
+
     let params = SmartFilter.prototype.processSearch();
     params.getFilters = 'Y';
     BX.ajax.post($(location).attr('href'), params, function (data) {
