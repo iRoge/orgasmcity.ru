@@ -1,5 +1,4 @@
 <?php
-
 $_SERVER['DOCUMENT_ROOT'] = dirname(dirname(__DIR__));
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
 while (ob_get_level()) {
@@ -8,23 +7,39 @@ while (ob_get_level()) {
 
 ini_set('memory_limit', '-1');
 
-$result = CIBlockElement::GetList
-(
+$result = CIBlockElement::GetList(
     [
         "ID" => "ASC"
     ],
     [
         'IBLOCK_ID' => IBLOCK_SUBSCRIBERS,
-    ]
+    ],
+    false,
+    false,
+    ['ID', 'PROPERTY_EMAIL']
 );
 
+$arAlreadyExists = [];
 while ($element = $result->Fetch()) {
-    CIBlockElement::Delete($element['ID']);
+    $arAlreadyExists[] = mb_strtolower($element['PROPERTY_EMAIL_VALUE']);
 }
 
 $contacts = unserialize(file_get_contents('local/scripts/contacts.txt'));
+$validEmailsJson = json_decode(file_get_contents('local/scripts/validEmails.json'), true);
+
+$validEmails = [];
+foreach ($validEmailsJson['root']['row'] as $email) {
+    $validEmails[] = mb_strtolower($email['Email']);
+}
 
 foreach ($contacts as $contact) {
+    if (
+        !filter_var($contact['email'], FILTER_VALIDATE_EMAIL)
+        || in_array($contact['email'], $arAlreadyExists)
+        || !in_array($contact['email'], $validEmails)
+    ) {
+        continue;
+    }
     $el = new CIBlockElement;
 
     $props = [];
