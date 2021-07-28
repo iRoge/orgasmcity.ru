@@ -22,8 +22,8 @@ $(function () {
             $.post(document.location, data, function (html) {
                 $subscribe.replaceWith(html);
                 $subscribe = form.closest('.js-subscribe-new');
+                ym(82799680,'reachGoal','subscribe');
                 if ($subscribe.find('#subscribe-message').length > 0) {
-                    ym(82799680,'reachGoal','subscribe');
                     $subscribe.addClass('subscribe--success');
                 }
             });
@@ -31,14 +31,23 @@ $(function () {
     });
 
     $(document).ready(function () {
-        setTimeout(function () {
-            let element = $('.js-popup-banner');
-            Popup.show(element, {
-                onShow: function () {
-                    element.closest('.cls-mail-div').hide();
-                },
-                className: 'surprise-banner'
-            });
-        }, 1000);
+        if (!window.localStorage['surpriseReceived'] && !isAuth) {
+            setInterval(function () {
+                if (!window.localStorage['onlineTime']) {
+                    window.localStorage['onlineTime'] = 0;
+                }
+                window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
+                if (Number(window.localStorage['onlineTime']) === 600) {
+                    let element = $('.js-popup-banner');
+                    Popup.show(element, {
+                        onShow: function () {
+                            element.closest('.cls-mail-div').hide();
+                        },
+                        className: 'surprise-banner'
+                    });
+                    window.localStorage['surpriseReceived'] = true;
+                }
+            }, 5000);
+        }
     })
 });

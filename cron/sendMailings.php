@@ -5,10 +5,7 @@ while (ob_get_level()) {
     ob_end_flush();
 }
 ob_start();
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-require 'vendor/autoload.php';
 
 // 1 - яндекс, 2 - майл, 3 - gmail, 4 - rambler, 5 - other
 $limitsForDomainsTypesPerScript = [
@@ -63,10 +60,10 @@ if ($mailing) {
             'SUBSCRIBER_ID' => $subscriber['ID'],
             'TITLE' => $mailing['PREVIEW_TEXT'],
         ];
-        $message = insertFields($mailing['DETAIL_TEXT'], $fields);
+        $message = Functions::insertFields($mailing['DETAIL_TEXT'], $fields);
 
         try {
-            Functions::sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $subscriber['ID'], $mailing['PREVIEW_TEXT'], $message);
+            Functions::sendMail($subscriber['PROPERTY_EMAIL_VALUE'], $mailing['PREVIEW_TEXT'], $message, $subscriber['ID']);
             echo 'Message has been sent to ' . $subscriber['PROPERTY_EMAIL_VALUE'] . PHP_EOL;
             $limitsForDomainsTypesPerScript[$domainType]--;
             $receivedEmails[] = $subscriber['PROPERTY_EMAIL_VALUE'];
@@ -106,13 +103,4 @@ function getDomainType($email)
     }
 
     return 5;
-}
-
-function insertFields($message, $fields)
-{
-    foreach ($fields as $field => $value) {
-        $message = str_replace('##' . $field . '##', $value, $message);
-    }
-
-    return $message;
 }

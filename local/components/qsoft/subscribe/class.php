@@ -17,10 +17,15 @@ class QsoftSubscribeComponent extends \CBitrixComponent
         }
 
         if ($this->request->isPost() && check_bitrix_sessid() && $bAjax) {
-            if ($this->request->get('action') == 'subscribeSurprise') {
-                $this->processAjaxRequestSurprise();
-            } else {
-                $this->processAjaxRequest();
+            try {
+                if ($this->request->get('action') == 'subscribeSurprise') {
+                    $this->processAjaxRequestSurprise();
+                } else {
+                    $this->processAjaxRequest();
+                }
+            } catch (Exception $e) {
+                $this->arResult['MESSAGE'] = "Упс, кажется произошла ошибка. Обратитесь в суппорт";
+                orgasm_logger($e->getMessage(), 'error.log', '/local/logs/', true);
             }
         }
         $this->includeComponentTemplate();
@@ -48,16 +53,20 @@ class QsoftSubscribeComponent extends \CBitrixComponent
     private function processAjaxRequestSurprise()
     {
         $mailing = SubscribeManager::getSubscriberByEmail($this->request->get('EMAIL'));
-        $this->arResult['MESSAGE'] = "Письмо с сюрпризом выслано вам на почту!";
-        $this->sendPromocode($this->request->get('EMAIL'));
         if (!$mailing) {
-            SubscribeManager::addSubscriber($this->request->get('EMAIL'));
+            $mailingID = SubscribeManager::addSubscriber($this->request->get('EMAIL'));
         } else {
             SubscribeManager::updateSubscriber($mailing['ID'], false, true);
+            $mailingID = $mailing['ID'];
         }
+        $this->arResult['MESSAGE'] = "Письмо с сюрпризом выслано вам на почту!";
+        $this->sendPromocode($this->request->get('EMAIL'), $mailingID);
     }
 
-    private function sendPromocode($email)
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    private function sendPromocode($email, $subscriberID)
     {
         $dateEnd = (new \Bitrix\Main\Type\DateTime())->add('+7 days');
 
@@ -75,8 +84,15 @@ class QsoftSubscribeComponent extends \CBitrixComponent
                 'USER_ID' => 0,
             ]
         );
-//        // TODO: Здесь доделать получение тела письма для купона
-//        Functions::sendMail($email);
+        $fields = [
+            'PROMOCODE' => $coupon,
+            'SUBSCRIBER_ID' => $subscriberID,
+            'EMAIL' => $email,
+        ];
+        $html = file_get_contents(__DIR__ . '/surprise.html');
+        $subject = 'Как и обещали. Ваш сюрприз!';
+        $body = Functions::insertFields($html, $fields);
+        Functions::sendMail($email, $subject, $body, $subscriberID);
     }
 
     private function generateCoupon($strength)

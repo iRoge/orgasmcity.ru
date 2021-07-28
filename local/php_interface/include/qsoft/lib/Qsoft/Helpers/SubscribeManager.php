@@ -64,6 +64,7 @@ class SubscribeManager
             $props['MIDDLE_NAME'] = $middleName;
         }
         CIBlockElement::SetPropertyValuesEx($mailingID, IBLOCK_SUBSCRIBERS, $props);
+        return $mailingID;
     }
 
     public static function getSubscriber($id)

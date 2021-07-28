@@ -730,16 +730,25 @@ class Functions
                 "List-Unsubscribe",
                 '<https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID . '&check=1>'
             );
+            $mail->AddCustomHeader(
+                "List-Unsubscribe-Post",
+                'List-Unsubscribe=One-Click'
+            );
         }
-        $mail->AddCustomHeader(
-            "List-Unsubscribe-Post",
-            'List-Unsubscribe=One-Click'
-        );
         $mail->AddCustomHeader(
             "Precedence",
             'bulk'
         );
 
         $mail->send();
+    }
+
+    public static function insertFields($message, $fields)
+    {
+        foreach ($fields as $field => $value) {
+            $message = str_replace('##' . $field . '##', $value, $message);
+        }
+
+        return $message;
     }
 }

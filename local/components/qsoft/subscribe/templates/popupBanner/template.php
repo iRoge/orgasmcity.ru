@@ -1,6 +1,12 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
-} ?>
+}
+
+global $USER;
+?>
+<script>
+    let isAuth = <?=$USER->IsAuthorized() ? '1' : '0'?>;
+</script>
 <div class="js-popup-banner">
     <img src="/img/surprise.png" alt="Surprise" width="100%" height="100%">
     <div class="mailsender" style="z-index: 1001">
