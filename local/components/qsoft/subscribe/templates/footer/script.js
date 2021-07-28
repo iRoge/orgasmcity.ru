@@ -28,6 +28,7 @@ $(function () {
                 $subscribe.replaceWith(html);
                 $subscribe = form.closest('.js-subscribe-new');
                 if ($subscribe.find('.subscribe-message').length > 0) {
+                    ym(82799680,'reachGoal','subscribe');
                     $subscribe.addClass('subscribe--success');
                 }
             });
