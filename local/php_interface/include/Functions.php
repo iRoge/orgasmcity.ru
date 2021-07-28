@@ -695,7 +695,7 @@ class Functions
     /**
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public static function sendMail($emailTo, $subscriberID, $subject, $body)
+    public static function sendMail($emailTo, $subject, $body, $subscriberID = null)
     {
         $mail = new PHPMailer(true);
         //Server settings
@@ -725,10 +725,12 @@ class Functions
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $body;
-        $mail->AddCustomHeader(
-            "List-Unsubscribe",
-            '<https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID . '&check=1>'
-        );
+        if ($subscriberID) {
+            $mail->AddCustomHeader(
+                "List-Unsubscribe",
+                '<https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID . '&check=1>'
+            );
+        }
         $mail->AddCustomHeader(
             "List-Unsubscribe-Post",
             'List-Unsubscribe=One-Click'

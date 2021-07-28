@@ -59,6 +59,35 @@ class QsoftSubscribeComponent extends \CBitrixComponent
 
     private function sendPromocode($email)
     {
+        $dateEnd = (new \Bitrix\Main\Type\DateTime())->add('+7 days');
 
+        do {
+            $coupon = $this->generateCoupon(7);
+        } while (\Bitrix\Catalog\DiscountCouponTable::isExist($coupon));
+
+        $couponsResult = \Bitrix\Sale\Internals\DiscountCouponTable::add(
+            [
+                'ACTIVE_TO' => $dateEnd,
+                'DISCOUNT_ID' => 4,
+                'COUPON' => $coupon,
+                'TYPE' => \Bitrix\Sale\Internals\DiscountCouponTable::TYPE_ONE_ORDER,
+                'MAX_USE' => 1,
+                'USER_ID' => 0,
+            ]
+        );
+//        // TODO: Здесь доделать получение тела письма для купона
+//        Functions::sendMail($email);
+    }
+
+    private function generateCoupon($strength)
+    {
+        $permittedChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $inputLength = strlen($permittedChars);
+        $randomString = '';
+        for($i = 0; $i < $strength; $i++) {
+            $randomCharacter = $permittedChars[mt_rand(0, $inputLength - 1)];
+            $randomString .= $randomCharacter;
+        }
+        return mb_strtoupper($randomString);
     }
 }

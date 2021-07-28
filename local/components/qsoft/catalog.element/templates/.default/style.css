@@ -474,16 +474,3 @@ input[type="number"] {
     display: flex;
     justify-content: space-between;
 }
-
-@media (max-width: 767px) {
-    .btn-flex-box {
-        display: flex;
-        justify-content: space-between;
-    }
-    .cartochka-orange {
-        width: 49%!important;
-    }
-    .cartochka-blue {
-        width: 49%!important;
-    }
-}

@@ -174,20 +174,19 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                             <input class="quantity-num" type="number" value="1" />
                                             <button class="quantity-arrow-plus"> + </button>
                                         </div>
-                                        <div class="btn-flex-box">
+                                        <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
+                                               id="buy-btn"
+                                               class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
+                                               type="button"
+                                               value="Добавить в корзину"
+                                               style="<?=$arResult['SHOW_ONE_CLICK'] ? '' : 'width: 100%'?>"/>
+                                        <?php if ($arResult['SHOW_ONE_CLICK']) :?>
                                             <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
-                                                   id="buy-btn"
-                                                   class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
+                                                   id="one-click-btn"
+                                                   class="js-one-click cartochka-blue blue-btn"
                                                    type="button"
-                                                   value="Добавить в корзину"/>
-                                            <?php if ($arResult['SHOW_ONE_CLICK']) :?>
-                                                <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
-                                                       id="one-click-btn"
-                                                       class="js-one-click cartochka-blue blue-btn"
-                                                       type="button"
-                                                       value="Купить в 1 клик"/>
-                                            <?php endif; ?>
-                                        </div>
+                                                   value="Купить в 1 клик"/>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </form>
