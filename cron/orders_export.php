@@ -28,7 +28,7 @@ CModule::IncludeModule('sale');
 
 $xmlDelivery = false;
 //Соответствие доставок Битрикса доставкам P5S
-$delivery_arr = array(
+$delivery_arr = [
     'SELF_PICKUP' => 4,
     'PVZ_PICKPOINT_FREE' => 5,
     'PVZ_PICKPOINT' => 5,
@@ -42,7 +42,7 @@ $delivery_arr = array(
     'CDEK' => 10,
     'PVZ_CDEK_FREE' => 11,
     'PVZ_CDEK' => 11
-);
+];
 $arFilter = array(
     "STATUS_ID" => "ZS",
     "CANCELED" => "N",
@@ -125,14 +125,14 @@ while ($arOrder = $rsOrders->GetNext()) {
             }
         }
     }
-    //
+
     $curl_opt = [
         "ApiKey" => $api_key,
         "TestMode" => 0,
         "ExtOrderID" => $arOrder["ID"],
         "ExtOrderPaid" => ($arOrder["PAYED"] == "Y") ? 1 : 0,
-        "ExtDeliveryCost" => intval($arOrder["PRICE_DELIVERY"]),
-        "dsDelivery" => $dsDelivery,
+        "ExtDeliveryCost" => $dsDelivery ? intval($arOrder["PRICE_DELIVERY"]) : 0,
+        "dsDelivery" => $dsDelivery ?: 10,
         "packType" => $PackDelivery[$arOrder["DELIVERY_ID"]] ? 2 : 1,
         "dsFio" => $arOrder["PROPS"]["NAME"] . " " . $arOrder["PROPS"]["LAST_NAME"],
         "dsMobPhone" => $arOrder["PROPS"]["PHONE"],

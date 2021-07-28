@@ -465,9 +465,9 @@ html, body {
     background-position: 50%;
     width: 50px;
     height: 45px;
-    right: 0px;
-    top: 0px;
-    z-index: 1001;
+    right: 0;
+    top: 0;
+    z-index: 1000;
     position: absolute;
     cursor: pointer;
 }
@@ -561,6 +561,10 @@ html, body {
 }
 
 @media (min-width: 1280px) {
+    .cls-mail-div {
+        z-index: 1001;
+    }
+
     .popup--size-tab {
         width: 40%;
     }
@@ -2259,11 +2263,6 @@ a.in-zagolovok {
     right: 10px;
     width: 16px;
 }
-
-.real-show-hint {
-    cursor: pointer;
-}
-
 
 .full {
     padding-top: 22px;
@@ -4582,7 +4581,7 @@ input::-webkit-inner-spin-button {
 }
 
 .blue-btn:hover {
-    background: #2a2a2a !important;
+    background: #fa0000 !important;
     transition: 300ms;
     -webkit-transition: 300ms;
 }
@@ -5138,13 +5137,13 @@ label.color-label {
 .cartochka-blue {
     padding: 13px 0;
     background: #ff5e5e;
-    width: 49%;
+    width: 100%;
     text-transform: uppercase;
     color: white;
     font-family: 'firaregular';
     font-size: 16px;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 5px;
     border: 0;
     outline: 0;
 }
@@ -5152,7 +5151,7 @@ label.color-label {
 .cartochka-orange {
     padding: 13px 0;
     background: #f0a740;
-    width: 49%;
+    width: 100%;
     text-transform: uppercase;
     color: white;
     font-family: 'firaregular';
@@ -5595,16 +5594,6 @@ label.color-label {
         position: relative;
     }
 
-    .cartochka-blue {
-        width: 44% !important;
-        float: left;
-    }
-
-    .cartochka-orange {
-        width: 44% !important;
-        margin-left: 2%;
-    }
-
     .right-cartochka {
         margin-left: 0px;
         position: relative;
@@ -5877,16 +5866,6 @@ label.color-label {
         display: block;
     }
 
-    .cartochka-blue {
-        font-size: 12px;
-        width: 49% !important;
-    }
-
-    .cartochka-orange {
-        font-size: 12px;
-        width: 49% !important;
-    }
-
     .cartochka-transparent,
     .button-bordered--transparent {
         font-size: 12px;
@@ -6062,11 +6041,6 @@ label.color-label {
         .shops-page .korpus {
             margin-top: -30px;
         }
-    }
-    #close-sale {
-        position: absolute;
-        right: 0;
-        top: 0;
     }
 
     .right-catalog {

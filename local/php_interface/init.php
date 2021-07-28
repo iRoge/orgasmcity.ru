@@ -44,14 +44,13 @@ global $LOCATION;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/env.php');
 // UTM tags
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/init_utm.php');
+// Возобновляем подписку людям перешедшим по email
+require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/init_subscribe.php');
 $dotenv = Dotenv\Dotenv::create(__DIR__);
 $dotenv->load();
 
 // EVENTS
-include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/search.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/event.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/form.php');
-
 
 AddEventHandler("main", "OnEpilog", "process404");
 function process404()
@@ -81,7 +80,7 @@ if (!function_exists("pre")) {
     }
 }
 
-function qsoft_logger($message, string $file = "log.txt", string $path = "/local/logs/", $where_flag = false)
+function orgasm_logger($message, string $file = "log.txt", string $path = "/local/logs/", $where_flag = false)
 {
     $message = (is_array($message) || is_object($message)) ? print_r($message, true) : $message;
     $log_path = $_SERVER['DOCUMENT_ROOT'] . $path;

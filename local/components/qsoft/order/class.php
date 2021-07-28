@@ -20,6 +20,7 @@ use Qsoft\DeliveryWays\WaysDeliveryTable;
 use \Qsoft\Helpers\ComponentHelper;
 use Qsoft\Helpers\EventHelper;
 use Qsoft\Helpers\PriceUtils;
+use Qsoft\Helpers\SubscribeManager;
 use Qsoft\PaymentWays\WaysByPaymentServicesTable;
 use Qsoft\PaymentWays\WaysPaymentTable;
 use Qsoft\Pvzmap\PVZFactory;
@@ -189,17 +190,17 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
         if ($this->checkType(["1click"])) {
+            // устанавливаем корзину
+            if (!$this->setBasket()) {
+                // при ошибке возвращаем её на фронт в виде JSON
+                $this->returnError();
+            }
             // устанавливаем доставку
             $this->setDeliveryId();
             // устанавливаем оплату
             $this->setPaymentId();
             // проверяем данные
             if (!$this->checkData()) {
-                // при ошибке возвращаем её на фронт в виде JSON
-                $this->returnError();
-            }
-            // устанавливаем корзину
-            if (!$this->setBasket()) {
                 // при ошибке возвращаем её на фронт в виде JSON
                 $this->returnError();
             }
@@ -211,6 +212,7 @@ class QsoftOrderComponent extends ComponentHelper
             // проверяем юзера
             $this->checkUser();
             $this->updateUserProfile();
+            $this->updateSubscribe();
             // создаем заказ
             $this->createOrder();
         }
@@ -630,8 +632,8 @@ class QsoftOrderComponent extends ComponentHelper
         $pass = randString(8);
         $this->user = array(
             "GROUP_ID" => [2, 3, 5],
-            "LOGIN" => $this->postProps['EMAIL'] ?? $pass . "@rshoes.ru",
-            "EMAIL" => $this->postProps['EMAIL'] ?? $pass . "@rshoes.ru",
+            "LOGIN" => $this->postProps['EMAIL'] ?? $pass . "@orgasmcity.ru",
+            "EMAIL" => $this->postProps['EMAIL'] ?? $pass . "@orgasmcity.ru",
             "PASSWORD" => $pass,
             "CONFIRM_PASSWORD" => $pass,
             "NAME" => $name[0], // имя
@@ -665,13 +667,13 @@ class QsoftOrderComponent extends ComponentHelper
         if ($userId) {
             if (!$this->postProps['EMAIL']) {
                 $res = $USER->Update($userId, array(
-                    "LOGIN" => $userId . "@rshoes.ru",
-                    "EMAIL" => $userId . "@rshoes.ru",
+                    "LOGIN" => $userId . "@orgasmcity.ru",
+                    "EMAIL" => $userId . "@orgasmcity.ru",
                 ));
                 EventHelper::killEvents(['OnBeforeUserUpdate', 'OnAfterUserUpdate'], 'main');
                 if ($res) {
-                    $this->user["LOGIN"] = $userId . "@rshoes.ru";
-                    $this->user["EMAIL"] = $userId . "@rshoes.ru";
+                    $this->user["LOGIN"] = $userId . "@orgasmcity.ru";
+                    $this->user["EMAIL"] = $userId . "@orgasmcity.ru";
                 }
             }
             $this->user["ID"] = $userId;
@@ -713,7 +715,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function getPostItems()
     {
-        $offerIds = array();
+        $offerIds = [];
         if (is_array($_REQUEST["PRODUCTS"])) {
             foreach ($_REQUEST["PRODUCTS"] as $offerId) {
                 $offerIds[] = intval($offerId);
@@ -1513,23 +1515,23 @@ class QsoftOrderComponent extends ComponentHelper
         $order->setBasket($this->basket);
 
         // доставка
-        $shipmentCollection = $order->getShipmentCollection();
-        $shipment = $shipmentCollection->createItem();
-        $shipment->setField("CURRENCY", $order->getCurrency());
-        $shipmentItemCollection = $shipment->getShipmentItemCollection();
-        foreach ($order->getBasket() as $item) {
-            $shipmentItem = $shipmentItemCollection->createItem($item);
-            $shipmentItem->setQuantity($item->getQuantity());
-        }
-        $shipment->setFields(array(
-            "DELIVERY_ID" => $this->arResult["DELIVERY"]["CURRENT"]["ID"],
-            "DELIVERY_NAME" => $this->arResult["DELIVERY"]["CURRENT"]["NAME"],
-        ));
-        $shipmentCollection->calculateDelivery();
-        $delPrice = $shipmentCollection->getBasePriceDelivery();
-        $price = floor($order->getPrice());
+        if (!$this->checkType(["1click"])) {
+            $shipmentCollection = $order->getShipmentCollection();
+            $shipment = $shipmentCollection->createItem();
+            $shipment->setField("CURRENCY", $order->getCurrency());
+            $shipmentItemCollection = $shipment->getShipmentItemCollection();
+            foreach ($order->getBasket() as $item) {
+                $shipmentItem = $shipmentItemCollection->createItem($item);
+                $shipmentItem->setQuantity($item->getQuantity());
+            }
+            $shipment->setFields(array(
+                "DELIVERY_ID" => $this->arResult["DELIVERY"]["CURRENT"]["ID"],
+                "DELIVERY_NAME" => $this->arResult["DELIVERY"]["CURRENT"]["NAME"],
+            ));
+            $shipmentCollection->calculateDelivery();
+            $delPrice = $shipmentCollection->getBasePriceDelivery();
+            $price = floor($order->getPrice());
 
-        if ($this->checkType(["order"])) {
             $paymentWay = $this->getPaymentWays($this->arResult["PAYMENT"]["CURRENT"]["ID"]);
             $checkPrice = $price - $delPrice;
 
@@ -1540,24 +1542,24 @@ class QsoftOrderComponent extends ComponentHelper
                     $price = $checkPrice;
                 }
             }
+
+            // оплата
+            $paymentCollection = $order->getPaymentCollection();
+            $payment = $paymentCollection->createItem();
+
+            $payment->setFields(array(
+                "PAY_SYSTEM_ID" => $this->arResult["PAYMENT"]["CURRENT"]["ID"],
+                "PAY_SYSTEM_NAME" => $this->arResult["PAYMENT"]["CURRENT"]["NAME"],
+                "SUM" => $price,
+            ));
         }
 
-        // оплата
-        $paymentCollection = $order->getPaymentCollection();
-        $payment = $paymentCollection->createItem();
 
-        $payment->setFields(array(
-            "PAY_SYSTEM_ID" => $this->arResult["PAYMENT"]["CURRENT"]["ID"],
-            "PAY_SYSTEM_NAME" => $this->arResult["PAYMENT"]["CURRENT"]["NAME"],
-            "SUM" => $price,
-        ));
         // поля
         $order->setField("USER_DESCRIPTION", $this->getUserDescriptrion());
         // свойства
         $this->orderProps = $order->getPropertyCollection();
         // добавляем некоторые свойства к тем, что уже имеем
-        $this->postProps["ORDER_REVENUE"] = $price;
-        $this->postProps["ORDER_TYPE"] = $this->getOrderType();
         $this->postProps["LOCATION"] = $LOCATION->code;
         $this->postProps["UTM_SOURCE"] = $_COOKIE['utm_source'] ? $_COOKIE['utm_source'] : '';
         $this->postProps["UTM_MEDIUM"] = $_COOKIE['utm_medium'] ? $_COOKIE['utm_medium'] : '';
@@ -1590,8 +1592,7 @@ class QsoftOrderComponent extends ComponentHelper
         foreach ($this->postProps as $key => $value) {
             if (!empty($value)) {
                 if ($key === 'FIO') {
-                    $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
-                    $arFIO = explode(' ', $fio);
+                    $arFIO = $this->getArrayFio($this->postProps['FIO']);
                     $prop = $this->getPropByCode('NAME');
                     $prop->setValue($arFIO[0]);
                     $prop = $this->getPropByCode('LAST_NAME');
@@ -1620,12 +1621,47 @@ class QsoftOrderComponent extends ComponentHelper
         }
     }
 
+    private function getArrayFio($fio)
+    {
+        $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
+
+        return explode(' ', $fio);
+    }
+
+    private function updateSubscribe()
+    {
+        $email = $this->postProps['EMAIL'];
+        $mailing = SubscribeManager::getSubscriberByEmail($email);
+        $arFIO = $this->getArrayFio($this->postProps['FIO']);
+
+        if (!$mailing) {
+            SubscribeManager::addSubscriber(
+                $this->postProps['EMAIL'],
+                isset($this->postProps['SUBSCRIBE']) && $this->postProps['SUBSCRIBE'] == 'on',
+                $this->postProps['PHONE'],
+                isset($arFIO[1]) ? $arFIO[1] : $arFIO[0],
+                isset($arFIO[1]) ? $arFIO[0] : false,
+                isset($arFIO[2]) ? $arFIO[2] : false,
+            );
+        } else {
+            SubscribeManager::updateSubscriber(
+                $mailing['ID'],
+                $this->postProps['EMAIL'],
+                isset($this->postProps['SUBSCRIBE']) && $this->postProps['SUBSCRIBE'] == 'on',
+                $this->postProps['PHONE'],
+                isset($arFIO[1]) ? $arFIO[1] : $arFIO[0],
+                isset($arFIO[1]) ? $arFIO[0] : false,
+                isset($arFIO[2]) ? $arFIO[2] : false,
+            );
+        }
+    }
+
     private function createNewOrder($userId = 0)
     {
         $this->setPersonType();
         $this->setCurrency();
         $order = Order::create(SITE_ID, $userId, $this->currency);
-        $order->setField('STATUS_ID', 'ZS'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
+        $order->setField('STATUS_ID', 'WC'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
         $order->setPersonTypeId($this->personType);
         return $order;
     }
@@ -1650,7 +1686,7 @@ class QsoftOrderComponent extends ComponentHelper
     {
         switch ($this->type) {
             case "1click":
-                return "Заказ создан через один клик";
+                return "Уточните у клиента способ доставки, пожалуйста";
             default:
                 $addInfo = [];
                 if ($_REQUEST['PROPS']['PORCH']) {

@@ -20,7 +20,7 @@
     <div class="main">
         <div class="row ones" style="padding: 0 15px;">
             <div class="col-xs-12 footer-border">
-                <div class="col-md-6 col-sm-8">
+                <div class="col-md-5 col-sm-8">
                     <div class="col-xs-6 footer-div">
                         <h4>ПОКУПАТЕЛЯМ</h4>
                         <? $APPLICATION->IncludeComponent(
@@ -63,61 +63,56 @@
                     </div>
                     <div style="clear: both"></div>
                 </div>
-                <div class="col-md-6 col-sm-4 right-footer-div">
-                    <div class="col-md-6 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
+                <div class="col-md-7 col-sm-4 right-footer-div">
+                    <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
                         <div class="col-sm-12 col-xs-6 num2">
                             <p>Обратная связь<a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></p>
                             <p><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></p>
                             <p>г. Москва ул. Автозаводская д.16 к.2 стр.8</p>
-<!--                            <p>Секс-шоп</p>-->
                         </div>
-                    </div>
-<!--                    <div class="col-xs-12 social">-->
-<!---->
-<!--                    </div>-->
-                    <div class="col-md-6 col-sm-3 col-md-offset-0 col-sm-offset-3 num2">
-                        <? $APPLICATION->IncludeComponent(
-                            "likee:social",
-                            "footer",
-                            array(
+                        <div class="col-xs-12 social">
+                            <? $APPLICATION->IncludeComponent(
+                                "likee:social",
+                                "footer",
+                                array(
 //                                    "FACEBOOK_LINK" => "",
-                                "INSTAGRAM_LINK" => "https://www.instagram.com/orgasmcity.ru/",
-                                "VK_LINK" => "https://vk.com/club205704529",
-                                "TELEGRAM_LINK" => "https://t.me/Orgasmcity",
+                                    "INSTAGRAM_LINK" => "https://www.instagram.com/orgasmcity.ru/",
+                                    "VK_LINK" => "https://vk.com/club205704529",
+                                    "TELEGRAM_LINK" => "https://t.me/Orgasmcity",
 //                                    "PINTEREST_LINK" => "",
 //                                    "YOUTUBE_LINK" => "",
-                                "COMPONENT_TEMPLATE" => "footer",
-                            ),
+                                    "COMPONENT_TEMPLATE" => "footer",
+                                ),
+                                false
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-7 hidden-xs mailsender">
+                        <h4>Подпишитесь на рассылку</h4>
+                        <? $APPLICATION->IncludeComponent(
+                            'qsoft:subscribe',
+                            'footer',
+                            array(),
                             false
                         ); ?>
                     </div>
-<!--                    <div class="col-md-7 hidden-xs mailsender">-->
-<!--                        <h4>Подпишитесь на рассылку</h4>-->
-<!--                        --><?// $APPLICATION->IncludeComponent(
-//                            'qsoft:subscribe',
-//                            'footer',
-//                            array(),
-//                            false
-//                        ); ?>
-<!--                    </div>-->
                 </div>
             </div>
+            <div class="col-xs-12 col-sm-7 hidden-sm mailsender">
+                <h4>Подпишитесь на рассылку</h4>
+                <? $APPLICATION->IncludeComponent(
+                    'qsoft:subscribe',
+                    'footerm',
+                    array(),
+                    false
+                ); ?>
+            </div>
+            <div class="col-xs-12 col-sm-12 bottom-mob">
+                <p class="copy-shop-mob">
+                    <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
+                </p>
+            </div>
         </div>
-<!--        <div class="col-sm-7 hidden-sm mailsender">-->
-<!--            <h4>Подпишитесь на рассылку</h4>-->
-<!--            --><?// $APPLICATION->IncludeComponent(
-//                'qsoft:subscribe',
-//                'footerm',
-//                array(),
-//                false
-//            ); ?>
-<!--        </div>-->
-        <div class="col-sm-12 bottom-mob">
-            <p class="copy-shop-mob">
-                <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
-            </p>
-        </div>
-
     </div>
 </div>
 
@@ -141,10 +136,16 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 
 <?php endif; ?>
 
+<?php $APPLICATION->IncludeComponent(
+    'qsoft:subscribe',
+    'popupBanner',
+    array(),
+    false
+); ?>
+
 <?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
 <div class="auth-div-full">
     <div class="cls-mail-div"></div>
-
     <div class="popup-title">
         <input type="radio" name="odin2" id="vkl10"/>
         <label for="vkl10" class="in-auth"><span>Вход</span></label>
@@ -152,9 +153,6 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         <input type="radio" name="odin2" id="vkl20"/>
         <label for="vkl20" class="in-auth"><span>Регистрация</span></label>
     </div>
-
-
-
     <? $APPLICATION->IncludeComponent("bitrix:system.auth.form", "modal", array(), false); ?>
     <? $APPLICATION->IncludeComponent(
         "bitrix:main.register",
@@ -185,37 +183,8 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         ),
         false
 ); ?>
-
-    <!-- <style>
-        @media (min-width: 767px) {
-            .pod-auth p:nth-of-type(1) {
-                display: inline-block;
-            }
-    
-            .pod-auth p:nth-of-type(2) {
-                display: none;
-            }
-        }
-    
-        @media (max-width: 767px) {
-            .pod-auth p:nth-of-type(1) {
-                display: none;
-            }
-    
-            .pod-auth p:nth-of-type(2) {
-                display: inline-block;
-            }
-        }
-    </style>
-    <div class="pod-auth">
-        <p style="margin-top: 25px; float: left; color: #4e4e4e; font: 16px 'firaregular';">Используйте для входа
-            социальные сети</p>
-        <p style="margin-top: 25px; float: left; color: #4e4e4e; font: 16px 'firaregular';">Вход через соц. сети</p>
-        <a href="#"><img src="<?= SITE_TEMPLATE_PATH ?>/img/vk.png"
-                         style="margin-top: 15px;margin-left: 20px!important; margin-right: 15px;"/></a>
-        <a href="#"><img src="<?= SITE_TEMPLATE_PATH ?>/img/fb.png" style="margin-top: 15px"/></a>
-    </div> -->
 </div>
+
 <div class="mail-div">
     <div class="popup--feedback popup--overflow">
         <?

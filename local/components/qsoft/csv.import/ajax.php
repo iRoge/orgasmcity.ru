@@ -87,6 +87,6 @@ class CSVImportAjax extends Controller
     private function log($message)
     {
         $fileName = date('Y.m.d') . '.log';
-        qsoft_logger($message, $fileName, self::LOG_PATH);
+        orgasm_logger($message, $fileName, self::LOG_PATH);
     }
 }

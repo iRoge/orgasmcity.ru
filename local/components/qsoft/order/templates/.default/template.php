@@ -281,7 +281,7 @@ global $LOCATION, $APPLICATION; ?>
                                                 <div class="form__field form__field--1-2">
                                                     <?
                                                     $email = $arResult["USER"]["EMAIL"] ?: ($arResult["COOKIE_EMAIL"][1] ?: ($cookieAddress ? $_COOKIE['user_email'] : ''));
-                                                    $email = !preg_match('`.*@rshoes.ru`i', $email) ? $email : '';
+                                                    $email = !preg_match('`.*@orgasmcity.ru`i', $email) ? $email : '';
                                                     ?>
                                                     <input class="form__elem js-required js-email" type="text" name="PROPS[EMAIL]" value="<?= $email ?>" placeholder="*E-Mail">
                                                     <div class="err-order err-PROPS[EMAIL]"></div>
@@ -400,7 +400,7 @@ global $LOCATION, $APPLICATION; ?>
 <!--                                    <div id="basket_checkbox_policy" class="col-xs-12">-->
 <!--                                        <div class="err-order err-policy"></div>-->
 <!--                                        <input id="cart__order-policy" type="checkbox" name="basket_checkbox_policy" class="checkbox3 js-required" checked="">-->
-<!--                                        <label for="cart__order-policy" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="--><?//= OFFER_FILENAME ?><!--">политикой конфиденциальности</a>.</label>-->
+<!--                                        <label for="cart__order-policy" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных.</label>-->
 <!--                                    </div>-->
                                 </div>
                             </div>

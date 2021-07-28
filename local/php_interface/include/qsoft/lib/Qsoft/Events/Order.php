@@ -103,7 +103,7 @@ class Order
 
     protected static function log($message)
     {
-        qsoft_logger($message, "orderEvents.txt");
+        orgasm_logger($message, "orderEvents.txt");
     }
 
     public function OnSaleStatusOrderHandler($orderId, $orderStatus)

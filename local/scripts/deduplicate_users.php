@@ -42,13 +42,13 @@ while ($user = $dbNonuniqueUsers->fetch()) {
         continue;
     }
 
-    if (preg_match('/\@rshoes.ru$/iu', trim($user['EMAIL'])) == 1) {
+    if (preg_match('/\@orgasmcity.ru$/iu', trim($user['EMAIL'])) == 1) {
         $user['WHY_CLONE'] = 'технический email';
         $arNonuniqueUsers[$phone]['CLONE'][$user['ID']] = $user;
         continue;
     }
 
-    if (preg_match('/\@rshoes.ru$/iu', trim($master['EMAIL'])) == 1) {
+    if (preg_match('/\@orgasmcity.ru$/iu', trim($master['EMAIL'])) == 1) {
         $arNonuniqueUsers[$phone]['MASTER'] = $user;
         $master['WHY_CLONE'] = 'технический email';
         $arNonuniqueUsers[$phone]['CLONE'][$master['ID']] = $master;
@@ -109,7 +109,7 @@ foreach ($arNonuniqueUsers as $phone => $users) {
             'DELETED' => false,
         ];
         
-        if ($users['MASTER']['EMAIL'] == $clone['EMAIL'] || preg_match('/\@rshoes.ru$/iu', trim($clone['EMAIL'])) == 1) {
+        if ($users['MASTER']['EMAIL'] == $clone['EMAIL'] || preg_match('/\@orgasmcity.ru$/iu', trim($clone['EMAIL'])) == 1) {
             $arMigration[$id] = $users['MASTER']['ID'];
             continue;
         }

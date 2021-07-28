@@ -7,6 +7,8 @@
  */
 
 use Bitrix\Iblock\Component\Tools;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 /**
  * Глобавльные вспомогательные функции
@@ -688,5 +690,65 @@ class Functions
         }
 
         return $offers;
+    }
+
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public static function sendMail($emailTo, $subject, $body, $subscriberID = null)
+    {
+        $mail = new PHPMailer(true);
+        //Server settings
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->isSMTP();
+        $mail->CharSet = 'UTF-8';
+        $mail->Host = 'smtp.orgasmcity.ru';
+        $mail->SMTPAuth = true;
+        $mail->SMTPDebug = 0;
+        $mail->Username = 'market@orgasmcity.ru';
+        $mail->Password = 'org@smcity-market';
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
+
+        //Recipients
+        $mail->setFrom('market@orgasmcity.ru', 'Ваш проводник в Городе Оргазма');
+        $mail->addAddress($emailTo);
+
+        //Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        if ($subscriberID) {
+            $mail->AddCustomHeader(
+                "List-Unsubscribe",
+                '<https://' . DOMAIN_NAME . '/unsubscribe/?email=' . $emailTo . '&id=' . $subscriberID . '&check=1>'
+            );
+            $mail->AddCustomHeader(
+                "List-Unsubscribe-Post",
+                'List-Unsubscribe=One-Click'
+            );
+        }
+        $mail->AddCustomHeader(
+            "Precedence",
+            'bulk'
+        );
+
+        $mail->send();
+    }
+
+    public static function insertFields($message, $fields)
+    {
+        foreach ($fields as $field => $value) {
+            $message = str_replace('##' . $field . '##', $value, $message);
+        }
+
+        return $message;
     }
 }

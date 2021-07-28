@@ -615,9 +615,9 @@ class SailplayOrdersSendAjax extends Controller
     private function log($message, $error = false)
     {
         if (!$error) {
-            qsoft_logger($message, date('Y.m.d') . '.log', '/local/logs/sailplay/ordersExport/');
+            orgasm_logger($message, date('Y.m.d') . '.log', '/local/logs/sailplay/ordersExport/');
         } else {
-            qsoft_logger($message, date('Y.m.d') . ' - ERRORS.log', '/local/logs/sailplay/ordersExport/');
+            orgasm_logger($message, date('Y.m.d') . ' - ERRORS.log', '/local/logs/sailplay/ordersExport/');
         }
     }
 }

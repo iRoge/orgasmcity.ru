@@ -1,10 +1,9 @@
 $(function () {
-    $(document).on('submit', '#subscribe-form', function (e) {
+    $(document).on('submit', '#subscribe-form_mobile', function (e) {
         e.preventDefault();
         var errCount = 0;
         $('.error').remove();
         var $email = $(this).find('.js-footer-email');
-        var $agreement = $(this).find('.js-footer-agreement');
         if ($email.val().trim() != "") {
             if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test($email.val().trim())) {
                 $email.before('<p class="error">Неверный Email.</p>');
@@ -16,10 +15,6 @@ $(function () {
             $email.addClass("red_border_sub");
             errCount += 1;
         }
-        if (!$agreement.prop("checked")) {
-            $email.before('<p class="error">Требуется согласиться с политикой конфиденциальности.</p>');
-            errCount += 1;
-        }
         if (errCount == 0) {
             var form = $(this),
                 data = form.serializeArray();
@@ -28,10 +23,31 @@ $(function () {
                 $subscribe.replaceWith(html);
                 $subscribe = form.closest('.js-subscribe-new');
                 ym(82799680,'reachGoal','subscribe');
-                if ($subscribe.find('.subscribe-message').length > 0) {
+                if ($subscribe.find('#subscribe-message').length > 0) {
                     $subscribe.addClass('subscribe--success');
                 }
             });
         }
     });
+
+    $(document).ready(function () {
+        if (!window.localStorage['surpriseReceived'] && !isAuth) {
+            setInterval(function () {
+                if (!window.localStorage['onlineTime']) {
+                    window.localStorage['onlineTime'] = 0;
+                }
+                window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
+                if (Number(window.localStorage['onlineTime']) === 600) {
+                    let element = $('.js-popup-banner');
+                    Popup.show(element, {
+                        onShow: function () {
+                            element.closest('.cls-mail-div').hide();
+                        },
+                        className: 'surprise-banner'
+                    });
+                    window.localStorage['surpriseReceived'] = true;
+                }
+            }, 5000);
+        }
+    })
 });

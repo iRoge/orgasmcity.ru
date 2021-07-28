@@ -206,7 +206,7 @@ class Agent
         if ($order['status'] == "error") {
             $message .= " - Ошибка 1С: ".$order['text'];
         }
-        qsoft_logger($message, $logfile);
+        orgasm_logger($message, $logfile);
 
         return [$order, $xml, $data, $attempts];
     }
@@ -247,7 +247,7 @@ class Agent
             $message .= " - Ошибка 1С: " . $dataArr['text'];
         }
 
-        qsoft_logger($message, $logfile);
+        orgasm_logger($message, $logfile);
 
         return [$dataArr, $xml, $data, $attempts];
     }
