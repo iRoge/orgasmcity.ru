@@ -98,7 +98,11 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                         </p>
                                     </div>
                                 <?php endif ?>
-                                <p class="grey-under bonus-text">
+                                <p style="margin-bottom: 10px">
+                                    <span class="text-success">Самая низкая цена среди интернет магазинов.</span>
+                                    <br>Нашли дешевле? Сообщите нам
+                                </p>
+                                <p>
                                     <?php if ($arResult['USER_DISCOUNT']) { ?>
                                         *скидка по бонусной программе в размере
                                         <span class="discount-yellow"><b><?=$arResult['USER_DISCOUNT']?>%</b></span>
@@ -108,8 +112,12 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                         *по данному товару осуществляется бесплатная доставка
                                     <?php }?>
                                 </p>
-                                <?php if ($USER->GetID() == 1) {?>
-                                    (Цена закупки <?=$arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE']?>р.)
+                                <?php if ($USER->GetID() == 1) {
+                                    $wholesaleprice = $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE'];
+                                    ?>
+                                    Цена закупки <?=$wholesaleprice?>р.
+                                    <br>
+                                    Наценка <?=(int)(($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] - $wholesaleprice)*100/$wholesaleprice)?>%
                                 <?php }?>
                             </div>
                         <?php endif ?>
