@@ -442,8 +442,9 @@ if (!$arResult['IS_AJAX']) :
                                                                     <span class="card__price-old" style="display:block;"><?= number_format($arItem['OLD_PRICE'], 0, '', ' '); ?> р.</span>
                                                                 <? endif ?>
                                                             </div>
-                                                            <?php if ($USER->GetID() == 1) { ?>
+                                                            <?php if ($USER->GetID() == 1) {?>
                                                                 <span>Закупка <?=$arItem['WHOLEPRICE']?>р.</span>
+                                                                <span>Наценка на закупку <?=(int)(($arItem['PRICE'] - $arItem['WHOLEPRICE'])*100/$arItem['WHOLEPRICE'])?>%</span>
                                                             <?php } ?>
                                                         </div>
                                                         <span class="card__title"><?= $arItem['NAME'] ?></span>

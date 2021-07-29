@@ -4871,6 +4871,7 @@ input::-webkit-inner-spin-button {
     color: #4e4e4e;;
     margin-top: 15px;
     margin-right: 5px;
+    margin-bottom: 0;
     display: block;
 }
 
