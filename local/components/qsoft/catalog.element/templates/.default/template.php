@@ -98,7 +98,7 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                         </p>
                                     </div>
                                 <?php endif ?>
-                                <p style="margin-bottom: 10px">
+                                <br><p style="margin-bottom: 10px;width: 100%;">
                                     <span class="text-success">Самая низкая цена среди интернет магазинов.</span>
                                     <br>Нашли дешевле? Сообщите нам
                                 </p>
@@ -187,7 +187,7 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                                class="js-cart-btn cartochka-orange yellow-btn js-cart-redirect"
                                                type="button"
                                                value="Добавить в корзину"
-                                               style="<?=$arResult['SHOW_ONE_CLICK'] ? '' : 'width: 100%'?>"/>
+                                               />
                                         <?php if ($arResult['SHOW_ONE_CLICK']) :?>
                                             <input data-offer-id="<?=$arResult['MIN_PRICE_OFFER'] ? $arResult['MIN_PRICE_OFFER']['ID'] : "" ?>"
                                                    id="one-click-btn"

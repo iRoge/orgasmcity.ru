@@ -483,7 +483,7 @@ class QsoftCatalogElement extends ComponentHelper
                 $favoritesId = unserialize($_COOKIE['favorites']);
             }
         }
-        return isset($favoritesId[$productId]) ? true : false;
+        return isset($favoritesId[$productId]);
     }
 
     private function setMeta(): void

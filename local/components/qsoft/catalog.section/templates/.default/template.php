@@ -390,8 +390,8 @@ if (!$arResult['IS_AJAX']) :
                                                         <div class="icon__tooltip" style="left: 0">
                                                             Бесплатная доставка для корзин от <?=$freeDeliveryMinSum?> рублей
                                                         </div>
-                                                    <?php }?>
-                                                    <button title="Добавить в избранное" type="button" class="heart__btn<?=in_array($arItem['ID'], $arResult['FAVORITES_PROD_IDS']) ? ' active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
+                                                    <?php } ?>
+                                                    <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES_PROD_IDS'][$arItem['ID']]) ? ' active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
                                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
                                                                         <g>
                                                                             <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
