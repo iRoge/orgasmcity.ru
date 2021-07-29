@@ -1073,8 +1073,11 @@ class QsoftOrderComponent extends ComponentHelper
         );
         $arOffersNew = [];
         while ($arItem = $res->Fetch()) {
+            $price = PriceUtils::getPrice($arItem["PROPERTY_BASEWHOLEPRICE_VALUE"], $arItem["PROPERTY_BASEPRICE_VALUE"]);
+            if (!$price) {
+                continue;
+            }
             if ($full) {
-                $price = PriceUtils::getPrice($arItem["PROPERTY_BASEWHOLEPRICE_VALUE"], $arItem["PROPERTY_BASEPRICE_VALUE"]);
                 $arOffersNew[$arItem["ID"]] = [
                     "PRODUCT_ID" => $arItem["PROPERTY_CML2_LINK_VALUE"],
                     "XML_ID" => $arItem["XML_ID"],

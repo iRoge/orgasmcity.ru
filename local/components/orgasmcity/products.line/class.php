@@ -112,6 +112,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                     continue;
                 }
                 $offer['PRICE'] = $price;
+
                 $arOffers[$offer['ID']] = $offer;
             }
 

@@ -1350,6 +1350,10 @@ class QsoftCatalogSection extends ComponentHelper
 
             $price = PriceUtils::getPrice($value["PROPERTY_BASEWHOLEPRICE_VALUE"], $value["PROPERTY_BASEPRICE_VALUE"]);
 
+            if (!$price) {
+                continue;
+            }
+
             if ($this->type === self::TYPE_SALES && !$price['DISCOUNT']) {
                 continue;
             }
