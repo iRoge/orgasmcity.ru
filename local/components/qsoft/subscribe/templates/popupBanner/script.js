@@ -37,7 +37,7 @@ $(function () {
                     window.localStorage['onlineTime'] = 0;
                 }
                 window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
-                if (Number(window.localStorage['onlineTime']) === 10) {
+                if (Number(window.localStorage['onlineTime']) === 600) {
                     let element = $('.js-popup-banner');
                     element.show();
                     Popup.show(element, {
