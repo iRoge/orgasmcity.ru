@@ -7,7 +7,7 @@ global $USER;
 <script>
     let isAuth = <?=$USER->IsAuthorized() ? '1' : '0'?>;
 </script>
-<div class="js-popup-banner">
+<div class="js-popup-banner" style="display: none">
     <img src="/img/surprise.png" alt="Surprise" width="100%" height="100%">
     <div class="mailsender" style="z-index: 1001">
         <div class="js-subscribe-new">

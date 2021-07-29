@@ -31,7 +31,7 @@ $(function () {
     });
 
     $(document).ready(function () {
-        if (!window.localStorage['surpriseReceived'] && !isAuth) {
+        if (window.localStorage['surpriseReceived'] !== 'true' && !isAuth) {
             setInterval(function () {
                 if (!window.localStorage['onlineTime']) {
                     window.localStorage['onlineTime'] = 0;
@@ -39,6 +39,7 @@ $(function () {
                 window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
                 if (Number(window.localStorage['onlineTime']) === 600) {
                     let element = $('.js-popup-banner');
+                    element.show();
                     Popup.show(element, {
                         onShow: function () {
                             element.closest('.cls-mail-div').hide();
