@@ -19,7 +19,7 @@ $(function () {
             var form = $(this),
                 data = form.serializeArray();
             var $subscribe = form.closest('.js-subscribe-new');
-            $.post(document.location, data, function (html) {
+            $.post('/local/ajax/generateCoupon.php', data, function (html) {
                 $subscribe.replaceWith(html);
                 $subscribe = form.closest('.js-subscribe-new');
                 ym(82799680,'reachGoal','subscribe');
@@ -37,7 +37,7 @@ $(function () {
                     window.localStorage['onlineTime'] = 0;
                 }
                 window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
-                if (Number(window.localStorage['onlineTime']) === 600) {
+                if (Number(window.localStorage['onlineTime']) === 300) {
                     let element = $('.js-popup-banner');
                     element.show();
                     Popup.show(element, {

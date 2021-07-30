@@ -1,4 +1,4 @@
-<?
+<?php
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("О компании");
 ?>
@@ -19,4 +19,4 @@ $APPLICATION->SetTitle("О компании");
      поэтому Город Оргазма это не просто секс-шоп, <br><b>Город Оргазма - это ваш магазин счастья!</b><br>
  </span><br>
 </div>
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

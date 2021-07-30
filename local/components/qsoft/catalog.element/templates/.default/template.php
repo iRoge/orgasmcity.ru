@@ -100,7 +100,7 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
                                 <?php endif ?>
                                 <br><p style="margin-bottom: 10px;width: 100%;">
                                     <span class="text-success">Самая низкая цена среди интернет магазинов.</span>
-                                    <br>Нашли дешевле? Сообщите нам
+                                    <br>Нашли дешевле? <a href="/company_price_garanty/" target="_blank">Сообщите нам</a>
                                 </p>
                                 <p>
                                     <?php if ($arResult['USER_DISCOUNT']) { ?>

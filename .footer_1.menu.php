@@ -3,6 +3,13 @@
 
 $aMenuLinks = array(
     array(
+        'Гарантия низкой цены',
+        '/company_price_garanty/',
+        array(),
+        array(),
+        ''
+    ),
+    array(
         'Гарантия анонимности',
         '/company_anonymity/',
         array(),
