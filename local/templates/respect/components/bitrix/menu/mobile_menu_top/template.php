@@ -35,77 +35,75 @@ if (!empty($arResult)) :?>
 
     <? foreach ($arResult as $arItem) : ?>
         <?if ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1 && !isset($item['PARAMS']['PROPS'])) {?>
-    <div class="sex-list col-sm-12" data-name="<?= $arItem['TEXT'] ?>">
-        <ul class="topmenu">
-    
-            <?if ($arItem['IS_PARENT']) {?>
-                <?if ($arItem['DEPTH_LEVEL']!= 1) { ?>
-                <li><span class="submenu-item submenu-item-main arrow arrow-down"><?= $arItem['TEXT'] ?></span></li>
-                    <ul class="sub-submenu">
-                <?}?>
-                    <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
-                        <? if ($arItem2Level['IS_PARENT']) : ?>
-                        <li><span class="submenu-item submenu-item-main arrow arrow-down"
-                            style="
-                            <? if ($arItem2Level['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
-                                color:#<?=$arItem2Level['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']?>;
-                            <?endif;?>
-                            <? if ($arItem2Level['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
-                                background-color:#<?=$arItem2Level['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']?>;
-                            <?endif;?>"
-                            ><?= $arItem2Level['TEXT'] ?></span>
+            <div class="sex-list col-sm-12" data-name="<?= $arItem['TEXT'] ?>">
+                <ul class="topmenu">
+
+                    <?if ($arItem['IS_PARENT']) {?>
+                        <?if ($arItem['DEPTH_LEVEL'] != 1) { ?>
+                        <li><span class="submenu-item submenu-item-main arrow arrow-down"><?= $arItem['TEXT'] ?></span></li>
                             <ul class="sub-submenu">
-                                <li>
-                                    <a href="<?= $arItem2Level['LINK'] ?>">
-                                        <?=GetMessage("SHOW_ALL_ITEMS")?>
-                                    </a>
-                                 </li>
-                                <? foreach ($arItem2Level['ITEMS'] as $arItem3Level) : ?>
-                                    <?
-                                    
-                                    if ($arItem3Level['IS_PARENT']) : ?>
-                                    <li><span class="submenu-item arrow arrow-down"> <?= $arItem3Level['TEXT'] ?></span>
-                                        <ul class="sub-submenu">
+                        <?}?>
+                            <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
+                                <? if ($arItem2Level['IS_PARENT']) {  ?>
+                                <li><span class="submenu-item submenu-item-main arrow arrow-down"
+                                    style="
+                                    <? if ($arItem2Level['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
+                                        color:#<?=$arItem2Level['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']?>;
+                                    <?endif;?>
+                                    <? if ($arItem2Level['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
+                                        background-color:#<?=$arItem2Level['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']?>;
+                                    <?endif;?>"
+                                    ><?= $arItem2Level['TEXT'] ?></span>
+                                    <ul class="sub-submenu">
+                                        <li>
+                                            <a href="<?= $arItem2Level['LINK'] ?>">
+                                                <?=GetMessage("SHOW_ALL_ITEMS")?>
+                                            </a>
+                                         </li>
+                                        <? foreach ($arItem2Level['ITEMS'] as $arItem3Level) : ?>
+                                            <?
+                                            if ($arItem3Level['IS_PARENT']) : ?>
+                                            <li><span class="submenu-item arrow arrow-down"> <?= $arItem3Level['TEXT'] ?></span>
+                                                <ul class="sub-submenu">
+                                                    <li>
+                                                       <a href="<?= $arItem3Level['LINK'] ?>">
+                                                           <?=GetMessage("SHOW_ALL_ITEMS")?>
+                                                        </a>
+                                                    </li>
+                                                    <? foreach ($arItem3Level['ITEMS'] as $arItem4LevelChunks) : ?>
+                                                    <li>
+                                                        <a href="<?= $arItem4LevelChunks['LINK'] ?>">
+                                                            <?= $arItem4LevelChunks['TEXT'] ?>
+                                                        </a>
+                                                    </li>
+                                                    <? endforeach; ?>
+                                                </ul>
+                                            </li>
+                                            <?else :?>
                                             <li>
-                                               <a href="<?= $arItem3Level['LINK'] ?>">
-                                                   <?=GetMessage("SHOW_ALL_ITEMS")?>
+                                                <a href="<?= $arItem3Level['LINK'] ?>">
+                                                    <?= $arItem3Level['TEXT'] ?>
                                                 </a>
                                             </li>
-                                            <? foreach ($arItem3Level['ITEMS'] as $arItem4LevelChunks) : ?>
-                                            <li>
-                                                <a href="<?= $arItem4LevelChunks['LINK'] ?>">
-                                                    <?= $arItem4LevelChunks['TEXT'] ?>
-                                                </a>
-                                            </li>
-                                            <? endforeach; ?>
-                                        </ul> 
-                                    </li>   
-                                    <?else :?>
-                                    <li>
-                                        <a href="<?= $arItem3Level['LINK'] ?>">
-                                            <?= $arItem3Level['TEXT'] ?>
-                                        </a>
-                                    </li>
-                                    <? endif; ?>
-                                <?endforeach; ?>
-                            </ul> 
-                        </li>   
-                        <?else :?>
-                                <li class="aaa"><a href="<?= $arItem2Level['LINK'] ?>"><span class="submenu-item submenu-item-main arrow arrow-down"><?= $arItem2Level['TEXT'] ?></span></a></li>
-                            
-                        <? endif; ?>
-                    <? endforeach; ?>
-                <?if ($arItem['DEPTH_LEVEL']!= 1) { ?>
-                    </ul>
-                <?}?>
-            <?} else {?>
-                <?if ($arItem['DEPTH_LEVEL']!= 1) { ?>
-                <li class="aaa"><a href="<?= $arItem['LINK'] ?>"><span class="submenu-item submenu-item-main arrow arrow-down"><?= $arItem['TEXT'] ?></span></a></li>
-                <?}?>
-            <?}?>
-    
-        </ul>
-    </div>
+                                            <? endif; ?>
+                                        <?endforeach; ?>
+                                    </ul>
+                                </li>
+                                <? } else {?>
+                                        <li class="aaa"><a href="<?= $arItem2Level['LINK'] ?>"><span class="submenu-item submenu-item-main arrow"><?= $arItem2Level['TEXT'] ?></span></a></li>
+                                <? } ?>
+                            <? endforeach; ?>
+                        <?if ($arItem['DEPTH_LEVEL']!= 1) { ?>
+                            </ul>
+                        <?}?>
+                    <?} else {?>
+                        <?if ($arItem['DEPTH_LEVEL']!= 1) { ?>
+                        <li class="aaa"><a href="<?= $arItem['LINK'] ?>"><span class="submenu-item submenu-item-main arrow arrow-down"><?= $arItem['TEXT'] ?></span></a></li>
+                        <?}?>
+                    <?}?>
+
+                </ul>
+            </div>
         <?}?>
     <? endforeach; ?>
 </div>    

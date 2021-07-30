@@ -216,7 +216,7 @@ if (empty($aMenuLinksNew)) {
 
     if ($bSpecSec['SALES']) {
         $arResult['SALES'] = [
-            'UF_NAME' => 'СКИДКИ',
+            'UF_NAME' => 'СКИДКИ ДО 40%',
             'UF_CODE' => 'sales',
             'PROPS' => [
                 'TEXT_COLOR' => '#ff002c'
@@ -321,27 +321,31 @@ if (empty($aMenuLinksNew)) {
             $nav = CIBlockSection::GetNavChain(false, $item['IBLOCK_SECTION_ID']);
 
             $iDepth = 1;
+
+            $arSectionsToAdd = [];
             while ($arSection = $nav->Fetch()) {
-                $arSalesSections[$iDepth][$arSection['ID']] = $arSection;
+                if ($arSection['ID'] == 642) {
+                    continue 2;
+                }
+                if ($arSection['DEPTH_LEVEL'] == 4) {
+                    continue;
+                }
+                $arSectionsToAdd[$iDepth][$arSection['ID']] = $arSection;
                 $iDepth++;
+            }
+
+            foreach ($arSectionsToAdd as $depth => $sections) {
+                foreach ($sections as $section) {
+                    $arSalesSections[$depth][$section['ID']] = $section;
+                }
             }
         }
 
         krsort($arSalesSections[2]);
         // Фильтруем секции по массиву $arSectionsIds
         $arAvailable3rdLvlSalesSectionsIds = [];
-        foreach ($arSalesSections[4] as $key => $section) {
-            if (!in_array($key, $arAvailableSalesSectionsIds)) {
-                unset($arSalesSections[4][$key]);
-                continue;
-            }
-            $arAvailable3rdLvlSalesSectionsIds[$section['IBLOCK_SECTION_ID']] = $section['IBLOCK_SECTION_ID'];
-        }
 
         foreach ($arSalesSections[3] as $key => $section) {
-            if (!in_array($key, $arAvailableSalesSectionsIds)) {
-                continue;
-            }
             $arAvailable3rdLvlSalesSectionsIds[$section['ID']] = $section['ID'];
         }
 
@@ -358,27 +362,12 @@ if (empty($aMenuLinksNew)) {
                         $sPath,
                         array($sPath),
                         array(
-                            'IS_PARENT' => true,
+                            'IS_PARENT' => false,
                             'DEPTH_LEVEL' => 2,
                             'FROM_IBLOCK' => true,
                         ),
                         ''
                     );
-                    foreach ($arSalesSections[4] as $arSalesSection4) {
-                        if ($arSalesSection4['IBLOCK_SECTION_ID'] == $arSalesSection3['ID']) {
-                            $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] .'/' . reset($arSalesSections[1])['CODE'] .  '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/' . $arSalesSection4['CODE'] . '/';
-                            $arMenuLinkSales[] = array(
-                                $arSalesSection4['NAME'],
-                                $sPath,
-                                array($sPath),
-                                array(
-                                    'FROM_IBLOCK' => true,
-                                    'DEPTH_LEVEL' => 3,
-                                ),
-                                ''
-                            );
-                        }
-                    }
                 }
             }
         }
