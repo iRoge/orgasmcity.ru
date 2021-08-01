@@ -2,7 +2,7 @@
 use Qsoft\Helpers\SubscribeManager;
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
-$email = $_GET['EMAIL'];
+$email = $_POST['EMAIL'];
 try {
     $mailing = SubscribeManager::getSubscriberByEmail($email);
     if (!$mailing) {
@@ -48,6 +48,7 @@ try {
 } catch (Exception $e) {
     $arResult['STATUS'] = 0;
     $arResult['MESSAGE'] = "Упс, кажется произошла ошибка. Обратитесь в чат поддержки";
+    orgasm_logger($e->getMessage(), 'error.log', '/local/logs/', true);
 }
 
 function generateCoupon($strength)
