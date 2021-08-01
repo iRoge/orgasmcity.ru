@@ -11,4 +11,4 @@
 /bin
 /cron/logs/*
 /import/*.csv
-robots.txt
+/robots.txt
