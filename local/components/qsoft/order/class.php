@@ -1552,6 +1552,8 @@ class QsoftOrderComponent extends ComponentHelper
                 "PAY_SYSTEM_NAME" => $this->arResult["PAYMENT"]["CURRENT"]["NAME"],
                 "SUM" => $price,
             ));
+        } else {
+            $order->setField('STATUS_ID', 'WC'); // Для заказов в 1 клик ставим статус "Ожидает подтверждение"
         }
 
 
@@ -1661,7 +1663,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->setPersonType();
         $this->setCurrency();
         $order = Order::create(SITE_ID, $userId, $this->currency);
-        $order->setField('STATUS_ID', 'WC'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
+        $order->setField('STATUS_ID', 'ZS'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
         $order->setPersonTypeId($this->personType);
         return $order;
     }
