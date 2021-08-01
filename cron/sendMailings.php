@@ -33,7 +33,7 @@ if ($mailing) {
     $receivedEmails = json_decode($mailing['~PROPERTY_RECEIVED_EMAILS_VALUE'], true);
     $result = CIBlockElement::GetList(
         [
-            "ID" => "ASC"
+            "SORT" => "ASC"
         ],
         [
             'IBLOCK_ID' => IBLOCK_SUBSCRIBERS,
