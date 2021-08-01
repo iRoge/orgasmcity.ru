@@ -18,12 +18,7 @@ class QsoftSubscribeComponent extends \CBitrixComponent
         $this->arResult['STATUS'] = 1;
         if ($this->request->isPost() && check_bitrix_sessid() && $bAjax) {
             try {
-                if ($this->request->get('action') == 'subscribeSurprise') {
-                    $this->IncludeComponentTemplate('popupBanner');
-                    $this->processAjaxRequestSurprise();
-                } else {
-                    $this->processAjaxRequest();
-                }
+                $this->processAjaxRequest();
             } catch (Exception $e) {
                 $this->arResult['MESSAGE'] = "Упс, кажется произошла ошибка. Обратитесь в чат поддержки";
                 $this->arResult['STATUS'] = 0;
