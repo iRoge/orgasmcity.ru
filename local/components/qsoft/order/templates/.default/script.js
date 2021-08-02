@@ -543,10 +543,10 @@ $(document).ready(function(){
 
             let delId = parseInt($(".js-delivery:checked").val());
             if ($.inArray(delId, arPVZDeliveryIds) == -1) {
-                if ($(bOrder + ' .err-PROPS\\[STREET_USER\\]').html() === 'Выберите адрес из выпадающего списка') {
+                if ($(bOrder + ' .err-PROPS\\[STREET_USER\\]').html() === 'Начните вводить адрес и выберите его из списка') {
                     errorCount++;
                 }
-                if ($(bOrder + ' .err-PROPS\\[HOUSE_USER\\]').html() === 'Выберите дом из выпадающего списка') {
+                if ($(bOrder + ' .err-PROPS\\[HOUSE_USER\\]').html() === 'Начните вводить номер дома и выберите его из списка') {
                     errorCount++;
                 }
             }
@@ -753,7 +753,7 @@ $(document).ready(function(){
                     $("#postal_code").val(suggestion.data.postal_code);
                 },
                 onSelectNothing: () => {
-                    $('#b-order .err-PROPS\\[STREET_USER\\]').html('Выберите адрес из выпадающего списка').addClass('actual');
+                    $('#b-order .err-PROPS\\[STREET_USER\\]').html('Начните вводить адрес и выберите его из списка').addClass('actual');
                     $("#street_user").addClass('form__error-border').html();
                     $("#postal_code").val("");
                 }
@@ -777,7 +777,7 @@ $(document).ready(function(){
                     $("#street_user").removeClass('form__error-border');
                 },
                 onSelectNothing: () => {
-                    $('#b-order .err-PROPS\\[HOUSE_USER\\]').html('Выберите дом из выпадающего списка').addClass('actual');
+                    $('#b-order .err-PROPS\\[HOUSE_USER\\]').html('Начните вводить номер и выберите дом из списка').addClass('actual');
                     $("#house_user").addClass('form__error-border').html();
                     $("#postal_code").val("");
                     if (!($("#street_user").val())) {
@@ -801,8 +801,13 @@ $(document).ready(function(){
         document.cookie = 'user_email=' + $('#b-order').find($('[name = "PROPS[EMAIL]"]')).val() + '~' + $('#b-order2').find($('[name = "PROPS[EMAIL]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
         document.cookie = 'user_phone=' + $('#b-order').find($('[name = "PROPS[PHONE]"]')).val() + '~' + $('#b-order2').find($('[name = "PROPS[PHONE]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
     });
-
 });
+
+var jivo_onLoadCallback = function() {
+    setTimeout(function () {
+        jivo_api.showProactiveInvitation("Трудности с оформлением заказа? Спросите у меня!");
+    }, 20000);
+}
 
 // форматирование цены
 function formatPrice(num) {

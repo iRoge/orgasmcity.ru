@@ -175,7 +175,7 @@ global $LOCATION, $APPLICATION; ?>
                             <? if (empty($arResult["ERRORS"])) : ?>
                                 <!-- delivery -->
                                 <div class="checkout__block checkout__block--delivery">
-                                    <h2 class="checkout__title checkout__title--delivery">Доставка <span class="err-order err-delivery"></span></h2>
+                                    <h2 class="checkout__title checkout__title--delivery">Выберите доставку<span class="err-order err-delivery"></span></h2>
                                     <? if (!empty($arResult["WAYS_DELIVERY"])) : ?>
                                         <div class="checkout__block checkout__block--flex">
                                             <? foreach ($arResult["WAYS_DELIVERY"] as $arDeliveryWay) : ?>
@@ -240,7 +240,7 @@ global $LOCATION, $APPLICATION; ?>
                                         <div class="form__field form__field--payment">
                                             <div class="form__box">
                                                 <div class="checkout__block--payment">
-                                                    <h2 class="checkout__title checkout__title--delivery">Оплата <span class="err-order err-payment"></span></h2>
+                                                    <h2 class="checkout__title checkout__title--delivery">Выберите оплату <span class="err-order err-payment"></span></h2>
                                                     <div class="checkout__block--flex">
                                                         <? foreach ($arResult["WAYS_PAYMENT"] as $arPaymentWay) :?>
                                                             <div class="form__box form__box--1-2 payment__type payment__type--disabled">
@@ -274,7 +274,7 @@ global $LOCATION, $APPLICATION; ?>
                                         <div class="checkout__block--contact-info hidden-block">
                                             <div class="form__box">
                                                 <div class="form__field">
-                                                    <h2 class="checkout__title checkout__title--contact-info">Контактные данные</h2>
+                                                    <h2 class="checkout__title checkout__title--contact-info">Укажите контактные данные</h2>
                                                     <input class="form__elem js-required js-fio" type="text" name="PROPS[FIO]" value="<?= (trim($arResult["USER"]["NAME"]." ".$arResult["USER"]["SECOND_NAME"]." ".$arResult["USER"]["LAST_NAME"])) ?: ($arResult["COOKIE_FIO"][0] ?: ($cookieAddress ? $_COOKIE['user_fio'] : ''))  ?>" placeholder="*Ф.И.О.">
                                                     <div class="err-order err-PROPS[FIO]"></div>
                                                 </div>

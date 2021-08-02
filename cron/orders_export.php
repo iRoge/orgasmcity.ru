@@ -150,12 +150,7 @@ while ($arOrder = $rsOrders->GetNext()) {
         $curl_opt["dsStreet"] = $arOrder["PROPS"]["STREET"];
         $curl_opt["dsHouse"] = $arOrder["PROPS"]["HOUSE"];
         $curl_opt["dsFlat"] = $arOrder["PROPS"]["FLAT"];
-
-        if ($dsDelivery == 2) // Почта
-        {
-            $curl_opt["dsPostcode"] = $arOrder["PROPS"]["POSTALCODE"];
-        }
-
+        $curl_opt["dsPostcode"] = $arOrder["PROPS"]["POSTALCODE"];
     }
 
     if ($Model == 'SELF') {

@@ -17,6 +17,9 @@ if (!$orderId) {
     $APPLICATION->SetTitle("Спасибо за оформление заказа");
 
     $order = Order::load($orderId);
+    if (!$order) {
+        Functions::abort404();
+    }
     $paymentCollection = $order->getPaymentCollection();
 
     foreach ($paymentCollection as $payment) {
