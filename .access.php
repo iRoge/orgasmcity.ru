@@ -1,4 +1,6 @@
 <?
+$PERM["pub"]["9"]="T_8";
+$PERM["upload"]["9"]="T_8";
 $PERM["search"]["5"]="W";
 $PERM["products"]["5"]="W";
 $PERM["services"]["5"]="W";

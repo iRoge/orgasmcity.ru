@@ -12,3 +12,4 @@
 /cron/logs/*
 /import/*.csv
 /robots.txt
+*.log

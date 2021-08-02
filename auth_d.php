@@ -1,4 +1,5 @@
-<?
+<?php
+die;
 define('NEED_AUTH', false);
 define('NOT_CHECK_PERMISSIONS',true);
 require($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
