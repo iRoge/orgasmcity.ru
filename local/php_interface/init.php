@@ -52,6 +52,24 @@ $dotenv->load();
 // EVENTS
 include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/event.php');
 
+// Настройка для модуля "Отправка почты через SMTP"
+if (!function_exists('custom_mail') && COption::GetOptionString("webprostor.smtp", "USE_MODULE") == "Y") {
+    function custom_mail($to, $subject, $message, $additional_headers='', $additional_parameters='')
+    {
+        if (CModule::IncludeModule("webprostor.smtp")) {
+            $smtp = new CWebprostorSmtp("s1");
+            $result = $smtp->SendMail($to, $subject, $message, $additional_headers, $additional_parameters);
+
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+}
+
+
 AddEventHandler("main", "OnEpilog", "process404");
 function process404()
 {
