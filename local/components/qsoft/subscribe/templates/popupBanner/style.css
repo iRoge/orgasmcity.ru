@@ -35,6 +35,9 @@ input#EMAIL.red_border_sub {
     .promocode-wrapper {
         height: 45px;
     }
+    .surprise-banner .popup__wrapper {
+        padding-top: 45px;
+    }
 }
 
 .surprise-banner .mailsender input[type="submit"] {
