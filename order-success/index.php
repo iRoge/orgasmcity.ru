@@ -43,7 +43,8 @@ if (!$orderId) {
         <div class="page-massage page__message-order">
             Спасибо,<br>
             номер вашего заказа <b>№ <?= $orderId ?></b>.<br>
-            <?= $sucMessage ?>
+            С вами созвонятся операторы для подтверждения заказа
+            <?= $sucMessage ?><br>
         </div>
         <?
         $arRRItems = [];
