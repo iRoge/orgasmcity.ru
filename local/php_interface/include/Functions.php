@@ -695,7 +695,7 @@ class Functions
     /**
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public static function sendMail($emailTo, $subject, $body, $subscriberID = null)
+    public static function sendMarketingMail($emailTo, $subject, $body, $subscriberID = null)
     {
         $mail = new PHPMailer(true);
         //Server settings

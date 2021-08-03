@@ -43,7 +43,7 @@ try {
     $html = file_get_contents(__DIR__ . '/surprise.html');
     $subject = 'Как и обещали. Ваш сюрприз!';
     $body = Functions::insertFields($html, $fields);
-    Functions::sendMail($email, $subject, $body, $mailingID);
+    Functions::sendMarketingMail($email, $subject, $body, $mailingID);
     $arResult['PROMOCODE'] = $coupon;
 } catch (Exception $e) {
     $arResult['STATUS'] = 0;
