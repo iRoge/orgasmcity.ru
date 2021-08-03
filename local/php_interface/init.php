@@ -1,6 +1,8 @@
 <?
 use Bitrix\Main\EventManager;
 use Bitrix\Main\Loader;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 ini_set('max_execution_time', 0);
 ignore_user_abort(true);
@@ -51,24 +53,6 @@ $dotenv->load();
 
 // EVENTS
 include_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/event.php');
-
-// Настройка для модуля "Отправка почты через SMTP"
-if (!function_exists('custom_mail') && COption::GetOptionString("webprostor.smtp", "USE_MODULE") == "Y") {
-    function custom_mail($to, $subject, $message, $additional_headers='', $additional_parameters='')
-    {
-        if (CModule::IncludeModule("webprostor.smtp")) {
-            $smtp = new CWebprostorSmtp("s1");
-            $result = $smtp->SendMail($to, $subject, $message, $additional_headers, $additional_parameters);
-
-            if ($result) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-}
-
 
 AddEventHandler("main", "OnEpilog", "process404");
 function process404()
@@ -145,4 +129,47 @@ function myLog($data, $fileName = '1233321')
         );
     }
     // }
+}
+
+// Кастомизация отправки битриксовой почты
+if (!function_exists('custom_mail')) {
+    function custom_mail($to, $subject, $message, $additional_headers='', $additional_parameters='')
+    {
+        $mail = new PHPMailer(true);
+        //Server settings
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->isSMTP();
+        $mail->CharSet = 'UTF-8';
+        $mail->Host = 'smtp.orgasmcity.ru';
+        $mail->SMTPAuth = true;
+        $mail->SMTPDebug = 0;
+        $mail->Username = 'robot-support@orgasmcity.ru';
+        $mail->Password = 'Org@smcity-robot228';
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
+
+        //Recipients
+        $mail->setFrom('robot-support@orgasmcity.ru', 'Почтальон в Городе Оргазма');
+        $mail->addAddress($to);
+
+        //Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        try {
+            $mail->send();
+            return true;
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
+            orgasm_logger($e->getMessage(), "error.log", "/local/logs/", true);
+            return false;
+        }
+    }
 }
