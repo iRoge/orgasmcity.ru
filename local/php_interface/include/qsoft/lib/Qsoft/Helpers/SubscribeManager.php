@@ -46,6 +46,7 @@ class SubscribeManager
             'IBLOCK_ID' => IBLOCK_SUBSCRIBERS,
             'NAME' => mb_strtolower(trim($email)),
             'ACTIVE' => $subscribed ? 'Y' : 'N',
+            'SORT' => '600'
         ]);
         $props = [];
         if ($email) {
