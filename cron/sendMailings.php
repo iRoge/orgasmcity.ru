@@ -59,6 +59,7 @@ if ($mailing) {
             'MIDDLE_NAME' => $subscriber['PROPERTY_MIDDLE_NAME_VALUE'],
             'SUBSCRIBER_ID' => $subscriber['ID'],
             'TITLE' => $mailing['PREVIEW_TEXT'],
+            'DATE_ACTION_END' => getActionDateEnd(),
         ];
         $message = Functions::insertFields($mailing['DETAIL_TEXT'], $fields);
 
@@ -103,4 +104,16 @@ function getDomainType($email)
     }
 
     return 5;
+}
+
+function getActionDateEnd() {
+    $dateTime = DateTime::createFromFormat('Y-m-d', date('Y-m-d'))->modify('+5 days')->format('j F');
+    $enMonths = [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    $ruMonths = [
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+
+    return str_replace($enMonths, $ruMonths, $dateTime);
 }
