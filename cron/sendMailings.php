@@ -9,11 +9,11 @@ use PHPMailer\PHPMailer\Exception;
 
 // 1 - яндекс, 2 - майл, 3 - gmail, 4 - rambler, 5 - other
 $limitsForDomainsTypesPerScript = [
-    1 => 1,
+    1 => 2,
     2 => 1,
-    3 => 1,
-    4 => 1,
-    5 => 1,
+    3 => 2,
+    4 => 2,
+    5 => 0,
 ];
 
 $mailing = CIBlockElement::GetList(
