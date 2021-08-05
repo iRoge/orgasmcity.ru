@@ -280,7 +280,7 @@ global $LOCATION, $APPLICATION; ?>
                                             <div class="form__box">
                                                 <div class="form__field">
                                                     <h2 class="checkout__title checkout__title--contact-info">Укажите контактные данные</h2>
-                                                    <input class="form__elem js-required js-fio" type="text" name="PROPS[FIO]" value="<?= (trim($arResult["USER"]["NAME"]." ".$arResult["USER"]["SECOND_NAME"]." ".$arResult["USER"]["LAST_NAME"])) ?: ($arResult["COOKIE_FIO"][0] ?: ($cookieAddress ? $_COOKIE['user_fio'] : ''))  ?>" placeholder="*Ф.И.О.">
+                                                    <input class="form__elem js-required js-fio" type="text" name="PROPS[FIO]" value="<?= (trim($arResult["USER"]["NAME"]." ".$arResult["USER"]["SECOND_NAME"]." ".$arResult["USER"]["LAST_NAME"])) ?: ($arResult["COOKIE_FIO"][0] ?: ($cookieAddress ? $_COOKIE['user_fio'] : ''))  ?>" placeholder="*Имя">
                                                     <div class="err-order err-PROPS[FIO]"></div>
                                                 </div>
                                                 <div class="form__field form__field--1-2">
