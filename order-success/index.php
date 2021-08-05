@@ -41,15 +41,16 @@ if (!$orderId) {
                 break;
             }
         }
-        $sucMessage = 'Отследить статус заказа вы можете <a href="/personal/orders/">на странице</a>.'
         ?>
         <div class="page-massage page__message-order">
             Спасибо,<br>
             номер вашего заказа <b>№ <?= $orderId ?></b>.<br>
             С вами созвонятся операторы для подтверждения заказа.<br>
-            <?= $sucMessage ?><br>
+            Отследить статус заказа вы можете <a href="/personal/orders/">на странице</a>.
+            Сейчас вы авторизованы автоматически, но вам нужно поменять пароль в <a href="/personal/">личном кабинете</a>, чтобы вы могли зайти в следующий раз
+            <br>
         </div>
-        <?
+        <?php
         $arRRItems = [];
         foreach ($order->getBasket()->getBasketItems() as $basketItem) {
             $arProduct = $basketItem->getFieldValues();
