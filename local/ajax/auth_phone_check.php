@@ -13,10 +13,10 @@ if (empty($email)) {
     if ($arUser = $userFields->Fetch()) {
         $email = $arUser['EMAIL'];
     }
-    $errorText = 'Неверный телефон или пароль!';
+    $errorText = 'Неверный телефон или пароль! <a href="/auth/?forgot_password=yes" class="input-group__link" rel="nofollow">Уже делали заказ?</a>';
     $event2 = "phone";
 } else {
-    $errorText = 'Неверный email или пароль!';
+    $errorText = 'Неверный email или пароль! <a href="/auth/?forgot_password=yes" class="input-group__link" rel="nofollow">Уже делали заказ?</a>';
     $event2 = "email";
 }
 $isAuth = $USER->Login($email, $password);
