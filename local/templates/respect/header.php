@@ -474,7 +474,7 @@ switch ($GLOBALS['PAGE'][1]) {
 
     case 'personal':
         $menuTemplate = 'horizontal-personal';?>
-        <div class="after-lk-in col-md-8 col-md-offset-2">
+        <div class="after-lk-in col-md-8 col-md-offset-2 main">
         <?php
         break;
 
