@@ -9,10 +9,10 @@ use PHPMailer\PHPMailer\Exception;
 
 // 1 - яндекс, 2 - майл, 3 - gmail, 4 - rambler, 5 - other
 $limitsForDomainsTypesPerScript = [
-    1 => 2,
-    2 => 1,
-    3 => 2,
-    4 => 2,
+    1 => 0,
+    2 => 5,
+    3 => 0,
+    4 => 0,
     5 => 0,
 ];
 
