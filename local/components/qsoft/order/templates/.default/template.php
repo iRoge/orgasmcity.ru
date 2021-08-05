@@ -204,6 +204,11 @@ global $LOCATION, $APPLICATION; ?>
                                                                 <div class="cart-delivery__label-description">
                                                                     <?= $arDeliveryWay['DESCRIPTION'] ?>
                                                                 </div>
+                                                                <? if ($arDeliveryWay['PVZ']) : ?>
+                                                                    <div class="text-danger" style="font-size: 12px">
+                                                                        Внимание! Для корректного отображения пунктов нужно выбрать ваш город доставки слева сверху на сайте
+                                                                    </div>
+                                                                <? endif;?>
                                                                 <div class="cart-delivery__price">
                                                                     <?= min($arDeliveryWay['PRICES']) == max($arDeliveryWay['PRICES']) ? max($arDeliveryWay['PRICES']) == 0 ? 'Бесплатно' : 'Стоимость доставки ' . number_format(max($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р." : 'Стоимость доставки от ' . number_format(min($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р."?>
                                                                 </div>
