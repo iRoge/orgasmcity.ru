@@ -68,7 +68,7 @@
                         <div class="col-sm-12 col-xs-6 num2">
                             <p>Обратная связь<a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></p>
                             <p><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></p>
-                            <p>г. Москва ул. Автозаводская д.16 к.2 стр.8</p>
+                            <p>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</p>
                         </div>
                         <div class="col-xs-12 social">
                             <? $APPLICATION->IncludeComponent(
