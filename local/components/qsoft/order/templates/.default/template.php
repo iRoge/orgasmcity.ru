@@ -204,6 +204,11 @@ global $LOCATION, $APPLICATION; ?>
                                                                 <div class="cart-delivery__label-description">
                                                                     <?= $arDeliveryWay['DESCRIPTION'] ?>
                                                                 </div>
+                                                                <? if ($arDeliveryWay['PVZ']) : ?>
+                                                                    <div class="text-danger" style="font-size: 12px">
+                                                                        Внимание! Для корректного отображения пунктов нужно выбрать ваш город доставки слева сверху на сайте
+                                                                    </div>
+                                                                <? endif;?>
                                                                 <div class="cart-delivery__price">
                                                                     <?= min($arDeliveryWay['PRICES']) == max($arDeliveryWay['PRICES']) ? max($arDeliveryWay['PRICES']) == 0 ? 'Бесплатно' : 'Стоимость доставки ' . number_format(max($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р." : 'Стоимость доставки от ' . number_format(min($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р."?>
                                                                 </div>
@@ -275,7 +280,7 @@ global $LOCATION, $APPLICATION; ?>
                                             <div class="form__box">
                                                 <div class="form__field">
                                                     <h2 class="checkout__title checkout__title--contact-info">Укажите контактные данные</h2>
-                                                    <input class="form__elem js-required js-fio" type="text" name="PROPS[FIO]" value="<?= (trim($arResult["USER"]["NAME"]." ".$arResult["USER"]["SECOND_NAME"]." ".$arResult["USER"]["LAST_NAME"])) ?: ($arResult["COOKIE_FIO"][0] ?: ($cookieAddress ? $_COOKIE['user_fio'] : ''))  ?>" placeholder="*Ф.И.О.">
+                                                    <input class="form__elem js-required js-fio" type="text" name="PROPS[FIO]" value="<?= (trim($arResult["USER"]["NAME"]." ".$arResult["USER"]["SECOND_NAME"]." ".$arResult["USER"]["LAST_NAME"])) ?: ($arResult["COOKIE_FIO"][0] ?: ($cookieAddress ? $_COOKIE['user_fio'] : ''))  ?>" placeholder="*Имя">
                                                     <div class="err-order err-PROPS[FIO]"></div>
                                                 </div>
                                                 <div class="form__field form__field--1-2">
