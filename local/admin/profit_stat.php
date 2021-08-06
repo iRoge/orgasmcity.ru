@@ -135,9 +135,16 @@ if ($_POST['download'] == 'Скачать' && empty($errors)) {
         $currentRow++;
     }
 
+    if (!$_POST['date_from']) {
+        $errors[] = 'Нужно ввести дату ОТ';
+    }
+    if (!$_POST['date_to']) {
+        $errors[] = 'Нужно ввести дату ДО';
+    }
+
     ob_get_clean();
     header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="GeneratedFile.xlsx"');
+    header('Content-Disposition: attachment;filename="' . $_POST['date_from'] . '-' . $_POST['date_to'] . '"_profit_report.xlsx"');
     header('Cache-Control: max-age=0');
 
     $writer = new Xlsx($spreadsheet);
