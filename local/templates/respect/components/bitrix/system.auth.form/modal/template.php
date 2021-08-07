@@ -20,8 +20,7 @@
         </div>
     <? endif; ?>
     <input type="text" id="AUTH_EMAIL" name="USER_LOGIN" value="<?= $arResult['USER_LOGIN']; ?>" placeholder="E-mail">
-    <p>или <span class="err-phone-email"></span></p>
-    <input type="text" id="AUTH_PHONE" name="USER_PHONE" placeholder="Телефон">
+    <span class="err-phone-email"></span>
     <input type="password" id="AUTH_PASSWORD" name="USER_PASSWORD" placeholder="*Пароль" autocomplete="off">
     <a href="/auth/?forgot_password=yes" class="input-group__link" rel="nofollow">
         Забыли пароль?

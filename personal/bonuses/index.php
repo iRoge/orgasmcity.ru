@@ -6,6 +6,9 @@ require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 $APPLICATION->SetTitle('Личный кабинет');
 
 global $USER;
+if (!$USER->IsAuthorized()) {
+    LocalRedirect('/auth/?back_url=/personal/bonuses/');
+}
 $bonusHelper = new BonusSystem($USER->GetID());
 $bonusHelper->recalcUserBonus();
 ?>

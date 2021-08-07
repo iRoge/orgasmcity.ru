@@ -1,23 +1,18 @@
 $(document).ready(function () {
-    phoneMaskCreate($("#AUTH_PHONE"), false);
-
     $('form#auth-form').submit(function (e) {
         e.preventDefault();
 
-        let phoneElem = $("#AUTH_PHONE");
         let emailElem = $("#AUTH_EMAIL");
 
         var cou_err = '';
         var text_html = "";
         var userEmail = emailElem.val().trim();
-        var userPhone = phoneElem.val().trim();
         var errSpan = $('.err-phone-email');
 
-        if (userEmail == "" && userPhone == "") {
+        if (userEmail == "") {
             errSpan.html('Необходимо ввести email или телефон');
             cou_err = 'all-error';
             emailElem.addClass("red_border");
-            phoneElem.addClass("red_border");
         } else if (userEmail != "") {
             if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailElem.val().trim())) {
                 errSpan.html('Неверный E-Mail');
@@ -27,18 +22,6 @@ $(document).ready(function () {
                 emailElem.removeClass("red_border");
                 errSpan.html('');
             }
-            phoneElem.removeClass("red_border");
-        } else if (userPhone != "") {
-            var inputPhoneValue = phoneElem.val().replace(/\D+/g, '');
-            if (inputPhoneValue.length - 1 < 10 && phoneElem.val().trim() != "") {
-                errSpan.html('Неверно заполнено поле Телефон');
-                phoneElem.addClass("red_border");
-                cou_err = 'phone-error';
-            } else {
-                phoneElem.removeClass("red_border");
-                errSpan.html('');
-            }
-            emailElem.removeClass("red_border");
         } else {
             errSpan.html('');
         }
@@ -67,7 +50,6 @@ $(document).ready(function () {
         if (flag.errorText != null) {
             $("#after-auth-in-err").html(flag.errorText);
             if (flag.event === 'phone') {
-                phoneElem.addClass("red_border");
                 passELem.addClass("red_border");
             } else if (flag.event === 'email') {
                 emailElem.addClass("red_border");
@@ -91,7 +73,6 @@ function ajaxAuthPhoneCheck() {
         url: '/local/ajax/auth_phone_check.php',
         data: {
             'email': $("#AUTH_EMAIL").val(),
-            'phone': $("#AUTH_PHONE").val(),
             'password': $("#AUTH_PASSWORD").val(),
         },
         success: function (data) {

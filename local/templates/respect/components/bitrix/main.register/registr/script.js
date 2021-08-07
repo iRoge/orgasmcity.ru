@@ -10,8 +10,6 @@ $(document).ready(function () {
         dateElem.attr('placeholder', '*Дата рождения');
     });
 
-    phoneMaskCreate($("input.registration_phone"));
-
     $('form[name=regform]').on('click', function () {
         var date_val = $(this).parent().parent().find('.reg_date').val();
         $(this).parent().parent().find('.reg_date_value').val(date_val);
@@ -110,23 +108,6 @@ $(document).ready(function () {
             }
         }
 
-        let phoneElem = $("#REGISTER\\[PERSONAL_PHONE\\]");
-        let errPhoneElem = $("#err-REGISTER\\[PERSONAL_PHONE\\]");
-        var inputPhoneValue = phoneElem.val().replace(/\D+/g, '');
-        if (phoneElem.val().trim() !== '') {
-            if (inputPhoneValue.length - 1 < 10 && phoneElem.val().trim() !== "") {
-                phoneElem.addClass("red_border");
-                errPhoneElem.text('* Неверно заполнено поле Телефон').addClass('actual');
-                cou_err++;
-            } else if (flag.phoneUsed !== '') {
-                phoneElem.addClass('red_border');
-                errPhoneElem.text(flag.phoneUsed).addClass('actual');
-            } else {
-                phoneElem.removeClass("red_border");
-                errPhoneElem.text('').removeClass('actual');
-            }
-        }
-
         if (!($("#regform_checked").prop('checked'))) {
             $('#err-conf').text('* Необходимо согласие с политикой конфиденциальности').addClass('actual');
             cou_err++;
@@ -164,7 +145,6 @@ function ajaxFieldsCheck() {
             'captcha_word': $("#captcha_word").val(),
             'captcha_sid': $("#captchaSid").val(),
             'email': $("#REGISTER\\[EMAIL\\]").val(),
-            'personal_phone': $("#REGISTER\\[PERSONAL_PHONE\\]").val()
         },
         success: function (data) {
             var parsed = JSON.parse(data);
@@ -174,14 +154,6 @@ function ajaxFieldsCheck() {
                 flag.countError++;
             } else if (parsed.email !== "noRemoveClass") {
                 flag.emailRedBorder = 0;
-            }
-
-            if (parsed.phone === 1) {
-                let phoneElem = $("#REGISTER\\[PERSONAL_PHONE\\]");
-                flag.phoneUsed = '* Данный номер телефона уже используется';
-                flag.countError++;
-            } else if (parsed.phone !== "noRemoveClass") {
-                flag.phoneRedBorder = 0;
             }
 
             if (parsed.captcha === 1) {

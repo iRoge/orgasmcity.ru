@@ -1,6 +1,10 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle('Мои заказы');
+global $USER;
+if (!$USER->IsAuthorized()) {
+    LocalRedirect('/auth/?back_url=/personal/orders/');
+}
 ?>
 
 <? if ($USER->IsAuthorized()) : ?>
