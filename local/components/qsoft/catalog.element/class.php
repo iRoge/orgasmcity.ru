@@ -296,8 +296,8 @@ class QsoftCatalogElement extends ComponentHelper
         $this->arResult['NAME'] = $this->forSEO['NAME'];
         $this->arResult['DETAIL_TEXT'] = $this->forSEO['DETAIL_TEXT'];
         $this->arResult['OFFERS'] = $this->loadOffers();
-        $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
         $this->arResult['OFFERS'] = $this->filterOffersByRests($this->arResult['OFFERS']);
+        $this->arResult['AVAILABLE_OFFER_PROPS'] = $this->getAvailableProps();
         $this->arResult['IPROPERTY_VALUES'] = $this->getEntity('iprops', 'loadInheritedProperties');
         $this->arResult['PHOTOS'] = $this->getEntity('images', 'loadImages');
         $this->arResult['DISPLAY_PROPERTIES'] = $this->getDisplayProperties();
@@ -748,7 +748,7 @@ class QsoftCatalogElement extends ComponentHelper
         // Фильтруем по остаткам
         $arRests = Functions::getRests(array_keys($offers));
         foreach ($offers as $id => $offer) {
-            if (!isset($arRests[$id])) {
+            if (!isset($arRests[$id]) || $arRests[$id] == 0) {
                 unset($offers[$id]);
             }
         }

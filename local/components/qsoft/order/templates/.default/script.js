@@ -753,7 +753,7 @@ $(document).ready(function(){
                     $("#postal_code").val(suggestion.data.postal_code);
                 },
                 onSelectNothing: () => {
-                    $('#b-order .err-PROPS\\[STREET_USER\\]').html('Начните вводить адрес и выберите его из списка').addClass('actual');
+                    $('#b-order .err-PROPS\\[STREET_USER\\]').html('Начните вводить и выберите из списка').addClass('actual');
                     $("#street_user").addClass('form__error-border').html();
                     $("#postal_code").val("");
                 }
@@ -777,7 +777,7 @@ $(document).ready(function(){
                     $("#street_user").removeClass('form__error-border');
                 },
                 onSelectNothing: () => {
-                    $('#b-order .err-PROPS\\[HOUSE_USER\\]').html('Начните вводить номер и выберите дом из списка').addClass('actual');
+                    $('#b-order .err-PROPS\\[HOUSE_USER\\]').html('Начните вводить и выберите из списка').addClass('actual');
                     $("#house_user").addClass('form__error-border').html();
                     $("#postal_code").val("");
                     if (!($("#street_user").val())) {
