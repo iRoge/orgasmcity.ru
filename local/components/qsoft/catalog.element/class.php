@@ -751,6 +751,7 @@ class QsoftCatalogElement extends ComponentHelper
             if (!isset($arRests[$id]) || $arRests[$id] == 0) {
                 unset($offers[$id]);
             }
+            $offers[$id]['REST'] = $arRests[$id];
         }
         return $offers;
     }
