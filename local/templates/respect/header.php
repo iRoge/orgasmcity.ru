@@ -276,14 +276,14 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12 right-block-top">
-            <div class="col-md-8 col-sm-8 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
+            <div class="col-md-6 col-sm-6 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
                 ?>
             </div>
-<!--            <div class="col-md-2 col-sm-2 hidden-xs mail mail2">-->
-<!--                <img src="--><?//= SITE_TEMPLATE_PATH; ?><!--/img/envelope.png"/>-->
-<!--            </div>-->
+            <div class="col-md-2 col-sm-2 hidden-xs mail mail2">
+                <img src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
+            </div>
             <div class="col-md-2 col-sm-2 hidden-xs cart heart">
                 <a class="favorites_header" href="/catalog/favorites/">
                     <p class="count count--heart in-full"><?= $_COOKIE['favorites_count'] ?? '0'?></p>

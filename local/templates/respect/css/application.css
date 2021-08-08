@@ -154,10 +154,6 @@ label.radio > span .input__color,
   content: "";
 }
 
-.icon-exclamation-circle:before {
-  content: "";
-}
-
 .icon-facebook:before {
   content: "";
 }
@@ -1984,10 +1980,6 @@ body > .popup--overflow.popup--banner {
   }
 }
 
-.popup--feedback .alert--danger,
-.popup--feedback .input-group {
-  text-align: left;
-}
 .popup--feedback textarea::-webkit-input-placeholder {
   font-family: "Roboto Condensed", sans-serif;
   font-weight: 300;
