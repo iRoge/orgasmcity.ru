@@ -73,7 +73,7 @@ if ($arResult["isFormNote"] == "Y") : ?>
                     $htmlNameValue = 'form_text_' . $arQuestion["STRUCTURE"][0]["ID"];
                     $selectedValue = isset($_REQUEST[$htmlNameValue]) ? $_REQUEST[$htmlNameValue] : '';
                     ?>
-                <select class="feedback-selectize" name="<?= $htmlNameValue ?>">
+                <select class="feedback-selectize" name="<?= $htmlNameValue ?>" style="background-color: #fff5f7">
                     <option value=""><?= $label ?></option>
                     <? foreach ($arSubjectList as $subject) :?>
                         <option value="<?= $subject ?>"<?= ($subject == $selectedValue ? ' selected' : '') ?>><?= $subject ?></option>

@@ -42,7 +42,7 @@ input[type=checkbox]:not(.checkbox3){
     color: rgb(78, 78, 78);
     font-family: 'firaregular';
     padding: 12px 20px;
-    background: white;
+    background: #fff5f7;
     outline: 0;
     width: 100%!important;
     border: 1px solid rgba(200,200,200, .5);

@@ -38,7 +38,6 @@ $(function () {
                 }
                 window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
                 if (Number(window.localStorage['onlineTime']) === 30) {
-                    ym(82799680,'reachGoal','surprise')
                     let element = $('.js-popup-banner');
                     element.show();
                     Popup.show(element, {

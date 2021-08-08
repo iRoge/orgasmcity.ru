@@ -16,6 +16,7 @@ if ($LOCATION->code == $_COOKIE['user_location_code']) {
 }
 
 $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
+$basketMinSum = Option::get("respect", "basket_min_num", 1000);
 
 global $LOCATION, $APPLICATION; ?>
 <? if (!empty($arResult["ITEMS"])) : ?>
@@ -441,7 +442,23 @@ global $LOCATION, $APPLICATION; ?>
         <? die() ?>
     <? endif ?>
 <? endif ?>
-
+<?php
+if (!empty($arResult["ITEMS"]) && isset($arResult["PRICE"]) && $arResult["PRICE"] < $basketMinSum) {
+    $APPLICATION->IncludeComponent(
+        'orgasmcity:products.line',
+        'default',
+        [
+            'TITLE' => 'Чем дополнить корзину',
+            'FILTERS' => [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => "Y",
+                "PRICE_FROM" => $basketMinSum - $arResult["PRICE"],
+                "PRICE_TO" => ($basketMinSum - $arResult["PRICE"]) * 1.2 + 100,
+            ],
+        ]
+    );
+}
+?>
 
 <?$APPLICATION->IncludeComponent('qsoft:pvzmap', '');?>
 

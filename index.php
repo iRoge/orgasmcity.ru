@@ -206,7 +206,12 @@ global $LOCATION;
         'default',
         [
             'TITLE' => 'Хиты продаж',
-            'TYPE' => 'hits'
+            'FILTERS' => [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => "Y",
+                "=PROPERTY_BESTSELLER_VALUE" => "1",
+                "PRICE_FROM" => 1000,
+            ],
         ]
     );
     ?>

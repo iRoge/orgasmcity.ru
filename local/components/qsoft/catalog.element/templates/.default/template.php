@@ -353,7 +353,10 @@ $APPLICATION->IncludeComponent(
     'default',
     [
         'TITLE' => 'Похожие товары',
-        'TYPE' => 'similar',
-        'SECTION_ID' => $arResult['IBLOCK_SECTION_ID'],
+        'FILTERS' => [
+            "IBLOCK_ID" => IBLOCK_CATALOG,
+            "ACTIVE" => "Y",
+            'SECTION_ID' => $arResult['IBLOCK_SECTION_ID']
+        ],
     ]
 );

@@ -255,7 +255,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             <?php $phone = SUPPORT_PHONE?>
             <div class="col-xs-4 pull-right phone-xs">
                 <p class="header-container">
-<!--                    <img class="header-mail-icon mail mail2" src="--><?//= SITE_TEMPLATE_PATH; ?><!--/img/envelope.png"/>-->
+                    <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
                     <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
                 </p>
 
