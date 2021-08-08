@@ -95,7 +95,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             ];
 
             $resOffers = CIBlockElement::GetList(
-                ["SORT" => "ASC"],
+                ["ID" => "DESC"],
                 $arFilter,
                 false,
                 false,
@@ -106,7 +106,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                 $price = PriceUtils::getPrice($offer["PROPERTY_BASEWHOLEPRICE_VALUE"], $offer["PROPERTY_BASEPRICE_VALUE"]);
                 if (
                     isset($this->arParams['FILTERS']['PRICE_FROM']) && $price['PRICE'] < $this->arParams['FILTERS']['PRICE_FROM']
-                    || isset($this->arParams['FILTERS']['PRICE_FROM']) && $price['PRICE'] > $this->arParams['FILTERS']['PRICE_FROM']
+                    || isset($this->arParams['FILTERS']['PRICE_TO']) && $price['PRICE'] > $this->arParams['FILTERS']['PRICE_TO']
                 ) {
                     continue;
                 }
@@ -157,7 +157,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         ];
 
         $resProducts = CIBlockElement::GetList(
-            ["SORT" => "ASC"],
+            ["ID" => "DESC"],
             $arFilter,
             false,
             false,
