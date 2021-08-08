@@ -109,7 +109,6 @@ $(document).ready(function () {
     });
 
     $('.auth2').click(function() {
-        console.log(12);
         $('.auth-div').toggle(100);
     });
 
