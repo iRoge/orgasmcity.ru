@@ -124,9 +124,9 @@ if (!$orderId) {
     <? } elseif ($orderType == 'prepayment_s1') { ?>
         <div class="page-massage page__message-order">
             Номер вашего заказа <b>№ <?= $orderId ?></b>.<br>
+            Сейчас вы авторизованы автоматически, но вам нужно поменять пароль в <a href="/personal/">личном кабинете</a>, чтобы вы могли зайти в следующий раз
             <?= Option::get("respect", "order_success_text", ""); ?>
             <p>Сумма к оплате: <b><?= number_format($order->getPrice(), 0, '', ' ') . ' p.' ?></b></p>
-            Сейчас вы авторизованы автоматически, но вам нужно поменять пароль в <a href="/personal/">личном кабинете</a>, чтобы вы могли зайти в следующий раз
             <br>
             <button class="bttn pay-button" data-order-id="<?= $orderId ?>">Оплатить</button>
         </div>

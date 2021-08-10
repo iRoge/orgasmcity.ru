@@ -253,7 +253,7 @@ global $LOCATION, $APPLICATION; ?>
                                                                 <div class="cart-delivery">
                                                                     <div class="cart-delivery__wrapper">
                                                                         <input id="Payment_<?= $arPaymentWay['PAYMENT'] ?>"
-                                                                               class="checkbox4 cart-delivery__input js-payment-local"
+                                                                               class="checkbox4 cart-delivery__input js-payment"
                                                                                type="radio"
                                                                                name="PAYMENT"
                                                                                data-sort="<?=$arPaymentWay['SORT']?>"
@@ -393,7 +393,11 @@ global $LOCATION, $APPLICATION; ?>
                                         </div>
                                         <div id="cart__discount-block" class="p <?= !$arResult["DISCOUNT"] ? "is-hidden" : "" ?>">
                                             <div class="l">Скидка</div>
-                                            <div id="cart__discount-price" class="r"><?= number_format($arResult["DISCOUNT"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
+                                            <div id="cart__discount-price" class="r"><?= number_format(-$arResult["DISCOUNT"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
+                                        </div>
+                                        <div class="p hidden">
+                                            <div class="l">Скидка за предоплату</div>
+                                            <div id="cart__prepayment-discount-price" class="r"></div>
                                         </div>
                                         <div class="p">
                                             <div class="l">Всего к оплате</div>

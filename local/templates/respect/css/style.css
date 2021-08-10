@@ -8154,6 +8154,11 @@ label.color-label {
     transition: 0.2s;
 }
 
+.checkbox4:hover + .cart-delivery__label:hover {
+    opacity: 1;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
 .checkbox4:checked + .cart-delivery__label {
     border: 1px solid rgb(3, 64, 120) !important;
     opacity: 1;

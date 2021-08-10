@@ -366,7 +366,7 @@ $(document).ready(function(){
         if (basketPrice != 0 && (basketPrice != sum && basketPrice == oldSum)) {
             return delDiscount();
         }
-        let delPrice = $(".js-delivery:checked").attr("data-price") ? parseInt($(".js-delivery:checked").attr("data-price")) : 0;
+        let delPrice = getDeliveryPrice();
         if (changeDeliveryBasketNum === 1) {
             $("#cart__delivery-price").html(basketPrice >= freeDeliveryMinSum ? formatPrice(0) : formatPrice(delPrice));
         }
@@ -377,6 +377,11 @@ $(document).ready(function(){
             $("#cart__discount-block").removeClass("is-hidden");
             $("#cart__discount-price").html(formatPrice(oldSum - sum));
         }
+    }
+
+    function getDeliveryPrice() {
+        let deliveryCheckedRadio = $(".js-delivery:checked");
+        return deliveryCheckedRadio.attr("data-price") ? parseInt(deliveryCheckedRadio.attr("data-price")) : 0;
     }
 
     // удаление скидки
@@ -493,10 +498,10 @@ $(document).ready(function(){
                 }
             }
         });
-        $(".js-payment-local").on("click", function() {
+        $(".js-payment").on("click", function() {
             clickedElem = $(this);
 
-            if (checkIfCheckboxIsActive('js-payment-local')) {
+            if (checkIfCheckboxIsActive('js-payment')) {
                 hiddenBlock('close', 'checkout__block--contact-info');
                 hiddenBlock('close', 'basket-textarea');
 
@@ -507,6 +512,23 @@ $(document).ready(function(){
 
                 hiddenBlock('open', 'checkout__block--contact-info');
                 hiddenBlock('open', 'basket-textarea');
+            }
+
+            let prepaymentDiscountBlock = $("#cart__prepayment-discount-price");
+            let paymentCheckedBlock = $('.js-payment:checked');
+            if (prepaymentDiscountBlock && prepaymentDiscountBlock.hasClass("is-hidden")) {
+                if (paymentCheckedBlock.data('prepayment') == 'Y') {
+                    let basketPrice = 0;
+                    $(".orders__price").each(function () {
+                        basketPrice += parseInt($(this).find(".orders__price-num").attr("data-price"));
+                    });
+                    let prepaymentDiscount = basketPrice * 0.05;
+                    prepaymentDiscountBlock.html(formatPrice(-prepaymentDiscount));
+                    $("#cart__total-price").html(formatPrice(basketPrice + getDeliveryPrice() - prepaymentDiscount));
+                    prepaymentDiscountBlock.removeClass("is-hidden");
+                }
+            } else {
+
             }
         });
         $('.needComment').on('change', function () {
@@ -598,7 +620,7 @@ $(document).ready(function(){
             // } else {
             //     $("#cart__order-policy").siblings('label').removeClass("form__error-border");
             // }
-            if ($(".js-payment-local:checked").length == 0) {
+            if ($(".js-payment:checked").length == 0) {
                 $(bOrder + ' .err-payment').html('Выберите способ оплаты').addClass('actual');
                 let labels = $('#b-order').find('.payment-label');
                 labels.each(function() {
@@ -674,7 +696,7 @@ $(document).ready(function(){
                                 }
                             }
                         });
-                        let paymentType = $.inArray(parseInt($('.js-payment-local:checked').val()), arOnlinePaymentIdsInt) == -1 ? 'default' : 'prepayment_s1';
+                        let paymentType = $.inArray(parseInt($('.js-payment:checked').val()), arOnlinePaymentIdsInt) == -1 ? 'default' : 'prepayment_s1';
                         window.location = '/order-success/?orderId=' + data.text + '&orderType=' + paymentType;
                         return false;
                     }
@@ -839,7 +861,7 @@ function checkIfCheckboxIsActive(className) {
         let paymentClass = '';
 
         if (className === 'js-delivery') {
-            paymentClass = 'js-payment-local';
+            paymentClass = 'js-payment';
         }
 
         if (paymentClass !== '') {
