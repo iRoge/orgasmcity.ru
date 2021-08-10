@@ -395,13 +395,13 @@ global $LOCATION, $APPLICATION; ?>
                                             <div class="l">Скидка</div>
                                             <div id="cart__discount-price" class="r"><?= number_format(-$arResult["DISCOUNT"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
                                         </div>
-                                        <div class="p hidden">
+                                        <div class="p is-hidden">
                                             <div class="l">Скидка за предоплату</div>
                                             <div id="cart__prepayment-discount-price" class="r"></div>
                                         </div>
                                         <div class="p">
                                             <div class="l">Всего к оплате</div>
-                                            <div id="cart__total-price" class="r"><?= number_format($arResult["PRICE"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
+                                            <div id="cart__total-price" data-value="<?=$arResult["PRICE"]?>" class="r"><?= number_format($arResult["PRICE"], 0, "", "&nbsp;") ?>&nbsp;р.</div>
                                         </div>
                                     </div>
                                     <div class="form__field">
