@@ -362,9 +362,6 @@ class QsoftCatalogSection extends ComponentHelper
                 }
                 $this->loadProducts(true);
                 $this->loadOffers();
-                if (!isset($_REQUEST['getFilters'])) {
-                    $this->delNonActualFavorites();
-                }
                 $this->getFavoritesProductsAndOffers();
                 break;
             case self::TYPE_SALES:
@@ -756,39 +753,6 @@ class QsoftCatalogSection extends ComponentHelper
             setcookie("favorites", serialize($arFavoritesIds), 0, '/');
         }
         setcookie("favorites_count", count($arFavoritesIds), 0, '/');
-    }
-
-    private function delNonActualFavorites()
-    {
-        $this->loadProducts(true);
-        $this->loadOffers();
-        $rsStoreOffers = \Bitrix\Catalog\ProductTable::getList(
-            [
-                'select' => ['ID', 'QUANTITY']
-            ],
-        );
-        $availableOffers = [];
-        while ($arStoreOffer = $rsStoreOffers->fetch()) {
-            if ($arStoreOffer['QUANTITY'] > 0) {
-                $availableOffers[$arStoreOffer['ID']] = $arStoreOffer['ID'];
-            }
-        }
-        $actualOffers = array_intersect_key($this->offers, $availableOffers);
-        $arProducts = [];
-        foreach ($actualOffers as $offerId => $arItem) {
-            $arProducts[$arItem["PROPERTY_CML2_LINK_VALUE"]][] = $offerId;
-        }
-        $arActualProducts = [];
-        foreach ($arProducts as $productId => $arOffersId) {
-            foreach ($arOffersId as $offerId) {
-                if (isset($actualOffers[$offerId])) {
-                    $arActualProducts[$productId][] = $offerId;
-                    break;
-                }
-            }
-        }
-        $this->setFavorites(array_intersect_key($this->arResult['FAVORITES_PROD_IDS'], $arActualProducts));
-        return array_intersect_key($this->arResult['FAVORITES_PROD_IDS'], $arActualProducts);
     }
 
     private function getGroup()
