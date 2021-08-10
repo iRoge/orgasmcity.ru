@@ -32,13 +32,9 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
     public function getItems()
     {
         $arItems = [];
-        if ($this->arParams['TYPE'] == 'similar') {
-            $products = $this->getSimilarProducts($this->arParams['SECTION_ID']);
-        } else {
-            $products = $this->getBestsellerProducts();
-        }
-
+        $products = $this->getCachedProducts();
         $offers = Functions::filterOffersByRests($this->getOffersByProductIds(array_keys($products)));
+
         foreach ($offers as $offer) {
             $product = $products[$offer['PROPERTY_CML2_LINK_VALUE']];
             if (isset($arItems[$offer['PROPERTY_CML2_LINK_VALUE']])) {
@@ -78,7 +74,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         $offerCache = new CPHPCache;
         $arOffers = [];
 
-        if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'allOffers', 'offers')) {
+        if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'offers|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('offers');
@@ -99,7 +95,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             ];
 
             $resOffers = CIBlockElement::GetList(
-                ["SORT" => "ASC"],
+                ["ID" => "DESC"],
                 $arFilter,
                 false,
                 false,
@@ -108,9 +104,13 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
 
             while ($offer = $resOffers->Fetch()) {
                 $price = PriceUtils::getPrice($offer["PROPERTY_BASEWHOLEPRICE_VALUE"], $offer["PROPERTY_BASEPRICE_VALUE"]);
-                if ($price['PRICE'] < 1000) {
+                if (
+                    isset($this->arParams['FILTERS']['PRICE_FROM']) && $price['PRICE'] < $this->arParams['FILTERS']['PRICE_FROM']
+                    || isset($this->arParams['FILTERS']['PRICE_TO']) && $price['PRICE'] > $this->arParams['FILTERS']['PRICE_TO']
+                ) {
                     continue;
                 }
+
                 $offer['PRICE'] = $price;
 
                 $arOffers[$offer['ID']] = $offer;
@@ -123,48 +123,18 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         return $arOffers;
     }
 
-    private function getSimilarProducts($sectionId): array
+    private function getCachedProducts(): array
     {
         $productsCache = new CPHPCache;
         $arProducts = [];
 
-        if ($productsCache->InitCache(86400, 'similar_products|' . $sectionId, 'products')) {
+        if ($productsCache->InitCache(86400, 'products|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
             $arProducts = $productsCache->GetVars()['products'];
         } elseif ($productsCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('products');
             $this->cacheManager->RegisterTag('catalogAll');
 
-            $arFilter = [
-                "IBLOCK_ID" => IBLOCK_CATALOG,
-                "ACTIVE" => "Y",
-                "=PROPERTY_BESTSELLER_VALUE" => "1",
-                "=SECTION_ID" => $sectionId,
-            ];
-
-            $arProducts = $this->getProductsByFilter($arFilter);
-            $this->cacheManager->endTagCache();
-            $productsCache->EndDataCache(['products' => $arProducts]);
-        }
-
-        return $arProducts;
-    }
-
-    private function getBestsellerProducts(): array
-    {
-        $productsCache = new CPHPCache;
-        $arProducts = [];
-
-        if ($productsCache->InitCache(86400, 'recommended_products', 'products')) {
-            $arProducts = $productsCache->GetVars()['products'];
-        } elseif ($productsCache->StartDataCache()) {
-            $this->cacheManager->StartTagCache('products');
-            $this->cacheManager->RegisterTag('catalogAll');
-
-            $arFilter = [
-                "IBLOCK_ID" => IBLOCK_CATALOG,
-                "ACTIVE" => "Y",
-                "=PROPERTY_BESTSELLER_VALUE" => "1",
-            ];
+            $arFilter = $this->arParams['FILTERS'];
 
             $arProducts = $this->getProductsByFilter($arFilter);
             $this->cacheManager->endTagCache();
@@ -187,7 +157,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         ];
 
         $resProducts = CIBlockElement::GetList(
-            ["SORT" => "ASC"],
+            ["ID" => "DESC"],
             $arFilter,
             false,
             false,

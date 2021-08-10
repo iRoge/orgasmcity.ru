@@ -108,6 +108,10 @@ $(document).ready(function () {
         $('.podlozhka').toggle(0);
     });
 
+    $('.auth2').click(function() {
+        $('.auth-div').toggle(100);
+    });
+
     $('.ent').click(function () {
         authInput.not(':checked').prop("checked", true);
         authForm.show();

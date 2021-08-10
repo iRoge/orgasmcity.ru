@@ -255,7 +255,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             <?php $phone = SUPPORT_PHONE?>
             <div class="col-xs-4 pull-right phone-xs">
                 <p class="header-container">
-<!--                    <img class="header-mail-icon mail mail2" src="--><?//= SITE_TEMPLATE_PATH; ?><!--/img/envelope.png"/>-->
+                    <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
                     <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
                 </p>
 
@@ -276,14 +276,14 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12 right-block-top">
-            <div class="col-md-8 col-sm-8 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
+            <div class="col-md-6 col-sm-6 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
                 ?>
             </div>
-<!--            <div class="col-md-2 col-sm-2 hidden-xs mail mail2">-->
-<!--                <img src="--><?//= SITE_TEMPLATE_PATH; ?><!--/img/envelope.png"/>-->
-<!--            </div>-->
+            <div class="col-md-2 col-sm-2 hidden-xs mail mail2">
+                <img src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
+            </div>
             <div class="col-md-2 col-sm-2 hidden-xs cart heart">
                 <a class="favorites_header" href="/catalog/favorites/">
                     <p class="count count--heart in-full"><?= $_COOKIE['favorites_count'] ?? '0'?></p>

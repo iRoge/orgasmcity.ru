@@ -51,9 +51,36 @@ table.bx-auth-table td {
 }
 
 .forgot-password {
-    width: 500px;
+    width: 50%;
     margin: 0 auto;
 }
+
+@media (max-width: 767px) {
+    .forgot-password {
+        width: 100%;
+    }
+}
+
+.forgot-password__input::-webkit-input-placeholder {
+    text-align: center;
+}
+
+.forgot-password__input:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
+
+.forgot-password__input::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;
+}
+
+.forgot-password__input:-ms-input-placeholder {
+    text-align: center;
+}
+
+input.forgot-password__input {
+    text-align: center;
+}
+
 
 div.bx-auth span.bx-auth-secure {
     background-color: #FFFAE3;

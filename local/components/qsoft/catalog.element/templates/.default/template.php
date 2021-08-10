@@ -12,6 +12,10 @@ global $LOCATION;
 global $APPLICATION;
 global $USER;
 $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
+$availableRest = 0;
+foreach ($arResult['OFFERS'] as $offer) {
+    $availableRest += $offer['REST'];
+}
 ?>
 <script type="text/javascript">
     const OFFERS = <?=CUtil::PhpToJSObject($arResult['OFFERS'])?>;
@@ -27,9 +31,11 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 >
     <div class="main">
         <? if (!empty($arResult)) : ?>
-            <? if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) : ?>
-            <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
-            <? endif; ?>
+            <? if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) { ?>
+                <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
+            <? } elseif ($availableRest <= 3) {?>
+                <div class="product-page__na">Поспешите! Данного товара на складе осталось всего <?=$availableRest?>шт.</div>
+            <? } ?>
             <div class="product-page product-main-div">
                 <div class="col-sm-6 slider-pro-container col-image">
                     <div id="example5" class="slider-pro">
@@ -353,7 +359,10 @@ $APPLICATION->IncludeComponent(
     'default',
     [
         'TITLE' => 'Похожие товары',
-        'TYPE' => 'similar',
-        'SECTION_ID' => $arResult['IBLOCK_SECTION_ID'],
+        'FILTERS' => [
+            "IBLOCK_ID" => IBLOCK_CATALOG,
+            "ACTIVE" => "Y",
+            'SECTION_ID' => $arResult['IBLOCK_SECTION_ID']
+        ],
     ]
 );

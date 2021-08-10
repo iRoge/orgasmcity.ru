@@ -18,11 +18,6 @@
             <? endif; ?>
             <input type="hidden" name="AUTH_FORM" value="Y">
             <input type="hidden" name="TYPE" value="SEND_PWD">
-
-            <div>
-                <input type="text" class="forgot-password__input" name="USER_PHONE" maxlength="50" id="phone" placeholder="<?= GetMessage('AUTH_PHONE') ?>">
-            </div>
-            <p><?= GetMessage('AUTH_OR') ?> </p>
             <div>
                 <input type="text" class="forgot-password__input" name="USER_EMAIL" maxlength="255" id="email" placeholder="<?= GetMessage('AUTH_EMAIL') ?>">
             </div>

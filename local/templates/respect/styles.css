@@ -100,10 +100,6 @@ label.radio > span .input__color,
     content: "";
 }
 
-.icon-exclamation-circle:before {
-    content: "";
-}
-
 .icon-facebook:before {
     content: "";
 }

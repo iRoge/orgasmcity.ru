@@ -5403,7 +5403,7 @@ label.color-label {
     }
 
     .count {
-        left: 70%;
+        left: 60%;
     }
 
     .cart img {
@@ -5648,7 +5648,7 @@ label.color-label {
 
     .mail {
         border-left: 1px solid lightgrey !important;
-        padding-left: 10px !important;
+        padding-left: 19px !important;
         margin-left: 10px;
         height: 50px !important;
     }

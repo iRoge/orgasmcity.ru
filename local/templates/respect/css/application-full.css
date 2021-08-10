@@ -116,10 +116,6 @@ label.radio > span .input__color,
     content: "";
 }
 
-.icon-exclamation-circle:before {
-    content: "";
-}
-
 .icon-facebook:before {
     content: "";
 }
@@ -5101,17 +5097,6 @@ label.radio > span .shop-card__phones i.input__color,
 .alert {
     padding: 1em 0;
     text-align: center;
-}
-
-.alert .alert-content {
-    display: inline-block;
-    position: relative;
-    padding-top: .15em;
-    padding-left: 1.5em;
-}
-
-.alert.alert--danger {
-    color: #ff0000;
 }
 
 .alert i.icon,
@@ -11684,11 +11669,6 @@ body > .popup--overflow.popup--banner {
         top: 0px;
         right: 0px;
     }
-}
-
-.popup--feedback .alert--danger,
-.popup--feedback .input-group {
-    text-align: left;
 }
 
 .popup--feedback textarea::-webkit-input-placeholder {

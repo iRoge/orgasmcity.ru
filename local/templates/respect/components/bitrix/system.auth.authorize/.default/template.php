@@ -24,9 +24,7 @@
             </div>
         <? endif; ?>
         <input type="text" id="AUTH_EMAIL_FULL" name="USER_LOGIN" value="<?= $arResult['USER_LOGIN']; ?>"
-               placeholder="E-mail">
-        <p>или <span class="err-phone-email-full"></span></p>
-        <input type="text" id="AUTH_PHONE_FULL" name="USER_PHONE" placeholder="Телефон">
+               placeholder="*E-mail">
         <input type="password" id="AUTH_PASSWORD_FULL" name="USER_PASSWORD" placeholder="*Пароль" autocomplete="off">
         <a href="/auth/?forgot_password=yes" class="input-group__link" rel="nofollow">
             Забыли пароль?

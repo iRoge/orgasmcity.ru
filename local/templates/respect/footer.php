@@ -182,7 +182,8 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         "POPUP_FORM" => "Y",
         ),
         false
-); ?>
+);
+?>
 </div>
 
 <div class="mail-div">
