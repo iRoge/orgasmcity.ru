@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Гарантия низкой цены");
 $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("description", "В городе оргазма вы гарантировано купите по самой низкой цене товары для взрослых: вибраторы, фаллоимитаторы, мастурбаторы, дилдо, члены, БДСМ игрушки, товары для взрослых, фистинг");
-
+$APPLICATION->SetPageProperty("title", 'Гарантия низкой цены. Город Оргазма');
 ?>
 <div>
     <span style="font-size: 14pt;">

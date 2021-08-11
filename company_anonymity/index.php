@@ -3,6 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Гарантия анонимности");
 $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("description", "Гарантия анонимности в городе оргазма. Мы трепетно относимся к каждому клиенту, поэтому никто не узнает о вашей покупке в нашем магазине. Каждый товар мы тщательно упаковываем в темный непросвечиваемый пакет");
+$APPLICATION->SetPageProperty("title", 'Гарантия анонимности. Город Оргазма');
 ?><div>
     <span style="font-size: 14pt;">
         Мы вынесли для себя одно основное правило,

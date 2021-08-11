@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("О компании");
 $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("description", "Информация о секс шопе Город Оргазма. Город Оргазма - это огромный выбор секс товаров на любой вкус и цвет. Здесь вы можете купить с доставкой на дом секс куклы, вибраторы, фаллоимитаторы, мастурбаторы, дилдо, члены, БДСМ игрушки, товары для взрослых, фистинг");
-
+$APPLICATION->SetPageProperty("title", 'О компании. Город Оргазма');
 ?>
 <div>
  <span style="font-size: 14pt;">

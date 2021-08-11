@@ -7,7 +7,7 @@ $APPLICATION->SetPageProperty("title", "Бонусная программа");
 $APPLICATION->SetTitle("Бонусная программа");
 $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("description", "Информация о бонусной программе в городе оргазма. За каждый заказ вы будете получать накопительную скидку в процентах от стоимости будущих покупок");
-
+$APPLICATION->SetPageProperty("title", 'Бонусная программа. Город Оргазма');
 $APPLICATION->SetAdditionalCss("/local/templates/respect/css/application.css");
 
 ?>
