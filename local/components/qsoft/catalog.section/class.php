@@ -2083,7 +2083,7 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-        $title = 'Купить ';
+        $title = 'Купить ' . ($this->type == self::TYPE_SALES ? 'со скидкой ' : '');
         foreach ($chain as $item) {
             $APPLICATION->AddChainItem($item['title'], $item['url']);
         }
@@ -2091,7 +2091,7 @@ class QsoftCatalogSection extends ComponentHelper
         if ($this->isBrand) {
             $title .= ' ' . $this->group['NAME'];
         }
-        $title .= ' в интернет магазине orgasmcity.ru';
+        $title .= ' в интернет магазине Город Оргазма';
         $APPLICATION->SetPageProperty('title', $title);
     }
 
