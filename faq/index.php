@@ -1,8 +1,7 @@
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+Functions::abort404();
 $APPLICATION->SetTitle("Вопрос-ответ");
-?>
-
-<?//
+//
 //$APPLICATION->IncludeComponent(
 //    "qsoft:infopage",
 //    "",
@@ -13,6 +12,5 @@ $APPLICATION->SetTitle("Вопрос-ответ");
 //    ),
 //    false
 //);
-//?>
-
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+//
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");

@@ -430,6 +430,7 @@ if (in_array($GLOBALS['device_type'], ['mobile', 'tablet']) && $bMainPage) {
 <?
 $bShowTitle = !CSite::InDir(SITE_DIR . 'payment-success/')
     && !CSite::InDir(SITE_DIR . 'payment-error/')
+    && !CSite::InDir(SITE_DIR . 'faq/')
     && !CSite::InDir(SITE_DIR . 'index.php')
     && !(defined('HIDE_TITLE') && HIDE_TITLE === true);
 
