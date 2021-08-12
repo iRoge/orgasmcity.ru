@@ -90,12 +90,6 @@ input[type=number] {
     width: 500px;
     display: none;
 }
-.order-info__btn{
-    max-width: 250px;
-    float: right;
-    margin-right: 30px;
-    cursor: pointer;
-}
 .js-auth-toggle{
     float: right;
 }

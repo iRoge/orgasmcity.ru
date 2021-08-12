@@ -118,7 +118,6 @@
       return this._wrapper.css('opacity', 1).hide().fadeIn('slow', (function(_this) {
         return function() {
           _this.resize();
-          window.currentPage.init(_this._wrapper);
           if (_.isFunction(_this._options.onShow)) {
             return _this._options.onShow(_this);
           }

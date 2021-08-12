@@ -18,7 +18,7 @@ $(document).ready(function () {
             onShow: (function (_this) {
                 return function (popup) {
                     onOpenModalFastOrder(offerId);
-                    return CountInput.init();
+                    return;
                 };
             })(this)
         });
@@ -222,7 +222,6 @@ $(document).ready(function () {
         Popup.show(sizesBlock, {
             className: 'popup--size-tab',
             onShow: function (popup) {
-                onOpenModalOneClick();
                 CountInput.init();
                 let $tableData = $('.table-size__row td, .table-size__row');
                 let $tableRows = $('.table-size__row');
