@@ -1,4 +1,4 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 /** @var CBitrixComponent $component */
@@ -19,19 +19,19 @@ use Bitrix\Main\Page\Asset;
 global $USER;
 $curPage = $APPLICATION->GetCurPage(false);
 $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
-if (!$arResult['IS_AJAX']) :
+if (!$arResult['IS_AJAX']) {
     Asset::getInstance()->addString('<link rel="canonical" href="https://' . SITE_SERVER_NAME . $curPage . '">');
-
+    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js', true);
 //    Asset::getInstance()->addCss('/local/components/qsoft/catalog.section/templates/.default/libs/jquery.scrollbar.css');
 //    Asset::getInstance()->addJs('/local/components/qsoft/catalog.section/templates/.default/libs/jquery.scrollbar.min.js');
-   // Asset::getInstance()->addJs('/local/components/qsoft/catalog.section/templates/.default/libs/lazysizes.min.js');
-    ?>
+//    Asset::getInstance()->addJs('/local/components/qsoft/catalog.section/templates/.default/libs/lazysizes.min.js');
+?>
 <script>
     var currentHost = "<?=$arResult['CURRENT_HOST']?>";
 </script>
 <div class="col-xs-12">
     <div class="main main--banner">
-        <? $APPLICATION->IncludeComponent(
+        <?php $APPLICATION->IncludeComponent(
             "bitrix:breadcrumb",
             "",
             array(
@@ -41,7 +41,7 @@ if (!$arResult['IS_AJAX']) :
             )
         ); ?>
         <h1 class="zagolovok">
-            <?
+            <?php
             $APPLICATION->SetTitle($arResult['TITLE']);
             $APPLICATION->ShowTitle(false);
             ?>
@@ -49,8 +49,8 @@ if (!$arResult['IS_AJAX']) :
         <!-- catalog -->
         <div class="catalog">
             <!-- banner -->
-            <? if ($arResult['BANNER']['SINGLE'] || $arResult['BANNER']['MOBILE']) : ?>
-                <? if ($arResult['BANNER']['SINGLE']) : ?>
+            <?php if ($arResult['BANNER']['SINGLE'] || $arResult['BANNER']['MOBILE']) : ?>
+                <?php if ($arResult['BANNER']['SINGLE']) : ?>
                     <div class="catalog__banner clearfix">
                         <div class="col-xs-12">
                             <div class="banner">
@@ -58,18 +58,18 @@ if (!$arResult['IS_AJAX']) :
                             </div>
                         </div>
                     </div>
-                <? else : ?>
+                <?php else : ?>
                     <div class="cards__banner stock-banner stock-banner--external">
                         <div class="stock-banner__wrapper">
                             <img class="stock-banner__img" src="<?= $arResult['BANNER']['MOBILE'] ?>" alt="">
-                            <? foreach ($arResult['BANNER']['MOBILE_LINKS'] as $arItem) : ?>
+                            <?php foreach ($arResult['BANNER']['MOBILE_LINKS'] as $arItem) : ?>
                                 <a class="stock-banner__link" href="<?= $arItem['LINK'] ?>"
                                    style="<?= $arItem['STYLE'] ?>"></a>
-                            <? endforeach ?>
+                            <?php endforeach ?>
                         </div>
                     </div>
-                <? endif ?>
-            <? endif ?>
+                <?php endif ?>
+            <?php endif ?>
             <!-- banner -->
             <!-- main -->
             <div class="catalog__main">
@@ -104,18 +104,18 @@ if (!$arResult['IS_AJAX']) :
                         <div></div>
                         <div></div>
                     </div>
-                    <? if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
+                    <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
                     <div class="catalog__settings-col catalog__settings-col--right col-xs-9">
                         <div class="catalog__settings-line">
                             <!-- sort -->
                             <div class="catalog__sort catalog__sort--desktop sort">
                                 <span class="sort__title">Сортировка:</span>
                                 <ul class="sort__items">
-                                    <? foreach ($arResult['SORT_ARRAY'] as $key => $value) : ?>
+                                    <?php foreach ($arResult['SORT_ARRAY'] as $key => $value) : ?>
                                         <li class="sort__item" data-sort="<?= $key ?>">
                                             <span class="sort__text <?= $arResult['SELECTED_SORT'] === $key ? 'sort__text--active' : '' ?>"><?= $value ?></span>
                                         </li>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
                             <!-- /sort -->
@@ -123,7 +123,7 @@ if (!$arResult['IS_AJAX']) :
                             <div class="catalog__view view js-view">
                                 <span class="view__item catalog-sort catalog-sort--mobile-icon">
                                     <span class="view__item-icon view__item-icon--device">
-                                        <? if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/img/svg/sort-arrows.svg')) {
+                                        <?php if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/img/svg/sort-arrows.svg')) {
                                             include $_SERVER['DOCUMENT_ROOT'] . '/local/templates/respect/img/svg/sort-arrows.svg';
                                         } ?>
                                     </span>
@@ -142,20 +142,20 @@ if (!$arResult['IS_AJAX']) :
                             <!-- /view -->
                         </div>
                     </div>
-                    <? endif; ?>
+                    <?php endif; ?>
                 </div>
-                <? if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
+                <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
                 <div class="catalog__sort catalog__sort--mobile">
                     <select class="catalog__sort-select js-change-sort">
-                        <? foreach ($arResult['SORT_ARRAY'] as $key => $value) : ?>
+                        <?php foreach ($arResult['SORT_ARRAY'] as $key => $value) : ?>
                             <option value="<?= $key ?>" <?= $arResult['SELECTED_SORT'] === $key ? 'selected' : '' ?>><?= $value ?></option>
-                        <? endforeach; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
-                <? endif; ?>
+                <?php endif; ?>
                 <!-- /settings -->
-<?php endif; ?>
-                    <? if ($arResult['IS_AJAX']) {
+<?php } ?>
+                <?php if ($arResult['IS_AJAX']) {
                         $APPLICATION->RestartBuffer();
                     }
                     ?>
@@ -194,7 +194,7 @@ if (!$arResult['IS_AJAX']) :
                             <div class="cls-blue-menu cls-blue-menu2 js-filter-mobile-close"></div>
                             <form class="form filter__form js-filter-form" name="_form"
                                   action="<?= $curPage ?>" method="get">
-                                <? if (!empty($arResult['SAME_SECTIONS']) && $arResult['IS_AJAX']) :?>
+                                <?php if (!empty($arResult['SAME_SECTIONS']) && $arResult['IS_AJAX']) :?>
                                     <div class="in-left-catalog subsections-block">
                                         <div class="name-h3 <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'active-name-h3'?>">
                                             <h3>
@@ -209,22 +209,22 @@ if (!$arResult['IS_AJAX']) :
                                         </div>
                                         <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: block;"'?>>
                                             <ul class=" filter__main-list">
-                                                <? foreach ($arResult['SAME_SECTIONS'] as $section) :?>
+                                                <?php foreach ($arResult['SAME_SECTIONS'] as $section) :?>
                                                     <li class="filter__type-item">
                                                         <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'firalight'; font-size: 20px; color: #4e4e4e;">
                                                             <?=$section['NAME']?>
                                                         </a>
                                                     </li>
-                                                <? endforeach; ?>
+                                                <?php endforeach; ?>
                                             </ul>
                                         </div>
                                         <div style="clear: both;"></div>
                                     </div>
-                                <? endif; ?>
+                                <?php endif; ?>
                                 <input id="set_filter" type="hidden" name="set_filter" value="Y">
-                                <?
+                                <?php
                                 foreach ($arResult['FILTER_KEYS'] as $filterKey) : ?>
-                                    <? if (in_array($filterKey, ['PRICE', 'DIAMETER', 'LENGTH']) && !empty($arResult['FILTER']['MAX_' . $filterKey]) && !empty($arResult['FILTER']['MIN_' . $filterKey])) : ?>
+                                    <?php if (in_array($filterKey, ['PRICE', 'DIAMETER', 'LENGTH']) && !empty($arResult['FILTER']['MAX_' . $filterKey]) && !empty($arResult['FILTER']['MIN_' . $filterKey])) : ?>
                                         <div class="in-left-catalog in-left-catalog--price<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' in-left-catalog--checked' : '' ?>">
                                             <div class="name-h3<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' active-name-h3' : '' ?>">
                                                 <a href="javascript:void(0);" class="clear-section">
@@ -263,13 +263,13 @@ if (!$arResult['IS_AJAX']) :
                                             </div>
                                             <div style="clear: both;"></div>
                                         </div>
-                                        <? continue; ?>
-                                    <? endif; ?>
-                                    <? $value = $arResult['FILTER'][$filterKey];
+                                        <?php continue; ?>
+                                    <?php endif; ?>
+                                    <?php $value = $arResult['FILTER'][$filterKey];
                                     if (empty($value)) {
                                         continue;
                                     } ?>
-                                    <? $jsKey = $arResult['JS_KEYS'][$filterKey] ?>
+                                    <?php $jsKey = $arResult['JS_KEYS'][$filterKey] ?>
                                     <div class="in-left-catalog<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' in-left-catalog--checked' : '' ?>">
                                         <div class="name-h3<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' active-name-h3' : '' ?>">
                                             <a href="javascript:void(0);" class="clear-section">
@@ -289,8 +289,8 @@ if (!$arResult['IS_AJAX']) :
                                         </div>
                                         <div class="in-in-left scrollbar-inner"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
                                              data-filter-name="<?= $jsKey ?>">
-                                            <?if ($filterKey === 'COLORS') :?>
-                                                <? foreach ($value as $xml_id => $color) : ?>
+                                            <?php if ($filterKey === 'COLORS') :?>
+                                                <?php foreach ($value as $xml_id => $color) : ?>
                                                     <div class="outer-color">
                                                         <input id="color_<?= $xml_id ?>"
                                                                 class="checkbox_size"
@@ -298,44 +298,44 @@ if (!$arResult['IS_AJAX']) :
                                                                 name="color_<?= $xml_id ?>"
                                                                 value="<?= $xml_id ?>"
                                                                 onchange="smartFilter.click(this)"
-                                                            <? if ($color['CHECKED']) : ?>
+                                                            <?php if ($color['CHECKED']) : ?>
                                                                 checked
-                                                            <? endif; ?>
-                                                            <? if ($color['DISABLED']) : ?>
+                                                            <?php endif; ?>
+                                                            <?php if ($color['DISABLED']) : ?>
                                                                 disabled
-                                                            <? endif; ?>
+                                                            <?php endif; ?>
                                                         />
                                                         <label for="color_<?= $xml_id ?>" class="label-for-color <?= $color['DISABLED'] ? 'mydisabled' : '' ?>">
-                                                            <? if ($color['VALUE']['IMG_SRC']) : ?>
+                                                            <?php if ($color['VALUE']['IMG_SRC']) : ?>
                                                             <img class="inner-color" width="22" height="22" src="<?=$color['VALUE']['IMG_SRC']; ?>" alt="">
-                                                            <? endif; ?>
+                                                            <?php endif; ?>
                                                             <?=$color['VALUE']['UF_NAME']; ?>
                                                         </label>
                                                     </div>
-                                                <? endforeach; ?>
-                                            <? else :?>
-                                                <? foreach ($value as $key => $item) : ?>
+                                                <?php endforeach; ?>
+                                            <?php else :?>
+                                                <?php foreach ($value as $key => $item) : ?>
                                                 <div>
                                                     <input id="<?=$jsKey ?>_<?=sha1($key)?>"
                                                            class="checkbox_size"
                                                            type="checkbox"
                                                            name="<?=$jsKey?>"
                                                            value="<?=$key?>"
-                                                        <? if (!empty($item['CHECKED'])) : ?>
+                                                        <?php if (!empty($item['CHECKED'])) : ?>
                                                             checked
-                                                        <? endif; ?>
-                                                        <? if (!empty($item['DISABLED'])) : ?>
+                                                        <?php endif; ?>
+                                                        <?php if (!empty($item['DISABLED'])) : ?>
                                                             disabled
-                                                        <? endif; ?>
+                                                        <?php endif; ?>
                                                            onchange="smartFilter.click(this)">
                                                     <label for="<?=$jsKey ?>_<?=sha1($key)?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?=$item['VALUE'] ?></label>
                                                 </div>
-                                                <? endforeach; ?>
-                                            <?endif;?>
+                                                <?php endforeach; ?>
+                                            <?php endif;?>
                                         </div>
                                         <div style="clear: both;"></div>
                                     </div>
-                                <? endforeach; ?>
+                                <?php endforeach; ?>
                                 <div class="lds-ring-container" style="display: none;">
                                     <div class="lds-ring lds-ring--button">
                                         <div></div>
@@ -367,20 +367,20 @@ if (!$arResult['IS_AJAX']) :
                         <!-- cards -->
                         <div class="catalog__cards cards js-cards <?= $arResult['USER_SETTINGS']['GRID'] == 'big' ? 'cards--big' : '' ?>">
                             <div class="cards__box">
-                                <? if ($arResult['BANNER']['DESKTOP']) : ?>
+                                <?php if ($arResult['BANNER']['DESKTOP']) : ?>
                                     <div class="cards__banner stock-banner stock-banner--internal">
                                         <div class="stock-banner__wrapper">
                                             <img class="stock-banner__img" src="<?= $arResult['BANNER']['DESKTOP'] ?>"
                                                  alt="">
-                                            <? foreach ($arResult['BANNER']['DESKTOP_LINKS'] as $arItem) : ?>
+                                            <?php foreach ($arResult['BANNER']['DESKTOP_LINKS'] as $arItem) : ?>
                                                 <a class="stock-banner__link" href="<?= $arItem['LINK'] ?>"
                                                    style="<?= $arItem['STYLE'] ?>"></a>
-                                            <? endforeach ?>
+                                            <?php endforeach ?>
                                         </div>
                                     </div>
-                                <? endif ?>
-                                <? if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
-                                    <? while ($arItem = $arResult['ITEMS']->Fetch()) : ?>
+                                <?php endif ?>
+                                <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
+                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) : ?>
                                         <!-- card -->
                                         <div class="cards__item">
                                             <div class="card">
@@ -414,13 +414,13 @@ if (!$arResult['IS_AJAX']) :
                                                         <img class="sale-img" src="/img/sale.png" alt="Скидка">
                                                         <?php }?>
                                                         <img
-                                                            <? if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
+                                                            <?php if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
                                                                 src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
                                                                 data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
-                                                            <? else : ?>
+                                                            <?php else : ?>
                                                                 src="<?= $arItem['DETAIL_PICTURE'] ;?>"
                                                                 data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
-                                                            <? endif; ?>
+                                                            <?php endif; ?>
                                                             class="card__img-pic pic-active pic-one"
                                                             alt="<?= $arItem['NAME'] ?>"
                                                         >
@@ -432,15 +432,15 @@ if (!$arResult['IS_AJAX']) :
                                                                     <span class="card__price <?= $arItem['PRICE'] < $arItem['OLD_PRICE'] ? " card__price--discount" : "" ?>">
                                                                         <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
                                                                     </span>
-                                                                    <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
+                                                                    <?php if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
                                                                         <span class="card__discount <?=$arResult['HAS_USER_DISCOUNT'] ? 'discount-yellow' : ''?>">
                                                                             -<?= $arItem['DISCOUNT'] ?>%
                                                                         </span>
-                                                                    <? endif ?>
+                                                                    <?php endif ?>
                                                                 </div>
-                                                                <? if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
+                                                                <?php if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
                                                                     <span class="card__price-old" style="display:block;"><?= number_format($arItem['OLD_PRICE'], 0, '', ' '); ?> р.</span>
-                                                                <? endif ?>
+                                                                <?php endif ?>
                                                             </div>
                                                             <?php if ($USER->GetID() == 1) {?>
                                                                 <span>Закупка <?=$arItem['WHOLEPRICE']?>р.</span>
@@ -453,31 +453,31 @@ if (!$arResult['IS_AJAX']) :
                                             </div>
                                         </div>
                                         <!-- /card -->
-                                    <? endwhile ?>
-                                <? else : ?>
+                                    <?php endwhile ?>
+                                <?php else : ?>
                                     <div class="page-massage <?= !empty($arResult['TAGS']) ? 'recomendation' : '' ?>">
-                                        <? if (CSite::InDir('/catalog/favorites/')) : ?>
-                                            <? ShowError('Ваш список избранного пока пуст') ?>
-                                        <? elseif ($arResult['IS_AJAX']) : ?>
-                                            <? ShowError('Товары не найдены, измените или сбросьте настройки фильтра') ?>
-                                        <? elseif (!empty($arResult['TAGS'])) : ?>
-                                            <? ShowError('Воспользуйтесь подобранными товарными категориями (вверху страницы). <br><br>А так же индивидуальными предложениями <br>(внизу страницы - блок рекомендуемых вам товаров).') ?>
-                                        <? else : ?>
-                                            <? ShowError('Товары не найдены') ?>
-                                        <? endif ?>
+                                        <?php if (CSite::InDir('/catalog/favorites/')) : ?>
+                                            <?php ShowError('Ваш список избранного пока пуст') ?>
+                                        <?php elseif ($arResult['IS_AJAX']) : ?>
+                                            <?php ShowError('Товары не найдены, измените или сбросьте настройки фильтра') ?>
+                                        <?php elseif (!empty($arResult['TAGS'])) : ?>
+                                            <?php ShowError('Воспользуйтесь подобранными товарными категориями (вверху страницы). <br><br>А так же индивидуальными предложениями <br>(внизу страницы - блок рекомендуемых вам товаров).') ?>
+                                        <?php else : ?>
+                                            <?php ShowError('Товары не найдены') ?>
+                                        <?php endif ?>
                                     </div>
-                                <? endif ?>
+                                <?php endif ?>
                             </div>
                         </div>
                         <div class="catalog__navigation">
-                            <? if (!empty($arResult['NAV_STRING'])) : ?>
+                            <?php if (!empty($arResult['NAV_STRING'])) : ?>
                                 <?= $arResult['NAV_STRING'] ?>
-                            <? endif ?>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
                 <!-- /content -->
-                <? if ($arResult['IS_AJAX']) {
+                <?php if ($arResult['IS_AJAX']) {
                     //$APPLICATION->FinalActions();
                     exit;
                 } ?>

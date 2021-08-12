@@ -2,8 +2,6 @@
   var Application;
 
   Application = (function() {
-    Application.GoogleMaps = function() {};
-
     function Application() {
       this.api = {};
     }
@@ -27,16 +25,8 @@
 
   })();
 
-  window.initMap = Application.GoogleMaps;
-
   $(function() {
     window.application = new Application();
-    window.application.addUrl({
-      shopList: '/assets/data/product-shop-list.json',
-      shopListPage: '/product-shop-list.html',
-      product: '/product-popup.html',
-      oneClick: '/product-popup-short.html'
-    });
     return window.application.init();
   });
 

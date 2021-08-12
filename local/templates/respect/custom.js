@@ -202,7 +202,7 @@ function reinitPopupWrapper()
 function updateSmallBasket(diff)
 {
 	diff = parseInt(diff) || 0;
-	elCount = $("#basket-small .count");
+	let elCount = $("#basket-small .count");
 	let count = parseInt(elCount.html());
 	elCount.html(count + diff);
 }
@@ -242,27 +242,6 @@ $(document).ready(function () {
 		});
 	});
 
-	$('.js-tender-form').on('click', function(e) {
-		e.preventDefault();
-
-		let btn = $(this);
-		let tenderId = btn.data('tender-id');
-
-
-		$.get('/local/ajax/tender_form.php?id='+tenderId, function(response) {
-			Popup.show($(response), {
-				title: 'Оформить заявку',
-				className: 'popup--feedback',
-				onShow: function (popup) {
-					BX.addCustomEvent('onAjaxSuccess', reinitPopupWrapper);
-				},
-				onClose: function (popup) {
-					BX.removeCustomEvent('onAjaxSuccess', reinitPopupWrapper);
-				}
-			});
-		});
-	});
-
 	$('.js-popup-open[href]').on('click', function(e) {
 		e.preventDefault();
 		let $container = $($(this).attr('href'));
@@ -293,57 +272,4 @@ $(document).ready(function () {
 			document.location.href = '/cart/';
 		}
 	});
-
-	$('.order-info__btn').on('click', function () {
-        $.fancybox.open([$('.order-info__modal')]);
-    })
-    $('.order-info__submit').on('click', function () {
-    	//Получаем номер заказа и номер телефона из формы
-        var parent_section = $(this).parent();
-        var order_number = parent_section.find($('.order-info__input[name=order_number]')).val();
-		var order_phone = parent_section.find($('.order-info__input[name=order_phone]')).val();
-        var captcha_word = parent_section.find($('.static_input[name=captcha_word]')).val();
-        var captcha_code = parent_section.find($('.static_input[name=captcha_code]')).val();
-
-		//Создаем массив с ошибками
-		var arerror="";
-		if(!order_phone){
-            arerror = arerror+'Заполните поле "Номер телефона"';
-		}
-		if(!order_number){
-            arerror = arerror+'<br />Заполните поле "Номер заказа"';
-		}
-		if(!captcha_word){
-            arerror = arerror+'<br />Заполните поле "Текст с картинки"';
-		}
-
-		//Проверяю заполнили ли поля в форме и отправляем ajax запрос в файл
-		if(order_phone && order_number && captcha_word){
-			$.post("/local/templates/respect/ajax/order_status.php",
-				{
-					order_number: order_number,
-					order_phone: order_phone,
-					captcha_code: captcha_code,
-					captcha_word: captcha_word,
-				},
-				//выводим результат запроса
-				function(data){
-					parent_section.find($(".order-info__result")).html(data);
-					//Если заказ не найден, то для следующей попытки выводим поле с капчей
-					if(data.search('не найден')!=-1 || data.search('картинки')!=-1 || data.search('не соответствует')!=-1){
-						parent_section.find($('.order-info__captcha')).show();
-						$.getJSON('/local/templates/respect/ajax/reload_captcha.php', function(data) {
-							parent_section.find($('.order-info_captcha-img')).attr('src','/bitrix/tools/captcha.php?captcha_sid='+data);
-							parent_section.find($('.static_input[name=captcha_code]')).val(data);
-						});
-						return false;
-					}
-				}
-			);
-		}else{
-			//выводим массив с ошибками
-			parent_section.find($(".order-info__result")).html(arerror);
-		}
-
-    });
 });
