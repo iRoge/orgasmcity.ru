@@ -1,4 +1,4 @@
-<?
+<?php
 
 use Qsoft\Helpers\BonusSystem;
 

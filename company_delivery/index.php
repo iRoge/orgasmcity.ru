@@ -1,7 +1,5 @@
-<?
+<?php
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
-$APPLICATION->SetPageProperty("description", "Информация о доставке в городе оргазма. В городе оргазма широкий выбор доставки. Здесь вы можете заказать товары для взрослых с доставкой на дом курьером, забрать в пунктах самовывоза PickPoint или СДЭК, или выбрать доставку в отделение почты России");
 $APPLICATION->IncludeComponent(
     "qsoft:infopage",
     "",
@@ -12,5 +10,7 @@ $APPLICATION->IncludeComponent(
     ),
     false
 );
+$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
+$APPLICATION->SetPageProperty("description", "Информация о доставке в городе оргазма. В городе оргазма широкий выбор доставки. Здесь вы можете заказать товары для взрослых с доставкой на дом курьером, забрать в пунктах самовывоза PickPoint или СДЭК, или выбрать доставку в отделение почты России");
 $APPLICATION->SetPageProperty("title", 'Доставка. Город Оргазма');
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
