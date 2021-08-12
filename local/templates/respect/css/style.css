@@ -1010,7 +1010,6 @@ html, body {
 }
 
 .auth {
-    border-left: 2px solid #f4f4f4;
     height: 100%;
     text-align: center;
     white-space: nowrap;
@@ -1024,7 +1023,6 @@ html, body {
 }
 
 .mail {
-    border-left: 2px solid #f4f4f4;
     height: 100%;
     text-align: center;
 }
@@ -1034,7 +1032,6 @@ html, body {
 }
 
 .cart {
-    border-left: 2px solid #f4f4f4;
     height: 100%;
     text-align: center;
     display: flex;
@@ -5641,20 +5638,17 @@ label.color-label {
     }
 
     .auth {
-        border-left: 1px solid lightgrey !important;
         padding-left: 15px !important;
         margin-left: -35px;
     }
 
     .mail {
-        border-left: 1px solid lightgrey !important;
         padding-left: 19px !important;
         margin-left: 10px;
         height: 50px !important;
     }
 
     .cart {
-        border-left: 1px solid lightgrey !important;
         padding-left: 15px !important;
         height: 50px !important;
         margin-left: 10px;
