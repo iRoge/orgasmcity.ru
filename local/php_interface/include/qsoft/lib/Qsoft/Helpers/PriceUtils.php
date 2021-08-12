@@ -9,6 +9,7 @@ class PriceUtils
         $markupPercent = ($rrcPrice - $basePrice) * 100 / $basePrice;
 
         if ($rrcPrice < 1000) {
+            // Если рекомендованная розничная меньше 1000 рублей
             if ($markupPercent >= 135) {
                 // Реальная скидка
                 $price = self::getTrickyPrice($rrcPrice, 20, 30);
@@ -17,6 +18,7 @@ class PriceUtils
                 $price = self::getTrickyPrice($rrcPrice, 0, 0);
             }
         } elseif ($rrcPrice > 40000) {
+            // Если рекомендованная розничная больше 40000 рублей
             if ($markupPercent >= 40) {
                 // Реальная скидка
                 $price = self::getTrickyPrice($rrcPrice, 20, 30);
@@ -25,24 +27,23 @@ class PriceUtils
                 $price = self::getTrickyPrice($rrcPrice, 0, 0);
             }
         } else {
+            // Если рекомендованная розничная между 1000 и 40000 рублей
             if ($markupPercent >= 150) {
                 // Реальная скидка
-                $price = self::getTrickyPrice($rrcPrice, 15, 40);
+                $price = self::getTrickyPrice($rrcPrice, 20, 40);
             } elseif ($markupPercent < 150 && $markupPercent >= 135) {
                 // Реальная скидка
-                $price = self::getTrickyPrice($rrcPrice, 10, 35);
+                $price = self::getTrickyPrice($rrcPrice, 15, 35);
             } elseif ($markupPercent < 135 && $markupPercent >= 120) {
                 // Реальная скидка
-                $price = self::getTrickyPrice($rrcPrice, 10, 25);
+                $price = self::getTrickyPrice($rrcPrice, 15, 25);
             } elseif ($markupPercent < 120 && $markupPercent >= 85) {
                 // Реальная скидка
-                $price = self::getTrickyPrice($rrcPrice, -15, 0);
+                $price = self::getTrickyPrice($rrcPrice, -10, 0);
             } elseif ($markupPercent < 85 && $markupPercent >= 65) {
                 // Реальная скидка
-                $price = self::getTrickyPrice($rrcPrice, -10, 0);
-            } elseif ($markupPercent < 65 && $markupPercent >= 45) {
                 $price = self::getTrickyPrice($rrcPrice, -5, 0);
-            } elseif ($markupPercent < 45) {
+            } elseif ($markupPercent < 65) {
                 $price = self::getTrickyPrice($rrcPrice, 0, 0);
             }
         }

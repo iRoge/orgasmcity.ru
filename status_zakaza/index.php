@@ -1,8 +1,11 @@
-<?
+<?php
 define('HIDE_TITLE', true);
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetPageProperty("title", "Статус заказа");
+$APPLICATION->SetPageProperty("title", "Статус заказа. Город Оргазма");
 $APPLICATION->SetTitle("Статус заказа");
+$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
+$APPLICATION->SetPageProperty("description", "Узнать статус заказа в Городе Оргазма");
+
 ?>
 
 <div class="order-info">

@@ -491,10 +491,6 @@ class QsoftCatalogElement extends ComponentHelper
         global $APPLICATION;
         $section = $this->arResult['PATH'];
         $section = array_pop($section);
-        $GLOBALS['SEO_PAGE_ELEMENT'] = true;
-        $GLOBALS['SEO_ELEMENT_ARTICLE'] = $this->arResult['ARTICLE'];
-        $GLOBALS['SEO_ELEMENT_NAME'] = $this->arResult['NAME'];
-        $GLOBALS['SEO_CURRENT_PAGE'] = $section['SECTION_PAGE_URL'];
 
         if ($this->arParams["SET_TITLE"]
             || $this->arParams["ADD_ELEMENT_CHAIN"]
@@ -582,7 +578,7 @@ class QsoftCatalogElement extends ComponentHelper
             if ($this->arResult["META_TAGS"]["DESCRIPTION"]) {
                 $APPLICATION->SetPageProperty("description", $this->arResult["META_TAGS"]["DESCRIPTION"]);
             } else {
-                $APPLICATION->SetPageProperty("description", mb_strimwidth($this->arResult['DETAIL_TEXT'], 0, 150, "..."));
+                $APPLICATION->SetPageProperty("description", mb_strimwidth($this->arResult["NAME"] . '. ' . $this->arResult['DETAIL_TEXT'], 0, 150, "..."));
             }
         }
 

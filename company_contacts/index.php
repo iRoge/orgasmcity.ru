@@ -1,6 +1,5 @@
-<?
+<?php
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-
 $APPLICATION->IncludeComponent(
     "qsoft:infopage",
     "",
@@ -11,5 +10,7 @@ $APPLICATION->IncludeComponent(
     ),
     false
 );
-
+$APPLICATION->SetPageProperty("title", 'Бонусная программа. Город Оргазма');
+$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
+$APPLICATION->SetPageProperty("description", "Информация о контактах в Городе Оргазма");
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
