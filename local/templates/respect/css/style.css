@@ -1,34 +1,16 @@
 @font-face {
-    src: url('../fonts/Vollkorn-Semibold.ttf');
-    font-family: 'vollkornsemibold';
+    src: url('../fonts/gilroy-bold.woff2');
+    font-family: 'gilroyBold';
 }
 
 @font-face {
-    src: url('../fonts/FiraSans-Bold.otf');
-    font-family: 'firabold';
+    src: url('../fonts/gilroy-semibold.woff2');
+    font-family: 'gilroySemiBold';
 }
 
 @font-face {
-    src: url('../fonts/FiraSans-Light.otf');
-    font-family: 'firalight';
-}
-
-@font-face {
-    src: url('../fonts/FiraSans-Medium.otf');
-    font-family: 'firamedium';
-}
-
-@font-face {
-    src: url('../fonts/FiraSans-Regular.otf');
-    font-family: 'firaregular';
-}
-
-@font-face {
-    font-family: "icon";
-    src: url("../icons/icon.eot");
-    src: url("../icons/icon.eot?#iefix") format("eot"), url("../icons/icon.woff") format("woff"), url("../icons/icon.ttf") format("truetype"), url("../icons/icon.svg#icon") format("svg");
-    font-weight: normal;
-    font-style: normal;
+    src: url('../fonts/gilroy-regular.woff2');
+    font-family: 'gilroyRegular';
 }
 
 .is-hidden {
@@ -266,12 +248,13 @@ html, body {
 }
 
 .top {
-    height: 50px;
-    line-height: 50px;
-    font-family: 'firalight';
+    height: 70px;
+    font-family: 'gilroyRegular';
     font-size: 14px;
     color: #8e8787;
     z-index: 20;
+    display: flex;
+    align-items: center;
 }
 
 .info {
@@ -279,6 +262,7 @@ html, body {
 }
 
 .from {
+    padding: 0!important;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -511,7 +495,6 @@ html, body {
 }
 
 .phone-top-link {
-    font-family: 'firalight';
     text-decoration: none !important;
     color: #8e8787;
 }
@@ -590,12 +573,15 @@ html, body {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin-right: 30%;
+        margin-right: 0;
         margin-bottom: 0;
+        font-size: 16px;
+        font-family: "gilroyRegular";
+        color: #9B9B9B;
     }
 
     .phone-top-first > span {
-        line-height: 18px;
+        line-height: 19px;
     }
 
     .phone-top-second {
@@ -603,10 +589,7 @@ html, body {
         flex-direction: column;
         justify-content: center;
         margin-bottom: 0;
-    }
-
-    .phone-top-second > span {
-        line-height: 18px;
+        margin-left: 20px;
     }
 
     .popup {
@@ -1006,29 +989,18 @@ html, body {
 }
 
 .phone-top span {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 
 .auth {
     height: 100%;
     text-align: center;
     white-space: nowrap;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    overflow: inherit !important;
-}
-
-.auth img {
-    margin-left: 5px;
 }
 
 .mail {
     height: 100%;
     text-align: center;
-}
-
-.mail img {
-    /*margin-top: 16px;*/
 }
 
 .cart {
@@ -1037,8 +1009,6 @@ html, body {
     display: flex;
     justify-content: center;
 }
-
-/*ibc*/
 
 .like {
     border-left: 2px solid #f4f4f4;
@@ -1068,7 +1038,7 @@ html, body {
     width: 100%;
     padding: 15px 50px 15px 10px;
     font-family: 'firalight';
-    margin-top: 13px;
+    margin-top: 7px;
     outline: none;
     overflow: visible;
     background: #fff url(../../../../img/searchBlue.png) no-repeat 100% 100%;
@@ -1349,7 +1319,6 @@ html, body {
 
     .phone-top {
         display: flex;
-        margin-left: 130px !important;
         float: none !important;
     }
 
@@ -1393,8 +1362,8 @@ html, body {
     list-style-type: none;
     display: flex;
     height: 100%;
-    line-height: 80px;
-    padding-left: 0px;
+    line-height: 70px;
+    padding-left: 0;
 }
 
 .menu-ul-li-a {
@@ -2151,7 +2120,7 @@ a.in-zagolovok {
 }
 
 .count {
-    background: #eea558;
+    background: #A18CD1;
     line-height: 18px;
     font-family: 'firamedium';
     font-size: 10px;
@@ -2160,14 +2129,9 @@ a.in-zagolovok {
     position: absolute;
     width: 18px;
     height: 18px;
-    left: 50%;
-    top: 10%;
+    right: 20%;
+    top: 0;
 }
-
-.count--heart {
-    background-color: #eea558;
-}
-
 
 .out {
     padding-left: 10px !important;
@@ -5293,7 +5257,7 @@ label.color-label {
 
 @media (max-width: 810px) {
     .from {
-        margin-left: 0px;
+        margin-left: 0;
     }
 
     .phone-top-mob {
@@ -5451,8 +5415,6 @@ label.color-label {
     {
         display: inline-block;
         font-size: 14px;
-        padding-left: 35px!important;
-        margin-left: 75px;
     }
 }
 
@@ -5689,7 +5651,6 @@ label.color-label {
 
     .phone-top-mob {
         padding: 0!important;
-        margin-left: 50px;
     }
 
     .info {
@@ -8947,16 +8908,6 @@ label.color-label {
     }
 }
 
-@media (min-width: 992px) {
-    .info {
-        border-bottom: 2px solid #f4f4f4;
-    }
-
-    .right-block-top {
-        border-bottom: 2px solid #f4f4f4;
-    }
-}
-
 .footer-border {
     padding-top: 30px;
     padding-right: 0 !important;
@@ -8966,10 +8917,58 @@ label.color-label {
 
 .right-block-top {
     padding-right: 0!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-block-top div, .right-block-top a  {
+    text-decoration: none;
+    font-family: 'gilroyRegular';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    color: #000000;
+}
+
+.right-block-top a:hover, .right-block-top div:hover {
+    color: #A18CD1;
+    text-decoration: none;
 }
 
 .mobile_soc_icon {
     width: 50%;
     display: flex;
     justify-content: space-between;
+}
+
+.header-border {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(90deg, #9795F0 0%, #FBC8D4 100%);
+    border-radius: 100px;
+    height: 2px;
+    width: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.phone-top-second > span {
+    font-family: 'gilroyRegular';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.phone-top .phone-icon {
+    margin-right: 5px;
+}
+
+.header-icon {
+    width: 30px;
+    height: 30px;
 }

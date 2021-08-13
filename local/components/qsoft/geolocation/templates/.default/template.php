@@ -16,8 +16,8 @@ $this->addExternalCss("/local/templates/respect/js/select2/select2.min.css");
             <span class="tooltip-window__button tooltip-window__button-js tooltip-window__button--no">Выбрать другой</span>
         </div>
     </div>
-    <span class="user-region">Ваш регион доставки: </span>
-    <img class="location-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/placeholder.png"/>
+    <span class="user-region">Ваш регион <br> для доставки: </span>
+    <img class="location-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/svg/placeholder.svg"/>
     <span class="current-locality"><?= $arResult['LOCATION_NAME'] ?></span>
 </div>
 

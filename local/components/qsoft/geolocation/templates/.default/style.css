@@ -114,7 +114,20 @@
 
 .user-region
 {
+    font-family: 'gilroySemiBold';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
     padding-right: 8px;
+    color: #9B9B9B;
+}
+
+.current-locality {
+    font-family: 'gilroyBold';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 .geoposition
@@ -358,3 +371,4 @@ div.country_container > hr {
     background-color: #AAAAAA;
     height: 1px;
 }
+

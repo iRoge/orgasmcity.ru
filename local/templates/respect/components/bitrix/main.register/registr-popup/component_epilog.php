@@ -15,7 +15,8 @@
         <a href="<?= $APPLICATION->GetCurPage() ?>?logout=yes">Выйти</a><br />
     </div>
 <? else : ?>
-    <span id="auth-button">Войти</span>
+    <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/gate.svg"/>
+    <span style="display: block" id="auth-button">Войти</span>
 <? endif; ?>
 <? $this->__template->EndViewTarget(); ?>
 <? endif; ?>

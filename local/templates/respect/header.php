@@ -240,8 +240,8 @@ $APPLICATION->ShowViewContent('geolocation_popup');
 ?>
 
 <div class="top col-xs-12 tolltips">
-    <div class="main top-border">
-        <div class="col-md-8 col-sm-8 col-xs-12 info">
+    <div class="main" style="display: flex;align-items: center">
+        <div class="col-md-4 col-sm-4 col-xs-12 info">
             <? $APPLICATION->IncludeComponent(
                 'qsoft:geolocation',
                 '.default',
@@ -256,39 +256,42 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
                     <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
                 </p>
-
             </div>
-            <div class="col-sm-3 hidden-xs phone-top">
-                <p class="phone-top-first hidden-sm">
-                    <span>Режим работы телефонной справочной: </span>
-                    <span>с 12.00 - 18.00 СБ, ВС - выходной</a></span>
-                </p>
-                <p class="phone-top-second">
+        </div>
+        <div class="col-md-5 col-sm-4 hidden-xs info">
+            <div class="col-sm-5 phone-top">
+                <img class="phone-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/svg/phone.svg"/>
+                <p class="phone-top-first">
                     <span>Интернет-магазин: </span>
                     <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
                 </p>
+                <p class="hidden-sm phone-top-second">
+                    <span>Режим работы телефонной справочной: </span>
+                    <span>с 12.00 - 18.00 СБ, ВС - выходной</span>
+                </p>
             </div>
-
-            <div class="col-sm-5 hidden-xs phone-top-mob">
+            <div class="col-sm-7 phone-top-mob">
                 Телефон: <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
             </div>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12 right-block-top">
-            <div class="col-md-6 col-sm-6 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
+        <div class="col-md-3 col-sm-4 col-xs-12 right-block-top">
+            <div class="col-md-3 col-sm-3 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
                 ?>
             </div>
-            <div class="col-md-2 col-sm-2 hidden-xs mail mail2">
-                <img src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
+            <div class="col-md-3 col-sm-3 hidden-xs mail mail2">
+                <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/support.svg"/>
+                <span>Поддержка</span>
             </div>
-            <div class="col-md-2 col-sm-2 hidden-xs cart heart">
+            <div class="col-md-3 col-sm-3 hidden-xs cart heart">
                 <a class="favorites_header" href="/catalog/favorites/">
                     <p class="count count--heart in-full"><?= $_COOKIE['favorites_count'] ?? '0'?></p>
-                    <img src="<?= SITE_TEMPLATE_PATH; ?>/img/transparent-heart.png"/>
+                    <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/heart.svg"/>
+                    <span>Избранное</span>
                 </a>
             </div>
-            <div class="col-md-2 col-sm-2 hidden-xs cart">
+            <div class="col-md-3 col-sm-3 hidden-xs cart">
                 <? $APPLICATION->IncludeComponent(
                     "likee:basket.small",
                     "",
@@ -305,6 +308,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
         </div>
     </div>
+    <div class="header-border"></div>
 </div>
 <div class="menu-spacer">
     <div class="poisk-div">

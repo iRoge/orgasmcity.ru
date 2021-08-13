@@ -1,9 +1,9 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 } ?>
-<? if ($arParams['POPUP_FORM'] == 'Y'): ?>
-<? $this->__template->SetViewTarget("AUTH_HEAD_BLOCK");?>
-<? if ($USER->IsAuthorized()) : ?>
+<?php if ($arParams['POPUP_FORM'] == 'Y') { ?>
+    <?php $this->__template->SetViewTarget("AUTH_HEAD_BLOCK");?>
+    <?php if ($USER->IsAuthorized()) { ?>
     <a href="/personal/" class="auth-div-desk">
         <?= $USER->GetEmail(); ?>
     </a>
@@ -14,8 +14,9 @@
         <a href="/personal/subscribe/">Управление рассылкой</a><br />
         <a href="<?= $APPLICATION->GetCurPage() ?>?logout=yes" id="logout-btn">Выйти</a><br />
     </div>
-<? else : ?>
-    <span id="auth-button">Войти</span>
-<? endif; ?>
-<? $this->__template->EndViewTarget(); ?>
-<? endif; ?>
+    <?php } else { ?>
+        <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/gate.svg"/>
+        <span style="display: block" id="auth-button">Войти</span>
+    <?php } ?>
+    <?php $this->__template->EndViewTarget(); ?>
+<?php } ?>
