@@ -211,7 +211,7 @@ if (!$arResult['IS_AJAX']) {
                                             <ul class=" filter__main-list">
                                                 <?php foreach ($arResult['SAME_SECTIONS'] as $section) :?>
                                                     <li class="filter__type-item">
-                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'firalight'; font-size: 20px; color: #4e4e4e;">
+                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'gilroyRegular'; font-size: 20px; color: #4e4e4e;">
                                                             <?=$section['NAME']?>
                                                         </a>
                                                     </li>

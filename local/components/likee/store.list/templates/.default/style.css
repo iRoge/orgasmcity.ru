@@ -45,7 +45,7 @@ input[type="search"] {
     background-color: #ff5e5e;
     color: #ffffff;
     border: 1px solid #ff5e5e;
-    /*font-family: 'firalight';*/
+    /*font-family: 'gilroyRegular';*/
 }
 @media (min-width: 991px) {
   .korpus .tabs-item:hover {

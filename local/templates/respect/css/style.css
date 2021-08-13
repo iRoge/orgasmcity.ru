@@ -100,7 +100,7 @@
 .purchase-show-block .purchase-show-text {
     color: #4e4e4e;
     font-size: 16px;
-    font-family: firalight;
+    font-family: gilroyRegular;
     font-weight: 500;
     text-align: left;
     line-height: 18px;
@@ -320,7 +320,7 @@ html, body {
 
 .from-ul-li-ul a {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -396,7 +396,7 @@ html, body {
 }
 
 .mail-div form, .insta_contest_form form {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     width: 80%;
     margin: 0 auto;
@@ -726,7 +726,7 @@ html, body {
 }
 
 .auth-div-full form {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     width: 80%;
     margin: 0 auto;
@@ -823,7 +823,7 @@ html, body {
 }
 
 .thanx p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -854,7 +854,7 @@ html, body {
 }
 
 .add-korzina p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -880,7 +880,7 @@ html, body {
 }
 
 .name8 p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     color: #4e4e4e;
 }
@@ -1037,7 +1037,7 @@ html, body {
 .search {
     width: 100%;
     padding: 15px 50px 15px 10px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     margin-top: 7px;
     outline: none;
     overflow: visible;
@@ -1348,7 +1348,7 @@ html, body {
 
 .left-hide-menu a {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px !important;
     margin-top: 8px;
     padding: 0;
@@ -1441,7 +1441,7 @@ html, body {
 }
 
 .in-main-top p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     margin-bottom: 50px;
     letter-spacing: 0.5px;
@@ -1546,7 +1546,7 @@ html, body {
 }
 
 .right-main-two p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     margin-bottom: 50px;
     letter-spacing: 0.5px;
@@ -1685,7 +1685,7 @@ a.in-zagolovok {
 }
 
 .name-sel {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
     min-height: 45px
@@ -1759,7 +1759,7 @@ a.in-zagolovok {
     left: 0;
     padding: 10px;
     color: white;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     background: #4e4e4e;
     text-transform: uppercase;
@@ -1775,7 +1775,7 @@ a.in-zagolovok {
     padding: 10px;
     letter-spacing: 0.5px;
     color: white;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     background: #cd1030;
     text-transform: uppercase;
     margin-left: 15px;
@@ -1858,7 +1858,7 @@ a.in-zagolovok {
 }
 
 .about-brand p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     width: 80%;
     margin: -10px auto 0;
@@ -1897,7 +1897,7 @@ a.in-zagolovok {
     display: block;
     margin-top: 10px;
     margin-bottom: 10px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
 }
 
@@ -1911,7 +1911,7 @@ a.in-zagolovok {
     display: block;
     margin-top: 10px;
     margin-bottom: 10px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
 }
 
@@ -1946,7 +1946,7 @@ a.in-zagolovok {
     width: 100%;
     padding: 10px;
     padding-right: 50px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     border: 1px solid #e4e4e4 !important;
     outline: 0;
@@ -1969,7 +1969,7 @@ a.in-zagolovok {
 }
 
 .mailsender label {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     color: #8e8787;
 }
@@ -2058,7 +2058,7 @@ a.in-zagolovok {
     padding-top: 30px;
     padding-bottom: 20px;
     font-size: 14px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #b3b2b2;
 }
 
@@ -2080,7 +2080,7 @@ a.in-zagolovok {
 
 .breadcrumbs {
     text-align: center;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     margin-bottom: 50px;
     color: #8e8787;
@@ -2183,7 +2183,7 @@ a.in-zagolovok {
 }
 
 .after-lookbook p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     margin-top: 70px;
     margin-bottom: 70px;
     font-size: 16px;
@@ -2206,7 +2206,7 @@ a.in-zagolovok {
     position: absolute;
     width: 210px;
     z-index: 9999;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .real-hint .hint-caption {
@@ -2269,7 +2269,7 @@ a.in-zagolovok {
 
 .left-catalog a {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -2331,12 +2331,12 @@ a.in-zagolovok {
     flex-basis: auto;
     text-align: left;
     list-style-type: none;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
 .right-catalog li.not-a {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
 }
 
@@ -2427,7 +2427,7 @@ a.in-zagolovok {
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .in-left-catalog .name-h3 {
@@ -2550,7 +2550,7 @@ a.in-zagolovok {
     padding: 0 0 0 35px;
     width: 100%;
     margin: 10px 0 10px 0;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
     cursor: pointer;
@@ -2650,7 +2650,7 @@ a.in-zagolovok {
     padding: 0;
     width: 100%;
     margin: 10px 0 10px 0;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
     cursor: pointer;
@@ -2682,7 +2682,7 @@ a.in-zagolovok {
     padding: 0;
     width: 100%;
     margin: 10px 0 10px 0;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
     cursor: pointer;
@@ -2818,7 +2818,7 @@ a.in-zagolovok {
 .from {
     width: 45%;
     float: left;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
     cursor: pointer;
@@ -2831,7 +2831,7 @@ a.in-zagolovok {
 .to {
     width: 45%;
     float: right;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -2841,7 +2841,7 @@ a.in-zagolovok {
     border: 1px solid rgba(0, 0, 0, .1);
     padding: 5px 10px;
     text-align: right;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin-left: 10%;
     color: #4e4e4e;
@@ -2931,7 +2931,7 @@ a.in-zagolovok {
 
 .left-price {
     float: left;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #b8b4b4;
     margin-top: 15px;
@@ -2939,7 +2939,7 @@ a.in-zagolovok {
 
 .right-price {
     float: right;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #b8b4b4;
     margin-top: 15px;
@@ -2969,7 +2969,7 @@ a.in-zagolovok {
     float: left;
     margin: 5px;
     font-size: 14px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     text-align: center;
 }
 
@@ -3079,7 +3079,7 @@ a.in-zagolovok {
     background: #fff5f7;
     padding: 50px 50px !important;
     margin-top: -6px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -3131,7 +3131,7 @@ a.in-zagolovok {
     margin-right: 20px;
     color: #4e4e4e;
     font-size: 16px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     display: inline-block;
 }
 
@@ -3148,7 +3148,7 @@ a.in-zagolovok {
     line-height: 28px;
     cursor: pointer;
     position: relative;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     text-align: center;
     border-radius: 20px;
@@ -3191,7 +3191,7 @@ a.in-zagolovok {
     background: #4e4e4e;
     text-transform: uppercase;
     color: #fff;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     transition: 300ms;
     -webkit-transition: 300ms;
@@ -3218,7 +3218,7 @@ a.in-zagolovok {
 .text-in-news {
     width: 100%;
     background: #fff;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
     font-size: 14px;
     height: 200px;
@@ -3249,7 +3249,7 @@ a.in-zagolovok {
     left: 0;
     padding: 7px 10px;
     color: white;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     background: #185083;
     text-transform: uppercase;
@@ -3331,7 +3331,7 @@ a.in-zagolovok {
 .blue-menu-div-div > ul a /* Anatoliy Mitrofanov 2019-01-15 */
 {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -3385,7 +3385,7 @@ a.in-zagolovok {
 
 .blue-menu-div-div > ul > a {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -3409,7 +3409,7 @@ a.in-zagolovok {
 .date-st {
     z-index: 100;
     padding: 7px 10px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     margin-top: 50px;
     background: #fff;
@@ -3449,7 +3449,7 @@ a.in-zagolovok {
 }
 
 .after-st p {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     margin-top: 70px;
     margin-bottom: 70px;
     font-size: 16px;
@@ -3459,7 +3459,7 @@ a.in-zagolovok {
 
 .zagolovok-after-st {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 24px;
     text-align: center;
     margin-bottom: 70px;
@@ -3555,7 +3555,7 @@ a.in-zagolovok {
     line-height: 28px;
     cursor: pointer;
     position: relative;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 18px;
     text-align: center;
     margin-right: 16px;
@@ -3602,7 +3602,7 @@ a.in-zagolovok {
 .need-help {
     min-height: 200px !important;
     background: #f3f3f3;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     margin-top: 19px;
     padding-bottom: 20px;
@@ -3630,7 +3630,7 @@ a.in-zagolovok {
 
 .one-zkz {
     border: 1px solid rgba(200, 200, 200, .5);
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
     font-size: 16px;
     margin-top: 20px;
@@ -3774,7 +3774,7 @@ a.in-zagolovok {
 
 .sort-in p {
     color: #b8b4b4;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -3852,7 +3852,7 @@ a.in-zagolovok {
 .balance {
     min-height: 150px;
     background: #f3f3f3;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     margin-top: 19px;
     width: 20%;
@@ -3905,7 +3905,7 @@ a.in-zagolovok {
 }
 
 .form-need input {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     border: 1px solid rgba(200, 200, 200, .5);
     background: #fff5f7;
     color: #333;
@@ -3914,7 +3914,7 @@ a.in-zagolovok {
 }
 
 .form-need textarea {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     resize: none;
     outline: 0;
     color: #333;
@@ -3983,7 +3983,7 @@ a.in-zagolovok {
 }
 
 .form-in-after-lk {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin-bottom: 1em;
 }
@@ -4005,7 +4005,7 @@ a.in-zagolovok {
 
 .form-in-after-lk input::-webkit-input-placeholder {
     color: #b8b4b4;
-    font-family: 'firalight'
+    font-family: 'gilroyRegular'
 }
 
 .form-in-after-lk select {
@@ -4055,14 +4055,14 @@ a.in-zagolovok {
     margin-bottom: 0;
     cursor: pointer;
     font-size: 16px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
 }
 
 .checkbox2:checked + label {
     border-bottom: 0 !important;
     color: inherit !important;
-    font-family: 'firalight' !important;
+    font-family: 'gilroyRegular' !important;
 }
 
 .checkbox2 + label:before {
@@ -4166,7 +4166,7 @@ input::-webkit-inner-spin-button {
 }
 
 .after-form h3 {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
     text-transform: uppercase;
     font-size: 16px;
@@ -4218,7 +4218,7 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
     margin-top: 15px;
     font-size: 14px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #8e8787;
     text-align: start;
 }
@@ -4232,12 +4232,12 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
     margin-top: 15px;
     font-size: 14px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .checkbox3:checked + label {
     color: #8e8787 !important;
-    font-family: 'firalight' !important;
+    font-family: 'gilroyRegular' !important;
 }
 
 .checkbox3 + label:before {
@@ -4280,7 +4280,7 @@ input::-webkit-inner-spin-button {
 }
 
 .cart-right h3 {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin-top: 10px;
     color: #4e4e4e;
@@ -4288,7 +4288,7 @@ input::-webkit-inner-spin-button {
 }
 
 .one-item {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
     position: relative;
     font-size: 16px;
@@ -4338,7 +4338,7 @@ input::-webkit-inner-spin-button {
 
 .cart-item2 span {
     color: #b8b4b4;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
@@ -4346,7 +4346,7 @@ input::-webkit-inner-spin-button {
 
 .one-item > .cart-item2 p {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
 }
 
@@ -4400,7 +4400,7 @@ input::-webkit-inner-spin-button {
     background: #4e4e4e;
     padding: 9px 13px;
     letter-spacing: 0.4px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #fefefe;
 }
@@ -4469,14 +4469,14 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
     margin-top: 15px;
     font-size: 16px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
 }
 
 .checkbox4:checked + label {
     border-bottom: 0 !important;
     color: #4e4e4e !important;
-    font-family: 'firalight' !important;
+    font-family: 'gilroyRegular' !important;
 }
 
 .checkbox4 + label:before {
@@ -4504,7 +4504,7 @@ input::-webkit-inner-spin-button {
 }
 
 .form-cart-right input {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     border: 1px solid rgba(200, 200, 200, .5);
     background: #fff5f7;
     color: #333;
@@ -4559,7 +4559,7 @@ input::-webkit-inner-spin-button {
 
 .right-plus-bns {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     float: right;
     display: inline-block;
@@ -4567,7 +4567,7 @@ input::-webkit-inner-spin-button {
 
 .p {
     overflow: hidden;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
     margin-top: 25px;
@@ -4579,7 +4579,7 @@ input::-webkit-inner-spin-button {
 
 .p2 {
     overflow: hidden;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 18px;
     margin-top: 10px;
     color: #4e4e4e;
@@ -4611,7 +4611,7 @@ input::-webkit-inner-spin-button {
 
 .p3 {
     overflow: hidden;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin-bottom: 10px;
     color: #4e4e4e;
@@ -4701,7 +4701,7 @@ input::-webkit-inner-spin-button {
 
 
 .form-in-after-cart {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     padding: 20px 30px 30px 30px !important;
     background: #fff5f7;
@@ -4727,12 +4727,12 @@ input::-webkit-inner-spin-button {
 
 .form-in-after-cart input::-webkit-input-placeholder {
     color: #b8b4b4;
-    font-family: 'firalight'
+    font-family: 'gilroyRegular'
 }
 
 .form-in-after-cart textarea::-webkit-input-placeholder {
     color: #b8b4b4;
-    font-family: 'firalight'
+    font-family: 'gilroyRegular'
 }
 
 .form-in-after-cart select {
@@ -4779,7 +4779,7 @@ input::-webkit-inner-spin-button {
 
 .grey-cart {
     color: #b8b4b4;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin: 0;
 }
@@ -4804,7 +4804,7 @@ input::-webkit-inner-spin-button {
     left: 6px;
     width: 100px;
     padding: 13px 10px 13px 0;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     text-align: center;
     color: #4e4e4e;
     background-size: cover;
@@ -4820,7 +4820,7 @@ input::-webkit-inner-spin-button {
     padding: 8px 25px;
     letter-spacing: 0.5px;
     color: white;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     background: #cd1030;
     text-transform: uppercase;
     margin-left: 15px;
@@ -4882,7 +4882,7 @@ input::-webkit-inner-spin-button {
 .grey-under {
     color: #9c9c9c;
     font-size: 12px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     margin-top: 10px;
 }
 
@@ -4916,7 +4916,7 @@ input::-webkit-inner-spin-button {
 }
 
 .right-cartochka h3 {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     color: #4e4e4e;
     font-size: 16px;
     text-transform: uppercase;
@@ -4926,7 +4926,7 @@ input::-webkit-inner-spin-button {
     background: #4e4e4e;
     padding: 9px 13px;
     letter-spacing: 0.4px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #fefefe;
 }
@@ -4945,7 +4945,7 @@ input::-webkit-inner-spin-button {
     border: 2px solid #e4e4e4;
     padding: 9px 13px;
     letter-spacing: 0.4px;
-    font-family: 'firalight' !important;
+    font-family: 'gilroyRegular' !important;
     float: left;
     margin-right: 10px;
     font-size: 16px;
@@ -4959,7 +4959,7 @@ label.color-label {
     background: #fff5f7;
     border: 2px solid white;
     letter-spacing: 0.4px;
-    font-family: 'firalight' !important;
+    font-family: 'gilroyRegular' !important;
     float: left;
     margin-right: 10px;
     padding: 0;
@@ -5185,7 +5185,7 @@ label.color-label {
 
 .zagolovok > span {
     color: #b8b4b4;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 36px;
     display: inline-block;
 }
@@ -5194,7 +5194,7 @@ label.color-label {
     width: 45%;
     display: inline-block;
     text-align: left;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -5203,7 +5203,7 @@ label.color-label {
     width: 45%;
     display: inline-block;
     text-align: left;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -5233,7 +5233,7 @@ label.color-label {
     right: 0;
     padding: 12px 17px;
     color: white;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
     background: #ff5e5e;
     text-transform: uppercase;
@@ -5492,7 +5492,7 @@ label.color-label {
         /*    float: left; by Anatoliy Mitrofanov 2019-01-10 */
         cursor: pointer;
         margin-top: 20px;
-        font-family: 'firalight';
+        font-family: 'gilroyRegular';
         color: #4e4e4e;
         margin-left: 30px;
     }
@@ -5594,7 +5594,7 @@ label.color-label {
 
     .bottom-mob {
         color: #b3b2b2;
-        font-family: 'firalight';
+        font-family: 'gilroyRegular';
         margin-top: 15px;
         font-size: 15px;
     }
@@ -5891,7 +5891,7 @@ label.color-label {
             left: -4px;
             width: 100px;
             padding: 13px 10px 13px 0;
-            font-family: 'firalight';
+            font-family: 'gilroyRegular';
             text-align: center;
             color: #4e4e4e;
             font-size: 16px;
@@ -6174,7 +6174,7 @@ label.color-label {
     padding: 10px 17px;
     font-size: 16px;
     margin-right: 4px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     background: #fff5f7;
     transition: 300ms;
     -webkit-transition: 300ms;
@@ -6202,7 +6202,7 @@ label.color-label {
 
 .show-for p {
     display: inline-block;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: #4e4e4e;
 }
@@ -6213,7 +6213,7 @@ label.color-label {
     padding: 10px 17px;
     font-size: 16px;
     margin-left: 10px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     text-align: center;
     border-radius: 0;
 }
@@ -6225,7 +6225,7 @@ label.color-label {
     font-size: 14px;
     margin-bottom: 10px;
     display: inline-block;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     letter-spacing: 0.5px;
     background: #fff;
     border: 1px solid #e4e4e4;
@@ -6247,7 +6247,7 @@ label.color-label {
     padding: 12px 27px 10px;
     margin-left: 20px;
     font-size: 14px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     letter-spacing: 0.5px;
     background: #4e4e4e;
     margin-top: -1px;
@@ -6686,7 +6686,7 @@ label.color-label {
     }
 
     .thanx p {
-        font-family: 'firalight';
+        font-family: 'gilroyRegular';
         font-size: 14px;
         color: #4e4e4e;
     }
@@ -7811,23 +7811,23 @@ label.color-label {
 
 .form__elem::-webkit-input-placeholder {
     color: #808080;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .form__elem::-moz-placeholder {
     color: #808080;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .form__elem:-ms-input-placeholder {
     color: #808080;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .form__elem {
     background: #fffafa;
     border: 1px solid rgba(200, 200, 200, 1);
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     padding: 12px 20px;
     width: 100%;
@@ -7955,7 +7955,7 @@ label.color-label {
 .orders {
     color: #4e4e4e;
     font-size: 16px;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .orders__row {
@@ -8176,7 +8176,7 @@ label.color-label {
 
 .checkout__title {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin-top: 0;
     text-align: left;
@@ -8251,7 +8251,7 @@ label.color-label {
 }
 
 .checkout__error-text {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     color: red;
 }

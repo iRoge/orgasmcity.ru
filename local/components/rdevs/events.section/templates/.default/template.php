@@ -51,7 +51,7 @@ font-weight: 600;"><?= $arEvent['NAME']; ?></span>
                                         <span style="color: red"> <?= $arEvent['DATE_END'] ? 'Акция завершена<br>' : '' ?></span>
                                         <span><?= $arEvent['DATE_STRING'] ?></span>
 
-                                        <div class="js-event-text-box-wp" style="font-family: 'firalight';
+                                        <div class="js-event-text-box-wp" style="font-family: 'gilroyRegular';
 
 color: #4e4e4e;font-size: 16px;
 font-weight: 400;visibility: hidden">

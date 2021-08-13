@@ -442,7 +442,7 @@ footer .hide-block {
     padding: 15px;
     z-index: 10;
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     display: none;
 }
 
@@ -572,7 +572,7 @@ footer .hide-block {
 .card__title {
     padding-bottom: 0px;
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: .9375em;
     margin: 0;
     height: 40px;
@@ -672,7 +672,7 @@ footer .hide-block {
 
 .filter-toggle__text {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .filter-toggle__text--show {
@@ -703,7 +703,7 @@ footer .hide-block {
 
 .sort__title {
     color: #4e4e4e;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     margin-right: 1.5625em;
 }
 

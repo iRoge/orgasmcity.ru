@@ -72,7 +72,7 @@
         {
           text-decoration: none;
           color: #8e8787!important;
-          font-family: 'firalight';
+          font-family: 'gilroyRegular';
           font-size: 14px;
         }
         .section:hover > a
