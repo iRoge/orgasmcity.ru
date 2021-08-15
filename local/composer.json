@@ -4,7 +4,8 @@
         "rappasoft/laravel-helpers": "^1.0.2",
         "vlucas/phpdotenv": "^3.4",
         "phpoffice/phpspreadsheet": "^1.18",
-        "phpmailer/phpmailer": "^6.5"
+        "phpmailer/phpmailer": "^6.5",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "autoload": {
         "psr-4": {
