@@ -397,8 +397,9 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                             )
                         ); ?>
                     </div>
+                    <div class="blue-menu">
 
-                    <div class="blue-menu"></div>
+                    </div>
                     <div class="cls-blue-menu"></div>
                 </div>
             </div>

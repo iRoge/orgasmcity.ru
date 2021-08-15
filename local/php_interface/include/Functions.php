@@ -587,18 +587,6 @@ class Functions
         return false;
     }
 
-    public static function checkMobileDevice()
-    {
-        $arMobileAgent = array('ipad', 'iphone', 'android', 'pocket', 'palm', 'windows ce', 'windowsce', 'cellphone', 'opera mobi', 'ipod', 'small', 'sharp', 'sonyericsson', 'symbian', 'opera mini', 'nokia', 'htc_', 'samsung', 'motorola', 'smartphone', 'blackberry', 'playstation portable', 'tablet browser');
-        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
-        foreach ($arMobileAgent as $value) {
-            if (strpos($userAgent, $value) !== false) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static function getRests($offerIds): array
     {
         $rests = [];

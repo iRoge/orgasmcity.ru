@@ -5559,22 +5559,24 @@ label.color-label {
     }
 
     .blue-menu {
-        background: #ff5e5e url('../img/list-menu.png') no-repeat;
-        background-position: 50%;
-        background-size: 50%;
-        width: 50px;
-        position: relative;
-        z-index: 12;
-        height: 50px;
-        display: inline-block;
-        float: right;
-        margin-top: 13px;
+        width: 100%;
+        height: 100%;
+        font-family: 'gilroyRegular';
+        overflow: visible;
+        background: linear-gradient(
+                90deg
+                , #9795F0 0%, #FBC8D4 100%);
+        border-radius: 5px;
+        border-color: transparent;
+    }
+
+    .main-search-form {
+        height: 40px;
     }
 
     .cls-blue-menu {
         display: none;
-        background: #ff5e5e url('../img/cls-white.png') no-repeat;
-        background-position: 50%;
+        background: #ff5e5e url('../img/cls-white.png') no-repeat 50%;
         width: 50px;
         position: relative;
         z-index: 99999999;
@@ -6356,7 +6358,6 @@ label.color-label {
 
     .search-div {
         display: flex;
-        height: auto;
     }
 
     .main-search-form {

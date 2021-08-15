@@ -2,8 +2,9 @@
 
 use Bitrix\Main\Localization\Loc;
 
+global $DEVICE;
 $counter = 0;
-$isMobile = Functions::checkMobileDevice();
+$isMobile = $DEVICE->isMobile() || $DEVICE->isTablet();
 ?>
 
 <section class="advantages-section-wrapper">

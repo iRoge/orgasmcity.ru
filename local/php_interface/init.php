@@ -8,7 +8,8 @@ ini_set('max_execution_time', 0);
 ignore_user_abort(true);
 set_time_limit(0);
 Loader::includeModule('iblock');
-
+// composer autoloader
+require_once($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/constants.php');
 CIBlock::disableTagCache(IBLOCK_CATALOG);
 CIBlock::disableTagCache(IBLOCK_OFFERS);
@@ -17,14 +18,15 @@ CJSCore::Init(['fx']);
 EventManager::getInstance()->addEventHandler('main', 'onBeforeUserLoginByHttpAuth', function (&$arAuth) {
     return false;
 });
+
+$DEVICE = new Mobile_Detect();
+global $DEVICE;
+
 if (!$_COOKIE['device_type']) {
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/Mobile_Detect.php');
 
-    $typeDevDetect = new Mobile_Detect();
-
-    if ($typeDevDetect->isTablet()) {
+    if ($DEVICE->isTablet()) {
         $GLOBALS['device_type'] = 'tablet';
-    } elseif ($typeDevDetect->isMobile()) {
+    } elseif ($DEVICE->isMobile()) {
         $GLOBALS['device_type'] = 'mobile';
     } else {
         $GLOBALS['device_type'] = 'pc';
@@ -35,8 +37,7 @@ if (!$_COOKIE['device_type']) {
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/Functions.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/qsoft/superDebug.php');
-// composer autoloader
-require_once($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
+
 
 // создаем экземпляр класса, который будем везде использовать
 $LOCATION = new Qsoft\Location;

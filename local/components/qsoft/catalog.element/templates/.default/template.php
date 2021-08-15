@@ -11,6 +11,7 @@ Asset::getInstance()->addJs('/local/templates/respect/lib/jquery.zoom.min.js');
 global $LOCATION;
 global $APPLICATION;
 global $USER;
+global $DEVICE;
 $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 $availableRest = 0;
 foreach ($arResult['OFFERS'] as $offer) {
@@ -45,7 +46,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     <img class="sp-image sp-image_hide sp-image-test"
                                          src=""
                                          data-src="<?= $arPhoto['SRC_ORIGINAL']; ?>"
-                                         data-small="<?= Functions::checkMobileDevice() ? $arPhoto['SRC_MEDIUM'] : $arPhoto['SRC_ORIGINAL']; ?>"
+                                         data-small="<?= $DEVICE->isMobile() || $DEVICE->isTablet() ? $arPhoto['SRC_MEDIUM'] : $arPhoto['SRC_ORIGINAL']; ?>"
                                          alt=""
                                          style="height: 600px;"/>
                                 </div>

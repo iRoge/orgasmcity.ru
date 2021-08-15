@@ -1,4 +1,5 @@
-<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+<?php
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetPageProperty("tags", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("keywords_inner", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("title", "Город Оргазма. Секс-шоп №1 в России. Анонимно. Более 16 тысяч товаров");
@@ -7,11 +8,12 @@ $APPLICATION->SetPageProperty("description", "Город Оргазма - это
 $APPLICATION->SetTitle("Главная страница");
 \Likee\Site\Helper::addBodyClass('page--index');
 global $LOCATION;
+global $DEVICE;
 ?>
 <div class="front-blocks">
     <?php
 
-    if (!Functions::checkMobileDevice()) {
+    if (!$DEVICE->isMobile()) {
         $APPLICATION->IncludeComponent(
             'orgasmcity:catalogs.line',
             'default',
@@ -138,7 +140,7 @@ global $LOCATION;
             'CACHE_TIME' => '36000000',
             'CACHE_FILTER' => 'N',
             'CACHE_GROUPS' => 'N',
-            'IS_MOBILE' => Functions::checkMobileDevice()
+            'IS_MOBILE' => $DEVICE->isMobile()
         ]
     );
     ?>
