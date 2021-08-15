@@ -7563,7 +7563,32 @@ label.color-label {
 
 @media (max-width: 991px) and (min-width: 767px) {
     .logo-div {
-        padding-left: 0px!important;
+        padding-left: 0!important;
+    }
+
+    .search-div {
+        padding-right: 0!important;
+        justify-content: space-between;
+    }
+
+    .main-search-form {
+        width: 65%!important;
+    }
+
+    .blue-menu {
+        width: 30%!important;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .blue-menu img {
+        margin: 0 10px;
+    }
+
+    .blue-menu span {
+        font-size: 24px;
+        color: white;
     }
 }
 
@@ -8900,7 +8925,7 @@ label.color-label {
 
 .right-block-top {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     margin-top: 10px;
     padding-left: 0!important;
@@ -8993,6 +9018,7 @@ label.color-label {
             , #9795F0 0%, #FBC8D4 100%);
     border-radius: 5px;
     border-color: transparent;
+    position: relative;
 }
 
 .main-search-form input {

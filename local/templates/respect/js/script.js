@@ -304,8 +304,6 @@ $(document).ready(function () {
         $('body').css('overflow', 'hidden');
         $('.blue-menu-div').animate({"margin-left": "0px"}, 300);
         $('.podlozhka').fadeIn(600);
-        $('.cls-blue-menu').css('display', 'inline-block');
-        $('.blue-menu').css('display', 'none');
     });
 
     $('.podlozhka').click(function () {
@@ -319,10 +317,7 @@ $(document).ready(function () {
             }
             $('.blue-menu-div').animate({"margin-left": menuAnimateWidth}, 300);
             $('.podlozhka').fadeOut(600);
-            $('.cls-blue-menu').css('display', 'none');
-            $('.blue-menu').css('display', 'inline-block');
             $('.vou2').hide();
-            $('.cls-blue-menu2').hide();
             $('.mail-div').hide();
             $('.auth-div-full').hide(0);
         }
@@ -346,8 +341,7 @@ $(document).ready(function () {
         }
         $('.blue-menu-div').animate({"margin-left": menuAnimateWidth}, 300);
         $('.podlozhka').fadeOut(600);
-        $('.cls-blue-menu').css('display', 'none');
-        $('.blue-menu').css('display', 'inline-block');
+        $('.blue-menu').css('display', 'flex');
         $('body').css('overflow', 'auto');
     });
 

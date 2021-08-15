@@ -119,7 +119,6 @@
         }
     }
     ?>
-    <script src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>
     <script type="text/javascript" data-skip-moving="true" >
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(
@@ -156,6 +155,7 @@
             return base + '?' + res;
         }
     </script>
+    <script src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>
     <script data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/device.js' ?>"></script>
     <script data-skip-moving="true">
         let phpDeviceType = '<?= $GLOBALS['device_type'] ?>';
@@ -397,8 +397,9 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                             )
                         ); ?>
                     </div>
-                    <div class="blue-menu">
-
+                    <div class="blue-menu hidden-lg hidden-md">
+                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/burger.svg" alt="Burger">
+                        <span>Каталог</span>
                     </div>
                     <div class="cls-blue-menu"></div>
                 </div>
