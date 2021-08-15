@@ -1,10 +1,9 @@
 .catalog-list-main {
     display: flex!important;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     padding: 0 30px;
-    margin-top: 15px;
-    height: 100px;
+    flex-wrap: wrap;
 }
 
 .catalog-list-element {
@@ -12,8 +11,8 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    height: 100%;
     align-content: flex-start;
+    margin-bottom: 10px;
 }
 
 .catalog-list-main a {
@@ -27,6 +26,12 @@
 @media (min-width:992px) and (max-width:1440px) {
     .catalog-list-main a {
         font-size: 8px;
+    }
+}
+
+@media (min-width:767px) and (max-width:992px) {
+    .catalog-list-main {
+        padding: 0!important;
     }
 }
 

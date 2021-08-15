@@ -1071,6 +1071,7 @@ html, body {
     height: 90px;
     padding-top: 20px;
     padding-bottom: 10px;
+    margin-bottom: 20px;
     z-index: 11;
     position: relative;
     display: block;
@@ -8822,6 +8823,12 @@ label.color-label {
 @media (min-width: 992px) and (max-width: 1140px) {
     .logo {
         width: 120px;
+    }
+    .menu {
+        margin-bottom: 0!important;
+    }
+    .hide-menu {
+        top: 62px
     }
 }
 

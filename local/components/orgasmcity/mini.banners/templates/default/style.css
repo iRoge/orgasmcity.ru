@@ -10,3 +10,15 @@
 .banners-list-element {
     padding: 0 10px!important;
 }
+
+@media (min-width:767px) and (max-width:992px) {
+    .banners-list-element:last-child {
+        padding-right: 0!important;
+    }
+    .banners-list-element:first-child {
+        padding-left: 0!important;
+    }
+    .banners-list-main {
+        padding: 0!important;
+    }
+}
