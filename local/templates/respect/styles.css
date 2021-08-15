@@ -26,7 +26,7 @@ label.radio > span .input__color,
     -moz-osx-font-smoothing: grayscale;
 }
 .body-settings {
-    max-width: 1800px;
+    max-width: 2000px;
     margin: 0 auto;
 }
 .icon-lg {
@@ -1250,4 +1250,8 @@ jdiv[class^="popupBlock_"] {
 
 .discount-yellow {
     color: #e28400;
+}
+
+.show-test {
+    display: block!important;
 }

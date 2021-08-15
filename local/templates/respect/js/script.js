@@ -198,28 +198,6 @@ $(document).ready(function () {
         $(this).prev('.menu-ul-li').find('.menu-ul-li-a').toggleClass('active-menu');
     });
 
-    $('.banner_item').on('click', function () {
-        let bannerElem = $(this);
-        let oGTMPush = {
-            'event': 'MTRENDO',
-            'eventCategory': 'EEC',
-            'eventAction': 'view_promotion',
-            'eventLabel': bannerElem.data('rblockName'),  // название баннера/акции
-            'ecommerce': {
-                'promoView': {
-                    'promotions': [{
-                        'name': bannerElem.data('rblockName'),  // название баннера/акции
-                        'id': bannerElem.data('rblockId'),   // id баннера, если есть
-                        'creative': bannerElem.data('prodCreative'),  // место размещения баннера
-                        'position': bannerElem.data('prodPosition') //позиция в блоке
-                    }]
-                }
-            }
-        };
-        window.dataLayer = window.dataLayer || [];
-        dataLayer.push(oGTMPush);
-    });
-
     if ($(window).width() > 767) {
         $('.left-main-two img').css('height', 'auto');
         $('.left-main-two').css('height', 'auto');

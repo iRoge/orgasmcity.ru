@@ -1,0 +1,12 @@
+.banners-list-main {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.banners-list-element {
+    padding: 0 10px!important;
+}

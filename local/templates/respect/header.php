@@ -240,8 +240,8 @@ $APPLICATION->ShowViewContent('geolocation_popup');
 ?>
 
 <div class="top col-xs-12 tolltips">
-    <div class="main" style="display: flex;align-items: center">
-        <div class="col-md-4 col-sm-4 col-xs-12 info">
+    <div class="main" style="display: flex;align-items: center;height: 100%;">
+        <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12 info">
             <? $APPLICATION->IncludeComponent(
                 'qsoft:geolocation',
                 '.default',
@@ -258,23 +258,20 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 </p>
             </div>
         </div>
-        <div class="col-md-5 col-sm-4 hidden-xs info">
-            <div class="col-sm-5 phone-top">
+        <div class="col-lg-5 col-md-5 col-sm-3 hidden-xs info">
+            <div class="phone-top">
                 <img class="phone-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/svg/phone.svg"/>
                 <p class="phone-top-first">
                     <span>Интернет-магазин: </span>
                     <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
                 </p>
                 <p class="hidden-sm phone-top-second">
-                    <span>Режим работы телефонной справочной: </span>
+                    <span>Режим работы справочной: </span>
                     <span>с 12.00 - 18.00 СБ, ВС - выходной</span>
                 </p>
             </div>
-            <div class="col-sm-7 phone-top-mob">
-                Телефон: <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
-            </div>
         </div>
-        <div class="col-md-3 col-sm-4 col-xs-12 right-block-top">
+        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 right-block-top">
             <div class="col-md-3 col-sm-3 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
@@ -308,7 +305,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
         </div>
     </div>
-    <div class="header-border"></div>
+    <div class="header-border-wrapper main"><div class="header-border"></div></div>
 </div>
 <div class="menu-spacer">
     <div class="poisk-div">
@@ -324,7 +321,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
     </div>
     <div class="menu-wrap">
         <div class="menu col-xs-12">
-            <div class="main clearfix">
+            <div class="main clearfix" style="display: flex; align-items: center">
                 <div class="col-md-2 col-sm-2 col-xs-2 logo-div">
                     <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.svg" class="logo header__logotype"/></a>
                     <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.svg" class="logo-small"/></a>
@@ -340,7 +337,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                                 'MENU_CACHE_TYPE' => 'N',
                                 'MENU_CACHE_TIME' => '604800',
                                 'MENU_CACHE_USE_GROUPS' => 'Y',
-                                'MENU_CACHE_GET_VARS' => array(),
+                                'MENU_CACHE_GET_VARS' => [],
                                 'MAX_LEVEL' => '3',
                                 'CHILD_MENU_TYPE' => '',
                                 'USE_EXT' => 'Y',
@@ -351,7 +348,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         );
                         ?>
                 </div>
-                <div class="col-md-2 col-sm-10 col-xs-10 pull-right search-div header__search" style="padding-left: 0px">
+                <div class="col-md-2 col-sm-10 col-xs-10 pull-right search-div header__search" style="padding-left: 0">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:search.form",
                         "top",

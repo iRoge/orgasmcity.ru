@@ -14,15 +14,11 @@
 
 .geoposition__lists-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 @media (min-width: 768px)
 {
-    .geoposition__lists-wrapper {
-        display: flex;
-        flex-direction: row;
-    }
     .geoposition
     {
         width: 60%;
@@ -136,14 +132,17 @@
     position: relative;
     font-size: 16px;
     line-height: 22px;
-    font-family: gilroyRegular;
+    font-family: 'gilroyRegular';
     justify-content: center;
     align-items: center;
     padding: 30px 15px 15px;
     right: 0;
     left: 0;
     position: absolute;
-    background-color: #fff5f7;
+    background: linear-gradient(
+            90deg
+            , rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(15px);
     z-index: 50;
     margin-left: auto;
     margin-right: auto;
@@ -173,22 +172,13 @@
     margin-bottom: 15px;
 }
 
-.geoposition__link
-{
-    display: block;
-    font-weight: 600;
-    color: #337ab7;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    cursor: pointer;
-}
-
 .geoposition__default-cities
 {
-    color: #4e4e4e;
-    margin-bottom: 15px;
+    color: black;
+    margin: 15px 0;
     font-weight: bold;
-    font-size: 17.5px;
+    font-size: 18px;
+    text-align: center;
 }
 
 
@@ -200,22 +190,18 @@
 
 .geoposition__button
 {
-    font-size: 16px;
-    font-family: 'firaregular';
-    width: 100%;
+    font-size: 18px;
+    font-family: 'gilroyRegular';
+    width: 48%;
+    height: 100%;
     padding: 10px;
-    text-transform: uppercase;
-    color: white;
+    color: #000000;
+    border-radius: 5px;
     text-align: center;
     border: 0;
     outline: 0;
     cursor: pointer;
-}
-
-.geoposition__button--ok
-{
-    background-color: #ff5e5e;
-    margin-bottom: 15px;
+    background: linear-gradient(90deg, #FDFBFB 0%, #EBEDEE 100%);
 }
 
 #geoposition_error
@@ -288,87 +274,98 @@
     color : #ff5e5e;
 }
 .geoposition__city {
-    margin-bottom: 15px;
-    padding-right: 5px;
+    height: 46px;
     word-break: break-word;
     cursor: pointer;
+    font-size: 16px;
+    line-height: 19px;
+    color: #000000;
 }
 
 .geoposition__list {
-    padding-left: 0;
-    list-style: none;
-    width: 33.3%;
+padding-left: 0;
+list-style: none;
+width: 33.3%;
+}
+
+.geoposition__list:nth-child(1) {
+text-align: left;
+}
+
+.geoposition__list:nth-child(2) {
+text-align: center;
+}
+
+.geoposition__list:nth-child(3) {
+text-align: right;
 }
 
 @media (max-width: 768px)
 {
-    .geoposition__list {
-        width: 100%;
-        margin-bottom: 0;
-    }
-    .geoposition__city {
-        width: 100%;
-    }
-    .tooltip-window
-    {
-        top: 49px;
-        left: 0;
-        width: 100%;
-    }
+.geoposition__list {
+    width: 100%;
+    margin-bottom: 0;
+}
+.geoposition__city {
+    width: 100%;
+}
+.tooltip-window
+{
+    top: 49px;
+    left: 0;
+    width: 100%;
+}
 }
 
-@media (min-width: 991px) {
-    .geoposition__wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .geoposition__button--ok {
-        margin-top: 15px;
-        width: 50%;
-    }
+
+.geoposition__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    margin: 15px 0;
 }
+
 
 .select2-container--default .select2-selection--single {
     background-color: #fff;
-    border: 1px solid #d8d8d8;
-    border-radius: 0px!important;
+    border-radius: 0!important;
     padding: 8px 20px;
     font-size: 16px;
     min-height: 44px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
-    top: 8px!important;
+top: 8px!important;
 }
 
 ul.country_list {
-    display: flex;
-    margin-bottom: 0;
-    padding-left: 0;
-    list-style: none;
-    width: 100%;
+display: flex;
+margin-bottom: 0;
+padding-left: 0;
+list-style: none;
+width: 100%;
 }
 
 ul.country_list > li {
-    margin-bottom: 15px;
-    flex-basis: auto;
-    flex-grow: 1;
-    font-weight: bold;
-    font-size: 17.5px;
+margin-bottom: 15px;
+flex-basis: auto;
+flex-grow: 1;
+font-weight: bold;
+font-size: 17.5px;
 }
 
 ul.country_list > li > a {
-    color: #4e4e4e;
-    text-decoration: none;
+color: #4e4e4e;
+text-decoration: none;
 }
 
 div.country_container > hr {
-    margin-bottom: 15px;
-    border: none;
-    margin-top: 0;
-    color: #AAAAAA;
-    background-color: #AAAAAA;
-    height: 1px;
+margin-bottom: 15px;
+border: none;
+margin-top: 0;
+color: #AAAAAA;
+background-color: #AAAAAA;
+height: 1px;
 }
 

@@ -216,10 +216,11 @@ if (empty($aMenuLinksNew)) {
 
     if ($bSpecSec['SALES']) {
         $arResult['SALES'] = [
-            'UF_NAME' => 'СКИДКИ ДО 40%',
+            'UF_NAME' => 'Скидки до -40%',
             'UF_CODE' => 'sales',
             'PROPS' => [
-                'TEXT_COLOR' => '#ff002c'
+                'TEXT_COLOR' => 'white',
+                'IS_SPECIAL' => 'Y'
             ]
         ];
     }

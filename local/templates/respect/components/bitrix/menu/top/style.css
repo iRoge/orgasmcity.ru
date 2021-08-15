@@ -13,3 +13,31 @@
 .left-hide-menu:first-child,.left-hide-menu:nth-child(2){
     display: block;
 }*/
+
+.menu-text-wrapper {
+    background: linear-gradient(
+            90deg
+            , #A18CD1 0%, #FBC2EB 100%);
+    border-radius: 5px;
+    display: flex;
+    height: 40px;
+    width: max-content;
+    align-items: center;
+    font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.menu-arrow {
+    display: none;
+    width: 28px;
+    height: 28px;
+    transform: rotate(45deg) translateX(-50%);
+    background-color: #fffafa;
+    position: absolute;
+    border-top: 1px solid #ededed;
+    border-left: 1px solid #ededed;
+    left: 50%;
+    bottom: -45px;
+    z-index: 1000
+}

@@ -16,7 +16,7 @@
     </div>
     <?php } else { ?>
         <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/gate.svg"/>
-        <span style="display: block" id="auth-button">Войти</span>
+        <span id="auth-button">Войти</span>
     <?php } ?>
     <?php $this->__template->EndViewTarget(); ?>
 <?php } ?>

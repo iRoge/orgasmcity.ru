@@ -25,14 +25,12 @@ $this->addExternalCss("/local/templates/respect/js/select2/select2.min.css");
 <div class="geoposition">
     <div class="geoposition__close cls-mail-div" data-action="close" title="Закрыть"></div>
     <form class="geoposition__form" method="post">
-        <span class="geoposition__heading">Ваш регион доставки</span>
+        <span class="geoposition__heading">Укажите ваш регион доставки</span>
         <select id="geo_location_search" name="geo_location_search" placeholder="Населенный пункт" style="width:100%"></select>
         <input type="hidden" id="geo_location_code" name="geo_location_code">
         <div class="geoposition__wrapper">
-            <div class="geoposition__set-city-auto">
-                <span class="geoposition__link">Определить автоматически</span>
-            </div>
-            <button class="geoposition__button geoposition__button--ok">Запомнить выбор</button>
+            <button class="geoposition__button geoposition__set-city-auto">Попробовать Автоопределение</button>
+            <button class="geoposition__button geoposition__button--ok">Запомнить выбор региона</button>
         </div>
         <?php if (!empty($arResult['POPULAR_LOCALITIES'])) : ?>
             <div class="geoposition__default-cities">Популярные города</div>

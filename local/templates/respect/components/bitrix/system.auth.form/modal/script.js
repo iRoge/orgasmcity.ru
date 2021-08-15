@@ -10,7 +10,7 @@ $(document).ready(function () {
         var errSpan = $('.err-phone-email');
 
         if (userEmail == "") {
-            errSpan.html('Необходимо ввести email или телефон');
+            errSpan.html('Необходимо ввести email');
             cou_err = 'all-error';
             emailElem.addClass("red_border");
         } else if (userEmail != "") {

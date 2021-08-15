@@ -68,7 +68,7 @@ class LikeeSliderComponent extends \CBitrixComponent
         
         $arFilter = [
             'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
-            'ACTIVE' => 'Y',
+            'ACTIVE' => 'N',
             'ACTIVE_DATE' => 'Y',
             '!PREVIEW_PICTURE' => false,
             [
