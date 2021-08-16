@@ -1255,3 +1255,18 @@ jdiv[class^="popupBlock_"] {
 .show-test {
     display: block!important;
 }
+
+.default-header {
+    font-family: 'gilroyRegular'!important;
+    font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.how-we-work-wrapper {
+    display: flex!important;
+    align-items: center;
+    padding: 0 30px;
+}

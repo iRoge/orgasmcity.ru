@@ -31,7 +31,7 @@ global $DEVICE;
             [
                 'FILTERS' => [
                     'IBLOCK_ID' => IBLOCK_MINI_BANNERS,
-                    "ACTIVE" => "N",
+                    "ACTIVE" => "Y",
                 ],
             ]
         );
@@ -137,10 +137,9 @@ global $DEVICE;
             'SET_TITLE' => 'N',
             'INCLUDE_IBLOCK_INTO_CHAIN' => 'N',
             'CACHE_TYPE' => 'A',
-            'CACHE_TIME' => '36000000',
+            'CACHE_TIME' => '604800',
             'CACHE_FILTER' => 'N',
             'CACHE_GROUPS' => 'N',
-            'IS_MOBILE' => $DEVICE->isMobile()
         ]
     );
     ?>
@@ -159,5 +158,12 @@ global $DEVICE;
         ]
     );
     ?>
+
+    <div>
+        <h2 class="default-header">Как мы работаем</h2>
+        <div class="how-we-work-wrapper main">
+            <img width="100%" src="<?=SITE_TEMPLATE_PATH?>/img/howWork.webp" alt="Как мы работаем">
+        </div>
+    </div>
 </div>
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

@@ -3,6 +3,7 @@ foreach ($arResult['ITEMS'] as $item) {
     $imgIds[] = $item['PROPERTIES']['IMG']['VALUE'];
 }
 
+global $DEVICE;
 $dbResImgs = CFile::GetList([], ['@ID' => $imgIds]);
 $filePath = '/' . COption::GetOptionString('main', 'upload_dir') . '/';
 while ($img = $dbResImgs->Fetch()) {
