@@ -3707,62 +3707,6 @@ body.with--popup:after {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.social-block {
-    background-color: #181818;
-    height: 5.3rem;
-    font-size: 0.8em;
-}
-
-.social-block .column-2:last-child a {
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.social-block .column-15:last-child a {
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.social-block a {
-    display: block;
-    height: 5.3rem;
-    line-height: 5.3rem;
-    vertical-align: middle;
-    color: #ffffff;
-    text-transform: uppercase;
-    text-align: center;
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-}
-
-.social-block a i.icon,
-.social-block a .selectize-control.multi i.selectize-input:after,
-.selectize-control.multi .social-block a i.selectize-input:after,
-.social-block a .selectize-control.single i.selectize-input:after,
-.selectize-control.single .social-block a i.selectize-input:after,
-.social-block a .slick-slider > i.slick-arrow,
-.social-block a form i.input-group--calendar:after,
-form .social-block a i.input-group--calendar:after,
-.social-block a label.checkbox > span i.input__color,
-label.checkbox > span .social-block a i.input__color,
-.social-block a label.radio > span i.input__color,
-label.radio > span .social-block a i.input__color,
-.social-block a i.input-group--phone:before,
-.social-block a i.dropdown-toggle:after,
-.social-block a .navigation i.navigation-toggler,
-.navigation .social-block a i.navigation-toggler,
-.social-block a i.filters-toggle:after,
-.social-block a i.filters-reset:after,
-.social-block a i.cart-item__toggle:before {
-    font-size: 1.8em;
-    line-height: 5.3rem;
-    vertical-align: middle;
-    margin-right: 0.5em;
-}
-
-.social-block a:hover {
-    background-color: #FD7778;
-    border-color: #FD7778;
-}
-
 .social-icons {
     display: -ms-flexbox;
     display: flex;

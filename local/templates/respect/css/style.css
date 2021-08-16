@@ -1885,20 +1885,6 @@ a.in-zagolovok {
     margin-top: 20px;
 }
 
-.social {
-    margin-top: 10px;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-.social a {
-    display: inline-block;
-}
-
-.social img {
-    margin-right: 5px;
-}
-
 .mailsender h4 {
     font-family: 'firaregular';
     color: #4e4e4e;
@@ -6393,11 +6379,6 @@ label.color-label {
         margin-top: 10px;
     }
 
-    .social {
-        padding: 0;
-        margin-bottom: 20px;
-    }
-
     .footer {
         padding-top: 0;
         padding-bottom: 0;
@@ -6418,10 +6399,6 @@ label.color-label {
     }
 
     .col-md-6.col-sm-9 {
-        padding: 0 !important;
-    }
-
-    .social {
         padding: 0 !important;
     }
 

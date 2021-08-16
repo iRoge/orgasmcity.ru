@@ -14,7 +14,7 @@
         <div class="row ones" style="padding: 0 15px;">
             <div class="col-xs-12">
                 <div class="col-md-5 col-sm-8">
-                    <div class="col-xs-6 footer-div">
+                    <div class="col-xs-6">
                         <h4>ПОКУПАТЕЛЯМ</h4>
                         <?php $APPLICATION->IncludeComponent(
                             'bitrix:menu',
@@ -34,7 +34,7 @@
                             )
                         ); ?>
                     </div>
-                    <div class="col-xs-6 footer-div">
+                    <div class="col-xs-6">
                         <h4>Город Огразма</h4>
                         <?php $APPLICATION->IncludeComponent(
                             'bitrix:menu',
@@ -56,14 +56,14 @@
                     </div>
                     <div style="clear: both"></div>
                 </div>
-                <div class="col-md-7 col-sm-4 right-footer-div">
-                    <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3 footer-div">
+                <div class="col-md-7 col-sm-4">
+                    <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3">
                         <div class="col-sm-12 col-xs-6 num2">
                             <p>Обратная связь<a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></p>
                             <p><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></p>
                             <p>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</p>
                         </div>
-                        <div class="col-xs-12 social">
+                        <div class="col-xs-12">
                             <?php $APPLICATION->IncludeComponent(
                                 "likee:social",
                                 "footer",
@@ -79,15 +79,6 @@
                                 false
                             ); ?>
                         </div>
-                    </div>
-                    <div class="col-md-7 hidden-xs mailsender">
-                        <h4>Подпишитесь на рассылку</h4>
-                        <?php $APPLICATION->IncludeComponent(
-                            'qsoft:subscribe',
-                            'footer',
-                            array(),
-                            false
-                        ); ?>
                     </div>
                 </div>
             </div>
