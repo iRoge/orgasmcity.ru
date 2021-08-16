@@ -159,7 +159,7 @@ global $DEVICE;
     );
     ?>
 
-    <div>
+    <div class="how-we-work-section">
         <h2 class="default-header">Как мы работаем</h2>
         <div class="how-we-work-wrapper main">
             <img width="100%" src="<?=SITE_TEMPLATE_PATH?>/img/howWork.webp" alt="Как мы работаем">

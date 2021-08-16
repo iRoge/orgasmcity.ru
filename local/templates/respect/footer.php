@@ -1,29 +1,22 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 } ?>
-<? if (in_array($GLOBALS["PAGE"][1], array('personal', 'refund'))) : ?>
+<?php if (in_array($GLOBALS["PAGE"][1], array('personal', 'refund'))) : ?>
     </div>
-<? endif; ?>
-<? if ($bContentContainer) : ?>
+<?php endif; ?>
+<?php if ($bContentContainer) : ?>
     </div></div></div>
-<? elseif ('N' != $APPLICATION->GetProperty('MAIN_WR', 'N')) : ?>
+<?php elseif ('N' != $APPLICATION->GetProperty('MAIN_WR', 'N')) : ?>
     </div></div>
-<? endif; ?>
-
-<? if (!CSite::InDir(SITE_DIR . 'index.php') && !CSite::InDir(SITE_DIR . 'cart')) : ?>
-    <? $APPLICATION->ShowViewContent('under_instagram'); ?>
-
-
-<? endif; ?>
-
+<?php endif; ?>
 <div class="footer col-xs-12">
     <div class="main">
         <div class="row ones" style="padding: 0 15px;">
-            <div class="col-xs-12 footer-border">
+            <div class="col-xs-12">
                 <div class="col-md-5 col-sm-8">
                     <div class="col-xs-6 footer-div">
                         <h4>ПОКУПАТЕЛЯМ</h4>
-                        <? $APPLICATION->IncludeComponent(
+                        <?php $APPLICATION->IncludeComponent(
                             'bitrix:menu',
                             'footer',
                             array(
@@ -43,7 +36,7 @@
                     </div>
                     <div class="col-xs-6 footer-div">
                         <h4>Город Огразма</h4>
-                        <? $APPLICATION->IncludeComponent(
+                        <?php $APPLICATION->IncludeComponent(
                             'bitrix:menu',
                             'footer',
                             array(
@@ -71,7 +64,7 @@
                             <p>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</p>
                         </div>
                         <div class="col-xs-12 social">
-                            <? $APPLICATION->IncludeComponent(
+                            <?php $APPLICATION->IncludeComponent(
                                 "likee:social",
                                 "footer",
                                 array(
@@ -89,7 +82,7 @@
                     </div>
                     <div class="col-md-7 hidden-xs mailsender">
                         <h4>Подпишитесь на рассылку</h4>
-                        <? $APPLICATION->IncludeComponent(
+                        <?php $APPLICATION->IncludeComponent(
                             'qsoft:subscribe',
                             'footer',
                             array(),
@@ -98,30 +91,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-7 hidden-sm mailsender">
-                <h4>Подпишитесь на рассылку</h4>
-                <? $APPLICATION->IncludeComponent(
-                    'qsoft:subscribe',
-                    'footerm',
-                    array(),
-                    false
-                ); ?>
-            </div>
             <div class="col-xs-12 col-sm-12 bottom-mob">
                 <p class="copy-shop-mob">
                     <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
                 </p>
             </div>
         </div>
-    </div>
-</div>
-
-
-<div class="col-xs-12 bottom">
-    <div class="main">
-        <p class="copy-shop col-xs-8">
-            <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
-        </p>
     </div>
 </div>
 
@@ -143,7 +118,7 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
     false
 ); ?>
 
-<?$APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
+<?php $APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
 <div class="auth-div-full">
     <div class="cls-mail-div"></div>
     <div class="popup-title">
@@ -153,8 +128,8 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
         <input type="radio" name="odin2" id="vkl20"/>
         <label for="vkl20" class="in-auth"><span>Регистрация</span></label>
     </div>
-    <? $APPLICATION->IncludeComponent("bitrix:system.auth.form", "modal", array(), false); ?>
-    <? $APPLICATION->IncludeComponent(
+    <?php $APPLICATION->IncludeComponent("bitrix:system.auth.form", "modal", array(), false); ?>
+    <?php $APPLICATION->IncludeComponent(
         "bitrix:main.register",
         "registr-popup",
         array(
@@ -188,7 +163,7 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 
 <div class="mail-div">
     <div class="popup--feedback popup--overflow">
-        <?
+        <?php
         $feedbackFormId = COption::GetOptionInt('respect.feedback', "feedback_form_id");
         if ($feedbackFormId) {
             $APPLICATION->IncludeComponent(
