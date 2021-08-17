@@ -11,28 +11,45 @@
 <?php endif; ?>
 <div class="footer col-xs-12">
     <div class="main">
+        <div class="col-lg-3">
+            <?php $APPLICATION->IncludeComponent(
+                "likee:social",
+                "footer",
+                array(
+                    "INSTAGRAM" => "https://www.instagram.com/orgasmcity.ru/",
+                    "VK" => "https://vk.com/club205704529",
+                    "TELEGRAM" => "https://t.me/Orgasmcity",
+                    "WHATSAPP" => "https://wa.me/79601452548",
+                    "COMPONENT_TEMPLATE" => "footer",
+                ),
+                false
+            ); ?>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-3">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="footer col-xs-12 hidden-lg hidden-md hidden-sm">
+    <div class="main">
         <div class="row ones" style="padding: 0 15px;">
             <div class="col-xs-12">
                 <div class="col-md-5 col-sm-8">
                     <div class="col-xs-6">
-                        <h4>ПОКУПАТЕЛЯМ</h4>
-                        <?php $APPLICATION->IncludeComponent(
-                            'bitrix:menu',
-                            'footer',
-                            array(
-                                'COMPONENT_TEMPLATE' => '.default',
-                                'ROOT_MENU_TYPE' => 'footer_1',
-                                'MENU_CACHE_TYPE' => 'Y',
-                                'MENU_CACHE_TIME' => '604800',
-                                'MENU_CACHE_USE_GROUPS' => 'Y',
-                                'MENU_CACHE_GET_VARS' => array(),
-                                'MAX_LEVEL' => '1',
-                                'CHILD_MENU_TYPE' => 'left',
-                                'USE_EXT' => 'N',
-                                'DELAY' => 'N',
-                                'ALLOW_MULTI_SELECT' => 'N'
-                            )
-                        ); ?>
+
                     </div>
                     <div class="col-xs-6">
                         <h4>Город Огразма</h4>
@@ -64,20 +81,7 @@
                             <p>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</p>
                         </div>
                         <div class="col-xs-12">
-                            <?php $APPLICATION->IncludeComponent(
-                                "likee:social",
-                                "footer",
-                                array(
-//                                    "FACEBOOK_LINK" => "",
-                                    "INSTAGRAM_LINK" => "https://www.instagram.com/orgasmcity.ru/",
-                                    "VK_LINK" => "https://vk.com/club205704529",
-                                    "TELEGRAM_LINK" => "https://t.me/Orgasmcity",
-//                                    "PINTEREST_LINK" => "",
-//                                    "YOUTUBE_LINK" => "",
-                                    "COMPONENT_TEMPLATE" => "footer",
-                                ),
-                                false
-                            ); ?>
+
                         </div>
                     </div>
                 </div>

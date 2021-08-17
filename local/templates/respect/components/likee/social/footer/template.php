@@ -1,4 +1,4 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 /** @var array $arResult */
@@ -13,24 +13,31 @@
 /** @var string $componentPath */
 /** @var LikeeSocialComponent $component */
 $this->setFrameMode(true);
-$icons = array(
-    array("FACEBOOK_LINK", "fb.png"),
-    array("INSTAGRAM_LINK", "insta.png"),
-    array("VK_LINK", "vk.png"),
-    array("TELEGRAM_LINK", "telegram.png"),
-    array("PINTEREST_LINK", "pinterest.png"),
-    array("YOUTUBE_LINK", "youtube.png"),
-);
+$icons = [
+    [
+        'name' => 'TELEGRAM',
+        'icon' => 'telegram.png',
+    ],
+    [
+        'name' => 'INSTAGRAM',
+        'icon' => 'insta.png',
+    ],
+    [
+        'name' => 'VK',
+        'icon' => 'vk.png',
+    ],
+    [
+        'name' => 'WHATSAPP',
+        'icon' => 'whatsapp.png',
+    ],
+];
 $i = 0;?>
-<div class="mobile_soc_icon">
-<? foreach ($icons as $value) : ?>
-    <? if (!empty($arResult[$value[0]])) : ?>
-        <? if ($i % 3 == 0 && $i != 0) : ?>
-            </div>
-            <div class="mobile_soc_icon">
-        <? endif ?>
-        <a target="_blank" href="<?= $arResult[$value[0]]; ?>"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/<?= $value[1] ?>" /></a>
-        <? $i++; ?>
-    <? endif; ?>
-<? endforeach; ?>
-</div>
+
+<?php foreach ($icons as $value) { ?>
+    <?php if (!empty($arResult[$value['name']])) { ?>
+        <a target="_blank" href="<?=$arResult[$value['name']]?>">
+            <img src="<?=SITE_TEMPLATE_PATH?>/img/<?=$value['icon']?>"/>
+        </a>
+    <?php }?>
+<?php } ?>
+
