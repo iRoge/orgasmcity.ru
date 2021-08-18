@@ -102,18 +102,14 @@ function hide_wait () {
 			let right = 1;
 
 			rightClosestPriorityButtons.forEach(function (element) {
-                if (element.state.visible) {
+				if (element.state.visible) {
 					right += positionStep;
-                }
-            });
+				}
+			});
 
 			this.element.root.style.right = right + 'rem';
 		} else {
-			if (window.matchMedia('(min-width: 768px)').matches) {
-				this.element.root.style.right = 5 + 'rem';
-			} else {
-				this.element.root.style.right = 1 + 'rem';
-			}
+			this.element.root.style.right = positionStep + 'rem';
 		}
 	}
 	

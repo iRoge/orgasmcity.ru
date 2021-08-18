@@ -4,7 +4,8 @@
     width: 25px;
     height: 25px;
     position: absolute;
-    background-color: #fff;
+    background-color: rgba(234, 223, 223, 0.8);
+    backdrop-filter: blur(15px);
     transform: rotate(45deg);
     top: -13px;
     border-left: 1px solid rgba(0,0,0,.16);
@@ -155,7 +156,7 @@
     font-size: 40px;
     line-height: 40px;
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     margin-bottom: 50px;
 }
@@ -218,11 +219,11 @@
     align-items: center;
     z-index: 2;
     width: 350px;
+    background: rgba(234, 223, 223, 0.8);
+    backdrop-filter: blur(15px);
     box-shadow: 0 2px 8px 0 rgba(0,0,0,.16), 0 0 0 1px rgba(0,0,0,.08);
-    background: #fff;
     padding: 20px 24px;
     top: 58px;
-    left: 26px;
     cursor: default;
 }
 
@@ -230,17 +231,21 @@
 {
     text-align: center;
     white-space: normal;
-    line-height: 24px;
+    font-family: 'gilroyRegular';
+    font-size: 20px;
+    line-height: 23px;
     margin: 0;
+    color: #000000;
 }
 
 .tooltip-window__city
 {
+    color: #000000;
     text-align: center;
     width: 50%;
-    font-family: vollkornsemibold;
-    font-size: 22px;
-    line-height: 22px;
+    font-family: 'gilroySemiBold';
+    font-size: 30px;
+    line-height: 36px;
     padding: 18px 0;
 }
 
@@ -251,27 +256,31 @@
 
 .tooltip-window__button
 {
-    text-transform: uppercase;
-    color: white;
-    font-family: 'firaregular';
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-family: 'gilroyMedium';
     font-size: 16px;
+    line-height: 19px;
     text-align: center;
     border: 0;
     outline: 0;
     margin: 0 10px;
     padding: 0 10px;
     cursor: pointer;
+    height: 47px;
 }
 
 .tooltip-window__button--ok
 {
-    background-color: #ff5e5e;
+    background: #FFFFFF;
+    border-radius: 5px;
 }
 
 .tooltip-window__button--no
 {
-    background-color: none;
-    color : #ff5e5e;
+    background: #FFFFFF;
+    border-radius: 5px;
 }
 .geoposition__city {
     height: 46px;
