@@ -1257,7 +1257,7 @@ jdiv[class^="popupBlock_"] {
 }
 
 .default-header {
-    font-family: 'gilroyRegular'!important;
+    font-family: 'gilroySemiBold'!important;
     font-size: 40px;
     font-weight: 600;
     text-align: center;
@@ -1273,4 +1273,58 @@ jdiv[class^="popupBlock_"] {
 
 .how-we-work-section {
     margin-bottom: 20px;
+}
+
+.footer-block {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 10px;
+}
+
+.footer-element {
+    height: 50px;
+    display: block;
+    width: 100%;
+}
+
+.footer-block h4 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    font-family: 'gilroySemiBold';
+    color: #ffffff;
+    margin: 0 0 20px 0;
+}
+
+.footer-right-block {
+    color: white;
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.right-footer-element, .right-footer-element a {
+    font-size: 13px;
+    font-family: 'gilroyRegular';
+    text-decoration: none;
+    text-underline: none;
+    color: #FFFFFF;
+
+}
+
+.right-footer-element a:hover {
+    text-decoration: none;
+    color: #16304E;
+}
+
+.rights-line {
+    width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-family: 'gilroyThin';
+    font-size: 13px;
+    line-height: 15px;
+    margin: 15px 0;
 }

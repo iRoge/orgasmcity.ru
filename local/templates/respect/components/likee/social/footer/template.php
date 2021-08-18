@@ -15,28 +15,38 @@
 $this->setFrameMode(true);
 $icons = [
     [
-        'name' => 'TELEGRAM',
-        'icon' => 'telegram.png',
-    ],
-    [
         'name' => 'INSTAGRAM',
-        'icon' => 'insta.png',
+        'icon' => 'Instagram.svg',
+        'color' => '#FF8D74'
     ],
     [
-        'name' => 'VK',
-        'icon' => 'vk.png',
+        'name' => 'WhatsApp',
+        'icon' => 'Whatsapp.svg',
+        'color' => '#BDFBA0'
     ],
     [
-        'name' => 'WHATSAPP',
-        'icon' => 'whatsapp.png',
+        'name' => 'TELEGRAM',
+        'icon' => 'Telegram.svg',
+        'color' => '#B3E6FF'
+    ],
+    [
+        'name' => 'VK.COM',
+        'icon' => 'Vk.svg',
+        'color' => '#0194FF'
+    ],
+    [
+        'name' => 'Spotify',
+        'icon' => 'Spotifi.svg',
+        'color' => '#63B861'
     ],
 ];
-$i = 0;?>
+?>
 
 <?php foreach ($icons as $value) { ?>
     <?php if (!empty($arResult[$value['name']])) { ?>
-        <a target="_blank" href="<?=$arResult[$value['name']]?>">
-            <img src="<?=SITE_TEMPLATE_PATH?>/img/<?=$value['icon']?>"/>
+        <a class="footer-element" target="_blank" href="<?=$arResult[$value['name']]?>">
+            <img src="<?=SITE_TEMPLATE_PATH?>/img/svg/<?=$value['icon']?>"/>
+            <span style="margin-left: 20px; font-size: 13px; font-family: 'gilroyMedium'; color: <?=$value['color']?>"><?=$value['name']?></span>
         </a>
     <?php }?>
 <?php } ?>

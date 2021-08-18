@@ -1,31 +1,32 @@
 <?php
 $aMenuLinks = Array(
     Array(
-        "Обратная связь",
-        "/company_contacts/",
+        "Бренды",
+        "/brands/",
         Array(),
         Array(),
         ""
     ),
     array(
-        'Возврат товара',
-        '/company_repayment/',
+        'Бонусная программа',
+        '/company_bonus/',
         array(),
         array(),
         ''
     ),
-    Array(
-        'Карта сайта',
-        '/search/map.php',
+    array(
+        'Способы оплаты',
+        '/company_payment/',
         array(),
         array(),
         ''
     ),
-    Array(
-        'Наши сексологи',
+    array(
+        'Партнерская программа',
         '#',
         array(),
         array(),
         ''
     ),
 );
+?>

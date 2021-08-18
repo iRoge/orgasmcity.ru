@@ -14,5 +14,7 @@
 $this->setFrameMode(true);
 ?>
 <? foreach ($arResult as $arItem): ?>
-	<a href="<?= $arItem['LINK'] ?>"><?= $arItem['TEXT'] ?></a></li>
+    <a class="footer-element center-footer-element" target="_blank" href="<?=$arItem['LINK']?>">
+        <?=$arItem['TEXT']?>
+    </a>
 <? endforeach; ?>

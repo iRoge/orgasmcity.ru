@@ -11,87 +11,91 @@
 <?php endif; ?>
 <div class="footer col-xs-12">
     <div class="main">
-        <div class="col-lg-3">
+        <div class="footer-block col-lg-3 col-md-3 col-sm-3">
             <?php $APPLICATION->IncludeComponent(
                 "likee:social",
                 "footer",
-                array(
+                [
                     "INSTAGRAM" => "https://www.instagram.com/orgasmcity.ru/",
-                    "VK" => "https://vk.com/club205704529",
+                    "VK.COM" => "https://vk.com/club205704529",
                     "TELEGRAM" => "https://t.me/Orgasmcity",
-                    "WHATSAPP" => "https://wa.me/79601452548",
+                    "WhatsApp" => "https://wa.me/79601452548",
+                    "Spotify" => "#",
                     "COMPONENT_TEMPLATE" => "footer",
-                ),
+                ],
                 false
             ); ?>
         </div>
-        <div class="col-lg-2">
-
+        <div class="footer-block col-lg-2 col-md-2 col-sm-2">
+            <h4>Информация</h4>
+            <?php $APPLICATION->IncludeComponent(
+                'bitrix:menu',
+                'footer',
+                array(
+                    'COMPONENT_TEMPLATE' => '.default',
+                    'ROOT_MENU_TYPE' => 'footer_1',
+                    'MENU_CACHE_TYPE' => 'Y',
+                    'MENU_CACHE_TIME' => '604800',
+                    'MENU_CACHE_USE_GROUPS' => 'Y',
+                    'MENU_CACHE_GET_VARS' => array(),
+                    'MAX_LEVEL' => '1',
+                    'CHILD_MENU_TYPE' => 'left',
+                    'USE_EXT' => 'N',
+                    'DELAY' => 'N',
+                    'ALLOW_MULTI_SELECT' => 'N'
+                )
+            ); ?>
         </div>
-        <div class="col-lg-2">
-
+        <div class="footer-block col-lg-2 col-md-2 col-sm-2">
+            <h4>Поддержка</h4>
+            <?php $APPLICATION->IncludeComponent(
+                'bitrix:menu',
+                'footer',
+                array(
+                    'COMPONENT_TEMPLATE' => '.default',
+                    'ROOT_MENU_TYPE' => 'footer_2',
+                    'MENU_CACHE_TYPE' => 'Y',
+                    'MENU_CACHE_TIME' => '604800',
+                    'MENU_CACHE_USE_GROUPS' => 'Y',
+                    'MENU_CACHE_GET_VARS' => array(),
+                    'MAX_LEVEL' => '1',
+                    'CHILD_MENU_TYPE' => 'left',
+                    'USE_EXT' => 'N',
+                    'DELAY' => 'N',
+                    'ALLOW_MULTI_SELECT' => 'N'
+                )
+            ); ?>
         </div>
-        <div class="col-lg-2">
-
+        <div class="footer-block col-lg-2 col-md-2 col-sm-2">
+            <h4>Дополнительно</h4>
+            <?php $APPLICATION->IncludeComponent(
+                'bitrix:menu',
+                'footer',
+                array(
+                    'COMPONENT_TEMPLATE' => '.default',
+                    'ROOT_MENU_TYPE' => 'footer_3',
+                    'MENU_CACHE_TYPE' => 'Y',
+                    'MENU_CACHE_TIME' => '604800',
+                    'MENU_CACHE_USE_GROUPS' => 'Y',
+                    'MENU_CACHE_GET_VARS' => array(),
+                    'MAX_LEVEL' => '1',
+                    'CHILD_MENU_TYPE' => 'left',
+                    'USE_EXT' => 'N',
+                    'DELAY' => 'N',
+                    'ALLOW_MULTI_SELECT' => 'N'
+                )
+            ); ?>
         </div>
-        <div class="col-lg-3">
-
+        <div class="footer-block footer-right-block col-lg-3 col-md-3 col-sm-3">
+            <h4>Контактные данные</h4>
+            <div class="footer-element right-footer-element"><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></div>
+            <div class="footer-element right-footer-element"><a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a><br><span>Круглосуточно</span></div>
+            <div class="footer-element right-footer-element"><span>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</span></div>
+            <div class="footer-element right-footer-element"><span>Сайт только для взрослых</span><img style="margin-left: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/18plus.svg" alt="18+"></div>
         </div>
     </div>
-</div>
-
-
-
-
-<div class="footer col-xs-12 hidden-lg hidden-md hidden-sm">
-    <div class="main">
-        <div class="row ones" style="padding: 0 15px;">
-            <div class="col-xs-12">
-                <div class="col-md-5 col-sm-8">
-                    <div class="col-xs-6">
-
-                    </div>
-                    <div class="col-xs-6">
-                        <h4>Город Огразма</h4>
-                        <?php $APPLICATION->IncludeComponent(
-                            'bitrix:menu',
-                            'footer',
-                            array(
-                                'COMPONENT_TEMPLATE' => '.default',
-                                'ROOT_MENU_TYPE' => 'footer_2',
-                                'MENU_CACHE_TYPE' => 'Y',
-                                'MENU_CACHE_TIME' => '604800',
-                                'MENU_CACHE_USE_GROUPS' => 'Y',
-                                'MENU_CACHE_GET_VARS' => array(),
-                                'MAX_LEVEL' => '1',
-                                'CHILD_MENU_TYPE' => 'left',
-                                'USE_EXT' => 'N',
-                                'DELAY' => 'N',
-                                'ALLOW_MULTI_SELECT' => 'N'
-                            )
-                        ); ?>
-                    </div>
-                    <div style="clear: both"></div>
-                </div>
-                <div class="col-md-7 col-sm-4">
-                    <div class="col-md-5 col-md-offset-0 col-sm-9 col-sm-offset-3">
-                        <div class="col-sm-12 col-xs-6 num2">
-                            <p>Обратная связь<a href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a></p>
-                            <p><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></p>
-                            <p>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</p>
-                        </div>
-                        <div class="col-xs-12">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 bottom-mob">
-                <p class="copy-shop-mob">
-                    <?= date('Y'); ?> ©Интернет-магазин секс товаров "Город Оргазма". Все права защищены.
-                </p>
-            </div>
-        </div>
+    <div class="rights-line">
+        <?=date('Y');?> ©Интернет-магазин "Город Оргазма". Все права защищены.
     </div>
 </div>
 

@@ -1,0 +1,12 @@
+.center-footer-element {
+    font-size: 13px;
+    font-family: 'gilroyRegular';
+    text-decoration: none;
+    text-underline: none;
+    color: #FFFFFF;
+}
+
+.center-footer-element:hover {
+    text-decoration: none;
+    color: #16304E;
+}

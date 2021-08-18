@@ -18,6 +18,11 @@
     font-family: 'gilroyMedium';
 }
 
+@font-face {
+    src: url('../fonts/gilroy-thin.woff2');
+    font-family: 'gilroyThin';
+}
+
 
 .is-hidden {
     display: none;
@@ -1879,6 +1884,7 @@ a.in-zagolovok {
 .footer {
     min-height: 100px !important;
     background-color: #654670;
+    padding-top: 30px;
 }
 
 .num2 {
@@ -2005,29 +2011,12 @@ a.in-zagolovok {
     background: url('../img/checkbox-checked.png');
 }
 
-
 .bottom {
     padding-top: 30px;
     padding-bottom: 20px;
     font-size: 14px;
     font-family: 'gilroyRegular';
     color: #b3b2b2;
-}
-
-.copy-shop {
-    float: left;
-}
-
-.copy-razrab {
-    float: right;
-    text-align: right;
-}
-
-.lookbook {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    border-top: 1px solid #e4e4e4;
-    background: none;
 }
 
 .breadcrumbs {
@@ -6379,11 +6368,6 @@ label.color-label {
         margin-top: 10px;
     }
 
-    .footer {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-
     .footer > .main {
         width: 100% !important;
         margin-left: 0% !important
@@ -7488,6 +7472,7 @@ label.color-label {
 
     .main-search-form {
         width: 65%!important;
+        margin-left: 15px;
     }
 
     .blue-menu {

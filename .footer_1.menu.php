@@ -2,6 +2,20 @@
 /** @global array $aMenuLinks */
 
 $aMenuLinks = array(
+    Array(
+        "О компании",
+        "/company_about/",
+        Array(),
+        Array(),
+        ""
+    ),
+    array(
+        'Информация о доставке',
+        '/company_delivery/',
+        array(),
+        array(),
+        ''
+    ),
     array(
         'Гарантия низкой цены',
         '/company_price_garanty/',
@@ -10,45 +24,10 @@ $aMenuLinks = array(
         ''
     ),
     array(
-        'Гарантия анонимности',
+        'Защита анонимности',
         '/company_anonymity/',
         array(),
         array(),
-        ''
-    ),
-    array(
-        'Доставка',
-        '/company_delivery/',
-        array(),
-        array(),
-        ''
-    ),
-    array(
-        'Оплата',
-        '/company_payment/',
-        array(),
-        array(),
-        ''
-    ),
-    array(
-        'Возврат',
-        '/company_repayment/',
-        array(),
-        array(),
-        ''
-    ),
-//    array(
-//        'Вопрос-ответ',
-//        '/faq/',
-//        array(),
-//        array("itemclass" => "hideincart"),
-//        ''
-//    ),
-    array(
-        'Бонусная программа',
-        '/company_bonus/',
-        array(),
-        array("itemclass" => "forcart"),
         ''
     ),
 );
