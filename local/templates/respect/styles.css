@@ -1287,6 +1287,11 @@ jdiv[class^="popupBlock_"] {
     width: 100%;
 }
 
+a.footer-element:hover {
+    text-underline: none;
+    text-decoration: none;
+}
+
 .footer-block h4 {
     font-weight: 600;
     font-size: 18px;
@@ -1313,6 +1318,7 @@ jdiv[class^="popupBlock_"] {
 
 .right-footer-element a:hover {
     text-decoration: none;
+    text-underline: none;
     color: #16304E;
 }
 

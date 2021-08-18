@@ -8,5 +8,6 @@
 
 .center-footer-element:hover {
     text-decoration: none;
+    text-underline: none;
     color: #16304E;
 }
