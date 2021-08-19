@@ -18,13 +18,13 @@ $(document).ready(function() {
             {
                 breakpoint: 1280,
                 settings: {
-                    slidesToShow: 4,
-                    slidesToScroll : 4,
+                    slidesToShow: 5,
+                    slidesToScroll : 5,
                     infinite: true
                 }
             },
             {
-                breakpoint: 993,
+                breakpoint: 992,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll : 3,
@@ -32,7 +32,7 @@ $(document).ready(function() {
                 }
             },
             {
-                breakpoint: 414,
+                breakpoint: 600,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll : 2,
@@ -40,10 +40,18 @@ $(document).ready(function() {
                 }
             },
             {
+                breakpoint: 400,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll : 1,
+                    infinite: true
+                }
+            },
+            {
                 breakpoint: 1,
                 settings: {
-                    slidesToShow: 2,
-                    slidesToScroll : 2,
+                    slidesToShow: 1,
+                    slidesToScroll : 1,
                     infinite: true
                 }
             },

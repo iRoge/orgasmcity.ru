@@ -21,6 +21,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
     public function executeComponent()
     {
         $this->arResult['ITEMS'] = $this->getItems();
+        $this->arResult['FAVORITES_PROD_IDS'] = $this->getFavorites();
 
         $this->includeComponentTemplate();
     }
@@ -52,9 +53,9 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         }
 
         if ($GLOBALS['device_type'] == 'mobile') {
-            $numImgs = 8;
-        } else {
             $numImgs = 12;
+        } else {
+            $numImgs = 15;
         }
         if (count($arItems) > $numImgs) {
             $randKeys = array_rand($arItems, $numImgs);
@@ -153,6 +154,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             "NAME",
             "CODE",
             "PROPERTY_BESTSELLER",
+            "PROPERTY_NEW",
             "DETAIL_PICTURE"
         ];
 
@@ -212,5 +214,20 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         }
 
         return $arProducts;
+    }
+
+    private function getFavorites()
+    {
+        $arFavoritesIds = [];
+        global $USER;
+        if ($USER->IsAuthorized()) { // Для авторизованного получаем из User
+            $arUser = $USER->GetByID($USER->GetID())->Fetch();
+            $arFavoritesIds = array_flip($arUser['UF_FAVORITES']);
+        } else {
+            if (isset($_COOKIE['favorites'])) {
+                $arFavoritesIds = unserialize($_COOKIE['favorites']);
+            }
+        }
+        return $arFavoritesIds;
     }
 }

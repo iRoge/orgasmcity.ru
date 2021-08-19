@@ -417,14 +417,14 @@ $(document).ready(function () {
         onlinePayment($(this));
     });
 
-    $(document).on('click', '.heart__btn', function () {
+    $(document).on('click', '.js-favour-heart', function () {
         let button = $(this);
         button.toggleClass('active');
         BX.ajax.post('/catalog/favorites/', 'changeFavourite=Y&ID=' + $(this).data('id'), function (response) {
             response = JSON.parse(response);
             if (response.res == 'error') {
                 button.toggleClass('active');
-                Popup.show('<div style="text-align: center; padding: 0px 40px;"><article style="font-size: 1.4em;">' + response.text + '</article></div>');
+                Popup.show('<div style="text-align: center; padding: 0 40px;"><article style="font-size: 1.4em;">' + response.text + '</article></div>');
             } else {
                 let count = Number($('.count--heart.in-full').text());
                 if (response.res == 'add') {

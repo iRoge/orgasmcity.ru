@@ -76,7 +76,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                             <? if (!empty($arResult['ARTICLE'])) : ?>
                                 <p class="grey-cart"><?= Loc::getMessage("ARTICLE_PREFIX") ?><?= $arResult['ARTICLE'] ?></p>
                             <? endif ?>
-                            <button type="button" class="heart__btn<?=!empty($arResult['FAVORITES']) ? ' active' : '' ?>" data-id="<?= $arResult['ID'] ?>">
+                            <button type="button" class="heart__btn<?=!empty($arResult['FAVORITES']) ? ' active' : '' ?> js-favour-heart" data-id="<?= $arResult['ID'] ?>">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
                                                                         <g>
                                                                             <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3

@@ -148,12 +148,12 @@ global $DEVICE;
         'orgasmcity:products.line',
         'default',
         [
-            'TITLE' => 'Хиты продаж',
+            'TITLE' => 'Выбор клиентов',
             'FILTERS' => [
                 "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
                 "=PROPERTY_BESTSELLER_VALUE" => "1",
-                "PRICE_FROM" => 1000,
+                "PRICE_FROM" => 500,
             ],
         ]
     );

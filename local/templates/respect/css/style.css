@@ -7560,14 +7560,12 @@ label.color-label {
     height: 50px;
     line-height: 3rem;
     vertical-align: middle;
-    background-color: #ff5e5e;
     color: #ffffff;
+    background: none;
     cursor: pointer;
     opacity: 0;
     overflow: hidden;
     border-radius: 50%;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    color: #fff;
     z-index: 5;
     transition: opacity 0.2s linear 0.2s;
 }
@@ -7579,7 +7577,7 @@ label.color-label {
 .to-top-toggle:hover {
     text-decoration: none;
     color: #fff;
-    background-color: red;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .to-top-toggle:focus {
@@ -8134,35 +8132,14 @@ label.color-label {
     color: red;
 }
 
-.slider > .main {
-    padding: 0 30px;
-}
 
-.slider .main .slides .slick-arrow {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background-color: rgba(237, 237, 237, 0.5);
-    background-position: center;
-    opacity: 0;
-    transition: background-color 0.3s, opacity 0.3s;
-}
-
-.slider .main .slides .slick-arrow:hover {
+.slick-arrow:hover {
     background-color: rgba(237, 237, 237, 0.9);
 }
 
-.slider .main .slides:hover .slick-arrow {
+.slick-arrow {
     opacity: 1;
-}
-
-.slider .main .slides .slick-prev {
-    left: 20px;
-    z-index: 2;
-}
-
-.slider .main .slides .slick-next {
-    right: 20px;
+    background-position: center!important;
 }
 
 @media (max-width: 991px) {
@@ -8186,10 +8163,6 @@ label.color-label {
 
     .input-group--feedback label {
         margin-top: 27px;
-    }
-
-    .slider > .main {
-        padding: 0;
     }
 }
 

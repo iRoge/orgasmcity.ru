@@ -6,6 +6,7 @@ class PriceUtils
 {
     public static function getPrice($basePrice, $rrcPrice)
     {
+        $rrcPrice = $rrcPrice*1.1;
         $markupPercent = ($rrcPrice - $basePrice) * 100 / $basePrice;
 
         if ($rrcPrice < 1000) {

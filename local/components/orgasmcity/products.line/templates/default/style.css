@@ -146,9 +146,11 @@
     text-align: center;
     margin-bottom: 20px;
     margin-top: 20px;
-    font-size: 45px;
-    color: #4e4e4e;
-    font-family: 'vollkornsemibold';
+    color: #000000;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 48px;
+    font-family: 'gilroySemiBold';
 }
 
 #recommendeds-slider {
@@ -161,4 +163,184 @@
     top: 0;
     z-index: 1;
     display: block!important;
+}
+
+.product-card-wrapper {
+    background: #FFFFFF;
+    position: relative;
+    border-radius: 10px;
+    height: 375px!important;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+
+a.product-href-wrapper {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-decoration: none;
+    text-underline: none;
+    color: black;
+}
+
+a.product-href-wrapper:hover {
+    text-decoration: none;
+    text-underline: none;
+    color: black;
+}
+
+.product-img-wrapper {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.product-img {
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.product-title {
+    font-family: 'gilroyRegular';
+    font-size: 15px;
+    line-height: 23px;
+    text-align: center;
+    height: 100px;
+    padding: 15px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+.product-icons-wrap {
+    display: flex;
+    position: absolute;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    top: 0;
+    right: 0;
+    padding: 0 7px;
+    z-index: 1;
+    max-width: 90px;
+}
+
+.sale-tooltip {
+    height: 22px;
+    width: 40px;
+    background: #F83801;
+    border-radius: 15px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    font-family: "gilroySemiBold";
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-top: 5px;
+}
+
+.heart__btn {
+    background-color: transparent;
+    border: none;
+    z-index: 10;
+    left: 7px;
+    top: 7px;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.heart__btn.active svg path {
+    fill: #A18CD1;
+}
+
+@media (min-width: 1250px) {
+    .heart__btn:hover svg path {
+        fill: #FBC2EB;
+    }
+}
+
+.heart__btn svg path {
+    height: 25px;
+    fill: #c6c1c1;
+    transition: fill 0.2s;
+}
+
+.product-card {
+    padding: 0 15px;
+}
+
+.product-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 55px;
+    width: 100%;
+    padding: 5px 10px;
+}
+
+.product-card-old-price {
+    width: 100%;
+    font-family: 'gilroySemiBold';
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    text-decoration-line: line-through;
+    color: #000000;
+}
+
+.product-card-price {
+    width: 100%;
+    font-family: 'gilroySemiBold';
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    color: #000000;
+}
+
+.price-red {
+    color: #A90707;
+}
+
+.product-card-buy-btn {
+    height: 100%;
+    width: 45%;
+    background: linear-gradient(
+            90deg
+            , #FF0844 0%, #FFB199 100%);
+    border-radius: 15px;
+    border-color: transparent;
+    border-style: hidden;
+    display: block;
+    color: white;
+    font-size: 130%;
+    line-height: 12px;
+    font-family: 'gilroyMedium';
+}
+
+.product-card-price-wrapper {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap
 }
