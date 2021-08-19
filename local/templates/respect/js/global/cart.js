@@ -4,7 +4,7 @@
   
       function Cart() {
         this._element = $('<a class="cart-button" href="/cart">').appendTo($('body'));
-        this._element.append($('<img class="cart-button__icon" src="/local/templates/respect/img/cart-bestsel-white.png" alt="Корзина" width="22" height="auto">'));
+        this._element.append($('<img class="cart-button__icon" src="/local/templates/respect/img/svg/cartWhite.svg" alt="Корзина" width="26" height="auto">'));
         $('<span class="cart-button__counter-outer"></span>').appendTo(this._element).append($('<span class="cart-button__counter"></span>'));
         $(window).on('scroll', _.bind(this._scrollHandler, this));
         $('.shortcut-informer.count').bind("DOMSubtreeModified",function(){

@@ -21,8 +21,9 @@
     font-size: 40px;
     font-weight: 600;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 60px;
     margin-bottom: 15px;
+    color: #000000;
 }
 
 .advantages-section-wrapper {
@@ -33,6 +34,7 @@
     display: flex!important;
     justify-content: space-between;
     align-items: center;
+    padding: 0 15px;
 }
 
 .advantages-element {

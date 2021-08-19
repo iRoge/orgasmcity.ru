@@ -1261,8 +1261,10 @@ jdiv[class^="popupBlock_"] {
     font-size: 40px;
     font-weight: 600;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 60px;
     margin-bottom: 15px;
+    line-height: 48px;
+    color: #000000;
 }
 
 .how-we-work-wrapper {

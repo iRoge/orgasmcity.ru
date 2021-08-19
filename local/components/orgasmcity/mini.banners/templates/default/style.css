@@ -4,6 +4,11 @@
     align-items: center;
     margin-top: 25px;
     margin-bottom: 25px;
+    padding: 0 15px;
+}
+
+.banners-list-element {
+
 }
 
 @media (min-width:767px) and (max-width:992px) {

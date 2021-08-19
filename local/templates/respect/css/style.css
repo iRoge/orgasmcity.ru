@@ -7503,7 +7503,7 @@ label.color-label {
     height: 50px;
     line-height: 3rem;
     vertical-align: middle;
-    background-color: #ff5e5e;
+    background: #A48ED2;
     cursor: pointer;
     opacity: 0;
     border-radius: 50%;
@@ -7523,7 +7523,8 @@ label.color-label {
 .cart-button:hover {
     text-decoration: none;
     color: #fff;
-    background-color: red;
+    background: #654670;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .cart-button__icon {
