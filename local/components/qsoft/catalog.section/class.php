@@ -84,6 +84,7 @@ class QsoftCatalogSection extends ComponentHelper
         "PROPERTY_DIAMETER",
         "PROPERTY_LENGTH",
         "PROPERTY_BESTSELLER",
+        "PROPERTY_NEW",
         "PROPERTY_VENDOR",
         "PROPERTY_VOLUME",
         "PROPERTY_MATERIAL",
