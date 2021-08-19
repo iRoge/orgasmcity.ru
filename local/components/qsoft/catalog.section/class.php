@@ -569,6 +569,7 @@ class QsoftCatalogSection extends ComponentHelper
                 "PROPERTY_LENGTH_VALUE" => $arItem["PROPERTY_LENGTH_VALUE"],
                 "PROPERTY_BESTSELLER_VALUE" => $arItem["PROPERTY_BESTSELLER_VALUE"],
                 "PROPERTY_VENDOR_VALUE" => $arItem["PROPERTY_VENDOR_VALUE"],
+                "PROPERTY_NEW_VALUE" => $arItem["PROPERTY_NEW_VALUE"],
                 "PROPERTY_VOLUME_VALUE" => $arItem["PROPERTY_VOLUME_VALUE"],
                 "PROPERTY_MATERIAL_VALUE" => $arItem["PROPERTY_MATERIAL_VALUE"],
                 "PROPERTY_COLLECTION_VALUE" => $arItem["PROPERTY_COLLECTION_VALUE"],

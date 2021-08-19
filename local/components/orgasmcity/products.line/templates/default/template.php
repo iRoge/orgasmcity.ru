@@ -50,7 +50,9 @@ $this->setFrameMode(true);
                         <?php } ?>
                         <span class="product-card-price<?=$arItem['DISCOUNT'] ? ' price-red' : ''?>"><?=number_format($arItem['PRICE'], 0, '', ' ');?> ₽</span>
                     </div>
-                    <button class="product-card-buy-btn">Купить</button>
+                    <div class="product-card-buy-btn-wrapper">
+                        <button class="product-card-buy-btn">Купить</button>
+                    </div>
                 </div>
             </div>
         </div>

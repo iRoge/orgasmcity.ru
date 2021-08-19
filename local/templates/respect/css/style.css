@@ -5865,30 +5865,6 @@ label.color-label {
             margin-bottom: 30px;
         }
 
-        .breadcrumbs.in-catalog {
-            margin-left: 5%;
-            margin-bottom: 15px;
-        }
-
-        .catalog__content .catalog__content-col--main {
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        .catalog .catalog__settings-col--left {
-            padding-left: 0;
-        }
-
-        .catalog-section-description {
-            margin-left: 15px;
-            margin-right: 15px;
-            width: auto;
-        }
-
-        .catalog .catalog__settings-col--right {
-            padding-right: 0;
-        }
-
         .from-ul {
             margin-left: 0;
         }

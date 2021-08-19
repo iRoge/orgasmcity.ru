@@ -380,80 +380,47 @@ if (!$arResult['IS_AJAX']) {
                                     </div>
                                 <?php endif ?>
                                 <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
-                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) : ?>
-                                        <!-- card -->
-                                        <div class="cards__item">
-                                            <div class="card">
-                                                <div class="btn-div">
-                                                    <?php if ($arItem['PRICE'] >= $freeDeliveryMinSum) { ?>
-                                                        <img class="props-icon-img free-delivery" alt="Бесплатная доставка" src="/img/delivery_free.svg">
-                                                        <div class="icon__tooltip" style="left: 0">
-                                                            Бесплатная доставка для корзин от <?=$freeDeliveryMinSum?> рублей
-                                                        </div>
-                                                    <?php } ?>
-                                                    <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES_PROD_IDS'][$arItem['ID']]) ? ' active' : '' ?> js-favour-heart" data-id="<?= $arItem['ID'] ?>">
-                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
-                                                                        <g>
-                                                                            <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
-                                                                                   C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
-                                                                                   C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
-                                                                                   z"/>
-                                                                        </g>
-                                                                    </svg>
-                                                    </button>
+                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) {?>
+                                        <div class="product-card col-lg-3 col-md-4 col-sm-4 col-xs-6">
+                                            <div class="product-card-wrapper">
+                                                <div class="product-icons-wrap">
+                                                    <!--                            <img src="" alt="">-->
                                                     <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
-                                                        <img class="props-icon-img hit-img" alt="Хит продаж" src="/img/hit.png">
-                                                        <div class="icon__tooltip" style="right: 0">
-                                                            Хит продаж
-                                                        </div>
+                                                        <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
+                                                    <?php } ?>
+                                                    <?php if ($arItem['PROPERTY_NEW_VALUE']) { ?>
+                                                        <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
+                                                    <?php } ?>
+                                                    <?php if ($arItem['DISCOUNT']) { ?>
+                                                        <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                                                        <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                                                     <?php } ?>
                                                 </div>
-                                                <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="card__img" target="_blank">
-                                                    <div class="card__img-box">
-                                                        <?php if ($arItem['DISCOUNT_WITHOUT_BONUS']) {?>
-                                                        <img class="sale-img" src="/img/sale.png" alt="Скидка">
-                                                        <?php }?>
-                                                        <img
-                                                            <?php if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
-                                                                src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
-                                                                data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
-                                                            <?php else : ?>
-                                                                src="<?= $arItem['DETAIL_PICTURE'] ;?>"
-                                                                data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
-                                                            <?php endif; ?>
-                                                            class="card__img-pic pic-active pic-one"
-                                                            alt="<?= $arItem['NAME'] ?>"
-                                                        >
+                                                <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES_PROD_IDS'][$arItem['ID']]) ? ' active' : '' ?> js-favour-heart" data-id="<?=$arItem['ID']?>">
+                                                    <svg class="" width="30" height="30" viewBox="0 0 23 22" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 5.86414C0 -0.440483 8.73003 -2.77704 11.4163 4.52139C14.1025 -2.77704 22.8325 -0.440483 22.8325 5.86414C22.8325 12.714 11.4163 21.3989 11.4163 21.3989C11.4163 21.3989 0 12.714 0 5.86414Z" fill="black"/>
+                                                    </svg>
+                                                </button>
+                                                <a target="_blank" class="product-href-wrapper" href="<?=$arItem["DETAIL_PAGE_URL"]?>">
+                                                    <div class="product-img-wrapper">
+                                                        <img class="product-img" src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
                                                     </div>
-                                                    <div class="card__info">
-                                                        <div class="card__meta">
-                                                            <div class="card__prices">
-                                                                <div class="card__prices-top">
-                                                                    <span class="card__price <?= $arItem['PRICE'] < $arItem['OLD_PRICE'] ? " card__price--discount" : "" ?>">
-                                                                        <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
-                                                                    </span>
-                                                                    <?php if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
-                                                                        <span class="card__discount <?=$arResult['HAS_USER_DISCOUNT'] ? 'discount-yellow' : ''?>">
-                                                                            -<?= $arItem['DISCOUNT'] ?>%
-                                                                        </span>
-                                                                    <?php endif ?>
-                                                                </div>
-                                                                <?php if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
-                                                                    <span class="card__price-old" style="display:block;"><?= number_format($arItem['OLD_PRICE'], 0, '', ' '); ?> р.</span>
-                                                                <?php endif ?>
-                                                            </div>
-                                                            <?php if ($USER->GetID() == 1) {?>
-                                                                <span>Закупка <?=$arItem['WHOLEPRICE']?>р.</span>
-                                                                <span>Наценка на закупку <?=(int)(($arItem['PRICE'] - $arItem['WHOLEPRICE'])*100/$arItem['WHOLEPRICE'])?>%</span>
-                                                            <?php } ?>
-                                                        </div>
-                                                        <span class="card__title"><?= $arItem['NAME'] ?></span>
-                                                    </div>
+                                                    <span class="product-title"><?=$arItem['NAME']?></span>
                                                 </a>
+                                                <div class="product-card-bottom">
+                                                    <div class="product-card-price-wrapper">
+                                                        <?php if ($arItem['DISCOUNT']) { ?>
+                                                            <span class="product-card-old-price"><?=number_format($arItem['OLD_PRICE'], 0, '', ' ');?> ₽</span>
+                                                        <?php } ?>
+                                                        <span class="product-card-price<?=$arItem['DISCOUNT'] ? ' price-red' : ''?>"><?=number_format($arItem['PRICE'], 0, '', ' ');?> ₽</span>
+                                                    </div>
+                                                    <div class="product-card-buy-btn-wrapper">
+                                                        <button class="product-card-buy-btn">Купить</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <!-- /card -->
-                                    <?php endwhile ?>
+                                    <?php } ?>
                                 <?php else : ?>
                                     <div class="page-massage <?= !empty($arResult['TAGS']) ? 'recomendation' : '' ?>">
                                         <?php if (CSite::InDir('/catalog/favorites/')) : ?>
