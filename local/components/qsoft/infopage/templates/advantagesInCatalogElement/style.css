@@ -1,5 +1,5 @@
 .blue {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firamedium';
     font-size: 16px;
     /*margin-top: 25px!important;*/
@@ -59,6 +59,6 @@
     /*margin-bottom: 70px;*/
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     padding-top: 15px;
 }

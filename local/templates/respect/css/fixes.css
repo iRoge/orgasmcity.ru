@@ -21,7 +21,7 @@
 
 /* карточка товара */
 .sale-sela.mlt {
-	background: #4e4e4e;
+	background: #000000;
 }
 
 /* popup */
@@ -113,7 +113,7 @@ body > .popup h3 {
 
 body > .popup--discont h3 {
   font-family: 'vollkornsemibold';
-  color: #4e4e4e;
+  color: #000000;
   text-align: center;
   display: block;
   margin-bottom: 50px;

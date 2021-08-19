@@ -109,7 +109,7 @@
 }
 
 .purchase-show-block .purchase-show-text {
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     font-family: gilroyRegular;
     font-weight: 500;
@@ -203,7 +203,7 @@ html, body {
 
 .table-size__heading {
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     display: block;
     margin-bottom: 50px;
@@ -331,7 +331,7 @@ html, body {
 }
 
 .from-ul-li-ul a {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
 }
@@ -364,7 +364,7 @@ html, body {
     display: block;
     width: 100%;
     text-align: left;
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firaregular';
 }
 
@@ -395,7 +395,7 @@ html, body {
 
 .mail-div h2, .popup h2 {
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     display: block;
     margin-bottom: 50px;
@@ -472,7 +472,7 @@ html, body {
 }
 
 .auth-div-full input[type="radio"]:checked + label {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .auth-div-full {
@@ -511,7 +511,7 @@ html, body {
 }
 
 .phone-top-link:hover {
-    color: #4e4e4e;
+    color: #000000;
     font-weight: bold;
 }
 
@@ -625,7 +625,7 @@ html, body {
 
 .auth-div-full h2 {
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     display: block;
     margin-bottom: 50px;
@@ -634,7 +634,7 @@ html, body {
 
 .auth-div-full2 h2 {
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     display: block;
     margin-bottom: 50px;
@@ -795,7 +795,7 @@ html, body {
     display: block;
     padding: 0px;
     margin-bottom: 50px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .pod-auth {
@@ -830,14 +830,14 @@ html, body {
 .thanx h2 {
     font-family: 'vollkornsemibold';
     font-size: 40px;
-    color: #4e4e4e;
+    color: #000000;
     margin-top: 50px;
 }
 
 .thanx p {
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .mail2 {
@@ -861,14 +861,14 @@ html, body {
 .add-korzina h2 {
     font-family: 'vollkornsemibold';
     font-size: 40px;
-    color: #4e4e4e;
+    color: #000000;
     margin-top: 50px;
 }
 
 .add-korzina p {
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .img8 {
@@ -894,7 +894,7 @@ html, body {
 .name8 p {
     font-family: 'gilroyRegular';
     font-size: 14px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .name8 p:nth-of-type(1) {
@@ -910,7 +910,7 @@ html, body {
 
 .size8 p {
     padding: 10px 13px;
-    background: #4e4e4e;
+    background: #000000;
     color: #fff;
     display: inline-block
 }
@@ -944,7 +944,7 @@ html, body {
 
 .after-hr:nth-of-type(1) {
     float: left;
-    background: #4e4e4e;
+    background: #000000;
 }
 
 .after-hr:nth-of-type(2) {
@@ -962,7 +962,7 @@ html, body {
     height: 40px; /* Задаем высоту кнопки выбора файла */
     background: #e7e7e7;
     padding: 8px 10px;
-    color: #4e4e4e;
+    color: #000000;
     text-align: left;
     margin-bottom: 15px;
 }
@@ -1273,7 +1273,7 @@ html, body {
 }
 
 .right-hide-menu a {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firaregular';
     font-size: 16px !important;
     margin-top: 10px;
@@ -1343,7 +1343,7 @@ html, body {
 }
 
 .left-hide-menu a {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px !important;
     margin-top: 8px;
@@ -1501,7 +1501,7 @@ html, body {
 
 .cat-one p {
     font-family: 'firaregular';
-    color: #4e4e4e !important;
+    color: #000000 !important;
     font-size: 17px;
     text-transform: uppercase;
     text-decoration: none;
@@ -1602,7 +1602,7 @@ html, body {
 }
 
 .zagolovok {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'vollkornsemibold';
     font-size: 45px;
     text-align: center;
@@ -1698,7 +1698,7 @@ a.in-zagolovok {
 .name-sel {
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     min-height: 45px
 }
 
@@ -1711,7 +1711,7 @@ a.in-zagolovok {
 .zagolovok-hide-menu {
     font-family: 'vollkornsemibold';
     font-size: 18px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .zagolovok-hide-menu a {
@@ -1740,7 +1740,7 @@ a.in-zagolovok {
 .price-sel {
     float: left;
     font-family: 'firabold';
-    color: #4e4e4e;
+    color: #000000;
     font-size: 17px;
 }
 
@@ -1772,7 +1772,7 @@ a.in-zagolovok {
     color: white;
     font-family: 'gilroyRegular';
     font-size: 14px;
-    background: #4e4e4e;
+    background: #000000;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-left: 15px;
@@ -1873,7 +1873,7 @@ a.in-zagolovok {
     font-size: 16px;
     width: 80%;
     margin: -10px auto 0;
-    color: #4e4e4e;
+    color: #000000;
     line-height: 30px;
 }
 
@@ -1893,7 +1893,7 @@ a.in-zagolovok {
 
 .mailsender h4 {
     font-family: 'firaregular';
-    color: #4e4e4e;
+    color: #000000;
     margin-bottom: 25px;
     text-transform: uppercase;
     margin-top: 0;
@@ -2034,7 +2034,7 @@ a.in-zagolovok {
 }
 
 .breadcrumbs a {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .lookbook-slider {
@@ -2083,7 +2083,7 @@ a.in-zagolovok {
 
 .num1 a:hover, .num2 a:hover {
     text-decoration: none;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .y {
@@ -2129,7 +2129,7 @@ a.in-zagolovok {
     margin-bottom: 70px;
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .out img {
@@ -2209,13 +2209,13 @@ a.in-zagolovok {
 }
 
 .left-catalog a {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
 .left-catalog a:hover {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 
@@ -2278,7 +2278,7 @@ a.in-zagolovok {
 
 .right-catalog li.not-a {
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .right-catalog li a {
@@ -2291,7 +2291,7 @@ a.in-zagolovok {
 }
 
 .right-catalog li.active > p {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .right-catalog li.active {
@@ -2332,7 +2332,7 @@ a.in-zagolovok {
     border-right: none;
     font-weight: normal;
     text-transform: uppercase;
-    color: #4e4e4e !important;
+    color: #000000 !important;
 }
 
 @media (max-width: 1200px) {
@@ -2364,7 +2364,7 @@ a.in-zagolovok {
 .in-left-catalog h3 {
     text-transform: uppercase;
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
@@ -2372,7 +2372,7 @@ a.in-zagolovok {
 }
 
 .in-left-catalog .name-h3 {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .minus, .plus {
@@ -2396,7 +2396,7 @@ a.in-zagolovok {
 .clear-section {
     display: none;
     margin-right: 4px;
-    color: #4e4e4e;
+    color: #000000;
     height: 20px;
     width: 20px;
     vertical-align: top;
@@ -2407,7 +2407,7 @@ a.in-zagolovok {
 
 .clear-section:hover,
 .clear-section:active {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .clear-section__icon {
@@ -2459,15 +2459,15 @@ a.in-zagolovok {
 }
 
 .filters__btn--submit {
-    background: #ff5e5e;
+    background: #654670;
     color: white;
 }
 
 .filters__reset-btn {
     padding: 8px 0;
     background: transparent;
-    color: #4e4e4e;
-    border: 4px solid #ff5e5e;
+    color: #000000;
+    border: 4px solid #654670;
 }
 
 .hide-filter {
@@ -2493,7 +2493,7 @@ a.in-zagolovok {
     margin: 10px 0 10px 0;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     cursor: pointer;
 }
 
@@ -2593,7 +2593,7 @@ a.in-zagolovok {
     margin: 10px 0 10px 0;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     cursor: pointer;
 }
 
@@ -2625,7 +2625,7 @@ a.in-zagolovok {
     margin: 10px 0 10px 0;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     cursor: pointer;
 }
 
@@ -2761,7 +2761,7 @@ a.in-zagolovok {
     float: left;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     cursor: pointer;
 }
 
@@ -2774,7 +2774,7 @@ a.in-zagolovok {
     float: right;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .from input, .to input {
@@ -2785,7 +2785,7 @@ a.in-zagolovok {
     font-family: 'gilroyRegular';
     font-size: 16px;
     margin-left: 10%;
-    color: #4e4e4e;
+    color: #000000;
     width: 60%;
 }
 
@@ -3022,7 +3022,7 @@ a.in-zagolovok {
     margin-top: -6px;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .top-tab input {
@@ -3070,7 +3070,7 @@ a.in-zagolovok {
 
 .rubrics {
     margin-right: 20px;
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     font-family: 'gilroyRegular';
     display: inline-block;
@@ -3095,18 +3095,18 @@ a.in-zagolovok {
     border-radius: 20px;
     margin-right: 15px;
     bottom: 1px;
-    color: #4e4e4e;
+    color: #000000;
     background: #fff;
     border: 1px solid rgba(200, 200, 200, .5);
 }
 
 .news-rub > label:hover {
-    border: 1px solid #4e4e4e !important;
+    border: 1px solid #000000 !important;
 }
 
 .news-rub input[type="radio"]:checked + label {
-    background: #4e4e4e;
-    border: 1px solid #4e4e4e;
+    background: #000000;
+    border: 1px solid #000000;
     color: #fff;
     font-family: 'firabold';
 }
@@ -3118,7 +3118,7 @@ a.in-zagolovok {
     display: block;
     padding: 0px;
     margin-bottom: 50px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 @media (max-width: 700px) {
@@ -3129,7 +3129,7 @@ a.in-zagolovok {
 
 .btn-grey {
     padding: 12px 60px;
-    background: #4e4e4e;
+    background: #000000;
     text-transform: uppercase;
     color: #fff;
     font-family: 'gilroyRegular';
@@ -3160,7 +3160,7 @@ a.in-zagolovok {
     width: 100%;
     background: #fff;
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
     font-size: 14px;
     height: 200px;
     padding: 15px 30px !important;
@@ -3237,7 +3237,7 @@ a.in-zagolovok {
     display: block;
     text-transform: uppercase;
     font-family: 'firamedium';
-    color: #4e4e4e;
+    color: #000000;
     font-size: 18px;
     width: 100%;
     margin: 0;
@@ -3271,7 +3271,7 @@ a.in-zagolovok {
 
 .blue-menu-div-div > ul a /* Anatoliy Mitrofanov 2019-01-15 */
 {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
 }
@@ -3325,7 +3325,7 @@ a.in-zagolovok {
 }
 
 .blue-menu-div-div > ul > a {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
 }
@@ -3355,7 +3355,7 @@ a.in-zagolovok {
     margin-top: 50px;
     background: #fff;
     display: inline-block;
-    color: #4e4e4e;
+    color: #000000;
     text-transform: uppercase;
 }
 
@@ -3395,11 +3395,11 @@ a.in-zagolovok {
     margin-bottom: 70px;
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .zagolovok-after-st {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 24px;
     text-align: center;
@@ -3438,7 +3438,7 @@ a.in-zagolovok {
     /* text-indent: -9999px; */
     cursor: pointer;
     height: 35px;
-    color: #4e4e4e !important;
+    color: #000000 !important;
     font-size: 20px;
     display: inline-block;
     border: 1px solid #e4e4e4;
@@ -3453,7 +3453,7 @@ a.in-zagolovok {
 }
 
 .dec:hover {
-    border: 1px solid #4e4e4e;
+    border: 1px solid #000000;
 }
 
 .inc {
@@ -3464,7 +3464,7 @@ a.in-zagolovok {
 }
 
 .inc:hover {
-    border: 1px solid #4e4e4e;
+    border: 1px solid #000000;
 }
 
 .buttons {
@@ -3503,7 +3503,7 @@ a.in-zagolovok {
     margin-left: 16px;
     bottom: 1px;
     display: inline-block;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .after-lk-in label:nth-of-type(4), .lk-menu__item:last-child {
@@ -3525,7 +3525,7 @@ a.in-zagolovok {
   display: block;
   padding: 0px;
   margin-bottom: 50px;
-  color: #4e4e4e;
+  color: #000000;
 }*/
 
 .in-after-lk {
@@ -3533,7 +3533,7 @@ a.in-zagolovok {
     display: block;
     padding: 0px;
     margin-bottom: 50px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .sort p {
@@ -3551,7 +3551,7 @@ a.in-zagolovok {
 }
 
 .need-help h3 {
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     margin-bottom: 30px;
 }
@@ -3572,7 +3572,7 @@ a.in-zagolovok {
 .one-zkz {
     border: 1px solid rgba(200, 200, 200, .5);
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     margin-top: 20px;
     padding: 0px !important;
@@ -3673,27 +3673,27 @@ a.in-zagolovok {
 }
 
 .in-one-zkz > .num-bns {
-    color: #4e4e4e;
+    color: #000000;
     margin-right: 3%;
     align-self: center;
     grid-area: article;
 }
 
 .in-one-zkz > .zach-bns {
-    color: #4e4e4e;
+    color: #000000;
     grid-area: name;
     align-self: center;
 }
 
 .in-one-zkz > .spis-bns {
-    color: #4e4e4e;
+    color: #000000;
     grid-area: size;
     text-align: center;
     align-self: center;
 }
 
 .in-one-zkz > .stat-bns {
-    color: #4e4e4e;
+    color: #000000;
     grid-area: price;
     align-self: center;
     font-family: 'firabold';
@@ -3802,7 +3802,7 @@ a.in-zagolovok {
 }
 
 .balance h3 {
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -3866,7 +3866,7 @@ a.in-zagolovok {
 }
 
 .form-need input[type=submit] {
-    background: #4e4e4e;
+    background: #000000;
     color: #fefefe;
     font-family: 'firaregular';
     font-size: 16px;
@@ -3930,7 +3930,7 @@ a.in-zagolovok {
 }
 
 .form-in-after-lk h3 {
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     font-size: 16px;
 }
@@ -3997,7 +3997,7 @@ a.in-zagolovok {
     cursor: pointer;
     font-size: 16px;
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .checkbox2:checked + label {
@@ -4108,7 +4108,7 @@ input::-webkit-inner-spin-button {
 
 .after-form h3 {
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
     text-transform: uppercase;
     font-size: 16px;
 }
@@ -4128,7 +4128,7 @@ input::-webkit-inner-spin-button {
 }
 
 .after-form-sub {
-    background: #4e4e4e !important;
+    background: #000000 !important;
     color: #fefefe;
     text-align: center;
     text-transform: uppercase;
@@ -4224,13 +4224,13 @@ input::-webkit-inner-spin-button {
     font-family: 'gilroyRegular';
     font-size: 16px;
     margin-top: 10px;
-    color: #4e4e4e;
+    color: #000000;
     text-transform: uppercase;
 }
 
 .one-item {
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
     position: relative;
     font-size: 16px;
     background: #fff5f7;
@@ -4286,7 +4286,7 @@ input::-webkit-inner-spin-button {
 }
 
 .one-item > .cart-item2 p {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 14px;
 }
@@ -4338,7 +4338,7 @@ input::-webkit-inner-spin-button {
 }
 
 .size-in {
-    background: #4e4e4e;
+    background: #000000;
     padding: 9px 13px;
     letter-spacing: 0.4px;
     font-family: 'gilroyRegular';
@@ -4356,7 +4356,7 @@ input::-webkit-inner-spin-button {
 }
 
 .grey-first option {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .grey-first option:first-child {
@@ -4388,7 +4388,7 @@ input::-webkit-inner-spin-button {
 
 
 .for-free-right {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firamedium';
     font-size: 16px;
     float: right;
@@ -4411,12 +4411,12 @@ input::-webkit-inner-spin-button {
     margin-top: 15px;
     font-size: 16px;
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .checkbox4:checked + label {
     border-bottom: 0 !important;
-    color: #4e4e4e !important;
+    color: #000000 !important;
     font-family: 'gilroyRegular' !important;
 }
 
@@ -4499,7 +4499,7 @@ input::-webkit-inner-spin-button {
 }
 
 .right-plus-bns {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 14px;
     float: right;
@@ -4510,7 +4510,7 @@ input::-webkit-inner-spin-button {
     overflow: hidden;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     margin-top: 25px;
 }
 
@@ -4523,7 +4523,7 @@ input::-webkit-inner-spin-button {
     font-family: 'gilroyRegular';
     font-size: 18px;
     margin-top: 10px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .p:after {
@@ -4555,7 +4555,7 @@ input::-webkit-inner-spin-button {
     font-family: 'gilroyRegular';
     font-size: 16px;
     margin-bottom: 10px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .p3:after {
@@ -4650,7 +4650,7 @@ input::-webkit-inner-spin-button {
 }
 
 .form-in-after-cart h3 {
-    color: #4e4e4e;
+    color: #000000;
     text-align: left;
     text-transform: uppercase;
     font-size: 16px;
@@ -4729,7 +4729,7 @@ input::-webkit-inner-spin-button {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 30px;
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'vollkornsemibold';
     line-height: 42px;
 }
@@ -4747,7 +4747,7 @@ input::-webkit-inner-spin-button {
     padding: 13px 10px 13px 0;
     font-family: 'gilroyRegular';
     text-align: center;
-    color: #4e4e4e;
+    color: #000000;
     background-size: cover;
     font-size: 16px;
     font-weight: 600;
@@ -4770,7 +4770,7 @@ input::-webkit-inner-spin-button {
 .price {
     font-size: 26px;
     font-family: 'firabold';
-    color: #4e4e4e;;
+    color: #000000;;
     margin-top: 15px;
     margin-right: 5px;
     margin-bottom: 0;
@@ -4858,13 +4858,13 @@ input::-webkit-inner-spin-button {
 
 .right-cartochka h3 {
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     text-transform: uppercase;
 }
 
 .sizes {
-    background: #4e4e4e;
+    background: #000000;
     padding: 9px 13px;
     letter-spacing: 0.4px;
     font-family: 'gilroyRegular';
@@ -4890,7 +4890,7 @@ input::-webkit-inner-spin-button {
     float: left;
     margin-right: 10px;
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     margin-top: 20px;
 }
 
@@ -4905,14 +4905,14 @@ label.color-label {
     margin-right: 10px;
     padding: 0;
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     margin-top: 20px;
 }
 
 .radio1:checked + label {
     /*color: white;*/
     border: solid 2px #e28400;
-    /*background: #4e4e4e;*/
+    /*background: #000000;*/
 }
 
 @media (max-width: 992px) {
@@ -5072,7 +5072,7 @@ label.color-label {
     outline: 0;
     margin-top: 15px;
     width: 100%;
-    color: #4e4e4e;
+    color: #000000;
     border: 1px solid #ff5e5e;
     font-family: 'firaregular';
     font-size: 16px;
@@ -5092,7 +5092,7 @@ label.color-label {
 }
 
 .cartochka-transparent--decoration {
-    border: 1px solid #4e4e4e !important;
+    border: 1px solid #000000 !important;
 }
 
 .cartochka-border {
@@ -5137,7 +5137,7 @@ label.color-label {
     text-align: left;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .right-block {
@@ -5146,7 +5146,7 @@ label.color-label {
     text-align: left;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .left-block h4, .right-block h4 {
@@ -5419,7 +5419,7 @@ label.color-label {
         cursor: pointer;
         margin-top: 20px;
         font-family: 'gilroyRegular';
-        color: #4e4e4e;
+        color: #000000;
         margin-left: 30px;
     }
 
@@ -5810,7 +5810,7 @@ label.color-label {
             padding: 13px 10px 13px 0;
             font-family: 'gilroyRegular';
             text-align: center;
-            color: #4e4e4e;
+            color: #000000;
             font-size: 16px;
             font-weight: 600;
         }
@@ -6067,19 +6067,19 @@ label.color-label {
     transition: 300ms;
     -webkit-transition: 300ms;
     border: 1px solid #e4e4e4;
-    color: #4e4e4e;
+    color: #000000;
     display: inline-block;
     margin-bottom: 8px;
 }
 
 .pages-right-catalog:hover {
-    background: #4e4e4e !important;
+    background: #000000 !important;
     text-decoration: none;
     color: white !important;
 }
 
 .pages-right-catalog.active {
-    background: #4e4e4e !important;
+    background: #000000 !important;
     color: white !important;
 }
 
@@ -6092,7 +6092,7 @@ label.color-label {
     display: inline-block;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .show-for select {
@@ -6117,14 +6117,14 @@ label.color-label {
     letter-spacing: 0.5px;
     background: #fff;
     border: 1px solid #e4e4e4;
-    color: #4e4e4e;
+    color: #000000;
     transition: 300ms;
     -webkit-transition: 300ms;
     text-transform: uppercase;
 }
 
 .categ-all:hover {
-    background: #4e4e4e;
+    background: #000000;
     color: white;
     text-decoration: none;
 }
@@ -6137,9 +6137,9 @@ label.color-label {
     font-size: 14px;
     font-family: 'gilroyRegular';
     letter-spacing: 0.5px;
-    background: #4e4e4e;
+    background: #000000;
     margin-top: -1px;
-    border: 1px solid #4e4e4e;
+    border: 1px solid #000000;
     color: #fff;
     transition: 300ms;
     -webkit-transition: 300ms;
@@ -6528,14 +6528,14 @@ label.color-label {
     .thanx h2 {
         font-family: 'vollkornsemibold';
         font-size: 30px;
-        color: #4e4e4e;
+        color: #000000;
         margin-top: 50px;
     }
 
     .thanx p {
         font-family: 'gilroyRegular';
         font-size: 14px;
-        color: #4e4e4e;
+        color: #000000;
     }
 
     .auth-div-full {
@@ -6610,13 +6610,13 @@ label.color-label {
     }
 
     .in-one-zkz > .zach-bns {
-        color: #4e4e4e;
+        color: #000000;
         text-align: center;
     }
 
     .in-one-zkz > .spis-bns {
         text-align: center;
-        color: #4e4e4e;
+        color: #000000;
     }
 
     .in-one-zkz > .stat-bns {
@@ -7007,7 +7007,7 @@ label.color-label {
         font-family: 'firaregular';
         font-size: 18px;
         text-align: right;
-        color: #4e4e4e;
+        color: #000000;
         padding: 0 !important;
     }
 
@@ -7247,7 +7247,7 @@ label.color-label {
     }
 
     .topmenu a:focus {
-        color: #4e4e4e;
+        color: #000000;
         text-decoration: none;
     }
 
@@ -7806,7 +7806,7 @@ label.color-label {
 }
 
 .orders {
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     font-family: 'gilroyRegular';
 }
@@ -7983,7 +7983,7 @@ label.color-label {
     left: 15px;
     top: 15px;
     background: none;
-    border: 1px solid #4e4e4e;
+    border: 1px solid #000000;
     border-radius: 50%;
 }
 
@@ -7994,7 +7994,7 @@ label.color-label {
     height: 14px;
     left: 19px;
     top: 19px;
-    background: #4e4e4e;
+    background: #000000;
     border-radius: 50%;
     transition: 0.2s;
     opacity: 0;
@@ -8012,7 +8012,7 @@ label.color-label {
 .cart-delivery__price {
     display: flex;
     align-items: center;
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firamedium';
     font-size: 16px;
 
@@ -8028,7 +8028,7 @@ label.color-label {
 }
 
 .checkout__title {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
     margin-top: 0;
@@ -8349,7 +8349,7 @@ label.color-label {
 .orders__old-catalog-price {
     font-family: 'firamedium';
     text-decoration: line-through;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .orders__old-catalog-price--red {
@@ -8361,7 +8361,7 @@ label.color-label {
 .orders__old-catalog-price--white {
     font-family: 'firamedium';
     text-decoration: line-through;
-    color: #4e4e4e;
+    color: #000000;
 }
 
 .orders__old-catalog-price--yellow {

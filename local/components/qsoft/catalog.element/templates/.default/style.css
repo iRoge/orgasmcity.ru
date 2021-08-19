@@ -280,7 +280,7 @@ input.search-mag {
     padding-top: 15px;
     font-family: 'gilroyRegular';
     font-size: 16px;
-    color: #4e4e4e;
+    color: #000000;
     max-height: 500px;
     overflow: auto;
 }
@@ -328,7 +328,7 @@ input.search-mag {
 
 .preorder-head {
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     display: inline-block;
     font-size: 30px;

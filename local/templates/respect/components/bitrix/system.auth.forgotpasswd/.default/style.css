@@ -128,7 +128,7 @@ div.bx-auth div.bx-auth-secure-icon {
     font-family: 'gilroyRegular', sans-serif;
     font-size: 15px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     margin: 0 !important;
 }
 
@@ -168,7 +168,7 @@ div.bx-auth div.bx-auth-secure-icon {
     font-family: 'gilroyRegular';
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     padding: 0 !important;
     margin-bottom: 15px !important;
 }

@@ -31,7 +31,7 @@
 {
     width: 100%;
     font-family: 'gilroyRegular';
-    color: #4e4e4e;
+    color: #000000;
     font-size: 14px;
     height: 50px;
     padding: 15px 30px!important;
@@ -47,7 +47,7 @@
 }
 .text-in-vendor-title
 {
-    color: #4e4e4e;
+    color: #000000;
 }
 
 @media(max-width: 991px)

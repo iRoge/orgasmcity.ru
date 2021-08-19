@@ -53,7 +53,7 @@ font-weight: 600;"><?= $arEvent['NAME']; ?></span>
 
                                         <div class="js-event-text-box-wp" style="font-family: 'gilroyRegular';
 
-color: #4e4e4e;font-size: 16px;
+color: #000000;font-size: 16px;
 font-weight: 400;visibility: hidden">
                                             <div style="height: 100%" class="js-event-text-box" data-full-text="<?= $arEvent['PREVIEW_TEXT'] ?>"><?= $arEvent['PREVIEW_TEXT'] ?></div>
 

@@ -1,5 +1,5 @@
 .blue {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firamedium';
     font-size: 16px;
     margin-top: 0px !important;
@@ -67,7 +67,7 @@ p .blue {
     /*margin-bottom: 0px;*/
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     padding-top: 15px;
     /*padding-bottom: 0px;*/
 }

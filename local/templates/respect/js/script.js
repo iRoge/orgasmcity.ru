@@ -157,7 +157,7 @@ $(document).ready(function () {
         if ($option.val() == '0') {
             $option.css('color', '#b8b4b4');
         } else {
-            $option.css('color', '#4e4e4e');
+            $option.css('color', '#000000');
         }
     }).change();
 

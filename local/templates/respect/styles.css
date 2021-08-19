@@ -575,7 +575,7 @@ font-family: 'firaregular';
 }
 .product-preorder-success header, .product-preorder header,.popup header{
     font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    color: #000000;
     text-align: center;
     display: inline-block;
     margin-top: 50px;
@@ -970,7 +970,7 @@ div.product-preorder-success a.button--orange:hover {
 	display: block;
     width: 100%;
     text-align: left;
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firaregular';
 }
 .auth-div-personal a:nth-of-type(1) {
@@ -1008,7 +1008,7 @@ div.product-preorder-success a.button--orange:hover {
     border: 3px solid #f0a740;
     background:transparent;
     outline: 0;
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     width: 80%;
     border-radius: 0;
