@@ -2554,7 +2554,7 @@ body > .popup--message .popup__wrapper {
   margin-top: 20px;
   border: 1px solid rgba(200,200,200, .5);
   text-transform: uppercase;
-  background: #ff5e5e !important;
+  background: #654670 !important;
   color: #ffffff !important;
 }
 @media (max-width: 599px) {

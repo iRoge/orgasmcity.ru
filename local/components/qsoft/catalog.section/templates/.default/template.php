@@ -29,7 +29,7 @@ if (!$arResult['IS_AJAX']) {
 <script>
     var currentHost = "<?=$arResult['CURRENT_HOST']?>";
 </script>
-<div class="col-xs-12">
+<div class="col-xs-12 catalog-wrapper">
     <div class="main main--banner">
         <?php $APPLICATION->IncludeComponent(
             "bitrix:breadcrumb",
@@ -207,11 +207,11 @@ if (!$arResult['IS_AJAX']) {
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: block;"'?>>
+                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: flex;"'?>>
                                             <ul class=" filter__main-list">
                                                 <?php foreach ($arResult['SAME_SECTIONS'] as $section) :?>
                                                     <li class="filter__type-item">
-                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'gilroyRegular'; font-size: 20px; color: #000000;">
+                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'gilroyRegular'; font-size: 15px; color: #000000;">
                                                             <?=$section['NAME']?>
                                                         </a>
                                                     </li>
@@ -242,7 +242,7 @@ if (!$arResult['IS_AJAX']) {
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                                 </svg>
                                             </div>
-                                            <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>>
+                                            <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:flex"' : '' ?>>
                                                 <div class="from">
                                                     <span>От</span>
                                                     <input id="min_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="min_<?=strtolower($filterKey)?>"
@@ -287,7 +287,7 @@ if (!$arResult['IS_AJAX']) {
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
+                                        <div class="in-in-left scrollbar-inner"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:flex"' : '' ?>
                                              data-filter-name="<?= $jsKey ?>">
                                             <?php if ($filterKey === 'COLORS') :?>
                                                 <?php foreach ($value as $xml_id => $color) : ?>
@@ -363,9 +363,9 @@ if (!$arResult['IS_AJAX']) {
                         </div>
                     </div>
                     <!-- /filter -->
-                    <div class="catalog__content-col catalog__content-col--main col-xs-9" style="display: flex; flex-direction: column">
+                    <div class="catalog__content-col catalog__content-col--main col-xs-9">
                         <!-- cards -->
-                        <div class="catalog__cards cards js-cards <?= $arResult['USER_SETTINGS']['GRID'] == 'big' ? 'cards--big' : '' ?>">
+                        <div class="catalog__cards cards js-cards<?=$arResult['USER_SETTINGS']['GRID'] == ' big' ? ' cards--big' : '' ?>">
                             <div class="cards__box">
                                 <?php if ($arResult['BANNER']['DESKTOP']) : ?>
                                     <div class="cards__banner stock-banner stock-banner--internal">
@@ -381,18 +381,18 @@ if (!$arResult['IS_AJAX']) {
                                 <?php endif ?>
                                 <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
                                     <?php while ($arItem = $arResult['ITEMS']->Fetch()) {?>
-                                        <div class="product-card col-lg-3 col-md-4 col-sm-4 col-xs-6">
+                                        <div class="product-card<?=$arResult['USER_SETTINGS']['GRID'] == 'big' ? ' col-lg-4 col-md-6 col-sm-6 col-xs-12' : ' col-lg-3 col-md-4 col-sm-4 col-xs-6' ?>">
                                             <div class="product-card-wrapper">
                                                 <div class="product-icons-wrap">
                                                     <!--                            <img src="" alt="">-->
                                                     <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
-                                                        <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
+                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
                                                     <?php } ?>
                                                     <?php if ($arItem['PROPERTY_NEW_VALUE']) { ?>
-                                                        <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
+                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
                                                     <?php } ?>
                                                     <?php if ($arItem['DISCOUNT']) { ?>
-                                                        <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
                                                         <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                                                     <?php } ?>
                                                 </div>

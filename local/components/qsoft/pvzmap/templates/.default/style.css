@@ -212,7 +212,7 @@ input[type="checkbox"]:checked + .havecashless__label span::before
 }
 
 .widget__choose.btn {
-    background-color: #ff5e5e;
+    background-color: #654670;
     color: #ffffff;
 }
 .widget__choose.btn:hover {
@@ -272,7 +272,7 @@ input[type="checkbox"]:checked + .havecashless__label span::before
     color: #f54966;
 }
 .panel-details__block-text--blue {
-    color: #ff5e5e;
+    color: #654670;
 }
 .widget__popup-mask {
     width: 100%;
@@ -337,7 +337,7 @@ input[type="checkbox"]:checked + .havecashless__label span::before
 
 .pvz__filter-toggle {
     display: inline-flex;
-    background-color: #ff5e5e;
+    background-color: #654670;
     padding: 0 8px;
     height: 35px;
     align-items: center;

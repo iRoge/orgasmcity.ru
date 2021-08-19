@@ -573,26 +573,14 @@ $(document).ready(function() {
         $viewItems.removeClass('view__item--active');
         $viewItem.addClass('view__item--active');
         if (viewType === 'big') {
-            $cards.addClass('cards--big');
-            $('.card__img-pic').each(function() {
-                let that = $(this);
-                that.attr('data-src-small', that.attr('src'));
-                if (that.attr('src') != null){
-                    that.attr('src', that.data('src-big'));
-                } else {
-                    that.attr('data-src', that.data('src-big'));
-                }
+            $cards.find('.product-card').each(function() {
+                $(this).removeClass('col-lg-3').removeClass('col-sm-4').removeClass('col-md-4').removeClass('col-xs-6');
+                $(this).addClass('col-lg-4').addClass('col-sm-6').addClass('col-md-6').addClass('col-xs-12');
             });
         } else {
-            $cards.removeClass('cards--big');
-            $('.card__img-pic').each(function() {
-                let that = $(this);
-                that.attr('data-src-big', that.attr('src'));
-                if (that.attr('src') != null){
-                    that.attr('src', that.data('src-small'));
-                } else {
-                    that.attr('data-src', that.data('src-small'));
-                }
+            $cards.find('.product-card').each(function() {
+                $(this).removeClass('col-lg-4').removeClass('col-sm-6').removeClass('col-md-6').removeClass('col-xs-12');
+                $(this).addClass('col-lg-3').addClass('col-sm-4').addClass('col-md-4').addClass('col-xs-6');
             });
         }
         saveSettingsInCookie();

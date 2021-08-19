@@ -35,6 +35,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 15px;
+    flex-wrap: wrap;
 }
 
 .advantages-element {
@@ -50,9 +51,22 @@
     .advantages-element:first-child {
         padding-left: 0!important;
     }
+}
+
+@media (max-width: 992px) {
+    .advantages-element {
+        padding-top: 15px!important;
+    }
+    .advantages-element:nth-child(2n-1) {
+        padding-left: 0!important;
+    }
+    .advantages-element:nth-child(2n) {
+        padding-right: 0!important;
+    }
     .advantages-list-wrapper {
         padding: 0!important;
     }
+
 }
 
 

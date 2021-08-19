@@ -1710,10 +1710,41 @@ class QsoftCatalogSection extends ComponentHelper
             $aDiff = abs($a['PRICE'] - $middlePrice);
             $bDiff = abs($b['PRICE'] - $middlePrice);
             if (
-                ($aDiff < 750 && $bDiff < 750 || $aDiff > 750 && $bDiff > 750)
-                && $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
+                ($aDiff < 75000 && $bDiff < 75000 || $aDiff > 75000 && $bDiff > 75000)
+                && (
+                    $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
+                    || $b['PROPERTY_NEW_VALUE'] != $a['PROPERTY_NEW_VALUE']
+                    || !!$b['DISCOUNT'] != !!$a['DISCOUNT']
+                )
             ) {
-                return $b['PROPERTY_BESTSELLER_VALUE'] <=> $a['PROPERTY_BESTSELLER_VALUE'];
+                $countAdditionsA = (int)(bool)$a['PROPERTY_BESTSELLER_VALUE'] + (int)(bool)$a['PROPERTY_NEW_VALUE'];
+                $countAdditionsB = (int)(bool)$b['PROPERTY_BESTSELLER_VALUE'] + (int)(bool)$b['PROPERTY_NEW_VALUE'];
+
+                if ($countAdditionsA || $countAdditionsB) {
+                    if ($countAdditionsA > $countAdditionsB) {
+                        return -1;
+                    } elseif ($countAdditionsA < $countAdditionsB) {
+                        return 1;
+                    } else {
+                        if ($a['DISCOUNT'] && !$b['DISCOUNT']) {
+                            return -1;
+                        } elseif ($b['DISCOUNT'] && !$a['DISCOUNT']) {
+                            return 1;
+                        }
+                    }
+                }
+
+                if ((int)$a['PROPERTY_BESTSELLER_VALUE'] > (int)$b['PROPERTY_BESTSELLER_VALUE']) {
+                    return -1;
+                } elseif ((int)$a['PROPERTY_BESTSELLER_VALUE'] < (int)$b['PROPERTY_BESTSELLER_VALUE']) {
+                    return 1;
+                }
+
+                if ((int)$a['PROPERTY_NEW_VALUE'] > (int)$b['PROPERTY_NEW_VALUE']) {
+                    return -1;
+                } elseif ((int)$a['PROPERTY_NEW_VALUE'] < (int)$b['PROPERTY_NEW_VALUE']) {
+                    return 1;
+                }
             }
 
             return $aDiff <=> $bDiff;

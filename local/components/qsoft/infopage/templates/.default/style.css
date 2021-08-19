@@ -29,7 +29,7 @@ p .blue {
 }
 
 .active-blue {
-    color: #ff5e5e !important;
+    color: #654670 !important;
     font-family: 'firaregular' !important;
     border-bottom: 0 !important;
     font-size: 16px;
@@ -42,7 +42,7 @@ p .blue {
 
 .after-blue {
     display: none;
-    border-bottom: 1px solid #ff5e5e;
+    border-bottom: 1px solid #654670;
     padding: 0 !important;
     margin-bottom: 15px !important;
 }
