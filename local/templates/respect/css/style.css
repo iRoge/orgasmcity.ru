@@ -100,7 +100,6 @@
     .col-sm-6.slider-pro-container {
         width: 61%;
     }
-
 }
 
 .purchase-show-block {
@@ -143,9 +142,6 @@
     }
 
 
-    .slider-pro-container.col-sm-6 {
-        padding: 0 0px;
-    }
 }
 
 html, body {
@@ -4383,10 +4379,6 @@ label.color-label {
 .sp-thumbnail-arrows .sp-thumbnail-arrow::before,
 .sp-thumbnail-arrows .sp-thumbnail-arrow::after {
     content: none;
-}
-
-.right-cartochka__container.col-sm-6 {
-    padding-right: 0 !important;
 }
 
 .sp-slides-container:hover .sp-fade-arrows {

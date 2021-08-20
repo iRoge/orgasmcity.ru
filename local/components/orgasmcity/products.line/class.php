@@ -134,7 +134,6 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         } elseif ($productsCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('products');
             $this->cacheManager->RegisterTag('catalogAll');
-
             $arFilter = $this->arParams['FILTERS'];
 
             $arProducts = $this->getProductsByFilter($arFilter);
