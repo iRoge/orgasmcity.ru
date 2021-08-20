@@ -2559,6 +2559,10 @@ a.in-zagolovok {
     }
 }
 
+a {
+    outline: none!important;
+}
+
 .btn-grey {
     padding: 12px 60px;
     background: #000000;
