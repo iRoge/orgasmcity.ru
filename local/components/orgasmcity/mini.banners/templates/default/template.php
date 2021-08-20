@@ -17,9 +17,11 @@ $this->setFrameMode(true);
     <div class="banners-list-main main">
         <?php foreach ($arResult['ITEMS'] as $item) {?>
             <?php if ($item['CODE']) { ?>
-                <a class="col-lg-3 col-md-3 banners-list-element" href="<?=$item['CODE']?>">
-                    <img width="100%" src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
-                </a>
+                <div class="col-lg-3 col-md-3 banners-list-element">
+                    <a href="<?=$item['CODE']?>">
+                        <img width="100%" src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
+                    </a>
+                </div>
             <?php } else { ?>
                 <div class="col-lg-3 col-md-3 banners-list-element">
                     <img width="100%" src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
