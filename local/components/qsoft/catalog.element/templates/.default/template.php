@@ -1,4 +1,4 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 
@@ -31,17 +31,17 @@ foreach ($arResult['OFFERS'] as $offer) {
      data-variant="<?=$arResult['AVAILABLE_OFFER_PROPS']['COLORS'][$arResult['MIN_PRICE_OFFER']['PROPERTIES']['COLOR']['VALUE']]['NAME']?>"
 >
     <div class="main">
-        <? if (!empty($arResult)) : ?>
-            <? if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) { ?>
+        <?php if (!empty($arResult)) : ?>
+            <?php if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) { ?>
                 <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
-            <? } elseif ($availableRest <= 3) {?>
+            <?php } elseif ($availableRest <= 3) {?>
                 <div class="product-page__na">Поспешите! Данного товара на складе осталось всего <?=$availableRest?>шт.</div>
-            <? } ?>
+            <?php } ?>
             <div class="product-page product-main-div">
                 <div class="col-sm-6 slider-pro-container col-image">
                     <div id="example5" class="slider-pro">
                         <div class="sp-slides">
-                            <? foreach ($arResult['PHOTOS'] as $iKey => $arPhoto) : ?>
+                            <?php foreach ($arResult['PHOTOS'] as $iKey => $arPhoto) : ?>
                                 <div class="sp-slide jq-zoom">
                                     <img class="sp-image sp-image_hide sp-image-test"
                                          src=""
@@ -50,41 +50,41 @@ foreach ($arResult['OFFERS'] as $offer) {
                                          alt=""
                                          style="height: 600px;"/>
                                 </div>
-                            <? endforeach; ?>
+                            <?php endforeach; ?>
                         </div>
                         <div class="sp-thumbnails">
-                            <? foreach ($arResult['PHOTOS'] as $iKey => $arPhoto) : ?>
+                            <?php foreach ($arResult['PHOTOS'] as $iKey => $arPhoto) : ?>
                                 <div class="sp-thumbnail">
                                     <div class="sp-thumbnail-image-container">
                                         <img class="sp-thumbnail-image sp-image_hide" src="<?= $arPhoto['THUMB']; ?>"
                                              alt=""/>
                                     </div>
                                 </div>
-                            <? endforeach; ?>
+                            <?php endforeach; ?>
                         </div>
                     </div>
-                    <? if ($arResult['DETAIL_TEXT']) :?>
+                    <?php if ($arResult['DETAIL_TEXT']) :?>
                         <div class="hidden-xs detail-element-text">
                             <?=$arResult['DETAIL_TEXT']?>
                         </div>
-                    <? endif; ?>
+                    <?php endif; ?>
                 </div>
 
                 <div class="col-sm-6 col-xs-12 right-cartochka__container">
                     <div class="right-cartochka">
                         <div class="right-cartochka__top-block">
-                            <? if (!empty($arResult['ARTICLE'])) : ?>
+                            <?php if (!empty($arResult['ARTICLE'])) : ?>
                                 <p class="grey-cart"><?= Loc::getMessage("ARTICLE_PREFIX") ?><?= $arResult['ARTICLE'] ?></p>
-                            <? endif ?>
+                            <?php endif ?>
                             <button type="button" class="heart__btn<?=!empty($arResult['FAVORITES']) ? ' active' : '' ?> js-favour-heart" data-id="<?= $arResult['ID'] ?>">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
-                                                                        <g>
-                                                                            <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
-                                                                                   C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
-                                                                                   C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
-                                                                                   z"/>
-                                                                        </g>
-                                                                        </svg>
+                                    <g>
+                                        <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
+                                               C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
+                                               C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
+                                               z"/>
+                                    </g>
+                                </svg>
                             </button>
                         </div>
                         <h1 class="h1-cart"><?= $arResult["NAME"] ?></h1>
@@ -150,18 +150,19 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     <?php endif; ?>
 <!--                                    <div class="buttons-wrapper">-->
 <!--                                        <div class="sizes-popup-area">-->
-<!--                                            <a class="sizes-popup" href="#">--><?//= Loc::getMessage("SIZES_INFO") ?><!--</a>-->
+<!--                                            <a class="sizes-popup" href="#">-->
+                                    <?php //= Loc::getMessage("SIZES_INFO") ?><!--</a>-->
 <!--                                            <div class="sizes-popup-block" style="display:none;">-->
 <!--                                                <div class="tab-size-block">-->
-<!--                                                    --><?//= $arResult['SECTION_SIZES_TAB']; ?>
+<!--                                                    --><?php //= $arResult['SECTION_SIZES_TAB']; ?>
 <!--                                                </div>-->
 <!--                                            </div>-->
 <!--                                        </div>-->
 <!--                                    </div>-->
-                                    <? if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS'])) : ?>
+                                    <?php if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS'])) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("COLOR") ?></h3>
                                     <div style="display: block; width: 100%;" class="js-color-selector">
-                                        <? foreach ($arResult['AVAILABLE_OFFER_PROPS']['COLORS'] as $colorCode => $color) : ?>
+                                        <?php foreach ($arResult['AVAILABLE_OFFER_PROPS']['COLORS'] as $colorCode => $color) : ?>
                                             <div class="top-minus">
                                                 <input type="radio" name="color" id="color-<?= $colorCode ?>"
                                                        class="radio1 js-choose-size js-offer js-offer-<?= $colorCode ?>"
@@ -171,17 +172,17 @@ foreach ($arResult['OFFERS'] as $offer) {
                                                         for="color-<?= $colorCode ?>"
                                                         data-value="<?= $colorCode ?>"><img title="<?=$color['NAME']?>" src="<?=$color['IMG_SRC']?>" alt="<?=$color['NAME']?>"></label>
                                             </div>
-                                        <? endforeach; ?>
+                                        <?php endforeach; ?>
                                         <div style="clear: both"></div>
                                     </div>
-                                    <? endif; ?>
+                                    <?php endif; ?>
                                     <div class="js-error-block" style="display: none; position: absolute;bottom: -20px;">
                                         <p style="color: #cd1030;font-size: 13px;font-family: 'firabold';">
                                             Такого ассортимента сейчас нет в наличии!
                                         </p>
                                     </div>
                                 </div>
-                                <? endif; ?>
+                                <?php endif; ?>
                                 <div id="wrap" class="btns-wrap">
                                     <div id="js-toggle-delivery-ok">
                                         <div class="quantity-block">
@@ -205,8 +206,8 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     </div>
                                 </div>
                             </form>
-                        <? endif; ?>
-                    <? $APPLICATION->IncludeComponent(
+                        <?php endif; ?>
+                        <?php $APPLICATION->IncludeComponent(
                         "qsoft:infopage",
                         "advantagesInCatalogElement",
                         array(
@@ -217,67 +218,67 @@ foreach ($arResult['OFFERS'] as $offer) {
                         false
                     ); ?>
                     </div>
-                    <?if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
+                    <?php if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
                         <div class="col-sm-12 hidden-xs" style="margin-right: 20px;margin-top: 50px">
-                            <? if (!empty($arResult['SIZES_PROPERTIES'])) :?>
+                            <?php if (!empty($arResult['SIZES_PROPERTIES'])) :?>
                                 <div class="p3">
                                     <div class="l3">Размер</div>
                                     <div class="r3"><?=implode(' x ', $arResult['SIZES_PROPERTIES']) . ' см'?></div>
                                 </div>
-                            <? endif;
+                            <?php endif;
                             foreach ($arResult['DISPLAY_PROPERTIES'] as $key => $arProperty) : ?>
-                                <? if (!empty($arProperty['VALUE']) && !is_array($arProperty['VALUE'])) : ?>
+                                <?php if (!empty($arProperty['VALUE']) && !is_array($arProperty['VALUE'])) : ?>
                                     <div class="p3 for-relative">
                                         <div class="l3"><?= $arProperty['NAME']; ?></div>
-                                        <? if ($key == 'vendor') { ?>
+                                        <?php if ($key == 'vendor') { ?>
                                         <div class="r3">
                                             <a href="/brands/<?= $arProperty['CODE_VALUE'] ?>/" target="_blank"><?= $arProperty['VALUE']; ?>
                                             </a>
                                         </div>
-                                        <? } else { ?>
+                                        <?php } else { ?>
                                         <div class="r3"><?= $arProperty['VALUE']; ?></div>
-                                        <? } ?>
+                                        <?php } ?>
                                     </div>
-                                <? endif; ?>
-                            <? endforeach; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                             <div class="opisanie-after"><?= Loc::getMessage("DESCRIPTION_HEADER") ?></div>
                         </div>
-                    <? endif; ?>
+                    <?php endif; ?>
                 </div>
-                <? if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
+                <?php if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
                     <div class="hidden-lg hidden-md hidden-sm col-xs-12 info--"
                          style="margin-left: 20px;margin-top: 50px">
-                        <? if (!empty($arResult['SIZES_PROPERTIES'])) :?>
+                        <?php if (!empty($arResult['SIZES_PROPERTIES'])) :?>
                             <div class="p3">
                                 <div class="l3">Размер</div>
                                 <div class="r3"><?=implode(' x ', $arResult['SIZES_PROPERTIES']) . ' см'?></div>
                             </div>
-                        <? endif;
+                        <?php endif;
                         foreach ($arResult['DISPLAY_PROPERTIES'] as $key => $arProperty) : ?>
-                            <? if (!empty($arProperty['VALUE']) && !is_array($arProperty['VALUE'])) : ?>
+                            <?php if (!empty($arProperty['VALUE']) && !is_array($arProperty['VALUE'])) : ?>
                                 <div class="p3">
                                     <div class="l3"><?= $arProperty['NAME']; ?></div>
-                                    <? if ($key == 'BRAND') { ?>
+                                    <?php if ($key == 'BRAND') { ?>
                                         <div class="r3 <?= $arProperty['TOOLTIP'] ? 'have-tooltip-mob' : '' ?>"
                                             <?= $arProperty['TOOLTIP'] ? ' data-tooltipname="' . $arProperty['CODE'] . '"' : '' ?>
                                         >
                                             <a href='<?= $arResult['BRAND_PAGE'] ?>'><?= $arProperty['VALUE']; ?></a>
                                         </div>
-                                    <? } else { ?>
+                                    <?php } else { ?>
                                         <div class="r3">
                                             <?= $arProperty['VALUE']; ?>
                                         </div>
-                                    <? } ?>
+                                    <?php } ?>
                                 </div>
-                            <? endif; ?>
-                        <? endforeach; ?>
-                        <? if ($arResult['DETAIL_TEXT']) :?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if ($arResult['DETAIL_TEXT']) :?>
                             <div class="detail-element-text">
                                 <?=$arResult['DETAIL_TEXT']?>
                             </div>
-                        <? endif; ?>
+                        <?php endif; ?>
                     </div>
-                <? endif; ?>
+                <?php endif; ?>
             </div>
 
             <div class="hidden-divs" style="display: none">
@@ -324,7 +325,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                         </div>
                     </div>
                     <div class="container container--quick-order product__footer">
-                        <? $APPLICATION->IncludeComponent('qsoft:subscribe.manager', 'popUp'); ?>
+                        <?php $APPLICATION->IncludeComponent('qsoft:subscribe.manager', 'popUp'); ?>
                         <div id="one_click_checkbox_policy_error"></div>
                         <div id="one_click_checkbox_policy" class="col-xs-12">
                             <input type="checkbox" id="one_click_checkbox_policy_checked"
@@ -345,13 +346,13 @@ foreach ($arResult['OFFERS'] as $offer) {
                     </form>
                 </div>
             </div>
-        <? else : ?>
+        <?php else : ?>
             <div class="container">
                 <div class="column-8 pre-1">
                     <div class="alert alert-danger"><?= Loc::getMessage("ELEMENT_NOT_FOUND") ?></div>
                 </div>
             </div>
-        <? endif; ?>
+        <?php endif; ?>
     </div>
 </div>
 <?php
