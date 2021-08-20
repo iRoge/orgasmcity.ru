@@ -231,6 +231,8 @@ class QsoftCatalogElement extends ComponentHelper
             "length",
             "bestseller",
             "vendor",
+            "country",
+            "year",
             "volume",
             "material",
             "collection",
@@ -238,7 +240,6 @@ class QsoftCatalogElement extends ComponentHelper
             'material',
             "function",
             "vibration",
-            "year",
         ];
 
         foreach ($arPropsToShow as $prop_code) {
@@ -279,15 +280,20 @@ class QsoftCatalogElement extends ComponentHelper
                         'ID',
                         'NAME',
                         'IBLOCK_ID',
-                        'CODE'
+                        'CODE',
+                        'PROPERTY_COUNTRY',
                     ])->GetNext();
                 $arProp['VALUE'] = $vendor['NAME'];
-
                 $arProp['CODE_VALUE'] = $vendor['CODE'];
+                $arProps['country'] = [
+                    'CODE' => 'country',
+                    'NAME' => 'Страна',
+                    'VALUE' => $vendor['PROPERTY_COUNTRY_VALUE']
+                ];
             }
         }
 
-        return $arProps;
+        return array_replace(array_flip($arPropsToShow), $arProps);
     }
 
     private function prepareResult(): void

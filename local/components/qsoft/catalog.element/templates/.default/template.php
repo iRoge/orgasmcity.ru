@@ -76,16 +76,16 @@ foreach ($arResult['OFFERS'] as $offer) {
                             <?php if (!empty($arResult['ARTICLE'])) : ?>
                                 <p class="grey-cart"><?= Loc::getMessage("ARTICLE_PREFIX") ?><?= $arResult['ARTICLE'] ?></p>
                             <?php endif ?>
-                            <button type="button" class="heart__btn<?=!empty($arResult['FAVORITES']) ? ' active' : '' ?> js-favour-heart" data-id="<?= $arResult['ID'] ?>">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
-                                    <g>
-                                        <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
-                                               C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
-                                               C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
-                                               z"/>
-                                    </g>
-                                </svg>
-                            </button>
+<!--                            <button type="button" class="heart__btn--><?//=!empty($arResult['FAVORITES']) ? ' active' : '' ?><!-- js-favour-heart" data-id="--><?//= $arResult['ID'] ?><!--">-->
+<!--                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">-->
+<!--                                    <g>-->
+<!--                                        <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3-->
+<!--                                               C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2-->
+<!--                                               C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8-->
+<!--                                               z"/>-->
+<!--                                    </g>-->
+<!--                                </svg>-->
+<!--                            </button>-->
                         </div>
                         <h1 class="h1-cart"><?= $arResult["NAME"] ?></h1>
                         <?php if (!empty($arResult['MIN_PRICE_OFFER'])) : ?>
