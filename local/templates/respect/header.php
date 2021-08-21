@@ -26,7 +26,6 @@
     <?
     \Bitrix\Main\Loader::includeModule('likee.site');
     \Bitrix\Main\Loader::includeModule('likee.location');
-
     global $LOCATION;
 
     $APPLICATION->ShowHead();

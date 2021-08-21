@@ -9,6 +9,12 @@
 <?php elseif ('N' != $APPLICATION->GetProperty('MAIN_WR', 'N')) : ?>
     </div></div>
 <?php endif; ?>
+<?php $APPLICATION->IncludeComponent(
+    'qsoft:subscribe',
+    'footer',
+    array(),
+    false
+); ?>
 <div class="footer col-xs-12">
     <div class="main">
         <div class="footer-block col-lg-3 col-md-3 col-sm-3">

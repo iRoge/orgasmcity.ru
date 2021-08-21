@@ -8,18 +8,19 @@
             <b><?= $arResult['MESSAGE']; ?></b>
         </div>
     <? else : ?>
-        <form id="subscribe-form" novalidate method="post">
-            <?= bitrix_sessid_post() ?>
-            <input type="hidden" name="action" value="subscribe">
-            <input type="hidden" name="subscribe" value="Y">
-            <input type="email" class="js-footer-email" name="EMAIL"
-                   placeholder="Введите ваш e-mail" required autocomplete="off">
-            <input type="submit" value="Подписаться">
-            <input class="checkbox22 js-footer-agreement" id="agreement" type="checkbox" name="agreement" required checked/>
-            <label for="agreement">
-                Я соглашаюсь на обработку моих персональных данных</a>.
-            </label>
-            <ul class="subscribe-errors"></ul>
-        </form>
+    <div class="subscribe-wrapper">
+        <div class="main">
+            <form class="col-lg-3" id="subscribe-form" novalidate method="post">
+                <?= bitrix_sessid_post() ?>
+                <input type="hidden" name="action" value="subscribe">
+                <input type="hidden" name="subscribe" value="Y">
+                <input type="email" class="js-footer-email" name="EMAIL"
+                       placeholder="Введите ваш e-mail" required autocomplete="off">
+                <input type="submit" value="Подписаться">
+                <ul class="subscribe-errors"></ul>
+            </form>
+<!--                <img class="col-lg-3 subscribe-second-img" src="--><?//=SITE_TEMPLATE_PATH?><!--/img/subscribe2.webp" alt="Подписка">-->
+        </div>
+    </div>
     <? endif; ?>
 </div>

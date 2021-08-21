@@ -6651,6 +6651,10 @@ label.color-label {
 
     .topmenu {
         clear: both;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
     .topmenu li {
@@ -6658,7 +6662,7 @@ label.color-label {
     }
 
     .topmenu a {
-        color: #7e7d7d;
+        color: #000000;
         font-size: 16px;
         text-decoration: none;
     }
@@ -6695,13 +6699,12 @@ label.color-label {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        height: 100%;
+        width: 100%;
     }
 
     .submenu img {
-        width: 30px;
-    }
-
-    .topmenu img {
         width: 30px;
     }
 
@@ -6715,17 +6718,20 @@ label.color-label {
         align-items: center;
     }
 
-    .sub-submenu img {
-        width: 30px;
-    }
 
     .submenu-item-main {
         font-weight: bold;
     }
 
     .submenu-item {
-        display: block;
         width: 100%;
+        height: 40%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: center;
+        font-size: 13px;
     }
 
     .mobile_soc_icon {

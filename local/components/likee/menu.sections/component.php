@@ -61,6 +61,7 @@ if (empty($aMenuLinksNew)) {
         [
             "ID",
             "NAME",
+            "CODE",
         ]
     );
     $arMainSectionIds = [];
@@ -185,12 +186,13 @@ if (empty($aMenuLinksNew)) {
         $arOrder,
         $arFilter,
         false,
-        array(
+        [
             'ID',
             'DEPTH_LEVEL',
             'NAME',
             'SECTION_PAGE_URL',
-        )
+            'CODE',
+        ]
     );
 
     $rsSections->SetUrlTemplates('', $arParams['SECTION_URL']);
@@ -198,6 +200,7 @@ if (empty($aMenuLinksNew)) {
     while ($arSection = $rsSections->GetNext()) {
         $arResult['SECTIONS'][] = array(
             'ID' => $arSection['ID'],
+            'CODE' => $arSection['CODE'],
             'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
             '~NAME' => $arSection['~NAME'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
@@ -272,6 +275,7 @@ if (empty($aMenuLinksNew)) {
 
         $arResult['ELEMENT_LINKS'][$arSection['ID']][] = urldecode($arSection['~SECTION_PAGE_URL']);
 
+        $filePath = trim(SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '.svg', '/');
         $aMenuLinksNew[$menuIndex++] = array(
             htmlspecialcharsbx($arSection['~NAME']),
             $arSection['~SECTION_PAGE_URL'],
@@ -280,6 +284,7 @@ if (empty($aMenuLinksNew)) {
                 'FROM_IBLOCK' => true,
                 'IS_PARENT' => false,
                 'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
+                'IMG_PATH' => file_exists($filePath) ? $filePath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory.svg',
             ),
         );
 
@@ -357,12 +362,14 @@ if (empty($aMenuLinksNew)) {
                     continue;
                 }
                 if ($arSalesSection3['IBLOCK_SECTION_ID'] == $arSalesSection2['ID']) {
+                    $filePath = trim(SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['CODE'] . '.svg', '/');
                     $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
                     $arMenuLinkSales[] = array(
                         $arSalesSection3['NAME'],
                         $sPath,
                         array($sPath),
                         array(
+                            'IMG_PATH' => file_exists($filePath) ? $filePath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory.svg',
                             'IS_PARENT' => false,
                             'DEPTH_LEVEL' => 2,
                             'FROM_IBLOCK' => true,

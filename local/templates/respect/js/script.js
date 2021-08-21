@@ -371,9 +371,9 @@ $(document).ready(function () {
         });
     });
 
-    $('.submenu-item').click(function (e) {
+    $('.submenu-level2-item').click(function (e) {
         let e_target = $(e.target);
-        if (e_target.is('.submenu-item')) {
+        if (e_target.is('.submenu-level2-item')) {
             let that = $(this);
             (e_target).siblings().slideToggle();
             that.toggleClass('arrow-down');
