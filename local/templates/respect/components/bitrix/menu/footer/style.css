@@ -11,3 +11,9 @@
     text-underline: none;
     color: #16304E;
 }
+
+@media (max-width: 992px) {
+    .center-footer-element:hover {
+        color: #FFFFFF;
+    }
+}

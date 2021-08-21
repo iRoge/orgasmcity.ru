@@ -252,9 +252,9 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 )
             ); ?>
             <?php $phone = SUPPORT_PHONE?>
-            <div class="col-xs-4 pull-right phone-xs">
+            <div class="col-xs-3 phone-xs">
                 <p class="header-container">
-                    <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
+                    <img class="header-mail-icon mail mail2" src="<?=SITE_TEMPLATE_PATH; ?>/img/svg/support.svg" alt="mail"/>
                     <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
                 </p>
             </div>
@@ -272,7 +272,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 </p>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 right-block-top">
+        <div class="col-lg-3 col-md-4 col-sm-5 hidden-xs right-block-top">
             <div class="col-md-3 col-sm-3 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
@@ -323,7 +323,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
     <div class="menu-wrap">
         <div class="menu col-xs-12">
             <div class="main clearfix" style="display: flex; align-items: center">
-                <div class="col-md-2 col-sm-2 col-xs-2 logo-div">
+                <div class="col-md-2 col-sm-2 col-xs-3 logo-div">
                     <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.svg" class="logo header__logotype"/></a>
                     <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.svg" class="logo-small"/></a>
                 </div>
@@ -349,7 +349,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         );
                         ?>
                 </div>
-                <div class="col-md-2 col-sm-10 col-xs-10 pull-right search-div header__search" style="padding-left: 0">
+                <div class="col-md-2 col-sm-10 col-xs-9 search-div header__search" style="padding-left: 0">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:search.form",
                         "top",
@@ -359,15 +359,14 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         ),
                         false
                     ); ?>
-
                     <div class="hidden-sm col-xs-2 mail touch-for-poisk">
-                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/search.png" style="margin-top: 18px;"/>
+                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/search.png" width="20px" height="20px"/>
                     </div>
                     <div class="hidden-sm col-xs-2 mail auth2<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                         <? if (!$USER->IsAuthorized()) : ?>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" width="20px" height="20px"/>
                         <? else : ?>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" width="20px" height="20px"/>
                             <div class="auth-div menu_mob_fly" style="margin-top: 10px!important;">
                                 <a href="/personal/orders/">История заказов</a><br />
                                 <a href="/personal/bonuses/">Бонусы</a><br />
@@ -380,14 +379,13 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     <div class="hidden-sm col-xs-2 cart heart">
                         <a class="favorites_header" href="/catalog/favorites/">
                             <p class="count count--heart"><?=$favoritesCount?></p>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/transparent-heart.png"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/heart.svg" width="20px" height="20px"/>
                         </a>
                     </div>
-
                     <div class="hidden-sm col-xs-2 cart">
                         <? $APPLICATION->IncludeComponent(
                             "likee:basket.small",
-                            "",
+                            "mobile",
                             array(
                                 "PATH_TO_BASKET" => "/cart/",
                                 "PATH_TO_ORDER" => "/order/",
@@ -398,8 +396,8 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                             )
                         ); ?>
                     </div>
-                    <div class="blue-menu hidden-lg hidden-md">
-                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/burger.svg" alt="Burger">
+                    <div class="blue-menu hidden-lg hidden-md col-xs-2">
+                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/burger.svg" alt="Burger" width="20px" height="20px">
                         <span>Каталог</span>
                     </div>
                     <div class="cls-blue-menu"></div>

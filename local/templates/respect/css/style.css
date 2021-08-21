@@ -122,26 +122,15 @@
     margin-top: 0;
 }
 
-.cart img {
-    margin-top: 20px;
-}
-
 @media (min-width: 768px) {
     .purchase-show-checkbox {
         height: 40px;
         width: 40px;
     }
 
-    .cart img {
-        margin-top: 0;
-    }
-
-
     .form-in-after-lk > div {
         margin-bottom: 30px;
     }
-
-
 }
 
 html, body {
@@ -198,7 +187,7 @@ html, body {
 }
 
 .table-size__heading {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     color: #000000;
     text-align: center;
     display: block;
@@ -390,7 +379,7 @@ html, body {
 }
 
 .mail-div h2, .popup h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     color: #000000;
     text-align: center;
     display: block;
@@ -620,7 +609,7 @@ html, body {
 }
 
 .auth-div-full h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     color: #000000;
     text-align: center;
     display: block;
@@ -629,7 +618,7 @@ html, body {
 }
 
 .auth-div-full2 h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     color: #000000;
     text-align: center;
     display: block;
@@ -654,7 +643,7 @@ html, body {
 }
 
 .in-auth {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     color: #d9d7d7;
     text-align: center;
     display: inline-block;
@@ -824,7 +813,7 @@ html, body {
 }
 
 .thanx h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     font-size: 40px;
     color: #000000;
     margin-top: 50px;
@@ -855,7 +844,7 @@ html, body {
 }
 
 .add-korzina h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     font-size: 40px;
     color: #000000;
     margin-top: 50px;
@@ -1440,7 +1429,7 @@ html, body {
 }
 
 .in-main-top h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     font-size: 72px;
     line-height: 72px;
     margin-top: 50px;
@@ -1545,7 +1534,7 @@ html, body {
 }
 
 .right-main-two h2 {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     font-size: 72px;
     line-height: 80px;
     margin-top: 60px;
@@ -1599,7 +1588,7 @@ html, body {
 
 .zagolovok {
     color: #000000;
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroyRegular';
     font-size: 45px;
     text-align: center;
     margin-bottom: 20px;
@@ -1620,7 +1609,7 @@ html, body {
 
 a.in-zagolovok {
     color: #654670 !important;
-    font-family: 'vollkornsemibold' !important;
+    font-family: 'gilroySemiBold' !important;
     font-size: 45px !important;
     border-bottom: 3px solid #654670 !important;
 }
@@ -1705,7 +1694,7 @@ a.in-zagolovok {
 }
 
 .zagolovok-hide-menu {
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     font-size: 18px;
     color: #000000;
 }
@@ -2059,7 +2048,7 @@ a.in-zagolovok {
 .count {
     background: #A18CD1;
     line-height: 18px;
-    font-family: 'firamedium';
+    font-family: 'gilroyRegular';
     font-size: 10px;
     color: white;
     border-radius: 50%;
@@ -2553,6 +2542,9 @@ a.in-zagolovok {
     .catalog-wrapper {
         padding: 0 5px!important;
     }
+    .count {
+        right: 5%;
+    }
 }
 
 a {
@@ -2801,7 +2793,7 @@ a {
 .st h2 {
     font-size: 72px;
     color: white;
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
 }
 
 .st-rubr {
@@ -4160,7 +4152,7 @@ input::-webkit-inner-spin-button {
     margin-bottom: 0;
     font-size: 30px;
     color: #000000;
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     line-height: 42px;
 }
 
@@ -4577,7 +4569,7 @@ label.color-label {
 
 .left-block h4, .right-block h4 {
     color: #654670;
-    font-family: 'vollkornsemibold';
+    font-family: 'gilroySemiBold';
     font-size: 40px;
 }
 
@@ -4720,10 +4712,6 @@ label.color-label {
 @media (max-width: 991px) and (min-width: 768px) {
     .left-main-two img {
         width: auto !important;
-    }
-
-    .cart img {
-        margin-top: 0;
     }
 
     .left-bns {
@@ -4907,7 +4895,7 @@ label.color-label {
     }
 
     .right-cartochka {
-        margin-left: 0px;
+        margin-left: 0;
         position: relative;
     }
 
@@ -5200,9 +5188,6 @@ label.color-label {
             padding-right: 0;
         }
 
-        .heart img {
-            margin-top: 20px;
-        }
 
         .plan {
             padding-right: 30px;
@@ -5842,6 +5827,7 @@ label.color-label {
 
     .phone-xs {
         display: none;
+        height: 100%;
     }
 
     .main-top > .main > .col-sm-12 {
@@ -5873,6 +5859,11 @@ label.color-label {
     .info,
     .from {
         position: static !important;
+    }
+
+    .info {
+        display: flex;
+        align-items: center;
     }
 
     #main-slider { /* Anatoly Mitrofanov 2019-01-16 по просьбе Алексея */
@@ -5936,7 +5927,7 @@ label.color-label {
     }
 
     .thanx h2 {
-        font-family: 'vollkornsemibold';
+        font-family: 'gilroySemiBold';
         font-size: 30px;
         color: #000000;
         margin-top: 50px;
@@ -6078,7 +6069,6 @@ label.color-label {
     }
 
     .menu-spacer {
-        border-top: 1px solid #e2e2e2;
         position: relative;
     }
 
@@ -6367,12 +6357,23 @@ label.color-label {
         border: 0 !important;
         padding: 0 !important;
         margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
+    .mail, .auth, .cart span {
+        color: #000000;
+        text-decoration: none;
+        font-family: gilroyRegular;
+        font-size: 12px;
+    }
 
     .header__search {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .main-search-form {
@@ -6392,17 +6393,24 @@ label.color-label {
     }
 
     .logo-div {
-        padding-left: 0px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 
     .logo {
         width: 80px;
-        margin-left: -10px;
-        margin-top: 4px;
     }
 
     .blue-menu {
-        margin-top: 0px;
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80%;
+    }
+
+    .blue-menu span {
+        display: none;
     }
 
     .cls-blue-menu {
@@ -6773,10 +6781,10 @@ label.color-label {
 
     .menu.is-fixed {
         background-color: #fff5f7;
-        box-shadow: 0px 2px 7px -2px rgba(0, 0, 0, 0.60);
+        box-shadow: 0 2px 7px -2px rgba(0, 0, 0, 0.60);
         top: 0;
-        padding-top: 0px;
-        padding-bottom: 0px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 }
 
@@ -6982,10 +6990,6 @@ label.color-label {
     .logo-small {
         display: block;
         width: 80px;
-    }
-
-    .search-div.header__search {
-        width: 75%;
     }
 }
 
@@ -7825,7 +7829,6 @@ label.color-label {
     background-repeat: no-repeat;
     margin-top: 15px;
     margin-left: 20px;
-
 }
 
 .header-container {
@@ -7838,6 +7841,20 @@ label.color-label {
     width: 23px;
     height: 18px !important;
     margin-top: 15px;
+}
+
+@media (max-width: 767px) {
+    .header-mail-icon {
+        margin-top: 0!important;
+        margin-right: 10px;
+    }
+    .header-call-icon {
+        margin-top: 0!important;
+        margin-left: 0!important;
+    }
+    .header-container {
+        height: 100%
+    }
 }
 
 .button_1O {
@@ -8136,6 +8153,12 @@ label.color-label {
     .mgo-mcw__group-buttons {
         padding: 0 !important;
         margin: 0 12px 0 0 !important;
+    }
+
+    .header-border-wrapper {
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
 }
 

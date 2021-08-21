@@ -16,20 +16,6 @@
     text-transform: uppercase;
 }
 
-.home-advantages-header {
-    font-family: 'gilroySemiBold'!important;
-    font-size: 40px;
-    font-weight: 600;
-    text-align: center;
-    margin-top: 60px;
-    margin-bottom: 15px;
-    color: #000000;
-}
-
-.advantages-section-wrapper {
-    margin-bottom: 50px;
-}
-
 .advantages-list-wrapper {
     display: flex!important;
     justify-content: space-between;

@@ -7,7 +7,7 @@ $counter = 0;
 ?>
 
 <div class="advantages-section-wrapper">
-    <h2 class="home-advantages-header"><?= Loc::getMessage('HOME_ADVANTAGES_BLOCK_TITLE') ?></h2>
+    <h2 class="default-header"><?= Loc::getMessage('HOME_ADVANTAGES_BLOCK_TITLE') ?></h2>
     <div class="advantages-list-wrapper main">
         <?php foreach ($arResult['ITEMS'] as $item) {
             $counter++;
