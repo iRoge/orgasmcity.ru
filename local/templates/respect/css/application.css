@@ -360,7 +360,7 @@ label.radio > span .input__color,
 .slider .slides-item img {
   display: none;
 }
-@media (max-width: 992px) {
+@media (max-width: 991px) {
   .slider {
     padding: 0;
   }
@@ -1848,7 +1848,7 @@ body.with--popup:after {
   margin-right: 5px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .shop-maps {
       display: block;
   }

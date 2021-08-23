@@ -451,7 +451,7 @@
     flex-direction: column;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
     .catalog__content-col--main {
         padding: 0!important;
     }
@@ -872,7 +872,7 @@ footer .hide-block {
 }
 
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
     .filter__displayed {
         display: none;
     }
@@ -1171,7 +1171,7 @@ footer .hide-block {
     }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
     .cards__banner {
         margin-top: 0;
     }

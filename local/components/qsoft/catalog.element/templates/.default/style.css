@@ -2,7 +2,7 @@
     padding-left: 94px !important;
 }
 
-@media (min-width: 767px) {
+@media (min-width: 768px) {
     .col-image {
         margin-top: 20px;
     }

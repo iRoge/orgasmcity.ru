@@ -1,6 +1,12 @@
 body {
     font-family: gilroyRegular;
 }
+input {
+    outline: none;
+}
+input:focus {
+    outline: none;
+}
 .icon,
 .selectize-control.multi .selectize-input:after,
 .selectize-control.single .selectize-input:after,
@@ -790,7 +796,7 @@ div.product-preorder-success a.button--orange:hover {
     }
 }   
 
-@media (min-width: 699px) and (max-width: 992px){
+@media (min-width: 699px) and (max-width: 991px){
     .popup--preorder aside{
         box-sizing: border-box;
         width: 33%;

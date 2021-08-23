@@ -1118,7 +1118,7 @@ html, body {
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .two-baskets-conditions p {
         padding: 15px;
     }
@@ -4337,7 +4337,7 @@ label.color-label {
     /*background: #000000;*/
 }
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
 
     .sp-thumbnail {
         width: 100%;
@@ -5182,7 +5182,7 @@ label.color-label {
         margin-bottom: 20px !important;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         .form__box--1-2,
         .form__field--delivery {
             padding-right: 0;
@@ -6858,7 +6858,7 @@ label.color-label {
     }
 }
 
-@media (max-width: 991px) and (min-width: 767px) {
+@media (max-width: 991px) and (min-width: 768px) {
     .logo-div {
         padding-left: 0!important;
     }
@@ -7999,7 +7999,7 @@ label.color-label {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .mng-wgt:after {
         top: 330px !important;
     }
@@ -8105,7 +8105,7 @@ label.color-label {
     }
 }
 
-@media (min-width: 768px) and (max-width: 992px) {
+@media (min-width: 768px) and (max-width: 991px) {
     .logo {
         width: 120px;
         margin-top: 0;
