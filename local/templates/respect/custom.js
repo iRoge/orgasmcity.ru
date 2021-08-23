@@ -138,7 +138,7 @@ function hide_wait () {
 	$(document).ready(function () {
 		// WhatsApp
 
-		if (window.matchMedia('(max-width: 768px)').matches) {
+		if (window.matchMedia('(max-width: 767px)').matches) {
 			let whatsAppButtonElement = document.querySelector('.js-whatsapp');
 	
 			if (whatsAppButtonElement) {
@@ -152,7 +152,7 @@ function hide_wait () {
 
 		// Jivosite
 
-		if (window.matchMedia('(max-width: 768px)').matches) {
+		if (window.matchMedia('(max-width: 767px)').matches) {
 			window.jivo_onLoadCallback = function () {
 				let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
 

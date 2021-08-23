@@ -192,7 +192,7 @@
 .shop-card__phones {
     display: flex;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .shop-header__item {
         width: 100%;
         margin-bottom: 10px;
