@@ -7291,7 +7291,7 @@ label.color-label {
 
 .orders__title {
     font-size: 1em;
-    font-family: inherit;
+    font-family: 'gilroyRegular';
     margin-top: 3px;
     margin-bottom: 0;
 }
@@ -7375,14 +7375,13 @@ label.color-label {
     margin: 0;
     padding: 15px 15px 15px 45px;
     border: 1px solid #e5e5e5;
-    opacity: 0.8;
+    opacity: 0.5;
     height: 100%;
     transition: 0.2s;
 }
 
 .checkbox4:hover + .cart-delivery__label:hover {
     opacity: 1;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 .checkbox4:checked + .cart-delivery__label {
@@ -7392,7 +7391,7 @@ label.color-label {
 }
 
 .cart-delivery__header {
-    font-family: 'firamedium';
+    font-family: 'gilroyMedium';
     margin-bottom: 5px;
     font-size: 16px;
 }
@@ -7431,7 +7430,7 @@ label.color-label {
     display: flex;
     align-items: center;
     color: #000000;
-    font-family: 'firamedium';
+    font-family: 'gilroyMedium';
     font-size: 16px;
 
 }
@@ -7731,7 +7730,7 @@ label.color-label {
 
 
     .orders__title {
-        font-family: 'firamedium';
+        font-family: 'gilroyMedium';
         font-size: 0.8em;
     }
 
