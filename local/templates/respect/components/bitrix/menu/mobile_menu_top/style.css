@@ -52,3 +52,10 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+@media (max-width: 767px) {
+    .topmenu a:hover {
+        color: #000000;
+        text-decoration: none;
+    }
+}
