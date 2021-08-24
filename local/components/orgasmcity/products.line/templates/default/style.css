@@ -203,3 +203,8 @@ a.product-href-wrapper:hover {
     justify-content: center;
     flex-wrap: wrap
 }
+
+#recommendeds-slider {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
