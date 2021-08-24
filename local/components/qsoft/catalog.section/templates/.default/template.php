@@ -47,18 +47,20 @@ if (!$arResult['IS_AJAX']) {
             ?>
         </h1>
         <?php
-        $APPLICATION->IncludeComponent(
-            'orgasmcity:catalogs.line',
-            'default',
-            [
-                'MAX_COUNT' => 24,
-                'FILTERS' => [
-                    'IBLOCK_ID' => IBLOCK_CATALOG,
-                    "ACTIVE" => "Y",
-                    "SECTION_ID" => $arResult['PARENT_SECTION_ID'],
-                ],
-            ]
-        );
+        if ($arResult['SHOW_CATALOGS_LINE']) {
+            $APPLICATION->IncludeComponent(
+                'orgasmcity:catalogs.line',
+                'default',
+                [
+                    'MAX_COUNT' => 24,
+                    'FILTERS' => [
+                        'IBLOCK_ID' => IBLOCK_CATALOG,
+                        "ACTIVE" => "Y",
+                        "SECTION_ID" => $arResult['PARENT_SECTION_ID'],
+                    ],
+                ]
+            );
+        }
         ?>
         <!-- catalog -->
         <div class="catalog">
