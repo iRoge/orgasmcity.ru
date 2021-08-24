@@ -30,16 +30,13 @@
     justify-content: center;
 }
 
-@media (min-width:767px) and (max-width:992px) {
-    .advantages-element:last-child {
-        padding-right: 0!important;
-    }
-    .advantages-element:first-child {
-        padding-left: 0!important;
+@media (min-width:767px) and (max-width:991px) {
+    .advantages-element {
+        margin: 10px 0;
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
     .advantages-element {
         padding-top: 15px!important;
     }
@@ -52,7 +49,4 @@
     .advantages-list-wrapper {
         padding: 0!important;
     }
-
 }
-
-

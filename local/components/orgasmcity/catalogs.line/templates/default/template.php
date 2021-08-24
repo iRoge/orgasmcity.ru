@@ -12,13 +12,13 @@
 /** @var string $componentPath */
 /** @var LikeeSliderComponent $component */
 $this->setFrameMode(true);
-?>
-<?php if (!empty($arResult['ITEMS'])) {?>
-    <div class="catalog-list-main main">
+
+if (!empty($arResult['ITEMS'])) {?>
+    <div class="<?=$arResult['SHOW_SLIDER'] ? 'js-catalog-list-slider ' : ''?>catalog-list-main">
         <?php foreach ($arResult['ITEMS'] as $item) {?>
-            <a class="col-lg-1 col-md-1 col-sm-2 catalog-list-element" href="<?=$item['SECTION_PAGE_URL']?>">
+            <a class="col-lg-1 col-md-2 col-sm-2 catalog-list-element" href="<?=$item['SECTION_PAGE_URL']?>">
                 <div class="catalog-list-element-img-wrap">
-                    <img src="<?=SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $item['CODE'] . '.svg'?>" alt="<?=$item['CODE']?>">
+                    <img src="<?=$item['IMG_PATH']?>" alt="<?=$item['CODE']?>">
                 </div>
                 <span style="height: 25%"><?=$item['NAME']?></span>
             </a>

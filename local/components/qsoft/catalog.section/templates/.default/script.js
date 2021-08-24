@@ -269,7 +269,7 @@ SmartFilter.prototype.nextPage = function (btn) {
 };
 
 SmartFilter.prototype.goToPageNum = function (btn) {
-    $("html, body").animate({scrollTop: 0}, 500);
+    $("html, body").animate({scrollTop: 400}, 500);
     btn = $(btn);
     let lds_ring = $('.lds-ring--settings');
     lds_ring.css('visibility', 'visible');

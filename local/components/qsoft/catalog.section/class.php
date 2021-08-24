@@ -273,11 +273,13 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->getSeo();
         $this->buildNavChain();
+
         if ($this->type === self::TYPE_SECTION && !empty($this->section['ID'])) {
-            $this->arResult['SECTION_ID'] = $this->section['ID'];
-        } elseif ($this->type === self::TYPE_ALL_CATALOG) {
-            $this->arResult['SECTION_ID'] = $this->getSecondLevelSections();
+            $this->arResult['PARENT_SECTION_ID'] = $this->section['ID'];
+        } else {
+            $this->arResult['PARENT_SECTION_ID'] = null;
         }
+
         $this->arResult['SECTION_TYPE'] = $this->type;
         $this->arResult['PROPS'] = $this->props;
 
@@ -288,9 +290,6 @@ class QsoftCatalogSection extends ComponentHelper
             $this->arResult['HAS_USER_DISCOUNT'] = (bool)$bonusSystemHelper->getCurrentBonus();
         }
         $this->includeComponentTemplate();
-
-        $GLOBALS['CATALOG_SECTION_ID'] = $this->arResult['SECTION_ID'];
-        $GLOBALS['CATALOG_ELEMENT_IDS'] = $this->arResult['CATALOG_ELEMENT_IDS'];
     }
 
     public function init()
@@ -483,34 +482,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         return $arSection;
-    }
-
-    /**
-     * @return array
-     */
-    private function getSecondLevelSections(): array
-    {
-        $arSections = [];
-
-        $res = CIBlockSection::GetList(
-            [],
-            [
-                "IBLOCK_ID" => IBLOCK_CATALOG,
-                "ACTIVE" => "Y",
-                "DEPTH_LEVEL" => 1,
-            ],
-            false,
-            [
-                "ID",
-            ],
-            false
-        );
-
-        while ($arItem = $res->Fetch()) {
-            $arSections[] = $arItem['ID'];
-        }
-
-        return $arSections;
     }
 
     /**

@@ -21,8 +21,9 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
 
     public function executeComponent()
     {
+        global $DEVICE;
         $this->arResult['ITEMS'] = $this->getCatalogs();
-
+        $this->arResult['SHOW_SLIDER'] = !($DEVICE->isMobile() || $DEVICE->isTablet()) && count($this->arResult['ITEMS']) > 12;
         $this->includeComponentTemplate();
     }
 
@@ -46,11 +47,15 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
             );
 
             $count = 0;
+            $maxCount = $this->arParams['MAX_COUNT'] ?? 12;
             while ($arSection = $rsSections->GetNext())
             {
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '2.webp';
+                $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '2.webp';
+                $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory2.webp';
                 $arSections[] = $arSection;
                 $count++;
-                if ($count == 12) {
+                if ($count == $maxCount) {
                     break;
                 }
             }

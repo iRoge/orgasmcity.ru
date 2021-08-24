@@ -46,6 +46,20 @@ if (!$arResult['IS_AJAX']) {
             $APPLICATION->ShowTitle(false);
             ?>
         </h1>
+        <?php
+        $APPLICATION->IncludeComponent(
+            'orgasmcity:catalogs.line',
+            'default',
+            [
+                'MAX_COUNT' => 24,
+                'FILTERS' => [
+                    'IBLOCK_ID' => IBLOCK_CATALOG,
+                    "ACTIVE" => "Y",
+                    "SECTION_ID" => $arResult['PARENT_SECTION_ID'],
+                ],
+            ]
+        );
+        ?>
         <!-- catalog -->
         <div class="catalog">
             <!-- banner -->
@@ -208,7 +222,7 @@ if (!$arResult['IS_AJAX']) {
                                             </svg>
                                         </div>
                                         <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: flex;"'?>>
-                                            <ul class=" filter__main-list">
+                                            <ul class="filter__main-list">
                                                 <?php foreach ($arResult['SAME_SECTIONS'] as $section) :?>
                                                     <li class="filter__type-item">
                                                         <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'gilroyRegular'; font-size: 15px; color: #000000;">

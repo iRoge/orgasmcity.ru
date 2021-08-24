@@ -27,12 +27,16 @@ input#EMAIL.red_border_sub {
     width: 100%;
 }
 
+.subscribe-second-img {
+    max-height: 100%;
+}
+
 .subscribe-left-wrapper {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     height: 100%;
-    padding: 0;
+    padding: 0 0 0 15px;
 }
 
 .subscribe-right-wrapper {
@@ -40,7 +44,7 @@ input#EMAIL.red_border_sub {
     align-items: center;
     justify-content: flex-end;
     height: 100%;
-    padding: 0;
+    padding: 5px 15px 5px 0;
 }
 
 .subscribe-center-wrapper {
@@ -101,6 +105,12 @@ input#EMAIL.red_border_sub {
 @media (max-width: 1440px) and (min-width: 1200px) {
     .subscribe-right-wrapper {
         display: none;
+    }
+}
+
+@media (max-width: 1440px) {
+    .subscribe-center-wrapper {
+        padding-right: 15px;
     }
 }
 

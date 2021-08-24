@@ -14,6 +14,9 @@ global $DEVICE;
     <?php
 
     if (!$DEVICE->isMobile()) {
+        ?>
+        <div class="main" style="display: flex">
+        <?php
         $APPLICATION->IncludeComponent(
             'orgasmcity:catalogs.line',
             'default',
@@ -24,7 +27,9 @@ global $DEVICE;
                 ],
             ]
         );
-
+        ?>
+        </div>
+        <?php
         $APPLICATION->IncludeComponent(
             'orgasmcity:mini.banners',
             'default',
@@ -158,11 +163,16 @@ global $DEVICE;
         ]
     );
     ?>
-
     <div class="how-we-work-section">
         <h2 class="default-header">Как мы работаем</h2>
         <div class="how-we-work-wrapper main">
             <img width="100%" src="<?=SITE_TEMPLATE_PATH?>/img/howWork.webp" alt="Как мы работаем">
+        </div>
+    </div>
+
+    <div class="order-help-section">
+        <div class="order-help-wrapper main">
+            <img width="100%" src="<?=SITE_TEMPLATE_PATH?>/img/clientHelpBlock.webp" alt="Не знаете что выбрать?">
         </div>
     </div>
 </div>

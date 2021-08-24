@@ -82,7 +82,7 @@ a.product-href-wrapper:hover {
     right: 0;
     padding: 0 7px;
     z-index: 1;
-    max-width: 90px;
+    max-width: 30%;
 }
 
 .sale-tooltip {

@@ -272,6 +272,10 @@
     border: 4px solid #654670;
 }
 
+.filter__main-list {
+    width: 100%
+}
+
 .hide-filter {
     margin-bottom: 130px !important;
 }
@@ -1397,7 +1401,7 @@ a.product-href-wrapper:hover {
     right: 0;
     padding: 0 7px;
     z-index: 1;
-    max-width: 90px;
+    max-width: 30%;
 }
 
 .sale-tooltip {
@@ -1519,9 +1523,6 @@ a.product-href-wrapper:hover {
     }
     .product-card-old-price {
         font-size: 14px;
-    }
-    .product-icons-wrap {
-        max-width: 60px;
     }
 }
 

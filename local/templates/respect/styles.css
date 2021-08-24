@@ -1293,6 +1293,16 @@ jdiv[class^="popupBlock_"] {
     margin-bottom: 20px;
 }
 
+.order-help-wrapper {
+    display: flex!important;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.order-help-section {
+    margin: 40px 0;
+}
+
 .footer-block {
     display: flex;
     flex-wrap: wrap;

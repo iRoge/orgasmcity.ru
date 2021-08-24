@@ -1591,7 +1591,7 @@ html, body {
     font-family: 'gilroyRegular';
     font-size: 45px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7526,10 +7526,6 @@ label.color-label {
     color: red;
 }
 
-
-.slick-arrow:hover {
-    background-color: rgba(237, 237, 237, 0.9);
-}
 
 .slick-arrow {
     opacity: 1;
