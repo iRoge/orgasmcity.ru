@@ -16,14 +16,29 @@
     padding: 10px;
 }
 
+.catalog-list-element:first-child {
+    padding-left: 0;
+}
+
+.catalog-list-element:last-child {
+    padding-right: 0;
+}
+
 .catalog-list-main a {
     color: #000000;
     font-family: 'gilroyMedium';
     text-decoration: none;
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     height: 120px;
 }
+
+@media (max-width: 1585px) {
+    .catalog-list-main a {
+        font-size: 11px;
+    }
+}
+
 
 @media (min-width:992px) and (max-width:1440px) {
     .catalog-list-main a {
@@ -56,9 +71,6 @@
         color: #A18CD1;
         text-decoration: none;
     }
-}
-
-@media (max-width: 767px) {
     .catalog-list-main {
         margin: 10px 5px;
     }
