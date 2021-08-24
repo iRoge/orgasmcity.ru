@@ -207,11 +207,11 @@ function respercEvent__add_to_cart()
 {
 	let popupContent = '<div class="product-preorder-success">'
 		+ '<header>Товар добавлен в корзину</header>'
-		+ '<footer>'
+		+ '<div class="popup-footer">'
 		+ '<button class="js-popup-close button button--xxl button--primary button--outline button--blue">Продолжить покупки</button>'
 		+ '<div>&nbsp;</div>'
 		+ '<a class="button button--xxl button--primary button--outline button--orange" href="/cart/">Оформить заказ</a>'
-		+ '</footer>'
+		+ '</div>'
 		+ '</div>';
 
 	Popup.show(popupContent, {

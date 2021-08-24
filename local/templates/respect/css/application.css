@@ -1478,7 +1478,7 @@ label.radio > span .input__color,
 }
 
 .popup {
-  background-color: #ffffff;
+  background: linear-gradient(90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
   box-sizing: border-box;
 }
 
@@ -1488,6 +1488,10 @@ label.radio > span .input__color,
 
 .popup__wrapper {
   padding: 10px;
+}
+
+.popup-error {
+  font-size: 18px;
 }
 
 @media (min-width: 600px) {
@@ -2549,7 +2553,7 @@ body > .popup--message .popup__wrapper {
 }
 
 .btn-style-blue {
-  font-family: 'firaregular';
+  font-family: 'gilroyRegular';
   outline: none;
   margin-top: 20px;
   border: 1px solid rgba(200,200,200, .5);

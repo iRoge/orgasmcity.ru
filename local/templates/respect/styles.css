@@ -437,7 +437,7 @@ label.radio > span .input__color,
     }
 }
 .selectize selectize--inline{
-font-family: 'firaregular';
+font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -587,7 +587,7 @@ font-family: 'firaregular';
     color: #000000;
     text-align: center;
     display: inline-block;
-    margin-top: 50px;
+    margin: 15px 0;
     font-size: 40px;
     line-height: 1;
     text-transform: inherit;
@@ -607,7 +607,7 @@ font-family: 'firaregular';
     }
 }
 .popup .input-group.input-group--phone input{
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     width: 100%;
     background: #fff5f7;
@@ -619,9 +619,8 @@ font-family: 'firaregular';
     padding: 12px 0;
     background: #654670;
     width: 48%;
-    text-transform: uppercase;
     color: #fff!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     margin: 15px 0;
@@ -639,12 +638,10 @@ font-family: 'firaregular';
     padding: 12px 0;
     background: #f0a740;
     width: 48%;
-    text-transform: uppercase;
     color: #fff!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
-    margin: 15px 1%;
     border: 0;
     outline: 0;
     cursor: pointer;
@@ -662,7 +659,7 @@ font-family: 'firaregular';
     width: 48%;
     text-transform: uppercase;
     color: #fff!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     margin: 15px 1%;
@@ -673,7 +670,7 @@ font-family: 'firaregular';
 }
 @media (max-width: 599px) {
     .popup__container button.button--primary{
-        margin: 15px 0px;
+        margin: 15px 0;
     }
 }
 .product-preorder-success footer div{
@@ -924,7 +921,7 @@ div.product-preorder-success a.button--orange:hover {
     background: #654670;
     text-transform: uppercase;
     margin-top: 30px;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     height: 51px;
     line-height: 47px;
@@ -980,7 +977,7 @@ div.product-preorder-success a.button--orange:hover {
     width: 100%;
     text-align: left;
     color: #000000;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 .auth-div-personal a:nth-of-type(1) {
     margin-top: 20px;
@@ -994,7 +991,7 @@ div.product-preorder-success a.button--orange:hover {
 .installment-rules,
 .installment-partner {
     text-align: center;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 0;
     text-transform: uppercase;
     text-decoration: none;
@@ -1229,7 +1226,7 @@ div.product-preorder-success a.button--orange:hover {
     background: #654670;
     text-transform: uppercase;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 
 jdiv[class^="button_"] {
@@ -1368,4 +1365,10 @@ a.footer-element:hover {
     font-size: 13px;
     line-height: 15px;
     margin: 15px 0;
+}
+
+.popup-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

@@ -177,7 +177,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     </div>
                                     <?php endif; ?>
                                     <div class="js-error-block" style="display: none; position: absolute;bottom: -20px;">
-                                        <p style="color: #cd1030;font-size: 13px;font-family: 'firabold';">
+                                        <p style="color: #cd1030;font-size: 13px;font-family: 'gilroyBold';">
                                             Такого ассортимента сейчас нет в наличии!
                                         </p>
                                     </div>

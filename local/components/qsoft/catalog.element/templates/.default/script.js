@@ -89,46 +89,9 @@ $(document).ready(function () {
     function basketHandler() {
         let offerId = $('#buy-btn').data('offer-id');
         let quantity = $('.quantity-num').val();
-        let data = {
-            action: "basketAdd",
-            offerId: offerId,
-            quantity: quantity,
-        };
-        $.ajax({
-            method: "POST",
-            url: "/cart/",
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                if (data.status == "ok") {
-                    updateSmallBasket(quantity);
-                    respercEvent__add_to_cart();
-                    let productData = mainCardData;
-                    productData['quantity'] = quantity;
-                    ym(82799680,'reachGoal','add_in_cart');
-                    window.metrikaData.push({
-                        "ecommerce": {
-                            "add": {
-                                "products": [
-                                    productData
-                                ]
-                            }
-                        },
-                    });
-                    return;
-                }
-                let error_text = '<div class="product-preorder-success">'
-                    + '<h2>Ошибка</h2>'
-                    + '<div class="js-size-popup text-danger">'
-                    + data.text.join("<br>")
-                    + '</div>'
-                    + '</div>';
-                Popup.show(error_text, {});
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        });
+        let productData = mainCardData;
+        productData['quantity'] = quantity;
+        addToCartHandler(offerId, quantity, productData)
     }
 
     function goZoom(data) {

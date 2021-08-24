@@ -18,6 +18,7 @@ component.click(function() {
 
 background.click(function() {
     popup.css('display', 'none');
+    background.css('display', 'none');
 });
 
 close.click(function() {

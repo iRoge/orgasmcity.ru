@@ -51,7 +51,16 @@ $this->setFrameMode(true);
                         <span class="product-card-price<?=$arItem['DISCOUNT'] ? ' price-red' : ''?>"><?=number_format($arItem['PRICE'], 0, '', ' ');?> ₽</span>
                     </div>
                     <div class="product-card-buy-btn-wrapper">
-                        <button class="product-card-buy-btn">Купить</button>
+                        <button
+                            data-url="/<?=$arItem['CODE']?>/"
+                            <?=count($arItem['OFFERS']) > 1 ? '' : 'data-id="' . reset($arItem['OFFERS'])['ID'] . '"'?>
+                            onclick="addItemToCartOrOpenDetail(this)"
+                            class="product-card-buy-btn"
+                            data-name="<?=$arItem['NAME']?>"
+                            data-price="<?=$arItem['PRICE']?>"
+                        >
+                            <?=count($arItem['OFFERS']) > 1 ? 'Купить' : 'В корзину'?>
+                        </button>
                     </div>
                 </div>
             </div>

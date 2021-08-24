@@ -50,6 +50,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                 $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['OLD_PRICE'] = $offer['PRICE']['OLD_PRICE'];
                 $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['DISCOUNT'] = $offer['PRICE']['DISCOUNT'];
             }
+            $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['OFFERS'][] = $offer;
         }
 
         if ($GLOBALS['device_type'] == 'mobile') {

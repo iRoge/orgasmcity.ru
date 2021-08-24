@@ -481,3 +481,51 @@ function phoneMaskCreate(phoneInput, needStar = true) {
         }
     });
 }
+
+//функция для клика на кнопку "Добавить в корзину"
+function addToCartHandler(offerId, quantity, productData) {
+    let data = {
+        action: "basketAdd",
+        offerId: offerId,
+        quantity: quantity,
+    };
+    $.ajax({
+        method: "POST",
+        url: "/cart/",
+        data: data,
+        dataType: "json",
+        success: function (data) {
+            if (data.status !== "ok") {
+                updateSmallBasket(quantity);
+                respercEvent__add_to_cart();
+                ym(82799680,'reachGoal','add_in_cart');
+                if (productData) {
+                    productData['quantity'] = quantity;
+                    window.metrikaData.push({
+                        "ecommerce": {
+                            "add": {
+                                "products": [
+                                    productData
+                                ]
+                            }
+                        },
+                    });
+                }
+                return;
+            }
+            console.log(data.text);
+            let error_text = '<div class="product-preorder-success">'
+                + '<h2>Ошибка</h2>'
+                + '<div class="popup-footer" style="justify-content: center">'
+                + '<div class="js-size-popup popup-error text-danger">'
+                + (Array.isArray(data.text) ? data.text.join("<br>") : 'Возникла ошибка при добавлении товара в корзину. Обратитесь в поддержку')
+                + '</div>'
+                + '</div>'
+                + '</div>';
+            Popup.show(error_text, {});
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+}

@@ -31,7 +31,7 @@ input[type=checkbox]:not(.checkbox3){
     width: 49%;
     text-transform: uppercase;
     color: white!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     margin-top: 15px;
@@ -40,7 +40,7 @@ input[type=checkbox]:not(.checkbox3){
 }
 .mail-div select {
     color: rgb(78, 78, 78);
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;

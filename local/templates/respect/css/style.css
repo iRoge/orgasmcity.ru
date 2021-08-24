@@ -350,7 +350,7 @@ html, body {
     width: 100%;
     text-align: left;
     color: #000000;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 
 .auth-div a:nth-of-type(1) {
@@ -436,7 +436,7 @@ html, body {
     text-transform: uppercase;
     margin-top: 30px;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -638,7 +638,7 @@ html, body {
 
 .in-auth-form a {
     color: #337ab7;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -767,7 +767,7 @@ html, body {
     text-transform: uppercase;
     margin-top: 30px;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
@@ -904,17 +904,17 @@ html, body {
     width: 22%;
     display: inline-block;
     vertical-align: middle;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
 }
 
 .price8 p {
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
 }
 
 .after-hr {
     padding: 10px 15px;
     color: white;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     width: 48%;
@@ -1103,7 +1103,7 @@ html, body {
     border: 5px solid #FD7778;
     padding: 13px 0;
     color: black;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-transform: uppercase;
     text-align: center;
@@ -1133,7 +1133,7 @@ html, body {
     .full_basket-container--regional .plus,
     .full_basket-container--regional .opening-cart {
         color: black;
-        font-family: 'firaregular';
+        font-family: 'gilroyRegular';
         font-size: 16px;
         text-transform: uppercase;
     }
@@ -1141,7 +1141,7 @@ html, body {
     .full_basket-container--local .plus,
     .full_basket-container--local .opening-cart {
         color: black;
-        font-family: 'firaregular';
+        font-family: 'gilroyRegular';
         font-size: 16px;
         text-transform: uppercase;
     }
@@ -1245,12 +1245,12 @@ html, body {
 
 .blue-a {
     color: #654670 !important;
-    font-family: 'firaregular' !important;
+    font-family: 'gilroyRegular' !important;
 }
 
 .red-a {
     color: #cd1030 !important;
-    font-family: 'firaregular' !important;
+    font-family: 'gilroyRegular' !important;
 }
 
 .right-hide-menu {
@@ -1259,7 +1259,7 @@ html, body {
 
 .right-hide-menu a {
     color: #000000;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px !important;
     margin-top: 10px;
     padding: 0;
@@ -1423,7 +1423,7 @@ html, body {
 }
 
 .in-main-top span {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-transform: uppercase;
 }
@@ -1445,7 +1445,7 @@ html, body {
 }
 
 .in-main-top a {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-transform: uppercase;
     padding: 13px 40px;
@@ -1485,7 +1485,7 @@ html, body {
 }
 
 .cat-one p {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     color: #000000 !important;
     font-size: 17px;
     text-transform: uppercase;
@@ -1528,7 +1528,7 @@ html, body {
 }
 
 .right-main-two span {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-transform: uppercase;
 }
@@ -1550,7 +1550,7 @@ html, body {
 }
 
 .right-main-two a {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-transform: uppercase;
     padding: 13px 40px;
@@ -1724,7 +1724,7 @@ a.in-zagolovok {
 
 .price-sel {
     float: left;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     color: #000000;
     font-size: 17px;
 }
@@ -1877,7 +1877,7 @@ a.in-zagolovok {
 }
 
 .mailsender h4 {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     color: #000000;
     margin-bottom: 25px;
     text-transform: uppercase;
@@ -1899,7 +1899,7 @@ a.in-zagolovok {
     width: 100%;
     margin-top: 15px;
     padding: 10px;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-transform: uppercase;
     color: #fefefe;
@@ -2142,7 +2142,7 @@ a.in-zagolovok {
 
 .full p {
     font-size: 16px;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     color: white;
     display: inline-block;
     margin: 0;
@@ -2522,7 +2522,7 @@ a.in-zagolovok {
     background: #000000;
     border: 1px solid #000000;
     color: #fff;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
 }
 
 .news-rub > input:nth-of-type(1):checked ~ div:nth-of-type(1),
@@ -2935,7 +2935,7 @@ a {
 .after-lk-in input[type="radio"]:checked + label, .lk-menu__item_active {
     border-bottom: 1px solid #654670;
     color: #654670;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 
 /*.after-lk-in > input:nth-of-type(1):checked ~ div:nth-of-type(1),
@@ -3118,7 +3118,7 @@ a {
     color: #000000;
     grid-area: price;
     align-self: center;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
 }
 
 
@@ -3188,7 +3188,7 @@ a {
 
 .cur-balance {
     color: #654670;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     font-size: 40px;
     display: inline-block;
     margin-right: 20px;
@@ -3240,26 +3240,26 @@ a {
 }
 
 .price-one-zkz {
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
 }
 
 .cancel-one-zkz {
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     color: #cd1030;
 }
 
 .new-one-zkz {
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     color: #654670;
 }
 
 .agree-one-zkz {
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     color: #c2bfbf;
 }
 
 .excellent-one-zkz {
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     color: #167803;
 }
 
@@ -3290,7 +3290,7 @@ a {
 .form-need input[type=submit] {
     background: #000000;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     margin-top: 20px;
     outline: 0;
@@ -3358,7 +3358,7 @@ a {
 }
 
 .form-in-after-lk input {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -3372,7 +3372,7 @@ a {
 }
 
 .form-in-after-lk select {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -3381,7 +3381,7 @@ a {
 }
 
 .form-in-after-lk-sub {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 7px 15px;
     text-transform: uppercase;
     background: #654670 !important;
@@ -3536,7 +3536,7 @@ input::-webkit-inner-spin-button {
 }
 
 .after-form input {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -3560,7 +3560,7 @@ input::-webkit-inner-spin-button {
     outline: 0 !important;
     border: 0 !important;
     letter-spacing: 0.4px;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 
 .popup--feedback .checkbox3 {
@@ -3878,7 +3878,7 @@ input::-webkit-inner-spin-button {
 .form-cart-right input[type=submit] {
     background: #f0a740;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 16px;
@@ -3913,7 +3913,7 @@ input::-webkit-inner-spin-button {
 .plus-bns {
     padding: 8px 20px;
     display: inline-block;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     border-radius: 25px;
     background: #7f9ace;
     color: #ffffff;
@@ -3968,7 +3968,7 @@ input::-webkit-inner-spin-button {
 
 .r {
     float: right;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
 }
 
 
@@ -3997,7 +3997,7 @@ input::-webkit-inner-spin-button {
 
 
 .form-in-after-cart-sub {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 0;
     text-transform: uppercase;
     background: #654670 !important;
@@ -4079,7 +4079,7 @@ input::-webkit-inner-spin-button {
 }
 
 .form-in-after-cart input {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     width: 49%;
     background: #fff5f7;
@@ -4099,7 +4099,7 @@ input::-webkit-inner-spin-button {
 }
 
 .form-in-after-cart select {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -4109,7 +4109,7 @@ input::-webkit-inner-spin-button {
 }
 
 .form-in-after-cart textarea {
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     width: 49%;
     background: #fff5f7;
@@ -4191,7 +4191,7 @@ input::-webkit-inner-spin-button {
 
 .price {
     font-size: 26px;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     color: #000000;;
     margin-top: 15px;
     margin-right: 5px;
@@ -4210,7 +4210,7 @@ input::-webkit-inner-spin-button {
 .percents {
     color: #cd1030;
     font-size: 13px;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     display: inline-block;
     margin-top: 17px;
     margin-right: 10px;
@@ -4223,7 +4223,7 @@ input::-webkit-inner-spin-button {
     font-size: 16px;
     flex-grow: 1;
     color: #b8b4b4;
-    font-family: 'firabold';
+    font-family: 'gilroyBold';
     display: block;
     margin-top: 25px;
     text-decoration: line-through;
@@ -4236,7 +4236,7 @@ input::-webkit-inner-spin-button {
     margin-top: 12px;
     display: block;
     float: left;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     border-radius: 25px;
     background: #7f9ace;
     color: #ffffff;
@@ -4461,7 +4461,7 @@ label.color-label {
     width: 100%;
     text-transform: uppercase;
     color: white;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     margin-top: 5px;
@@ -4475,7 +4475,7 @@ label.color-label {
     width: 100%;
     text-transform: uppercase;
     color: white;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     margin-top: 5px;
@@ -4492,7 +4492,7 @@ label.color-label {
     width: 100%;
     color: #000000;
     border: 1px solid #654670;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     text-transform: uppercase;
@@ -6422,7 +6422,7 @@ label.color-label {
     }
 
     .phone-xs {
-        font-family: 'firaregular';
+        font-family: 'gilroyRegular';
         font-size: 18px;
         text-align: right;
         color: #000000;
@@ -6802,7 +6802,7 @@ label.color-label {
     padding-right: 1.5em;
     text-decoration: none;
     color: #000;
-    font-family: 'firaregular', sans-serif;
+    font-family: 'gilroyRegular', sans-serif;
 }
 
 @media (max-width: 375px) {
@@ -7162,7 +7162,7 @@ label.color-label {
     border: 1px solid rgba(200, 200, 200, .5);
     color: #fefefe;
     cursor: pointer;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     letter-spacing: 1px;
     padding: 12px 20px;
@@ -7195,7 +7195,7 @@ label.color-label {
 
 #cart__delivery-cdek-button {
     color: white;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -7204,7 +7204,7 @@ label.color-label {
 
 #cart__delivery-cdek-button2 {
     color: white;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -7871,7 +7871,7 @@ label.color-label {
 
 .button--third {
     margin-top: 10px;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     outline: none;
     text-transform: uppercase;
     background: #f0a740 !important;

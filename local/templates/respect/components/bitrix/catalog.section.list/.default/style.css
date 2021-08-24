@@ -45,7 +45,7 @@
   background: #000000;
   border: 1px solid #000000;
   color: #fff;
-  font-family: 'firabold';
+  font-family: 'gilroyBold';
 }
 
 .news-rub > input:nth-of-type(1):checked ~ div:nth-of-type(1),

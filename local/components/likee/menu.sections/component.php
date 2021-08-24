@@ -275,8 +275,8 @@ if (empty($aMenuLinksNew)) {
 
         $arResult['ELEMENT_LINKS'][$arSection['ID']][] = urldecode($arSection['~SECTION_PAGE_URL']);
 
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '.svg';
-        $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '.svg';
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '2.webp';
+        $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '2.webp';
         $aMenuLinksNew[$menuIndex++] = array(
             htmlspecialcharsbx($arSection['~NAME']),
             $arSection['~SECTION_PAGE_URL'],
@@ -285,7 +285,7 @@ if (empty($aMenuLinksNew)) {
                 'FROM_IBLOCK' => true,
                 'IS_PARENT' => false,
                 'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
-                'IMG_PATH' => is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory.svg',
+                'IMG_PATH' => is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory2.webp',
             ),
         );
 
@@ -363,7 +363,7 @@ if (empty($aMenuLinksNew)) {
                     continue;
                 }
                 if ($arSalesSection3['IBLOCK_SECTION_ID'] == $arSalesSection2['ID']) {
-                    $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['CODE'] . '.svg';
+                    $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['CODE'] . '2.webp';
                     $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['CODE'] . '2.webp';
                     $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
                     $arMenuLinkSales[] = array(
@@ -371,7 +371,7 @@ if (empty($aMenuLinksNew)) {
                         $sPath,
                         array($sPath),
                         array(
-                            'IMG_PATH' => is_file($filePath) ? $imgPath :  SITE_TEMPLATE_PATH . '/img/svg/catalogs/2.webp',
+                            'IMG_PATH' => is_file($filePath) ? $imgPath :  SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory2.webp',
                             'IS_PARENT' => false,
                             'DEPTH_LEVEL' => 2,
                             'FROM_IBLOCK' => true,
