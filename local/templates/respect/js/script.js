@@ -495,7 +495,7 @@ function addToCartHandler(offerId, quantity, productData) {
         data: data,
         dataType: "json",
         success: function (data) {
-            if (data.status !== "ok") {
+            if (data.status == "ok") {
                 updateSmallBasket(quantity);
                 respercEvent__add_to_cart();
                 ym(82799680,'reachGoal','add_in_cart');
@@ -513,7 +513,6 @@ function addToCartHandler(offerId, quantity, productData) {
                 }
                 return;
             }
-            console.log(data.text);
             let error_text = '<div class="product-preorder-success">'
                 + '<h2>Ошибка</h2>'
                 + '<div class="popup-footer" style="justify-content: center">'
