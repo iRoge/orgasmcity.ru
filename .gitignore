@@ -12,6 +12,7 @@
 /cron/logs/*
 /import/*.csv
 /robots.txt
+/node_scripts
 *.log
 *.csv
 *.xml
