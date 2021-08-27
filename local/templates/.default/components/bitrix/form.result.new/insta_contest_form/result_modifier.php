@@ -1,7 +1,5 @@
 <?php
 
-use Qsoft\Sailplay\SailPlayApi;
-
 $arResult['BTN_STYLE_ATTR'] = 'style="';
 if (!empty($_REQUEST['btn_color'])) {
     $arResult['BTN_STYLE_ATTR'] .= 'background-color: #' . htmlspecialchars($_REQUEST['btn_color']) . ';';
@@ -17,7 +15,7 @@ $rs = CIBlockElement::GetList(
     [],
     [
         'ID' => $actionId,
-        'IBLOCK_ID' => \Functions::getEnvKey('IBLOCK_EVENTS')
+        'IBLOCK_ID' => IBLOCK_BLOG,
     ],
     false,
     ['nTopCount' => 1],

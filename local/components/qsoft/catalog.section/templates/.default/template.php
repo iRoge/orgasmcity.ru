@@ -396,7 +396,7 @@ if (!$arResult['IS_AJAX']) {
                                     </div>
                                 <?php endif ?>
                                 <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
-                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) {?>
+                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) { ?>
                                         <div class="product-card<?=$arResult['USER_SETTINGS']['GRID'] == 'big' ? ' col-lg-4 col-md-6 col-sm-6 col-xs-12' : ' col-lg-3 col-md-4 col-sm-4 col-xs-6' ?>">
                                             <div class="product-card-wrapper">
                                                 <div class="product-icons-wrap">
@@ -431,7 +431,16 @@ if (!$arResult['IS_AJAX']) {
                                                         <span class="product-card-price<?=$arItem['DISCOUNT'] ? ' price-red' : ''?>"><?=number_format($arItem['PRICE'], 0, '', ' ');?> ₽</span>
                                                     </div>
                                                     <div class="product-card-buy-btn-wrapper">
-                                                        <button class="product-card-buy-btn">Купить</button>
+                                                        <button
+                                                                data-url="/<?=$arItem['CODE']?>/"
+                                                                <?=count($arItem['ASSORTMENTS']) > 1 ? '' : 'data-id="' . reset($arItem['ASSORTMENTS'])['ID'] . '"'?>
+                                                                onclick="addItemToCartOrOpenDetail(this)"
+                                                                data-name="<?=$arItem['NAME']?>"
+                                                                data-price="<?=$arItem['PRICE']?>"
+                                                                class="product-card-buy-btn"
+                                                        >
+                                                            <?=count($arItem['ASSORTMENTS']) > 1 ? 'Купить' : 'В корзину'?>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>

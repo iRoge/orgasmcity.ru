@@ -38,40 +38,6 @@ class EventsComponent extends CBitrixComponent
         $this->arParams['CURRENT_ELEMENT'] = $arVariables['ELEMENT_CODE'];
         $this->arParams['CURRENT_PAGE_NUM'] = $arVariables['PAGE_NUM'];
 
-        if ($this->arParams['IBLOCK_CODE'] == 'blog' && $componentPage == 'element') {
-            if ($this->cache->initCache($this->arParams['CACHE_TIME'], 'onlyLookbooksCodes', $this->arParams['CACHE_DIR'])) {
-                $arLookbookCodes = $this->cache->getVars();
-            } elseif ($this->cache->StartDataCache()) {
-                $res = CIBlockSection::GetList(
-                    [],
-                    [
-                        'ACTIVE' => 'Y',
-                        'IBLOCK_ID' => $this->arParams['IBLOCK_ID'],
-                        'UF_IS_LOOKBOOK' => true,
-                    ],
-                    false,
-                    [
-                        'CODE',
-                    ]
-                );
-                while ($arItem = $res->Fetch()) {
-                    $arLookbookCodes[$arItem['CODE']] = $arItem['CODE'];
-                }
-
-                if (!empty($arLookbookCodes)) {
-                    $this->cache->EndDataCache($arLookbookCodes);
-                } else {
-                    $this->cache->AbortDataCache();
-                }
-            }
-            if (isset($arLookbookCodes[$arVariables['ELEMENT_CODE']])) {
-                $url = $this->arParams['DEFAULT_SECTION']['LINK'] . $arVariables['SECTION_CODE'] . '/' . $arVariables['ELEMENT_CODE'] . '/1/';
-                LocalRedirect($url, false, '301 Moved permanently');
-            }
-        }
-        $this->arParams['CURRENT_SECTION'] = $arVariables['SECTION_CODE'];
-        $this->arParams['CURRENT_ELEMENT'] = $arVariables['ELEMENT_CODE'];
-        $this->arParams['CURRENT_PAGE_NUM'] = $arVariables['PAGE_NUM'];
 
         $this->IncludeComponentTemplate($componentPage);
     }
@@ -98,10 +64,9 @@ class EventsComponent extends CBitrixComponent
                     'SECTION_PAGE_URL',
                 ]
             );
-
             while ($arItem = $res->Fetch()) {
                 if ($arItem['EXTERNAL_ID'] == $this->arParams['DEFAULT_SECTION']['EXTERNAL_ID']) {
-                    $arSection['MENU'][0] = [
+                    $arSection['MENU'][$arItem['ID']] = [
                         'ID' => $arItem['ID'],
                         'NAME' => $arItem['NAME'],
                         'EXTERNAL_ID' => $arItem['EXTERNAL_ID'],

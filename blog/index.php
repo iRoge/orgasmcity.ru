@@ -4,29 +4,26 @@
 require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 global $APPLICATION;
 
-// Редиректы
-require($_SERVER["DOCUMENT_ROOT"] . '/local/php_interface/include/redirect.php');
-
 $APPLICATION->IncludeComponent(
     "rdevs:events",
     "",
     [
         'CACHE_TYPE' => 'A',
         'CACHE_TIME' => '86400',
-        'CACHE_DIR' => '/events',
-        'IBLOCK_CODE' => 'events',
-        'IBLOCK_ID' => Functions::getEnvKey('IBLOCK_EVENTS', 70),
-        'SEF_FOLDER' => '/events/',
+        'CACHE_DIR' => '/blog',
+        'IBLOCK_CODE' => 'blog',
+        'IBLOCK_ID' => IBLOCK_BLOG,
+        'SEF_FOLDER' => '/',
         'SEF_URL_TEMPLATES' => [
-            'section' => '#SECTION_CODE#/',
             'element' => '#SECTION_CODE#/#ELEMENT_CODE#/',
+            'section' => '#SECTION_CODE#/',
         ],
         'SEF_DEFAULT_TEMPLATE' => 'section',
         'DEFAULT_SECTION' => [
-            'TITLE' => 'События',
-            'NAME' => 'Все события',
-            'EXTERNAL_ID' => 'events',
-            'LINK' => '/events/',
+            'TITLE' => 'Блог',
+            'NAME' => 'Все посты',
+            'EXTERNAL_ID' => 'blog',
+            'LINK' => '/blog/',
         ],
     ],
     false

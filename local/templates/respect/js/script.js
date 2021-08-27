@@ -528,3 +528,14 @@ function addToCartHandler(offerId, quantity, productData) {
         }
     });
 }
+
+function addItemToCartOrOpenDetail(buttonElem) {
+    let btn = $(buttonElem);
+    let offerId = btn.data('id');
+    if (offerId) {
+        let productData = $(buttonElem).data();
+        addToCartHandler(offerId, 1, productData);
+    } else {
+        window.open(btn.data('url'), '_blank');
+    }
+}

@@ -525,6 +525,7 @@ class QsoftCatalogSection extends ComponentHelper
             }
             $arProducts[$arItem["ID"]] = [
                 "ID" => $arItem["ID"],
+                "CODE" => $arItem["CODE"],
                 "NAME" => $arItem['NAME'],
                 "XML_ID" => $arItem['XML_ID'],
                 "DETAIL_PICTURE" => $arItem["DETAIL_PICTURE"],
@@ -651,6 +652,7 @@ class QsoftCatalogSection extends ComponentHelper
             $sizeRes = CIBlockElement::GetProperty(IBLOCK_OFFERS, $arItem["ID"], "sort", "asc", ['CODE' => 'SIZE']);
             $size = $sizeRes->GetNext();
             $arOffers[$arItem["ID"]] = [
+                'ID' => $arItem["ID"],
                 'PROPERTY_CML2_LINK_VALUE' => $arItem['PROPERTY_CML2_LINK_VALUE'],
                 'PROPERTY_SIZE_VALUE' => $size['VALUE'],
                 'PROPERTY_COLOR_VALUE' => $arItem['PROPERTY_COLOR_VALUE'],

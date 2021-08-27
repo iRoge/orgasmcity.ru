@@ -306,7 +306,7 @@ class QsoftFeed extends ComponentHelper
     private function loadRssNews()
     {
         $arFilter = [
-            'IBLOCK_ID' => \Functions::getEnvKey('IBLOCK_EVENTS', 70),
+            'IBLOCK_ID' => IBLOCK_BLOG,
             'PROPERTY_ADD_RSS_CHANNEL_VALUE' => 'Y'
         ];
         $arSelect = [

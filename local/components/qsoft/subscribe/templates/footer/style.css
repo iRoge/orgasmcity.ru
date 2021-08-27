@@ -102,13 +102,13 @@ input#EMAIL.red_border_sub {
     display: none;
 }
 
-@media (max-width: 1440px) and (min-width: 1200px) {
+@media (max-width: 1439px) and (min-width: 1200px) {
     .subscribe-right-wrapper {
         display: none;
     }
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 1439px) {
     .subscribe-center-wrapper {
         padding-right: 15px;
     }

@@ -12,6 +12,7 @@ const IBLOCK_SUBSCRIBERS = 60;
 const IBLOCK_MAILINGS = 61;
 const IBLOCK_MINI_BANNERS = 22;
 const IBLOCK_GROUPS = 64;
+const IBLOCK_BLOG = 66;
 
 const MAIN_SECTION_ID = 574;
 
@@ -33,7 +34,7 @@ const DADATA_SECRET_TOKEN = 'fff4fdba3305081a999a5334e73ed7b00a11e9e0'; // Secre
 const DADATA_MAX_REQUESTS = 10000; // Максимальное количество запросов в дадату в день
 
 // Телефон поддержки
-const SUPPORT_PHONE = '+7 (495) 197-78-69'; // Путь к файлу с политикой конфиденциальности
+const SUPPORT_PHONE = '+7 (495) 197-78-69';
 
 // Размеры картинок в каталоге (большая и маленькая)
 const CATALOG_SMALL_IMG_HEIGHT = 300;
