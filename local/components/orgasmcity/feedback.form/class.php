@@ -52,10 +52,10 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
                 $orderId = trim($_POST['ORDER_ID']);
             }
 
-            if (!$_POST['ORDER_PHONE']) {
+            if (!$_POST['ORDER_EMAIL']) {
                 $errors[] = 'Не заполненно поле "Оценка нашего магазина"';
             } else {
-                $orderPhone = trim($_POST['ORDER_PHONE']);
+                $orderEmail = trim($_POST['ORDER_EMAIL']);
             }
         }
 

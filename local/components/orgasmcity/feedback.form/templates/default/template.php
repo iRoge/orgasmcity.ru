@@ -11,7 +11,6 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var LikeeSliderComponent $component */
-
 ?>
 <form method="post" class="feedback-form" action="/feedback/" enctype="multipart/form-data">
     <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="<?=isset($_POST['NAME']) ? $_POST['NAME'] : ''?>">
@@ -26,10 +25,10 @@
     <textarea class="feedback-form-element" name="FEEDBACK_TEXT" style="resize: none; height: 100px" placeholder="Текст отзыва*"><?=isset($_POST['FEEDBACK_TEXT']) ? $_POST['FEEDBACK_TEXT'] : ''?></textarea>
     <div class="haveOrder-wrapper">
         <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput" <?=isset($_POST['HAS_ORDER']) && $_POST['HAS_ORDER'] == 1 ? 'checked' : ''?>>
-        <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с телефоном, то ваш отзыв автоматически попадет на главную страницу. Так же вы можете по желанию прикрепить фото товара)</label>
+        <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически попадет на главную страницу. Так же вы можете по желанию прикрепить фото товара)</label>
         <div class="haveOrder-closed">
             <input class="feedback-form-element" name="ORDER_ID" type="text" placeholder="Номер вашего заказа*" <?=isset($_POST['ORDER_ID']) ? $_POST['ORDER_ID'] : ''?>>
-            <input class="feedback-form-element" name="ORDER_PHONE" type="text" placeholder="Номер телефона, указанного в заказе*" <?=isset($_POST['ORDER_PHONE']) ? $_POST['ORDER_PHONE'] : ''?>>
+            <input class="feedback-form-element" name="ORDER_EMAIL" type="text" placeholder="Email, указанный в заказе*" <?=isset($_POST['ORDER_EMAIL']) ? $_POST['ORDER_EMAIL'] : ''?>>
             <input class="feedback-form-element" name="FILE" type="file" title="По желанию вставьте фото товара" value="<?=isset($_POST['FILE']) ? $_POST['FILE'] : ''?>">
         </div>
     </div>
