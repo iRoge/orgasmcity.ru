@@ -1,10 +1,10 @@
 body {
     font-family: gilroyRegular;
 }
-input {
+select, textarea, input {
     outline: none;
 }
-input:focus {
+select:focus, textarea:focus, input:focus {
     outline: none;
 }
 .icon,
