@@ -8192,6 +8192,10 @@ label.color-label {
     padding-left: 0!important;
 }
 
+.right-block-top a  {
+    display: block;
+}
+
 .right-block-top div, .right-block-top a  {
     text-decoration: none;
     font-family: 'gilroyRegular';

@@ -970,7 +970,7 @@ div.product-preorder-success a.button--orange:hover {
     background: #fff;
     height: auto;
     line-height: 18px;
-    width: 100%;
+    width: 190%;
 }
 .auth-div-personal a {
 	display: block;
@@ -978,6 +978,7 @@ div.product-preorder-success a.button--orange:hover {
     text-align: left;
     color: #000000;
     font-family: 'gilroyRegular';
+    font-size: 14px;
 }
 .auth-div-personal a:nth-of-type(1) {
     margin-top: 20px;

@@ -359,13 +359,13 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         false
                     ); ?>
                     <div class="hidden-sm col-xs-2 mail touch-for-poisk">
-                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/search.png" width="20px" height="20px"/>
+                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/search-colored.svg" width="20px" height="20px"/>
                     </div>
                     <div class="hidden-sm col-xs-2 mail auth2<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                         <? if (!$USER->IsAuthorized()) : ?>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" width="20px" height="20px"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cabinet.svg" width="20px" height="20px"/>
                         <? else : ?>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" width="20px" height="20px"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cabinet.svg" width="20px" height="20px"/>
                             <div class="auth-div menu_mob_fly" style="margin-top: 10px!important;">
                                 <a href="/personal/orders/">История заказов</a><br />
                                 <a href="/personal/bonuses/">Бонусы</a><br />

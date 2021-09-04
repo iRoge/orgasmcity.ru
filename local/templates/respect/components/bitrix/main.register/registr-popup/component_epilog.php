@@ -4,8 +4,9 @@
 <? if ($arParams['POPUP_FORM'] == 'Y'): ?>
 <? $this->__template->SetViewTarget("AUTH_HEAD_BLOCK");?>
 <? if ($USER->IsAuthorized()) : ?>
+    <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cabinet.svg"/>
     <a href="/personal/" class="auth-div-desk">
-        <?= $USER->GetEmail(); ?>
+        <?=strstr($USER->GetEmail(), '@', true);?>
     </a>
     <div class="auth-div-personal">
         <a href="/personal/orders/">История заказов</a><br />
