@@ -296,6 +296,47 @@ class addFeedbackIblock20210827152734 extends Version
                         ),
                 ),
         ));
+        $helper->Iblock()->saveProperty($iblockId, array(
+            'NAME' => 'Пол',
+            'ACTIVE' => 'Y',
+            'SORT' => '1800',
+            'CODE' => 'GENDER',
+            'DEFAULT_VALUE' => '4',
+            'PROPERTY_TYPE' => 'L',
+            'ROW_COUNT' => '1',
+            'COL_COUNT' => '30',
+            'LIST_TYPE' => 'L',
+            'MULTIPLE' => 'N',
+            'XML_ID' => '61',
+            'FILE_TYPE' => '',
+            'MULTIPLE_CNT' => '5',
+            'LINK_IBLOCK_ID' => '0',
+            'WITH_DESCRIPTION' => 'N',
+            'SEARCHABLE' => 'N',
+            'FILTRABLE' => 'N',
+            'IS_REQUIRED' => 'Y',
+            'VERSION' => '2',
+            'USER_TYPE' => NULL,
+            'USER_TYPE_SETTINGS' => NULL,
+            'HINT' => '',
+            'VALUES' =>
+                array(
+                    0 =>
+                        array(
+                            'VALUE' => 'Женщина',
+                            'DEF' => 'N',
+                            'SORT' => '500',
+                            'XML_ID' => 'Female',
+                        ),
+                    1 =>
+                        array(
+                            'VALUE' => 'Мужчина',
+                            'DEF' => 'N',
+                            'SORT' => '500',
+                            'XML_ID' => 'Male',
+                        ),
+                )
+        ));
         $helper->UserOptions()->saveElementForm($iblockId, array(
             'Элемент|edit1' =>
                 array(
@@ -306,6 +347,7 @@ class addFeedbackIblock20210827152734 extends Version
                     'ACTIVE_FROM' => 'Начало активности',
                     'ACTIVE_TO' => 'Окончание активности',
                     'NAME' => 'Имя отзовика',
+                    'PROPERTY_GENDER' => 'Пол',
                     'SORT' => 'Сортировка',
                     'PROPERTY_PRODUCT_ID' => 'ID товара',
                     'PROPERTY_SCORE' => 'Оценка',

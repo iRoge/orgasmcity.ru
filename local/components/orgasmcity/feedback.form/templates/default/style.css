@@ -67,3 +67,26 @@
     height: 22px;
     background: url(/local/templates/respect/css/../img/checkbox.png);
 }
+
+.text-danger {
+    margin: 0!important;
+    color: red!important;
+}
+
+.text-success {
+    margin: 0!important;
+    font-size: 30px!important;
+    color: green!important;
+    align-items: center;
+    text-align: center;
+}
+
+.feeback-errors-wrapper {
+    margin: 30px 0;
+}
+.feeback-success-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0;
+}
