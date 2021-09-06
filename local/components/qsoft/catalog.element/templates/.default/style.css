@@ -274,7 +274,8 @@ input.search-mag {
 .detail-element-text {
     padding-top: 15px;
     font-family: 'gilroyRegular';
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 23px;
     color: #000000;
     max-height: 500px;
     overflow: auto;
@@ -358,41 +359,53 @@ input[type="number"] {
     font-size: 20px;
     width: 100%;
     display: flex;
-    height: 40px;
+    height: 68px;
     justify-content: space-between;
+    align-items: center;
 }
 .quantity-arrow-minus,
 .quantity-arrow-plus {
     cursor: pointer;
-    font-size: 20px;
-    width: 20%;
+    font-family: gilroyThin;
+    width: 23%;
+    max-width: 23%;
     height: 100%;
     box-sizing: border-box;
-    border-radius: 4px;
-    border: solid 1px;
     outline: none;
-    background-color: #f0a740;
+    background: #FFFFFF;
+    border-radius: 15px;
+    border-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.quantity-arrow-minus:hover,
-.quantity-arrow-plus:hover {
-    background-color: #ffd35f;
-}
 .quantity-arrow-minus:active,
 .quantity-arrow-plus:active {
-    background-color: #fde910;
+    background-color: black;
+}
+@media (min-width: 992px) {
+    .quantity-arrow-minus:hover,
+    .quantity-arrow-plus:hover {
+        background-color: grey;
+    }
+}
+
+.quantity-arrow-plus span,
+.quantity-arrow-minus span {
+    font-size: 70px;
+    line-height: 20px;
 }
 .quantity-num {
     height: 100%;
-    width: 57%;
-    font-size: 20px;
+    width: 50%;
+    font-size: 25px;
+    font-family: gilroyRegular;
     padding: 5px 10px;
-    border-radius: 4px;
-    border: solid 1px;
+    border-radius: 15px;
+    border-color: transparent;
     outline: none;
     text-align: center;
+    color: black;
 }
 
 .right-cartochka__top-block {
@@ -404,4 +417,131 @@ input[type="number"] {
 .product-preorder-success footer {
     display: flex;
     justify-content: space-between;
+}
+
+.advantage-image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.advantage-image {
+    width: 377px;
+    height: 63px;
+    margin-top: 25px;
+}
+
+@media (max-width: 1300px) {
+    .advantage-image {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .buy-btn-wrapper:hover button {
+        color: black!important;
+    }
+
+    .buy-btn-wrapper:hover button svg path {
+        fill: black!important;
+    }
+
+    .buy-btn-wrapper:hover {
+        background: white!important;
+    }
+}
+
+
+.buy-btn-wrapper {
+    transition: 300ms;
+    -webkit-transition: 300ms;
+    background: linear-gradient(276.86deg, #A18CD1 16.41%, #FBC2EB 95.12%);
+    border-radius: 35px;
+    border-color: transparent;
+    height: 68px;
+    margin: 25px 0;
+}
+
+.buy-btn-wrapper button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-size: 22px;
+    line-height: 26px;
+    font-family: gilroyMedium;
+    text-align: left;
+    padding: 10px 35px;
+}
+
+@media (max-width: 345px) {
+    .buy-btn-wrapper button {
+        font-size: 16px;
+        line-height: 20px;
+    }
+}
+
+.one-click-wrapper {
+    background: linear-gradient(273.53deg, #60486D 22.02%, #A58ED2 95%);
+}
+
+.buy-btn-svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 20%;
+    height: 100%;
+}
+
+
+.buy-btn-wrapper button svg {
+    height: 100%;
+}
+
+.buy-btn-wrapper button span {
+    width: 78%;
+}
+
+.heart-btn {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.heart-btn.active svg path {
+    fill: #A18CD1;
+}
+
+@media (min-width: 1250px) {
+    .heart-btn:hover svg path {
+        fill: #FBC2EB;
+    }
+}
+
+.heart-btn svg path {
+    height: 25px;
+    fill: #c6c1c1;
+    transition: fill 0.2s;
+}
+
+.left-block-title {
+    width: 278px;
+    height: 50px;
+    background: linear-gradient(82.67deg, #A18CD1 9.66%, #FBC2EB 102.17%);
+    border-radius: 35px;
+}
+
+.left-block-title-revert {
+    width: 278px;
+    height: 50px;
+    background: linear-gradient(82.67deg, #A18CD1 9.66%, #FBC2EB 102.17%);
+    border-radius: 35px;
 }

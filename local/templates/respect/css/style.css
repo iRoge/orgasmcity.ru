@@ -2658,7 +2658,6 @@ a {
 }
 
 .blue-menu-div-div span {
-    display: block;
     font-family: 'gilroyBold';
     color: #000000;
     font-size: 18px;
@@ -2673,6 +2672,7 @@ a {
 .open-ul {
     background-image: url('../img/arrow-up.png') !important;
     background-position: 99% 46% !important;
+    display: block;
 }
 
 .more-span:hover {
@@ -3888,17 +3888,6 @@ input::-webkit-inner-spin-button {
     -webkit-transition: 300ms;
 }
 
-.yellow-btn:hover {
-    background: #e28400 !important;
-    transition: 300ms;
-    -webkit-transition: 300ms;
-}
-
-.yellow-btn {
-    transition: 300ms;
-    -webkit-transition: 300ms;
-}
-
 .blue-btn {
     transition: 300ms;
     -webkit-transition: 300ms;
@@ -4128,8 +4117,6 @@ input::-webkit-inner-spin-button {
 }
 
 .right-cartochka {
-    border-right: 1px solid #e4e4e4;
-    border-left: 1px solid #e4e4e4;
     min-height: 100px !important;
     padding: 15px !important;
 }
@@ -4164,14 +4151,14 @@ input::-webkit-inner-spin-button {
 .opisanie-after {
     position: absolute;
     top: -41px;
-    left: 6px;
     width: 100px;
     padding: 13px 10px 13px 0;
-    font-family: 'gilroyRegular';
+    font-family: 'gilroyMedium';
     text-align: center;
     color: #000000;
     background-size: cover;
-    font-size: 16px;
+    font-size: 23px;
+    line-height: 27px;
     font-weight: 600;
 }
 
@@ -4190,10 +4177,9 @@ input::-webkit-inner-spin-button {
 }
 
 .price {
-    font-size: 26px;
+    font-size: 30px;
     font-family: 'gilroyBold';
     color: #000000;;
-    margin-top: 15px;
     margin-right: 5px;
     margin-bottom: 0;
     display: block;
@@ -4214,19 +4200,19 @@ input::-webkit-inner-spin-button {
     display: inline-block;
     margin-top: 17px;
     margin-right: 10px;
-    padding: 7px 14px;
     overflow: visible;
     background-size: cover;
 }
 
 .old-price {
-    font-size: 16px;
+    font-size: 20px;
     flex-grow: 1;
-    color: #b8b4b4;
-    font-family: 'gilroyBold';
-    display: block;
+    color: #000000;
+    font-family: 'gilroyRegular';
+    display: inline-block;
     margin-top: 25px;
     text-decoration: line-through;
+    text-decoration-thickness: from-font;
     margin-right: 20px;
 }
 
@@ -4281,8 +4267,8 @@ input::-webkit-inner-spin-button {
 .right-cartochka h3 {
     font-family: 'gilroyRegular';
     color: #000000;
-    font-size: 16px;
-    text-transform: uppercase;
+    font-size: 20px;
+    line-height: 23px;
 }
 
 .sizes {
@@ -4298,15 +4284,15 @@ input::-webkit-inner-spin-button {
     position: absolute;
     z-index: -1;
     opacity: 0;
-    margin: 0px 0 0 20px;
+    margin: 0 0 0 20px;
 }
 
 .radio1 + label {
     position: relative;
     cursor: pointer;
     background: #fff5f7;
-    border: 2px solid #e4e4e4;
-    padding: 9px 13px;
+    border: 2px solid white;
+    padding: 5px;
     letter-spacing: 0.4px;
     font-family: 'gilroyRegular' !important;
     float: left;
@@ -4332,9 +4318,7 @@ label.color-label {
 }
 
 .radio1:checked + label {
-    /*color: white;*/
-    border: solid 2px #e28400;
-    /*background: #000000;*/
+    border: solid 2px #A18CD1;
 }
 
 @media (max-width: 991px) {
@@ -5209,14 +5193,13 @@ label.color-label {
             content: 'Описание';
             position: absolute;
             top: -40px;
-            left: -4px;
+            left: 0;
             width: 100px;
-            padding: 13px 10px 13px 0;
             font-family: 'gilroyRegular';
-            text-align: center;
             color: #000000;
             font-size: 16px;
             font-weight: 600;
+            padding-left: 15px;
         }
 
         .one-item {
@@ -6645,9 +6628,6 @@ label.color-label {
             width: auto;
         }
     }
-    .right-cartochka__container.col-sm-6 {
-        padding-left: 0!important;
-    }
 
     .topmenu {
         clear: both;
@@ -7825,7 +7805,7 @@ label.color-label {
     display: block;
     width: 20px;
     height: 21px;
-    background-image: url('/local/templates/respect/img/icon-phone.svg');
+    background-image: url('/local/templates/respect/img/svg/icon-phone.svg');
     background-size: cover;
     background-repeat: no-repeat;
     margin-top: 15px;

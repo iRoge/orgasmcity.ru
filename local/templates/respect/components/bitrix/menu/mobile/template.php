@@ -43,45 +43,66 @@ $this->setFrameMode(true);
 
         $levelId = str_replace('/', '-', trim($arItem['LINK'], '/'));
         ?>
-        <? if ($arItem['IS_PARENT']) : ?>
+        <?php if ($arItem['IS_PARENT']) : ?>
             <div class="blue-menu-div-div">
-                <a href="<?= $arItem['LINK'] ?>" class="more-span"><span
-                style="
-                <? if ($arItem['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']) :?>
-                       color:#<?=$arItem['PARAMS']['PROPS']['UF_TEXT_COLOR']['PROPERTY_COLOR_VALUE']?>;
-                <? endif;?>
-                <? if ($arItem['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']) : ?>
-                       background-color:#<?=$arItem['PARAMS']['PROPS']['UF_BG_COLOR']['PROPERTY_COLOR_VALUE']?>;
-                <? endif;?>"><?= $arItem['TEXT'] ?></span></a>
+                <a href="<?= $arItem['LINK'] ?>" class="more-span">
+                    <span>
+                        <?=$arItem['TEXT']?>
+                    </span>
+                </a>
                 <ul>
-                    <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
-                        <? if ($arItem2Level['IS_PARENT']) : ?>
-                            <?//pre($arItem2Level['ITEMS']);?>
-                            <a href="<?= $arItem2Level['LINK'] ?>"><span style="opacity: 0.7; padding-top: 10px"><?=$arItem2Level['TEXT']?></span></a>
-                            <? //foreach (array_chunk($arItem2Level['ITEMS'], ceil(count($arItem2Level['ITEMS']) / 2)) as $arItem3LevelChunks): ?>
-                            <? foreach ($arItem2Level['ITEMS'] as $arItem3LevelChunks) : ?>
-                                <?// foreach ($arItem3LevelChunks as $arItem3Level): ?>
+                    <?php foreach ($arItem['ITEMS'] as $i => $arItem2Level) : ?>
+                        <?php if ($arItem2Level['IS_PARENT']) : ?>
+                            <a href="<?= $arItem2Level['LINK'] ?>">
+                                <span style="opacity: 0.7; padding-top: 10px">
+                                    <div style="display: inline-block; width: 20px; height: 20px">
+                                        <?php if (isset($arItem2Level["PARAMS"]["IMG_PATH"])) { ?>
+                                            <img style="max-width: 100%; height: 100%" src="<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem2Level['TEXT']?>">
+                                        <?php } ?>
+                                    </div>
+                                    <?=$arItem2Level['TEXT']?>
+                                </span>
+                            </a>
+                            <?php //foreach (array_chunk($arItem2Level['ITEMS'], ceil(count($arItem2Level['ITEMS']) / 2)) as $arItem3LevelChunks): ?>
+                            <?php foreach ($arItem2Level['ITEMS'] as $arItem3LevelChunks) : ?>
+                                <?php// foreach ($arItem3LevelChunks as $arItem3Level): ?>
                                 <a href="<?= $arItem3LevelChunks['LINK'] ?>">
                                     <li>
-                                      <?= $arItem3LevelChunks['TEXT']; ?>
+                                        <div style="display: inline-block; width: 20px; height: 20px">
+                                            <?php if (isset($arItem3LevelChunks["PARAMS"]["IMG_PATH"])) { ?>
+                                                <img style="max-width: 100%; height: 100%" src="<?=$arItem3LevelChunks["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem3LevelChunks['TEXT']?>">
+                                            <?php } ?>
+                                        </div>
+                                        <?= $arItem3LevelChunks['TEXT']; ?>
                                     </li>
                                 </a>
 
                                 <?// endforeach; ?>
                             <? endforeach; ?>
                         <?else :?>
-                            <a href="<?= $arItem2Level['LINK'] ?>">
-                                <li><?= $arItem2Level['TEXT']; ?></li>
+                            <a href="<?=$arItem2Level['LINK']?>">
+                                <li>
+                                    <div style="display: inline-block; width: 20px; height: 20px">
+                                        <?php if (isset($arItem2Level["PARAMS"]["IMG_PATH"])) { ?>
+                                            <img style="max-width: 100%; height: 100%" src="<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem2Level['TEXT']?>">
+                                        <?php } ?>
+                                    </div>
+                                    <span><?=$arItem2Level['TEXT'];?></span>
+                                </li>
                             </a>
                         <? endif; ?>
                     <? endforeach; ?>
                 </ul>
             </div>
-        <?else :?>
-            <div class="blue-menu-div-div" id="<?= $levelId ?>">
-                <a href="<?= $arItem['LINK'] ?>"><span><?= $arItem['TEXT'] ?></span></a>
+        <?php else :?>
+            <div class="blue-menu-div-div" id="<?=$levelId?>">
+                <a href="<?=$arItem['LINK']?>">
+                    <span>
+                        <?=$arItem['TEXT']?>
+                    </span>
+                </a>
             </div>
-        <? endif; ?>
-    <? endforeach; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
 </div>
-<? endif; ?>
+<?php endif; ?>

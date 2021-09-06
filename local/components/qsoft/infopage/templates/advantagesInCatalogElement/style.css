@@ -1,11 +1,8 @@
 .blue {
     color: #000000;
-    font-family: 'firamedium';
+    font-family: 'gilroyMedium';
     font-size: 16px;
-    /*margin-top: 25px!important;*/
-    border-bottom: 1px solid #e4e4e4;
     margin-bottom: 0px !important;
-    /*padding-bottom: 3px!important;*/
     cursor: pointer;
     width: 100%;
 }
@@ -25,22 +22,31 @@
     font-family: 'gilroyRegular' !important;
     border-bottom: 0 !important;
     font-size: 16px;
-    /*margin-top: 25px!important;*/
-    margin-bottom: 0px !important;
-    /*padding-bottom: 0px!important;*/
+    margin-bottom: 0 !important;
     cursor: pointer;
     width: 100%;
 }
 
 .after-blue {
     display: none;
-    border-bottom: 1px solid #654670;
     padding: 0 !important;
-    /*padding-bottom: 20px!important;*/
 }
 
 .arr-up {
+    width: 10px;
+    height: 10px;
+    border: 8px solid transparent;
+    border-bottom: solid 14px rgba(0, 0, 0, 0.5);
     display: none;
+    margin-bottom: 8px;
+}
+
+.arr-down {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: 8px solid transparent;
+    border-top: 14px solid rgba(0, 0, 0, 0.5);
 }
 
 .infopage-block {
@@ -53,12 +59,12 @@
 }
 
 .infopage-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 20px !important;
     font-family: 'gilroyRegular';
-    /*margin-top: 70px;*/
-    /*margin-bottom: 70px;*/
-    font-size: 16px;
     line-height: 30px;
     color: #000000;
-    padding-top: 15px;
+    margin-top: 25px;
 }

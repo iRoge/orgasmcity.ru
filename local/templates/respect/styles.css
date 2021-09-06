@@ -610,7 +610,7 @@ font-family: 'gilroyRegular';
     font-family: 'gilroyRegular';
     padding: 12px 20px;
     width: 100%;
-    background: #fff5f7;
+    background: white;
     outline: 0;
     margin-top: 20px;
     border: 1px solid rgba(200,200,200, .5);
@@ -1274,17 +1274,20 @@ jdiv[class^="popupBlock_"] {
     color: #000000;
 }
 
+.how-we-work-wrapper {
+    display: flex!important;
+    align-items: center;
+    padding: 0 30px;
+}
+
 @media (max-width: 767px) {
     .default-header {
         margin-top: 20px;
         font-size: 30px;
     }
-}
-
-.how-we-work-wrapper {
-    display: flex!important;
-    align-items: center;
-    padding: 0 30px;
+    .how-we-work-wrapper {
+        padding: 0;
+    }
 }
 
 .how-we-work-section {

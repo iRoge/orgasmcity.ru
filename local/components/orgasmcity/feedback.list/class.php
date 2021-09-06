@@ -23,6 +23,9 @@ class OrgasmCityFeedbackListComponent extends CBitrixComponent
     public function executeComponent()
     {
         $this->arResult['ITEMS'] = $this->getItems();
+        if (isset($this->arParams['PRODUCT_ID'])) {
+            $this->arResult['PRODUCT_ID'] = $this->arParams['PRODUCT_ID'];
+        }
         $this->includeComponentTemplate();
     }
 

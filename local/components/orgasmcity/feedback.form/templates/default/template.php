@@ -13,7 +13,7 @@
 /** @var LikeeSliderComponent $component */
 ?>
 <?php if (!$arResult['SUCCESS'] && !empty($arResult['ERRORS'])) { ?>
-    <div class="feeback-errors-wrapper">
+    <div class="feedback-errors-wrapper">
         <?php foreach ($arResult['ERRORS'] as $error) {?>
             <p class="text-danger">
                 <?=$error?>
@@ -22,7 +22,7 @@
     </div>
 <?php } ?>
 <?php if ($arResult['SUCCESS']) { ?>
-    <div class="feeback-success-wrapper">
+    <div class="feedback-success-wrapper">
         <p class="text-success">
             Ваш отзыв успешно отправлен и <?=!$arResult['HAS_ORDER'] ? 'будет размещен после проверки модератором, т.к. вы не подтвердили совершенный заказ' : 'размещен'?>
         </p>

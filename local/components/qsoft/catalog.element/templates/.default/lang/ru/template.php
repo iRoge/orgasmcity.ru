@@ -1,13 +1,13 @@
 <?php
 $MESS["OUT_STOCK"] = "Товар закончился на складе и он пока не доступен для заказа";
-$MESS["DESCRIPTION_HEADER"] = "Описание";
+$MESS["DESCRIPTION_HEADER"] = "Описание:";
 $MESS["ARTICLE_PREFIX"] = "Арт. ";
 $MESS["NO_BONUS"] = "*скидка по бонусной программе будет рассчитана в корзине";
 $MESS["BONUS"] = "*по условиям бонусной программы";
-$MESS["RUB"] = " р.";
+$MESS["RUB"] = " ₽";
 $MESS["DIFFERENT_PRICES"] = "*цены на сайте могут отличаться от цен в магазинах";
-$MESS["SIZE"] = "Размер";
-$MESS["COLOR"] = "Цвет";
+$MESS["SIZE"] = "Выберите размер:";
+$MESS["COLOR"] = "Выберите цвет:";
 $MESS["OTHERS_COLORS"] = "Другие цвета";
 $MESS["ELEMENT_NOT_FOUND"] = "Элемент не найден!";
 $MESS["SIZES_INFO"] = "Руководство по размерам";

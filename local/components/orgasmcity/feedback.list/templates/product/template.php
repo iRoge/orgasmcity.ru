@@ -1,0 +1,71 @@
+<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
+
+/** @var array $arParams */
+/** @var array $arResult */
+/** @global CMain $APPLICATION */
+/** @global CUser $USER */
+/** @global CDatabase $DB */
+/** @var CBitrixComponentTemplate $this */
+/** @var string $templateName */
+/** @var string $templateFile */
+/** @var string $templateFolder */
+/** @var string $componentPath */
+/** @var LikeeSliderComponent $component */
+
+?>
+<div class="left-block-title">
+    <h2>Отзывы о товаре:</h2>
+</div>
+<div class="product-feedback-wrapper">
+    <?php if (!empty($arResult['ITEMS'])) { ?>
+        <?php foreach ($arResult['ITEMS'] as $item) { ?>
+            <div class="product-feedback-item-wrapper">
+                <img class="hidden-xs hidden-sm" height="100%" src="<?=$item['PROPERTY_GENDER_VALUE'] == 'Женщина' ? SITE_TEMPLATE_PATH . '/img/female.webp' : SITE_TEMPLATE_PATH . '/img/male.webp'?>" alt="Аватар">
+                <div class="product-feedback-item-text-wrapper">
+                    <div style="color: black; font-size: 22px; font-family: gilroySemiBold">@<?=$item['NAME']?>, оценка <?=$item['PROPERTY_SCORE_VALUE']?> из 5</div>
+                    <div style="color: black; font-size: 22px; line-height: 26px; font-family: gilroyRegular; margin-top: 15px"><?=$item['DETAIL_TEXT']?></div>
+                </div>
+            </div>
+        <?php }?>
+    <?php } else { ?>
+        <span class="product-feedback-no-items">Пока что никто не оставил отзыв о товаре, но вы можете быть первым ;)</span>
+    <?php } ?>
+</div>
+<div class="feedback-errors-wrapper" style="display: none">
+    <p class="text-danger js-error-message">
+    </p>
+</div>
+<div class="feedback-success-wrapper" style="display: none">
+    <p class="text-success js-success-message">
+    </p>
+</div>
+<div class="left-block-title">
+    <h2>Оставить отзыв:</h2>
+</div>
+<form method="post" class="feedback-form" action="" enctype="multipart/form-data">
+    <input hidden name="PRODUCT_ID" type="text" value="<?=$arResult['PRODUCT_ID']?>">
+    <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="">
+    <select name="GENDER" class="feedback-form-element feedback-form-select">
+        <option value="">Ваш пол*</option>
+        <option value="Женщина">Женщина</option>
+        <option value="Мужчина">Мужчина</option>
+    </select>
+    <select name="SCORE" class="feedback-form-element feedback-form-select">
+        <option value="" selected>Оценка товара*</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="500" style="resize: none; height: 100px" placeholder="Текст отзыва*"></textarea>
+    <div class="haveOrder-wrapper">
+        <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput">
+        <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически попадет на главную страницу</label>
+        <div class="haveOrder-closed">
+            <input class="feedback-form-element" name="ORDER_ID" type="text" placeholder="Номер вашего заказа*" value="">
+            <input class="feedback-form-element" name="ORDER_EMAIL" type="text" placeholder="Email, указанный в заказе*" value="">
+        </div>
+    </div>
+    <input class="feedback-form-submit" type="submit" name="SUBMIT" value="Отправить отзыв">
+</form>

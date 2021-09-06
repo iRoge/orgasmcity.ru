@@ -1,3 +1,30 @@
+.product-feedback-no-items {
+    font-family: gilroyMedium;
+    font-size: 16px;
+    color: black;
+}
+
+.product-feedback-wrapper {
+    margin: 25px 0;
+}
+
+.product-feedback-item-wrapper {
+    width: 100%;
+    min-height: 200px;
+    background: #FFFFFF;
+    border-radius: 15px;
+    border-color: transparent;
+    padding: 15px;
+    display: flex;
+    align-items: start;
+    justify-content: flex-start;
+    margin-top: 15px;
+}
+
+.product-feedback-item-text-wrapper {
+    padding: 0 20px;
+}
+
 .feedback-form-element {
     background: #FFFFFF;
     border-radius: 15px;

@@ -78,10 +78,16 @@ $this->setFrameMode(true);
                                     <div class="col-md-<?=$class[0]?> left-hide-menu">
                                         <? if ($arItem2Level['LINK']) { ?>
                                             <div class="col-md-12 zagolovok-hide-menu">
-                                                <p><a href="<?=$arItem2Level['LINK']?>"><?= $arItem2Level['TEXT']; ?></a></p>
+                                                <p>
+                                                    <a href="<?=$arItem2Level['LINK']?>">
+                                                        <span class="hide-menu-icons" style="background-image:url(<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>)"></span>
+                                                        <?= $arItem2Level['TEXT']; ?>
+                                                    </a>
+                                                </p>
                                             </div>
                                         <? } else { ?>
                                             <div class="col-md-12 zagolovok-hide-menu">
+                                                <span class="hide-menu-icons" style="background-image:url(<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>)"></span>
                                                 <p><?= $arItem2Level['TEXT']; ?></p>
                                             </div>
                                         <? } ?>
@@ -89,7 +95,8 @@ $this->setFrameMode(true);
                                             <? foreach (array_chunk($arItem2Level['ITEMS'], 25) as $arItem3LevelChunks) { ?>
                                                 <div class="col-md-<?=$class[1]?> lvl3-items-block">
                                                 <? foreach ($arItem3LevelChunks as $arItem3Level) { ?>
-                                                    <a href="<?= $arItem3Level['LINK']; ?>" <?= ($arItem3Level["PARAMS"]["CLASS"] ? ' class="'.$arItem3Level["PARAMS"]["CLASS"].'"' : '') ?>>
+                                                    <a href="<?= $arItem3Level['LINK']; ?>" class="<?=($arItem3Level["PARAMS"]["CLASS"] ? ' '.$arItem3Level["PARAMS"]["CLASS"] : '') ?>">
+                                                        <span class="hide-menu-icons" style="background-image:url(<?=$arItem3Level["PARAMS"]["IMG_PATH"]?>)"></span>
                                                         <span><?= $arItem3Level['TEXT'] ?></span>
                                                     </a>
                                                 <? } ?>

@@ -94,10 +94,8 @@
 }
 
 .user-region {
-    font-family: 'gilroySemiBold';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
+    font-family: 'gilroyMedium';
+    font-size: 12px;
     line-height: 14px;
     padding-right: 8px;
     color: #9B9B9B;
