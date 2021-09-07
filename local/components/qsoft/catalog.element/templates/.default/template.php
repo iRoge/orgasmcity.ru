@@ -35,7 +35,7 @@ foreach ($arResult['OFFERS'] as $offer) {
             <?php if ((empty($arResult['OFFERS'])) || empty($arResult['MIN_PRICE_OFFER'])) { ?>
                 <div class="product-page__na"><?= Loc::getMessage("OUT_STOCK") ?></div>
             <?php } elseif ($availableRest <= 3) {?>
-                <div class="product-page__na">Поспешите! Данного товара на складе осталось всего <?=$availableRest?>шт.</div>
+                <div class="product-page__na"> <b>Поспешите!</b> Данного товара на складе осталось всего <?=$availableRest?>шт.</div>
             <?php } ?>
             <div class="product-page product-main-div">
                 <div class="col-sm-6 slider-pro-container col-image">
@@ -64,6 +64,9 @@ foreach ($arResult['OFFERS'] as $offer) {
                         </div>
                     </div>
                     <?php if ($arResult['DETAIL_TEXT']) :?>
+                        <div class="hidden-xs left-block-title left-block-title-revert">
+                            Описание товара:
+                        </div>
                         <div class="hidden-xs detail-element-text">
                             <?=$arResult['DETAIL_TEXT']?>
                         </div>
@@ -311,8 +314,8 @@ foreach ($arResult['OFFERS'] as $offer) {
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <?php if ($arResult['DETAIL_TEXT']) :?>
-                            <div class="left-block-title-revert">
-                                <h2>Отзывы о товаре:</h2>
+                            <div class="left-block-title left-block-title-revert">
+                                Описание товара:
                             </div>
                             <div class="detail-element-text">
                                 <?=$arResult['DETAIL_TEXT']?>

@@ -712,9 +712,19 @@ div.product-preorder-success a.button--orange:hover {
     padding: 30px 15px;
 }
 .popup {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     min-width: inherit!important;
     width: 100%;
     padding: 30px 15px;
+}
+.popup:after {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 .popup .container{
     width: inherit!important;

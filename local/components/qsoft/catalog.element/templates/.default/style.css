@@ -272,13 +272,18 @@ input.search-mag {
 }
 
 .detail-element-text {
-    padding-top: 15px;
     font-family: 'gilroyRegular';
     font-size: 20px;
     line-height: 23px;
     color: #000000;
     max-height: 500px;
     overflow: auto;
+}
+
+@media (max-width: 767px) {
+    .detail-element-text {
+        font-size: 16px;
+    }
 }
 
 .have-tooltip, .have-tooltip-mob {
@@ -482,6 +487,13 @@ input[type="number"] {
 
 @media (max-width: 345px) {
     .buy-btn-wrapper button {
+        font-size: 18px;
+        line-height: 20px;
+    }
+}
+
+@media (max-width: 310px) {
+    .buy-btn-wrapper button {
         font-size: 16px;
         line-height: 20px;
     }
@@ -533,15 +545,27 @@ input[type="number"] {
 }
 
 .left-block-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 31px;
+    font-family: gilroyMedium;
+    color: #FFFFFF;
     width: 278px;
     height: 50px;
     background: linear-gradient(82.67deg, #A18CD1 9.66%, #FBC2EB 102.17%);
-    border-radius: 35px;
+    border-bottom-right-radius: 35px;
+    border-top-left-radius: 35px;
+    margin: 40px 0 20px 0;
 }
 
 .left-block-title-revert {
-    width: 278px;
-    height: 50px;
-    background: linear-gradient(82.67deg, #A18CD1 9.66%, #FBC2EB 102.17%);
-    border-radius: 35px;
+    border-radius: 0 35px 0 35px;
+}
+
+@media (max-width: 767px) {
+    .left-block-title {
+        width: 100%;
+    }
 }

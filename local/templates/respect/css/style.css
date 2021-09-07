@@ -5190,7 +5190,7 @@ label.color-label {
         }
 
         .info--::after {
-            content: 'Описание';
+            content: 'Характеристики:';
             position: absolute;
             top: -40px;
             left: 0;

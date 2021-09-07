@@ -14,7 +14,7 @@
 
 ?>
 <div class="left-block-title">
-    <h2>Отзывы о товаре:</h2>
+    Отзывы о товаре:
 </div>
 <div class="product-feedback-wrapper">
     <?php if (!empty($arResult['ITEMS'])) { ?>
@@ -39,33 +39,36 @@
     <p class="text-success js-success-message">
     </p>
 </div>
-<div class="left-block-title">
-    <h2>Оставить отзыв:</h2>
-</div>
-<form method="post" class="feedback-form" action="" enctype="multipart/form-data">
-    <input hidden name="PRODUCT_ID" type="text" value="<?=$arResult['PRODUCT_ID']?>">
-    <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="">
-    <select name="GENDER" class="feedback-form-element feedback-form-select">
-        <option value="">Ваш пол*</option>
-        <option value="Женщина">Женщина</option>
-        <option value="Мужчина">Мужчина</option>
-    </select>
-    <select name="SCORE" class="feedback-form-element feedback-form-select">
-        <option value="" selected>Оценка товара*</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="500" style="resize: none; height: 100px" placeholder="Текст отзыва*"></textarea>
-    <div class="haveOrder-wrapper">
-        <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput">
-        <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически попадет на главную страницу</label>
-        <div class="haveOrder-closed">
-            <input class="feedback-form-element" name="ORDER_ID" type="text" placeholder="Номер вашего заказа*" value="">
-            <input class="feedback-form-element" name="ORDER_EMAIL" type="text" placeholder="Email, указанный в заказе*" value="">
-        </div>
+<div class="feedback-form-wrapper">
+    <div class="left-block-title">
+        Оставить отзыв:
     </div>
-    <input class="feedback-form-submit" type="submit" name="SUBMIT" value="Отправить отзыв">
-</form>
+    <form method="post" class="feedback-form" action="" enctype="multipart/form-data">
+
+        <input hidden name="PRODUCT_ID" type="text" value="<?=$arResult['PRODUCT_ID']?>">
+        <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="">
+        <select name="GENDER" class="feedback-form-element feedback-form-select">
+            <option value="">Ваш пол*</option>
+            <option value="Женщина">Женщина</option>
+            <option value="Мужчина">Мужчина</option>
+        </select>
+        <select name="SCORE" class="feedback-form-element feedback-form-select">
+            <option value="" selected>Оценка товара*</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="500" style="resize: none; height: 100px" placeholder="Текст отзыва*"></textarea>
+        <div class="haveOrder-wrapper">
+            <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput">
+            <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически попадет на главную страницу</label>
+            <div class="haveOrder-closed">
+                <input class="feedback-form-element" name="ORDER_ID" type="text" placeholder="Номер вашего заказа*" value="">
+                <input class="feedback-form-element" name="ORDER_EMAIL" type="text" placeholder="Email, указанный в заказе*" value="">
+            </div>
+        </div>
+        <input class="feedback-form-submit" type="submit" name="SUBMIT" value="Отправить отзыв">
+    </form>
+</div>

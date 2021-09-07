@@ -12,11 +12,12 @@ $(document).ready(function() {
             let successWrapper = $('.feedback-success-wrapper');
             let errorMessageBlock = $('.js-error-message');
             let successMessageBlock = $('.js-success-message');
+            let formWrapper = $('.feedback-form-wrapper');
             if (response['SUCCESS']) {
                 errorsWrapper.hide();
                 successWrapper.show();
                 successMessageBlock.html('Ваш отзыв успешно отправлен на модерацию и скоро будет опубликован!');
-                form.hide();
+                formWrapper.hide();
             } else {
                 let errors = response['ERRORS'];
                 errorsWrapper.show();
