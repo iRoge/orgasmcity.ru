@@ -19,12 +19,14 @@ global $DEVICE;
         <?php
         $APPLICATION->IncludeComponent(
             'orgasmcity:catalogs.line',
-            'default',
+            'main',
             [
                 'FILTERS' => [
                     'IBLOCK_ID' => IBLOCK_CATALOG,
                     "ACTIVE" => "Y",
                 ],
+                'SHOW_BACKGROUND' => false,
+                'SHOW_SLIDER' => false
             ]
         );
         ?>

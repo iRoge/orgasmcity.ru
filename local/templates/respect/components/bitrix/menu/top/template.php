@@ -40,7 +40,7 @@ $this->setFrameMode(true);
         <li class="<?= $sClassLi; ?>" id="<?=$levelId ?>">
             <a class="<?= $sClassA; ?> js-top-menu-item" href="<?= $arItem['LINK'] ?>"
                 <?=isset($arItem['PARAMS']['PROPS']['TEXT_COLOR']) ? 'style="color: ' . $arItem['PARAMS']['PROPS']['TEXT_COLOR'] . '"' : ''?>
-            ><?= $arItem['TEXT'] ?>
+            ><?= $arItem['TEXT']?>
                 <div class="menu-arrow"></div>
             </a>
 
@@ -83,7 +83,7 @@ $this->setFrameMode(true);
                                                         <?php if (!$arItem2Level['IS_PARENT']) { ?>
                                                             <span class="hide-menu-icons" style="background-image:url(<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>)"></span>
                                                         <?php } ?>
-                                                        <?= $arItem2Level['TEXT']; ?>
+                                                        <?= $arItem2Level['TEXT'] ?>
                                                     </a>
                                                 </p>
                                             </div>
@@ -99,7 +99,7 @@ $this->setFrameMode(true);
                                                     <?php foreach ($arItem3LevelChunks as $arItem3Level) { ?>
                                                     <a href="<?= $arItem3Level['LINK']; ?>" class="<?=($arItem3Level["PARAMS"]["CLASS"] ? ' '.$arItem3Level["PARAMS"]["CLASS"] : '') ?>">
                                                         <span class="hide-menu-icons" style="background-image:url(<?=$arItem3Level["PARAMS"]["IMG_PATH"]?>)"></span>
-                                                        <span><?= $arItem3Level['TEXT'] ?></span>
+                                                        <span><?=$arItem3Level['TEXT']?></span>
                                                     </a>
                                                     <?php } ?>
                                                 </div>

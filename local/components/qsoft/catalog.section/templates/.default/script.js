@@ -246,13 +246,13 @@ SmartFilter.prototype.clearFilter = function () {
 };
 
 SmartFilter.prototype.nextPage = function (btn) {
-    $("html, body").animate({scrollTop: 0}, 500);
     btn = $(btn);
     let lds_ring = $('.lds-ring--settings');
     lds_ring.css('visibility', 'visible');
     $(".load-more-btn-main").hide();
     $(".load-more-btn-loader:not(.filter-btn-loader)").addClass("load-more-btn-loader-visible");
     BX.ajax.get(btn.data('href'), { 'load_more': 'Y' }, function (data) {
+        $("html, body").animate({scrollTop: 400}, 500);
         let $catalog = $(SmartFilter.prototype.cards);
         history.pushState(null, null, btn.data('href'));
         $catalog.html('');
@@ -269,11 +269,11 @@ SmartFilter.prototype.nextPage = function (btn) {
 };
 
 SmartFilter.prototype.goToPageNum = function (btn) {
-    $("html, body").animate({scrollTop: 400}, 500);
     btn = $(btn);
     let lds_ring = $('.lds-ring--settings');
     lds_ring.css('visibility', 'visible');
     BX.ajax.post(btn.data('url'), { 'load_more': 'Y' }, function (data) {
+        $("html, body").animate({scrollTop: 400}, 500);
         let $catalog = $(SmartFilter.prototype.cards);
         history.pushState(null, null, btn.data('url'));
         $catalog.html($(data).find(SmartFilter.prototype.cards).html());

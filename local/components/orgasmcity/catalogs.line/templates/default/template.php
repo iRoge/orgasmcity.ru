@@ -12,16 +12,41 @@
 /** @var string $componentPath */
 /** @var LikeeSliderComponent $component */
 $this->setFrameMode(true);
-
+global $DEVICE;
 if (!empty($arResult['ITEMS'])) {?>
-    <div class="<?=$arResult['SHOW_SLIDER'] ? 'js-catalog-list-slider ' : ''?>catalog-list-main">
-        <?php foreach ($arResult['ITEMS'] as $item) {?>
-            <a class="col-lg-1 col-md-2 col-sm-2 catalog-list-element" href="<?=$item['SECTION_PAGE_URL']?>">
-                <div class="catalog-list-element-img-wrap">
-                    <img src="<?=$item['IMG_PATH']?>" alt="<?=$item['CODE']?>">
+    <?php if ($arResult['SHOW_SLIDER']) {?>
+        <div class="js-catalog-list-slider catalog-list-main catalog-list-no-flex">
+            <?php foreach ($arResult['ITEMS'] as $item) {?>
+                <div class="catalog-list-element-wrapper">
+                    <a class="catalog-list-element<?=$arResult['SHOW_BACKGROUND'] ? ' catalog-list-element-background' : ''?>" href="<?=$item['SECTION_PAGE_URL']?>">
+                        <div class="catalog-list-element-img-wrap">
+                            <img src="<?=$item['IMG_PATH']?>" alt="<?=$item['CODE']?>">
+                        </div>
+                        <span style="height: 25%"><?=$item['NAME']?></span>
+                    </a>
                 </div>
-                <span style="height: 25%"><?=$item['NAME']?></span>
-            </a>
-        <?php } ?>
-    </div>
+            <?php } ?>
+        </div>
+    <?php } else { ?>
+        <div class="catalog-list-main">
+            <?php if ($DEVICE->isMobile() || $DEVICE->isTablet()) { ?>
+                <div class="catalog-list-left-shadow"></div>
+                <div class="catalog-list-top-shadow"></div>
+                <div class="catalog-list-right-shadow"></div>
+                <div class="catalog-list-bottom-shadow"></div>
+            <?php } ?>
+            <div class="catalog-list-elements-wrapper">
+                <?php foreach ($arResult['ITEMS'] as $item) {?>
+                    <div class="catalog-list-element-wrapper">
+                        <a class="catalog-list-element<?=$arResult['SHOW_BACKGROUND'] ? ' catalog-list-element-background' : ''?>" href="<?=$item['SECTION_PAGE_URL']?>">
+                            <div class="catalog-list-element-img-wrap">
+                                <img src="<?=$item['IMG_PATH']?>" alt="<?=$item['CODE']?>">
+                            </div>
+                            <span style="height: 25%"><?=$item['NAME']?></span>
+                        </a>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    <?php }?>
 <?php }?>

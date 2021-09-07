@@ -16,13 +16,13 @@ $(document).ready(function() {
         speed: 800,
         infinite: true,
         responsive: [
-            {
-                breakpoint: 1500,
-                settings: {
-                    slidesToShow: 12,
-                    slidesToScroll : 12,
-                }
-            },
+            // {
+            //     breakpoint: 1500,
+            //     settings: {
+            //         slidesToShow: 10,
+            //         slidesToScroll : 10,
+            //     }
+            // },
             {
                 breakpoint: 1440,
                 settings: {
@@ -54,22 +54,22 @@ $(document).ready(function() {
             {
                 breakpoint: 750,
                 settings: {
-                    slidesToShow: 5,
-                    slidesToScroll : 5,
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
                     slidesToShow: 4,
                     slidesToScroll : 4,
                 }
             },
             {
-                breakpoint: 450,
+                breakpoint: 600,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll : 3,
+                }
+            },
+            {
+                breakpoint: 450,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll : 2,
                 }
             },
             {

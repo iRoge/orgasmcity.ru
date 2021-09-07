@@ -21,10 +21,6 @@
     width: 100%;
 }
 
-.haveOrder {
-
-}
-
 .feedback-form-submit {
     background-color: #654670;
     border: 1px solid rgba(200, 200, 200, .5);
@@ -37,6 +33,12 @@
     outline: 0;
     text-transform: uppercase;
     width: 50%;
+}
+
+@media (max-width: 991px) {
+    .feedback-form-submit {
+        width: 100%;
+    }
 }
 
 .haveOrder-input-label {

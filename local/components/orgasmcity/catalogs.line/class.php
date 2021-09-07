@@ -16,6 +16,10 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
         global $CACHE_MANAGER;
         $this->cacheManager = $CACHE_MANAGER;
 
+        if (!isset($arParams['SHOW_SLIDER'])) {
+            $arParams['SHOW_SLIDER'] = true;
+        }
+
         return $arParams;
     }
 
@@ -23,7 +27,8 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
     {
         global $DEVICE;
         $this->arResult['ITEMS'] = $this->getCatalogs();
-        $this->arResult['SHOW_SLIDER'] = !($DEVICE->isMobile() || $DEVICE->isTablet()) && count($this->arResult['ITEMS']) > 12;
+        $this->arResult['SHOW_SLIDER'] = $this->arParams['SHOW_SLIDER'] && !($DEVICE->isMobile() || $DEVICE->isTablet()) && count($this->arResult['ITEMS']) > 4;
+        $this->arResult['SHOW_BACKGROUND'] = $this->arParams['SHOW_BACKGROUND'] ?? true;
         $this->includeComponentTemplate();
     }
 
@@ -50,9 +55,9 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
             $maxCount = $this->arParams['MAX_COUNT'] ?? 12;
             while ($arSection = $rsSections->GetNext())
             {
-                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '.svg';
-                $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['CODE'] . '.svg';
-                $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/masturbatory.svg';
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
+                $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
+                $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/779.svg';
                 $arSections[] = $arSection;
                 $count++;
                 if ($count == $maxCount) {
