@@ -434,7 +434,7 @@ input[type="number"] {
 .advantage-image {
     width: 377px;
     height: 63px;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 @media (max-width: 1300px) {
