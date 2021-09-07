@@ -413,7 +413,7 @@ if (!$arResult['IS_AJAX']) {
                                                     <?php } ?>
                                                 </div>
                                                 <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES_PROD_IDS'][$arItem['ID']]) ? ' active' : '' ?> js-favour-heart" data-id="<?=$arItem['ID']?>">
-                                                    <svg class="" width="30" height="30" viewBox="0 0 23 22" xmlns="http://www.w3.org/2000/svg">
+                                                    <svg width="30" height="30" viewBox="0 0 23 22" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M0 5.86414C0 -0.440483 8.73003 -2.77704 11.4163 4.52139C14.1025 -2.77704 22.8325 -0.440483 22.8325 5.86414C22.8325 12.714 11.4163 21.3989 11.4163 21.3989C11.4163 21.3989 0 12.714 0 5.86414Z" fill="black"/>
                                                     </svg>
                                                 </button>

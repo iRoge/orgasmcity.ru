@@ -384,8 +384,8 @@ $(document).ready(function () {
     $('.more-span').click(function (e) {
         let that = $(this);
         e.preventDefault();
-        that.next('.blue-menu-div-div ul').toggle('300');
-        that.find('span').toggleClass('open-ul');
+        that.next('.blue-menu-div-div ul').toggle('200');
+        that.toggleClass('open-ul');
     });
 
     $('.order-info-grid').click(function () {

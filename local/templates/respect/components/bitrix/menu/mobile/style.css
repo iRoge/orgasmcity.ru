@@ -7,3 +7,9 @@
         height: initial;
     }
 }
+
+.mobile-menu-img-wrapper {
+    display: inline-block;
+    width: 20px;
+    height: 20px
+}

@@ -139,7 +139,7 @@ global $LOCATION, $APPLICATION; ?>
                                                 <? endif ?>
                                             </div>
 
-                                            <div class="">
+                                            <div>
                                                 <span class="orders__label">Итого:&nbsp;</span>
                                                 <span class="<?= ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) ? 'orders__result-price--red' : 'orders__result-price'?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;р.</span>
                                             </div>

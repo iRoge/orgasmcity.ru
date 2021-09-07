@@ -2647,7 +2647,6 @@ a {
 }
 
 .blue-menu-div-div {
-    padding: 15px 20px;
     width: 100%;
     border-bottom: 1px solid lightgrey;
 }
@@ -2665,27 +2664,24 @@ a {
     margin: 0;
 }
 
-.blue-menu-div-div > a.more-span > span {
-    background: url('../img/arrow-down.png') no-repeat 99% 46%;
+.more-span {
+    display: block;
+    padding: 15px 20px;
+}
+
+.blue-menu-div-div > span {
+    background: url('../img/arrow-down.png') no-repeat 95% 50%;
 }
 
 .open-ul {
     background-image: url('../img/arrow-up.png') !important;
-    background-position: 99% 46% !important;
+    background-position: 95% 50% !important;
     display: block;
-}
-
-.more-span:hover {
-    text-decoration: none;
-}
-
-.more-span:focus {
-    text-decoration: none;
 }
 
 .blue-menu-div-div ul {
     margin-top: 10px;
-    padding-left: 0;
+    padding: 0 20px;
     margin-left: 0;
     list-style-type: none;
     display: none;

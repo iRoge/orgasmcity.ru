@@ -153,7 +153,7 @@ $tabControl->Begin();
 
     <?$tabControl->End();?>
 </form>
-<div class="" style="padding: 20px;">
+<div style="padding: 20px;">
     <img src="http://webdoka.org/bitrix/templates/rm/images/logo1.png" alt=""/> <br/>
     <a target="_blank" href="http://webdoka.ru/"><?=GetMessage("WD_AUTHOR")?></a>
 </div>

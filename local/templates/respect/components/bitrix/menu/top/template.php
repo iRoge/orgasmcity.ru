@@ -1,4 +1,4 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 /** @var array $arParams */
@@ -15,10 +15,10 @@
 $this->setFrameMode(true);
 ?>
 
-<? if (!empty($arResult)) { ?>
+<?php if (!empty($arResult)) { ?>
 <ul class="menu-ul">
-    <? foreach ($arResult as $arItem) { ?>
-        <?
+    <?php foreach ($arResult as $arItem) { ?>
+        <?php
         $sClassLi = 'menu-ul-li';
         if ($arItem['PARAMS']['HIGHLIGHT'] == 'Y') {
             $sClassLi .= ' navigation-highlight';
@@ -64,8 +64,8 @@ $this->setFrameMode(true);
             <div class="hide-menu" id="div-<?=$levelId ?>">
                 <div class="hide-fake-area">
                     <div class="main">
-                        <? foreach (array_chunk($arItem['ITEMS'], 4) as $chunk) { ?>
-                            <?
+                        <?php foreach (array_chunk($arItem['ITEMS'], 4) as $chunk) { ?>
+                            <?php
                                 $class = array(3, 12);
 //                            if (count($arItem2Level['ITEMS']) > $arItem['MAX']) {
 //                                $class = array(4, 6);
@@ -74,44 +74,46 @@ $this->setFrameMode(true);
 //                            }
                             ?>
                             <div class="row-menu-wrapper">
-                                <? foreach ($chunk as $i => $arItem2Level) { ?>
+                                <?php foreach ($chunk as $i => $arItem2Level) { ?>
                                     <div class="col-md-<?=$class[0]?> left-hide-menu">
-                                        <? if ($arItem2Level['LINK']) { ?>
+                                        <?php if ($arItem2Level['LINK']) { ?>
                                             <div class="col-md-12 zagolovok-hide-menu">
                                                 <p>
                                                     <a href="<?=$arItem2Level['LINK']?>">
-                                                        <span class="hide-menu-icons" style="background-image:url(<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>)"></span>
+                                                        <?php if (!$arItem2Level['IS_PARENT']) { ?>
+                                                            <span class="hide-menu-icons" style="background-image:url(<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>)"></span>
+                                                        <?php } ?>
                                                         <?= $arItem2Level['TEXT']; ?>
                                                     </a>
                                                 </p>
                                             </div>
-                                        <? } else { ?>
+                                        <?php } else { ?>
                                             <div class="col-md-12 zagolovok-hide-menu">
                                                 <span class="hide-menu-icons" style="background-image:url(<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>)"></span>
                                                 <p><?= $arItem2Level['TEXT']; ?></p>
                                             </div>
-                                        <? } ?>
-                                        <? if ($arItem2Level['IS_PARENT']) { ?>
-                                            <? foreach (array_chunk($arItem2Level['ITEMS'], 25) as $arItem3LevelChunks) { ?>
+                                        <?php } ?>
+                                        <?php if ($arItem2Level['IS_PARENT']) { ?>
+                                            <?php foreach (array_chunk($arItem2Level['ITEMS'], 25) as $arItem3LevelChunks) { ?>
                                                 <div class="col-md-<?=$class[1]?> lvl3-items-block">
-                                                <? foreach ($arItem3LevelChunks as $arItem3Level) { ?>
+                                                    <?php foreach ($arItem3LevelChunks as $arItem3Level) { ?>
                                                     <a href="<?= $arItem3Level['LINK']; ?>" class="<?=($arItem3Level["PARAMS"]["CLASS"] ? ' '.$arItem3Level["PARAMS"]["CLASS"] : '') ?>">
                                                         <span class="hide-menu-icons" style="background-image:url(<?=$arItem3Level["PARAMS"]["IMG_PATH"]?>)"></span>
                                                         <span><?= $arItem3Level['TEXT'] ?></span>
                                                     </a>
-                                                <? } ?>
+                                                    <?php } ?>
                                                 </div>
-                                            <? } ?>
-                                        <? } ?>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </div>
-                                <? } ?>
+                                <?php } ?>
                             </div>
-                        <? } ?>
+                        <?php } ?>
                         <div style="clear: both"></div>
                     </div>
                 </div>
             </div>
-        <? } ?>
-    <? } ?>
+            <?php } ?>
+    <?php } ?>
 </ul>
-<? } ?>
+<?php } ?>
