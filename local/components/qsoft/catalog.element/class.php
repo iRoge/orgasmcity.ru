@@ -335,6 +335,9 @@ class QsoftCatalogElement extends ComponentHelper
             $bonusSystemHelper = new BonusSystem($USER->GetID());
             $this->arResult['USER_DISCOUNT'] = $bonusSystemHelper->getCurrentBonus();
         }
+
+        $property = CIBlockElement::GetProperty(IBLOCK_CATALOG, $this->arResult['ID'], "sort", "asc", ["CODE" => "LAST_BUY_DATE"])->GetNext();
+        $this->arResult['LAST_BUY_DATE_TEXT'] = $property["VALUE"] ? FormatDate("x", MakeTimeStamp($property["VALUE"])) : null;
     }
 
     private function beforeTemplate(): void

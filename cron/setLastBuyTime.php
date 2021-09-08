@@ -22,7 +22,13 @@ $res = CIBlockElement::GetList(
     ['ID', 'PROPERTY_CML2_LINK', 'PROPERTY_BASEPRICE', 'PROPERTY_BASEWHOLEPRICE']
 );
 
+$offers = [];
 while ($offer = $res->GetNext()) {
+    $offers[$offer['ID']] = $offer;
+}
+
+$offers = Functions::filterOffersByRests($offers);
+foreach ($offers as $offer) {
     $price = \Qsoft\Helpers\PriceUtils::getPrice($offer['PROPERTY_BASEPRICE_VALUE'], $offer['PROPERTY_BASEWHOLEPRICE_VALUE'])['PRICE'];
     $needChange = false;
     if ($price < 500) {
