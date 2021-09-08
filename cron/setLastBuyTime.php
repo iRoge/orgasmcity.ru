@@ -50,10 +50,13 @@ foreach ($offers as $offer) {
     }
 
     if ($needChange) {
+        $property = CIBlockElement::GetProperty(IBLOCK_CATALOG, $offer['PROPERTY_CML2_LINK_VALUE'], "sort", "asc", ["CODE" => "LAST_BUY_DATE"])->GetNext();
         $timestamp = rand(time() - 60 * 15, time());
         $dateTime = \Bitrix\Main\Type\DateTime::createFromTimestamp($timestamp);
         $props['LAST_BUY_DATE'] = $dateTime->format('d.m.Y H:i:s');
-        CIBlockElement::SetPropertyValuesEx($offer['PROPERTY_CML2_LINK_VALUE'], IBLOCK_CATALOG, $props);
-        echo 'Товару ' . $offer['PROPERTY_CML2_LINK_VALUE'] . ' проставлено время ' . $props['LAST_BUY_DATE'] . PHP_EOL;
+        if ($property['VALUE'] < $props['LAST_BUY_DATE']) {
+            CIBlockElement::SetPropertyValuesEx($offer['PROPERTY_CML2_LINK_VALUE'], IBLOCK_CATALOG, $props);
+            echo 'Товару ' . $offer['PROPERTY_CML2_LINK_VALUE'] . ' проставлено время ' . $props['LAST_BUY_DATE'] . PHP_EOL;
+        }
     }
 }

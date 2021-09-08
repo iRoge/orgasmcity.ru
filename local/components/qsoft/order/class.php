@@ -1608,6 +1608,22 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
         // сохраняем заказ
+        $basketItems = $this->basket->getBasketItems();
+        /** @var CollectableEntity $arItem */
+        foreach ($basketItems as $arItem) {
+            $prodId = null;
+            $basketPropertyCollection = $arItem->getPropertyCollection();
+            foreach ($basketPropertyCollection as $basketPropertyItem) {
+                if ($basketPropertyItem->getField('CODE') == "PRODUCT_ID") {
+                    $prodId = $basketPropertyItem->getField('VALUE');
+                }
+            }
+            if ($prodId) {
+                $dateTime = \Bitrix\Main\Type\DateTime::createFromTimestamp(time());
+                $props['LAST_BUY_DATE'] = $dateTime->format('d.m.Y H:i:s');
+                CIBlockElement::SetPropertyValuesEx($prodId, IBLOCK_CATALOG, $props);
+            }
+        }
         $order->doFinalAction(true);
         $res = $order->save();
         $orderId = $order->getId();
