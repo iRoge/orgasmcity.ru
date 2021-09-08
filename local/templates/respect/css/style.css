@@ -2549,6 +2549,7 @@ a.in-zagolovok {
 
 a {
     outline: none!important;
+    text-decoration: none!important;
 }
 
 .btn-grey {

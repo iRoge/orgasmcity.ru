@@ -22,8 +22,19 @@
             <div class="product-feedback-item-wrapper">
                 <img class="hidden-xs hidden-sm" height="100%" src="<?=$item['PROPERTY_GENDER_VALUE'] == 'Женщина' ? SITE_TEMPLATE_PATH . '/img/female.webp' : SITE_TEMPLATE_PATH . '/img/male.webp'?>" alt="Аватар">
                 <div class="product-feedback-item-text-wrapper">
-                    <div style="color: black; font-size: 22px; font-family: gilroySemiBold">@<?=$item['NAME']?>, оценка <?=$item['PROPERTY_SCORE_VALUE']?> из 5</div>
-                    <div style="color: black; font-size: 22px; line-height: 26px; font-family: gilroyRegular; margin-top: 15px"><?=$item['DETAIL_TEXT']?></div>
+                    <div class="product-feedback-item-title-wrapper">
+                        <div class="product-feedback-item-title" style="color: black; font-size: 22px; font-family: gilroySemiBold">@<?=$item['NAME']?></div>
+                        <div class="product-feedback-item-score-wrapper" title="Оценка <?=$item['PROPERTY_SCORE_VALUE']?> из 5">
+                            <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                <div class="product-feedback-item-heart-wrapper">
+                                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path style="fill: <?=$item['PROPERTY_SCORE_VALUE'] >= $i ? '#D18C8C' : '#E4E4E4'?>" d="M0.0595703 4.97532C0.0595703 -0.373625 7.1161 -2.356 9.28738 3.83611C11.4587 -2.356 18.5152 -0.373625 18.5152 4.97532C18.5152 10.7869 9.28738 18.1553 9.28738 18.1553C9.28738 18.1553 0.0595703 10.7869 0.0595703 4.97532Z" fill="#E4E4E4"/>
+                                    </svg>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <div class="product-feedback-item-detail-text"><?=$item['DETAIL_TEXT']?></div>
                 </div>
             </div>
         <?php }?>
@@ -44,9 +55,8 @@
         Оставить отзыв:
     </div>
     <form method="post" class="feedback-form" action="" enctype="multipart/form-data">
-
         <input hidden name="PRODUCT_ID" type="text" value="<?=$arResult['PRODUCT_ID']?>">
-        <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="">
+        <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="" maxlength="25">
         <select name="GENDER" class="feedback-form-element feedback-form-select">
             <option value="">Ваш пол*</option>
             <option value="Женщина">Женщина</option>
