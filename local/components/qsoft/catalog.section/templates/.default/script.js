@@ -345,8 +345,9 @@ SmartFilter.prototype.setFilterButtonsStyle = function (request) {
     if (request === 'filter' || request === 'reset') {
         filter_status_area.text('показать');
         filter_reset_btn.removeClass('filter__disabled-reset-btn').prop('disabled', false);
-        filters_btn_reset.removeClass('filters__btn--disabled').prop('disabled', false);
+        filters_btn_reset.prop('disabled', false);
         filters_status_text_btn.prop('disabled', false);
+        filters_status_text_btn.addClass('filter__status-text-btn-active');
         filters_btn_submit.removeClass('filters__btn--disabled').prop('disabled', false);
     }
 
@@ -354,14 +355,16 @@ SmartFilter.prototype.setFilterButtonsStyle = function (request) {
         if ($('.js-filter-wrapper').find('.in-left-catalog--checked').length == 0) {
             filter_status_area.text('показано')
             filter_reset_btn.addClass('filter__disabled-reset-btn').prop('disabled', true);
-            filters_btn_reset.addClass('filters__btn--disabled').prop('disabled', true);
+            filters_btn_reset.prop('disabled', true);
             filters_status_text_btn.prop('disabled', true);
+            filters_status_text_btn.removeClass('filter__status-text-btn-active');
             filters_btn_submit.addClass('filters__btn--disabled').prop('disabled', true);
         } else {
             filter_status_area.text('показано')
             filter_reset_btn.removeClass('filter__disabled-reset-btn').prop('disabled', false);
-            filters_btn_reset.removeClass('filters__btn--disabled').prop('disabled', false);
+            filters_btn_reset.prop('disabled', false);
             filters_status_text_btn.prop('disabled', true);
+            filters_status_text_btn.removeClass('filter__status-text-btn-active');
             filters_btn_submit.addClass('filters__btn--disabled').prop('disabled', true);
         }
     }

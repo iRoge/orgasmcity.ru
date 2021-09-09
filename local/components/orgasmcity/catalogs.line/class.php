@@ -55,9 +55,9 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
             $maxCount = $this->arParams['MAX_COUNT'] ?? 12;
             while ($arSection = $rsSections->GetNext())
             {
-                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
-                $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
-                $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/779.svg';
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
+                $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
+                $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/question.png';
                 $arSections[] = $arSection;
                 $count++;
                 if ($count == $maxCount) {

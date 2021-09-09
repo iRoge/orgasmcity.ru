@@ -158,8 +158,9 @@
 
 .in-in-left {
     /*padding: 0px 30px 20px 54px;*/
-    padding: 0px 30px 20px 30px;
+    padding: 0 30px 20px 30px;
     display: none;
+    flex-wrap: wrap;
     grid-template-columns: repeat(4, 25%);
 }
 
@@ -238,7 +239,6 @@
 .filters__btn {
     padding: 12px 0;
     width: 100%;
-    text-transform: uppercase;
     font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
@@ -249,7 +249,7 @@
 }
 
 .filters__btn--disabled {
-    opacity: 0.5;
+    background: #C8BAD0!important;
 }
 
 .filters__btn-text--desktop {
@@ -262,14 +262,19 @@
 
 .filters__btn--submit {
     background: #654670;
+    border-radius: 5px;
     color: white;
 }
 
 .filters__reset-btn {
     padding: 8px 0;
-    background: transparent;
     color: #000000;
-    border: 4px solid #654670;
+    background: white!important;
+    border-radius: 5px;
+    height: 45px;
+    font-size: 15px;
+    line-height: 17px;
+    font-family: gilroyRegular;
 }
 
 .filter__main-list {
@@ -412,6 +417,10 @@
 
 .outer-color .checkbox_size + label {
     padding-left: 65px;
+}
+
+.outer-color {
+    width: 100%;
 }
 
 .label-for-color--white .inner-color {
@@ -592,18 +601,22 @@ footer .hide-block {
     left: 50%;
     transform: translateX(-50%);
 }
+
 .filter-reset-btn:not(.filter__disabled-reset-btn):hover + .filter-reset-tooltip{
     display: block;
 }
+
 .filter__disabled-reset-btn{
-    opacity: 0.2;
+    background-color: #C8BAD0;
     cursor: default;
 }
+
 .filter__disabled-reset-btn::before,
 .filter__disabled-reset-btn::after{
     cursor: default;
 
 }
+
 .filter-reset-btn::after,
 .filter__disabled-reset-btn::before,
 .filter-reset-btn::before,
@@ -613,7 +626,7 @@ footer .hide-block {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%) rotate(45deg);
-    width: 3px;
+    width: 1px;
     height: 20px;
     background-color: white;
 }
@@ -623,18 +636,24 @@ footer .hide-block {
 }
 .filter__status-text-btn{
     padding: 7px 10px;
-    background-color: #654670;
-    border-radius: 6px;
+    background: #C8BAD0;
+    border-radius: 5px;
     color: white;
     display: flex;
     justify-content: center;
     border: none;
-    width: 80%;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    margin-left: 5px;
     font-size: 14px;
     font-family: gilroyRegular;
     text-align: center;
     text-transform: uppercase;
     height: 36px;
+}
+.filter__status-text-btn-active{
+    background: #60486D;
 }
 .filter__status-text-btn:active,
 .filter__status-text-btn:focus {
@@ -1248,7 +1267,6 @@ footer .hide-block {
         top: 0;
         left: 0;
         height: 100vh;
-        min-width: 325px;
         padding: 0 0 150px !important;
         background-color: #f3f3f3;
         overflow: auto;

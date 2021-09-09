@@ -26,7 +26,8 @@ global $DEVICE;
                     "ACTIVE" => "Y",
                 ],
                 'SHOW_BACKGROUND' => false,
-                'SHOW_SLIDER' => false
+                'SHOW_SLIDER' => false,
+                'ICONS_TYPE' => 'DEFAULT'
             ]
         );
         ?>

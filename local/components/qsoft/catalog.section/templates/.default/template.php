@@ -58,6 +58,7 @@ if (!$arResult['IS_AJAX']) {
                         "ACTIVE" => "Y",
                         "SECTION_ID" => $arResult['PARENT_SECTION_ID'],
                     ],
+                    'ICONS_TYPE' => 'COLORED'
                 ]
             );
         }
@@ -331,7 +332,7 @@ if (!$arResult['IS_AJAX']) {
                                                 <?php endforeach; ?>
                                             <?php else :?>
                                                 <?php foreach ($value as $key => $item) : ?>
-                                                <div>
+
                                                     <input id="<?=$jsKey ?>_<?=sha1($key)?>"
                                                            class="checkbox_size"
                                                            type="checkbox"
@@ -345,7 +346,7 @@ if (!$arResult['IS_AJAX']) {
                                                         <?php endif; ?>
                                                            onchange="smartFilter.click(this)">
                                                     <label for="<?=$jsKey ?>_<?=sha1($key)?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?=$item['VALUE'] ?></label>
-                                                </div>
+
                                                 <?php endforeach; ?>
                                             <?php endif;?>
                                         </div>
@@ -366,16 +367,16 @@ if (!$arResult['IS_AJAX']) {
                         <div class="filters__bottom">
                             <input type="button"
                                    class="filters__btn filters__btn--submit filters__btn-text--desktop js-filter-button-submit filters__btn--disabled"
-                                   value="ПРИМЕНИТЬ ВСЕ ФИЛЬТРЫ" disabled>
+                                   value="Применить фильтр" disabled>
                             <input type="button"
                                    class="filters__btn filters__btn--reset filters__reset-btn filters__btn-text--desktop js-filter-button-reset filters__btn--disabled"
-                                   value="СБРОСИТЬ ВСЕ ФИЛЬТРЫ" disabled>
+                                   value="Сбросить все фильтры" disabled>
                             <input type="button"
                                    class="filters__btn filters__btn--reset filters__reset-btn filters__btn-text--mobile js-filter-button-reset filters__btn--disabled"
-                                   value="СБРОСИТЬ" disabled>
+                                   value="Сбросить" disabled>
                             <input type="button"
                                    class="filters__btn filters__btn--submit filters__btn-text--mobile js-filter-button-submit js-filter-button-mobile filters__btn--disabled"
-                                   value="ПРИМЕНИТЬ" disabled>
+                                   value="Применить" disabled>
                         </div>
                     </div>
                     <!-- /filter -->
