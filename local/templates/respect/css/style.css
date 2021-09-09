@@ -6976,13 +6976,6 @@ label.color-label {
     }
 }
 
-.links-wrapper {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
 .whatsap-call-btn {
     display: block;
     box-sizing: border-box;

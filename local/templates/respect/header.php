@@ -474,7 +474,7 @@ switch ($GLOBALS['PAGE'][1]) {
 
     case 'personal':
         $menuTemplate = 'horizontal-personal';?>
-        <div class="after-lk-in col-md-8 col-md-offset-2 main">
+        <div class="after-lk-in main">
         <?php
         break;
 
@@ -484,7 +484,6 @@ switch ($GLOBALS['PAGE'][1]) {
 }
 
 if (isset($menuTemplate)) : ?>
-    <div class="<?= ($menuTemplate == 'horizontal-personal') ? 'desktop-sl' : '' ?>">
         <?php
         $APPLICATION->IncludeComponent(
             'bitrix:menu',
@@ -504,5 +503,4 @@ if (isset($menuTemplate)) : ?>
             ]
         );
         ?>
-    </div>
 <?php endif; ?>

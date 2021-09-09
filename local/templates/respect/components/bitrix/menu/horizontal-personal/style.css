@@ -1,0 +1,23 @@
+.links-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.personal-menu-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .personal-menu-wrapper {
+        display: none;
+    }
+}
+
