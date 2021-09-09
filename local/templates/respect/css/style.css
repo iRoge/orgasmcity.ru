@@ -1862,9 +1862,7 @@ a.in-zagolovok {
     line-height: 30px;
 }
 
-.orders-wrapper {
-    width: 100% !important;
-}
+
 
 .footer {
     min-height: 100px !important;
@@ -2896,6 +2894,13 @@ a {
 
 .after-lk-in {
     padding: 0 !important;
+}
+
+@media (max-width: 991px) {
+    .after-lk-in {
+        margin-left: 0!important;
+        width: 100%!important;
+    }
 }
 
 .after-lk-in > div, .after-lk-in > input {

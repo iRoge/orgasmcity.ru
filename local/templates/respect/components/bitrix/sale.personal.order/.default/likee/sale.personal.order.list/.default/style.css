@@ -18,3 +18,10 @@
     max-width: 100%;
     width: auto!important;
 }
+
+.orders-wrapper {
+    width: 100% !important;
+    padding: 0 30px!important;
+}
+
+.sort-wrapper {}
