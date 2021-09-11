@@ -31,6 +31,7 @@
                 ],
                 false
             ); ?>
+            <img src="<?=SITE_TEMPLATE_PATH?>/img/designedBy.webp" alt="Designed by Grape.ov">
         </div>
         <div class="footer-block col-lg-2 col-md-2 col-sm-2">
             <h4>Информация</h4>

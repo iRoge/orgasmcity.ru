@@ -18,7 +18,13 @@
                 <div class="arr-up" <?=$arItem['COLLAPSE'] ? '' : 'style="display:block;"';?>></div>
                 <div class="arr-down"></div>
             </div>
-            <div style="<?= $arItem['COLLAPSE'] ? '' : 'display:block;'; ?>margin-top:0; font-family: gilroyRegular; font-size: 16px;"
+            <div style="<?= $arItem['COLLAPSE'] ? '' : 'display:block;'; ?>
+                    margin-top:0;
+                    font-size: 20px;
+                    line-height: 23px;
+                    font-family: gilroyThin;
+                    color: #000000;
+                    "
                  class="after-blue"><?=$arItem['TEXT']?></div>
         <? } ?>
     <? } ?>

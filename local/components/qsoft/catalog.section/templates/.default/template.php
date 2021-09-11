@@ -214,9 +214,9 @@ if (!$arResult['IS_AJAX']) {
                                 <?php if (!empty($arResult['SAME_SECTIONS']) && $arResult['IS_AJAX']) :?>
                                     <div class="in-left-catalog subsections-block">
                                         <div class="name-h3 <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'active-name-h3'?>">
-                                            <h3>
+                                            <div class="filter-name">
                                                 Похожие разделы
-                                            </h3>
+                                            </div>
                                             <svg class="minus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: inline; position: absolute"'?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>
@@ -249,9 +249,9 @@ if (!$arResult['IS_AJAX']) {
                                                         <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#close"></use>
                                                     </svg>
                                                 </a>
-                                                <h3>
+                                                <div class="filter-name">
                                                     <?= GetMessage($filterKey) ?>
-                                                </h3>
+                                                </div>
                                                 <svg class="minus"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:inline"' : '' ?>>
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                                 </svg>
@@ -260,16 +260,16 @@ if (!$arResult['IS_AJAX']) {
                                                 </svg>
                                             </div>
                                             <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:flex"' : '' ?>>
-                                                <div class="from">
-                                                    <span>От</span>
+                                                <div class="from-filter">
+                                                    <span>От:</span>
                                                     <input id="min_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="min_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MIN_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
                                                            placeholder="<?= $arResult['FILTER']['MIN_' . $filterKey] ?>">
                                                 </div>
-                                                <div class="to">
-                                                    <span>До</span>
+                                                <div class="to-filter">
+                                                    <span>До:</span>
                                                     <input id="max_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="max_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MAX_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
@@ -294,9 +294,9 @@ if (!$arResult['IS_AJAX']) {
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#close"></use>
                                                 </svg>
                                             </a>
-                                            <h3>
+                                            <div class="filter-name">
                                                 <?= GetMessage($filterKey) ?>
-                                            </h3>
+                                            </div>
                                             <svg class="minus"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:inline"' : '' ?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>

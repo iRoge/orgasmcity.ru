@@ -1317,7 +1317,7 @@ jdiv[class^="popupBlock_"] {
 .footer-block {
     display: flex;
     flex-wrap: wrap;
-    padding: 0 10px;
+    padding: 5px 10px;
 }
 
 .footer-element {

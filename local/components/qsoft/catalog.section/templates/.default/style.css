@@ -101,11 +101,8 @@
 }
 
 .in-left-catalog {
-    border-top: 1px solid rgba(200, 200, 200, .4);
-    border-left: 1px solid rgba(200, 200, 200, .4);
-    border-right: 1px solid rgba(200, 200, 200, .4);
-    margin-bottom: 0;
-    margin-top: 0;
+    margin-bottom: 5px;
+    margin-top: 5px;
     width: 100%;
 }
 
@@ -147,13 +144,14 @@
     width: 100%;
     /*padding: 20px 30px 20px 54px;*/
     padding: 20px 30px;
-    background: #f3f3f3;
+    background: white;
+    border-radius: 5px;
     cursor: pointer;
     position: relative;
 }
 
 .active-name-h3 {
-    background: #fff5f7 !important;
+    background: white !important;
 }
 
 .in-in-left {
@@ -162,16 +160,57 @@
     display: none;
     flex-wrap: wrap;
     grid-template-columns: repeat(4, 25%);
+    background: white;
 }
 
-.in-left-catalog h3 {
-    text-transform: uppercase;
-    font-size: 16px;
+.filter-name {
+    font-size: 15px;
     color: #000000;
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
+    font-family: 'gilroyMedium';
+}
+
+.from-filter {
     font-family: 'gilroyRegular';
+    font-size: 16px;
+    color: #000000;
+    cursor: pointer;
+    width: 100%;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.to-filter {
+    font-family: 'gilroyRegular';
+    font-size: 16px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+    height: 21px;
+}
+
+.in-in-left .from-filter input, .in-in-left .to-filter input {
+    background: #F8F3FB;
+    border: transparent;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: right;
+    font-family: 'gilroyRegular';
+    font-size: 16px;
+    color: #000000;
+    width: 80%;
+    height: 100%;
+}
+
+.in-in-left .from span, .in-in-left .to span {
+    width: 25px;
 }
 
 .in-left-catalog .name-h3 {
@@ -1032,11 +1071,11 @@ footer .hide-block {
 }
 
 .view__item--active {
-    color: #654670;
+    color: #A48ED2;
 }
 
 .view__item:hover {
-    color: #654670;
+    color: #A48ED2;
 }
 
 .view .view__item-icon--device {
@@ -1275,7 +1314,7 @@ footer .hide-block {
     .filter__wrapper .cls-blue-menu {
         position: fixed !important;
         top: 0;
-        left: 275px;
+        left: 195px;
         display: block;
     }
     .filter__form {

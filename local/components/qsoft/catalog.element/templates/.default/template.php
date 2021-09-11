@@ -295,6 +295,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                 </div>
                 <?php if (!empty($arResult['DISPLAY_PROPERTIES'])) : ?>
                     <div class="hidden-lg hidden-md hidden-sm col-xs-12 info--"
+                    <div class="hidden-lg hidden-md hidden-sm col-xs-12 info--"
                          style="margin-left: 20px;margin-top: 50px">
                         <?php if (!empty($arResult['SIZES_PROPERTIES'])) :?>
                             <div class="p3">
