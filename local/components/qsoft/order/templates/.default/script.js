@@ -139,7 +139,7 @@ $(document).ready(function(){
                     el.closest('.js-card').slideUp("normal", function() {
                         // $(this).remove();
                         let leftBlock = $('.left-cart-block-local');
-                        let rightBlock = $('.right-cart-block-local');
+                        let rightBlock = $('.right-cart-block');
                         leftBlock.empty();
                         rightBlock.empty();
                         rightBlock.append('<div class="checkout__error-wrapper"><p class="checkout__error-text text-danger">' + data['text'] + '</p></div>');
@@ -362,7 +362,7 @@ $(document).ready(function(){
         }
         let delPrice = getDeliveryPrice();
         if (changeDeliveryBasketNum === 1) {
-            $("#cart__delivery-price").html(basketPrice >= freeDeliveryMinSum ? formatPrice(0) : formatPrice(delPrice));
+            $("#cart__delivery-price").html(basketPrice >= freeDeliveryMinSum ? formatPrice(0) : '+ ' + formatPrice(delPrice));
         }
 
         // Блок размера скидки за предоплату
@@ -371,7 +371,7 @@ $(document).ready(function(){
         let orderPrice = sum + delPrice;
         let paymentCheckedBlock = $('.js-payment:checked');
         if (paymentCheckedBlock && paymentCheckedBlock.data('prepayment') == 'Y') {
-            prepaymentDiscountBlock.html(formatPrice(Math.round(-prepaymentDiscount)));
+            prepaymentDiscountBlock.html('- ' + formatPrice(Math.round(prepaymentDiscount)));
             orderPrice -= Math.round(prepaymentDiscount);
             prepaymentDiscountBlock.parent().removeClass("is-hidden");
         } else {
@@ -383,7 +383,7 @@ $(document).ready(function(){
             $("#cart__discount-block").addClass("is-hidden");
         } else {
             $("#cart__discount-block").removeClass("is-hidden");
-            $("#cart__discount-price").html(formatPrice(-(oldSum - sum)));
+            $("#cart__discount-price").html("- " + formatPrice(oldSum - sum));
         }
     }
 
@@ -837,7 +837,7 @@ function formatPrice(num) {
         return "Бесплатно";
     }
     let format = new Intl.NumberFormat('ru-RU').format(num);
-    format += " р.";
+    format += " ₽";
     return format;
 }
 

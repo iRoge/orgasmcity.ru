@@ -128,7 +128,7 @@ window.panel = {
             $(this).removeClass('red-border');
         });
 
-        $('#cart__delivery-price').html(delivery.PRICE > 0 ? formatPrice(delivery.PRICE) : 'Бесплатно');
+        $('#cart__delivery-price').html(delivery.PRICE > 0 ? '+ ' + formatPrice(delivery.PRICE) : 'Бесплатно');
         let sum = 0;
         $(".orders__price").each(function() {
             sum += parseInt($(this).find(".orders__price-num").data("price"));

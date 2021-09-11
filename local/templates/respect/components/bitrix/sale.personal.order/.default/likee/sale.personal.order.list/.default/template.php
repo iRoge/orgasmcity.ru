@@ -47,7 +47,7 @@ if (!$USER->IsAuthorized()) {
                 <p class="num-zkz"><span class="in-mobile">Заказ </span>№ <?= $arOrder['ORDER']['ID'] ?></p>
                 <p class="date-zkz"><span class="in-mobile">Дата: </span><?= $arOrder['ORDER']['DATE_INSERT']->format($arParams['ACTIVE_DATE_FORMAT']) ?></p>
                 <p class="delivery-zkz"><span class="in-mobile">Доставка: </span>
-                    <?= number_format($arOrder['ORDER']['PRICE_DELIVERY'], 0, ',', ' '); ?> р.
+                    <?= number_format($arOrder['ORDER']['PRICE_DELIVERY'], 0, ',', ' '); ?> ₽
                 </p>
                 <p class="stat-zkz excellent-one-zkz"><span class="in-mobile">Статус: </span>
                     <? if ($arOrder['ORDER']['CANCELED'] == 'Y') : ?>
@@ -57,7 +57,7 @@ if (!$USER->IsAuthorized()) {
                     <? endif; ?>
                 </p>
                 <p class="sum-zkz price-one-zkz"><span class="in-mobile">Сумма: </span>
-                    <?= number_format(floatval($arOrder['ORDER']['PRICE'] - $iBonusesMinus), 0, ',', ' '); ?> р.
+                    <?= number_format(floatval($arOrder['ORDER']['PRICE'] - $iBonusesMinus), 0, ',', ' '); ?> ₽
                     <? if ($arOrder['ORDER']['PAYED'] == 'N' && in_array($arResult['INFO']['PAY_SYSTEM'][$arOrder['ORDER']['PAY_SYSTEM_ID']]['CODE'], ONLINE_PAYMENT_CODES)) : ?>
                         <button type="button" class="pay-lk-button" data-order-id="<?=$arOrder['ORDER']['ID']?>">Оплатить</button>
                     <? endif; ?>

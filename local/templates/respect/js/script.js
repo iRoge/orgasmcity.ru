@@ -152,15 +152,6 @@ $(document).ready(function () {
         $('.mail-div .popup').show(0);
     });
 
-    $('.grey-first').on('change', function () {
-        let $option = $(this);
-        if ($option.val() == '0') {
-            $option.css('color', '#b8b4b4');
-        } else {
-            $option.css('color', '#000000');
-        }
-    }).change();
-
     $(window).resize(function () {
         $('.hide-menu').css('height', 'auto').each(function () {
             let heightLeftHide = $('.left-hide-menu', this).outerHeight(true);
@@ -536,6 +527,7 @@ function addItemToCartOrOpenDetail(buttonElem) {
         let productData = $(buttonElem).data();
         addToCartHandler(offerId, 1, productData);
     } else {
+        console.log(btn.data());
         window.open(btn.data('url'), '_blank');
     }
 }

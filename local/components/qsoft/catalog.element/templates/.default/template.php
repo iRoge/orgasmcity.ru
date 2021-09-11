@@ -141,7 +141,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                 <?php if ($USER->GetID() == 1) {
                                     $wholesaleprice = $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE'];
                                     ?>
-                                    Цена закупки <?=$wholesaleprice?>р.
+                                    Цена закупки <?=$wholesaleprice?> ₽
                                     <br>
                                     Наценка <?=(int)(($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] - $wholesaleprice)*100/$wholesaleprice)?>%
                                 <?php }?>

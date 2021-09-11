@@ -433,7 +433,7 @@ if (!$arResult['IS_AJAX']) {
                                                     </div>
                                                     <div class="product-card-buy-btn-wrapper">
                                                         <button
-                                                                data-url="/<?=$arItem['CODE']?>/"
+                                                                data-url="<?=$arItem["DETAIL_PAGE_URL"]?>"
                                                                 <?=count($arItem['ASSORTMENTS']) > 1 ? '' : 'data-id="' . reset($arItem['ASSORTMENTS'])['ID'] . '"'?>
                                                                 onclick="addItemToCartOrOpenDetail(this)"
                                                                 data-name="<?=$arItem['NAME']?>"

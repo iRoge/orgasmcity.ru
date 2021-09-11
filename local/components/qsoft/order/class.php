@@ -1171,11 +1171,11 @@ class QsoftOrderComponent extends ComponentHelper
             $nameWithAdditions = $arProducts[$value["PRODUCT_ID"]]["NAME"];
             $nameAdditions = [];
             if ($value["SIZE"]) {
-                $nameAdditions[] = 'Размер: <b>' . $value["SIZE"] . '</b>';
+                $nameAdditions[] = 'Размер: ' . $value["SIZE"];
             }
             if ($value['COLOR']) {
                 $value['COLOR'] = $arColors[$value['COLOR']];
-                $nameAdditions[] = 'Цвет: <b>' . $value['COLOR'] . '</b>';
+                $nameAdditions[] = 'Цвет: ' . $value['COLOR'];
             }
             if (!empty($nameAdditions)) {
                 $nameWithAdditions .= '<br>' . implode(', ', $nameAdditions);
