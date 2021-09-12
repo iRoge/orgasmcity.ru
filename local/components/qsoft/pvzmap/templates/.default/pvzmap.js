@@ -137,8 +137,8 @@ window.panel = {
         $('#cart__total-price').html(formatPrice(sum));
 
         if (checkIfCheckboxIsActive('js-delivery')) {
-            hiddenBlock('close', 'all');
-            hiddenBlock('open', 'checkout__form');
+            hideOrOpenBlock('close', 'all');
+            hideOrOpenBlock('open', 'checkout__form');
         }
     }
 };

@@ -20,7 +20,7 @@
     <?php if (!empty($arResult['ITEMS'])) { ?>
         <?php foreach ($arResult['ITEMS'] as $item) { ?>
             <div class="product-feedback-item-wrapper">
-                <img class="hidden-xs hidden-sm" height="100%" src="<?=$item['PROPERTY_GENDER_VALUE'] == 'Женщина' ? SITE_TEMPLATE_PATH . '/img/avatars/g' . ($item['ID'] % 11) . '.webp' : SITE_TEMPLATE_PATH . '/img/avatars/m' . ($item['ID'] % 11) . '.webp'?>" alt="Аватар">
+                <img class="hidden-xs hidden-sm" height="100%" src="<?=$item['PROPERTY_GENDER_VALUE'] == 'Женщина' ? SITE_TEMPLATE_PATH . '/img/avatars/g' . ($item['ID'] % 11) . '.png' : SITE_TEMPLATE_PATH . '/img/avatars/m' . ($item['ID'] % 11) . '.png'?>" alt="Аватар">
                 <div class="product-feedback-item-text-wrapper">
                     <div class="product-feedback-item-title-wrapper">
                         <div class="product-feedback-item-title" style="color: black; font-size: 22px; font-family: gilroySemiBold">@<?=$item['NAME']?></div>

@@ -8,5 +8,5 @@ if ($region != $city) {
     $city = $city.", ".$region;
 } ?>
 <div class="form__field form__field--1-2">
-    <div class="form__elem cart-city-input"><?= $city ?></div>
+    <div class="form__elem cart-city-input"><?=$city?></div>
 </div>

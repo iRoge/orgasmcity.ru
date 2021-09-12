@@ -108,9 +108,9 @@ global $LOCATION, $APPLICATION; ?>
                                         <div class="flex-product--count orders__col">
                                             <span class="orders__label--only-mobile">Кол-во:</span>
                                             <div class="quantity-block">
-                                                <button class="quantity-arrow-minus"> - </span></button>
-                                                <input data-offer-id="<?=$id?>" class="quantity-num" type="number" value="<?=$arItem['QUANTITY']?>" disabled />
-                                                <button class="quantity-arrow-plus"><span> + </span></button>
+                                                <div class="quantity-arrow-minus">-</div>
+                                                <input data-offer-id="<?=$id?>" class="quantity-num" type="number" value="<?=$arItem['QUANTITY']?>" />
+                                                <div class="quantity-arrow-plus">+</div>
                                             </div>
                                         </div>
                                         <? //количество end ?>
@@ -124,10 +124,8 @@ global $LOCATION, $APPLICATION; ?>
                                             </div>
                                             <?php endif; ?>
 
-                                            <div class="coupon-success">
-                                                <? if (isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE']) : ?>
-                                                    Применен промокод
-                                                <? endif ?>
+                                            <div class="coupon-success<?=isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE'] ? ' coupon-active' : ''?>">
+                                                Применен промокод
                                             </div>
 
                                             <div>
@@ -349,7 +347,8 @@ global $LOCATION, $APPLICATION; ?>
                                         <div class="form__field-coupon">
                                             <input id="cart__coupon" class="form__elem-coupon" type="text" name="COUPON" value="<?= ($arResult["COUPON"] && $arResult["DISCOUNT"]) ? $arResult["COUPON"] : "" ?>" placeholder="Введите промокод">
                                         </div>
-                                        <div id="cart__coupon-error" class="form__field-coupon"></div>
+                                        <div id="cart__coupon-error" class="form__field-coupon" style="display: none"></div>
+                                        <div id="cart__coupon-success" class="form__field-coupon" style="display: none"></div>
                                         <div class="form__field-coupon">
                                             <input id="cart__coupon-button" type="button" class="form__btn-coupon bttn-coupon" value="Применить скидку">
                                         </div>

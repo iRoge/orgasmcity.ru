@@ -50,16 +50,9 @@
     font-family: 'gilroyMedium';
     text-decoration: none;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     height: 120px;
 }
-
-@media (max-width: 1585px) {
-    .catalog-list-main a {
-        font-size: 11px;
-    }
-}
-
 
 @media (min-width: 992px) and (max-width: 1440px) {
     .catalog-list-main a {

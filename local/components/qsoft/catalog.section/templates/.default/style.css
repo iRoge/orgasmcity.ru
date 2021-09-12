@@ -152,6 +152,8 @@
 
 .active-name-h3 {
     background: white !important;
+    border-bottom-left-radius: 0!important;
+    border-bottom-right-radius: 0!important;
 }
 
 .in-in-left {
@@ -161,6 +163,8 @@
     flex-wrap: wrap;
     grid-template-columns: repeat(4, 25%);
     background: white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .filter-name {
@@ -1223,10 +1227,6 @@ footer .hide-block {
     margin-top: 0;
 }
 
-.catalog .in-left-catalog--last {
-    border-bottom: 1px solid rgba(200,200,200, .4);
-}
-
 @media (max-width: 1279px) {
     .catalog__settings {
         font-size: 13px;
@@ -1306,8 +1306,8 @@ footer .hide-block {
         top: 0;
         left: 0;
         height: 100vh;
-        padding: 0 0 150px !important;
-        background-color: #f3f3f3;
+        padding: 0 5px 150px 5px!important;
+        background-color: #fff5f7;
         overflow: auto;
         z-index: 99999999999;
     }
@@ -1316,6 +1316,7 @@ footer .hide-block {
         top: 0;
         left: 195px;
         display: block;
+        padding-top: 10px;
     }
     .filter__form {
         margin-top: 45px;

@@ -35,8 +35,11 @@
     margin-top: 25px;
 }
 
-#cart__coupon-error,
-#cart__coupon-error2 {
+#cart__coupon-error {
+    height: 20px;
+}
+
+#cart__coupon-success {
     height: 20px;
 }
 
@@ -69,9 +72,14 @@
 }
 
 .err-order,
-#cart__coupon-error,
-#cart__coupon-error2 {
+#cart__coupon-error {
     color: red;
+    margin-left: 15px;
+}
+
+.err-order,
+#cart__coupon-success {
+    color: #62B14E;
     margin-left: 15px;
 }
 
@@ -126,9 +134,11 @@ input[type="number"]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0;
 }
+
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
 .quantity-block {
     margin: 0 auto;
     font-size: 20px;
@@ -137,19 +147,25 @@ input[type="number"] {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
 }
+
 @media (max-width: 767px) {
     .quantity-block {
-        width: 70%;
+        width: 60%;
     }
 }
+
 .quantity-arrow-minus,
 .quantity-arrow-plus {
     cursor: pointer;
     width: 30%;
+    max-width: 30%;
+    height: 100%;
     box-sizing: border-box;
     border: transparent;
     outline: none;
+    text-align: center;
     background: #E8D5F1;
     border-radius: 5px;
     display: flex;
@@ -165,6 +181,7 @@ input[type="number"] {
 .quantity-arrow-plus:active {
     background-color: #A18CD1;
 }
+
 .quantity-num {
     margin: 3px 0;
     background-color: transparent;
@@ -344,12 +361,16 @@ input[type="number"] {
     border-radius: 10px;
 }
 
-.checkbox4:hover + .cart-delivery__label:hover {
-    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
+@media (min-width: 992px) {
+    .checkbox4:hover + .cart-delivery__label:hover {
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
+    }
+
 }
 
 .checkbox4:checked + .cart-delivery__label {
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
+    z-index: 1;
 }
 
 .cart-delivery__header {
@@ -412,6 +433,7 @@ input[type="number"] {
 
 .orders__label--only-mobile {
     display: none;
+    padding-right: 20px;
 }
 
 .orders__label--only-pc {
@@ -453,7 +475,7 @@ input[type="number"] {
 }
 
 .checkout__block--contact-info .form__box {
-    padding: 40px!important;
+    padding: 40px 20px!important;
     background: #FFFFFF;
     border-radius: 10px;
 }
@@ -475,6 +497,7 @@ input[type="number"] {
 
 .form__field-coupon {
     width: 100%;
+    margin-bottom: 15px;
 }
 
 .form__field--1-2 {
@@ -979,6 +1002,7 @@ input[type="number"] {
 }
 
 .l {
+    width: 50%;
     float: left;
     font-weight: 600;
     font-size: 15px;
@@ -988,6 +1012,7 @@ input[type="number"] {
 }
 
 .r {
+    width: 50%;
     float: right;
     font-family: 'gilroyRegular';
     font-size: 15px;
@@ -1012,6 +1037,8 @@ input[type="number"] {
 
 .suggestions-addon {
     top: -33px!important;
+    right: 10px!important;
+    left: unset!important;
 }
 
 .coupon-success {
@@ -1020,6 +1047,10 @@ input[type="number"] {
     line-height: 14px;
     font-family: gilroySemiBold;
     color: #62B14E;
+    display: none;
+}
+
+.coupon-success.coupon-active {
     height: 30px;
     padding: 5px 0;
     display: flex;
@@ -1076,8 +1107,8 @@ input[type="number"] {
     }
 
     .checkout__col--sidebar {
-        padding-top: 0;
         margin-top: 25px;
+        padding: 0!important;
     }
 
     .checkout__form {
@@ -1093,10 +1124,6 @@ input[type="number"] {
         width: 100%;
     }
 
-    .cart-delivery {
-        height: auto;
-    }
-
     .quantity-arrow-minus,
     .quantity-arrow-plus {
         font-family: gilroyRegular;
@@ -1105,9 +1132,21 @@ input[type="number"] {
     .checkout__col--main {
         padding: 0!important;
     }
+
+    .form__elem-coupon {
+        width: 100%;
+    }
+
+    .bttn-coupon {
+        width: 100%;
+    }
 }
 
 @media (max-width: 767px) {
+    .cart-delivery {
+        height: auto;
+    }
+
     .flex-product {
         flex-direction: column;
         flex-wrap: wrap;
@@ -1157,7 +1196,7 @@ input[type="number"] {
 
     .orders__row--product {
         align-items: flex-start;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
         padding-right: 20px;
     }
 
@@ -1211,6 +1250,10 @@ input[type="number"] {
 
     .coupon-success {
         padding: 0;
+    }
+
+    .checkout__block--contact-info .form__box {
+        padding: 40px 20px 20px 20px!important;
     }
 }
 

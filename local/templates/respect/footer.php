@@ -205,3 +205,5 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 </div>
 </body>
 </html>
+
+<?php exit; ?>

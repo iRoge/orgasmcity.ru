@@ -973,14 +973,12 @@ div.product-preorder-success a.button--orange:hover {
 	display: none;
 	list-style-type: none;
     padding: 0 20px;
-    margin-top: -2px;
-    box-shadow: 0px 2px 15px rgba(0,0,0, .2);
+    box-shadow: 0 2px 15px rgba(0,0,0, .2);
     z-index: 100000;
     position: absolute;
     background: #fff;
     height: auto;
     line-height: 18px;
-    width: 190%;
 }
 .auth-div-personal a {
 	display: block;
