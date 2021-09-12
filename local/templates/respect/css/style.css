@@ -363,20 +363,29 @@ html, body {
 }
 
 .mail-div {
-    background: #fff5f7;
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     position: absolute;
     height: auto;
     margin-top: 9%;
     margin-left: auto;
     margin-right: auto;
     display: none;
-    padding: 30px 15px;
-    padding-bottom: 50px;
+    padding: 30px 15px 50px;
     z-index: 999999999;
     left: 0;
     right: 0;
     top: 0;
     width: 40%;
+}
+
+.mail-div:after {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .mail-div h2, .popup h2 {
@@ -403,7 +412,7 @@ html, body {
 .mail-div input, .insta_contest_form input {
     width: 100%;
     padding: 10px 20px;
-    background: #fff5f7;
+    background: white;
     border: 1px solid #d8d8d8;
     margin-bottom: 15px;
 }
@@ -411,7 +420,7 @@ html, body {
 .mail-div select, .insta_contest_form select {
     width: 100%;
     padding: 10px 20px;
-    background: #fff5f7;
+    background: white;
     border: 1px solid #d8d8d8;
     margin-bottom: 15px;
 }
@@ -421,7 +430,7 @@ html, body {
     width: 100%;
     height: 200px;
     padding: 10px 20px;
-    background: #fff5f7;
+    background: white;
     border: 1px solid #d8d8d8;
     margin-bottom: 15px;
 }
@@ -462,14 +471,16 @@ html, body {
 }
 
 .auth-div-full {
-    background: #fff5f7;
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     position: absolute;
     width: 40%;
     height: auto;
     margin-top: 9%;
     display: none;
-    padding: 30px 15px;
-    padding-bottom: 50px;
+    padding: 30px 15px 50px;
     z-index: 999999999;
     top: 0;
     left: 0;
@@ -478,8 +489,18 @@ html, body {
     margin-right: auto;
 }
 
+.auth-div-full:after {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
 .auth-div-full2 {
-    background: #fff5f7;
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
     position: relative;
@@ -489,6 +510,13 @@ html, body {
     padding-bottom: 50px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.auth-div-full2:after {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .phone-top-link {
@@ -645,7 +673,7 @@ html, body {
 
 .in-auth {
     font-family: 'gilroySemiBold';
-    color: #d9d7d7;
+    color: black;
     text-align: center;
     display: inline-block;
     margin-bottom: 30px;

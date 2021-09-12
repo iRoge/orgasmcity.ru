@@ -174,3 +174,7 @@ if (!function_exists('custom_mail')) {
         }
     }
 }
+
+//register_shutdown_function(function () {
+//    exec('kill ' . getmypid());
+//});

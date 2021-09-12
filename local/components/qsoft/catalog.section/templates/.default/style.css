@@ -1462,6 +1462,12 @@ a.product-href-wrapper:hover {
     max-width: 30%;
 }
 
+@media (max-width: 400px) {
+    .product-icons-wrap {
+        max-width: 40%;
+    }
+}
+
 .sale-tooltip {
     height: 22px;
     width: 40px;

@@ -120,6 +120,12 @@ input#EMAIL.red_border_sub {
     }
 }
 
+@media (max-width: 1100px) {
+    #subscribe-form input {
+        font-size: 8px!important;
+    }
+}
+
 @media (max-width: 991px) {
     .subscribe-wrapper .main {
         margin: 0;
