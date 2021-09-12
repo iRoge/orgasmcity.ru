@@ -1238,6 +1238,12 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $items = [];
+
+        if ($this->type === self::TYPE_SALES) {
+            global $USER;
+            $userDiscount = (new BonusSystem($USER->GetID()))->getCurrentBonus();
+        }
+
         foreach ($this->offers as $offerId => $value) {
             if (!$isFavoritesCatalog && (!isset($rests[$offerId]) || $rests[$offerId] < 1)) {
                 continue;
@@ -1249,7 +1255,7 @@ class QsoftCatalogSection extends ComponentHelper
                 continue;
             }
 
-            if ($this->type === self::TYPE_SALES && !$price['DISCOUNT']) {
+            if ($this->type === self::TYPE_SALES && ($price['DISCOUNT'] - $userDiscount) <= 0) {
                 continue;
             }
 
