@@ -884,13 +884,7 @@ class QsoftCatalogSection extends ComponentHelper
 
         foreach ($offersPropertiesMap as $key => $property) {
             if (!empty($this->group[$property])) {
-                if ($property === 'PROPERTY_PRICE_FROM_VALUE') {
-                    $propertyName = '>=PROPERTY_PRICE';
-                } elseif ($property === 'PROPERTY_PRICE_TO_VALUE') {
-                    $propertyName = '<=PROPERTY_PRICE';
-                } else {
-                    $propertyName = $property;
-                }
+                $propertyName = $property;
 
                 $filter['OFFER'][$propertyName] = $this->group[$property];
             }

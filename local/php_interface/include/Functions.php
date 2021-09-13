@@ -645,6 +645,11 @@ class Functions
                 "PROPERTY_CML2_LINK",
                 "PROPERTY_SIZE",
                 "PROPERTY_COLOR",
+                "PROPERTY_CUSTOM_PRICE",
+                "PROPERTY_CUSTOM_OLD_PRICE",
+                "PROPERTY_CUSTOM_DISCOUNT",
+                "PROPERTY_BASEWHOLEPRICE",
+                "PROPERTY_BASEPRICE_VALUE",
             ];
 
             $resOffers = CIBlockElement::GetList(
@@ -659,8 +664,7 @@ class Functions
                 $arOffers[$offer['ID']] = $offer;
             }
 
-            $CACHE_MANAGER
-                ->endTagCache();
+            $CACHE_MANAGER->endTagCache();
             $offerCache->EndDataCache(['allOffers' => $arOffers]);
         }
 

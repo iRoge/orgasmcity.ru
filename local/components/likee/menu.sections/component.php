@@ -42,7 +42,7 @@ if (empty($aMenuLinksNew)) {
     $arResult['SECTIONS'] = [];
     $arResult['ELEMENT_LINKS'] = [];
     if (!Loader::includeModule('iblock')) {
-        $this->AbortResultCache();
+        $cache->AbortDataCache();
         $CACHE_MANAGER->AbortTagCache();
         return [];
     }
