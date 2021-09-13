@@ -88,6 +88,8 @@ class QsoftCatalogSection extends ComponentHelper
         "PROPERTY_VOLUME",
         "PROPERTY_MATERIAL",
         "PROPERTY_COLLECTION",
+        "PROPERTY_YEAR",
+        "PROPERTY_VIBRATION",
         "SHOW_COUNTER",
     ];
 
@@ -777,6 +779,16 @@ class QsoftCatalogSection extends ComponentHelper
                     'NAME',
                     'PROPERTY_BESTSELLER',
                     'PROPERTY_NEW',
+                    'PROPERTY_LENGTH_FROM',
+                    'PROPERTY_LENGTH_TO',
+                    'PROPERTY_DIAMETER_FROM',
+                    'PROPERTY_DIAMETER_TO',
+                    'PROPERTY_VENDOR',
+                    'PROPERTY_VIBRATION',
+                    'PROPERTY_YEAR',
+                    'PROPERTY_SECTION',
+                    'PROPERTY_VOLUME',
+                    'PROPERTY_PRODUCT',
                 ]
             )->GetNext();
 //            if ($group['PREVIEW_PICTURE']) {
@@ -832,15 +844,6 @@ class QsoftCatalogSection extends ComponentHelper
         return $group ?: [];
     }
 
-    private function getBannerLinkStyle($val, $w, $h)
-    {
-        $val = explode(",", trim($val));
-        return "left:" . (intval(100 * $val[0] / $w)) . "%;" .
-            "top:" . (intval(100 * $val[1] / $h)) . "%;" .
-            "right:" . (100 - intval(100 * $val[2] / $w)) . "%;" .
-            "bottom:" . (100 - intval(100 * $val[3] / $h)) . "%";
-    }
-
     private function getGroupFilters()
     {
         list($productPropertiesMap, $offersPropertiesMap) = array_values($this->getPropertiesMap());
@@ -853,34 +856,45 @@ class QsoftCatalogSection extends ComponentHelper
 
         foreach ($productPropertiesMap as $property) {
             if (!empty($this->group[$property])) {
-                $propertyName = ($property === 'PROPERTY_SECTION_VALUE') ? 'IBLOCK_SECTION_ID' : $property;
+                if ($property === 'PROPERTY_SECTION_VALUE') {
+                    $propertyName = 'IBLOCK_SECTION_ID';
+                } elseif ($property === 'PROPERTY_LENGTH_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_LENGTH';
+                } elseif ($property === 'PROPERTY_LENGTH_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_LENGTH';
+                } elseif ($property === 'PROPERTY_DIAMETER_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_DIAMETER';
+                } elseif ($property === 'PROPERTY_DIAMETER_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_DIAMETER';
+                } elseif ($property === 'PROPERTY_PRODUCT_VALUE') {
+                    $propertyName = 'XML_ID';
+                } elseif ($property === 'PROPERTY_YEAR_VALUE') {
+                    $propertyName = 'PROPERTY_YEAR';
+                } elseif ($property === 'PROPERTY_VENDOR_VALUE') {
+                    $propertyName = 'PROPERTY_VENDOR';
+                } elseif ($property === 'PROPERTY_VOLUME_VALUE') {
+                    $propertyName = 'PROPERTY_VOLUME';
+                } else {
+                    $propertyName = $property;
+                }
+
                 $filter['PRODUCT'][$propertyName] = $this->group[$property];
             }
         }
 
-        foreach ($offersPropertiesMap as $key => $value) {
-            if (!empty($this->group[$key])) {
-                $filter['OFFER'][$value] = $this->group[$key];
+        foreach ($offersPropertiesMap as $key => $property) {
+            if (!empty($this->group[$property])) {
+                if ($property === 'PROPERTY_PRICE_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_PRICE';
+                } elseif ($property === 'PROPERTY_PRICE_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_PRICE';
+                } else {
+                    $propertyName = $property;
+                }
+
+                $filter['OFFER'][$propertyName] = $this->group[$property];
             }
         }
-
-//        /**
-//         * артикулы для фильтра
-//         * TODO - файл с артикулами
-//         */
-//        $this->getFilterArticles($filter);
-//
-//        /**
-//         * обработка размеров
-//         */
-//        $this->getFilterSizes($filter);
-//
-//        /**
-//         * обработка секций
-//         */
-//        $this->getFilterSections($filter);
-//
-//        $this->getFilterPrices($filter, $this->group);
 
         $this->ibFilter = $filter;
     }
@@ -890,9 +904,21 @@ class QsoftCatalogSection extends ComponentHelper
         return [
             'PRODUCT' => [
                 'PROPERTY_NEW_VALUE',
-                'PROPERTY_BESTSELLER_VALUE'
+                'PROPERTY_BESTSELLER_VALUE',
+                'PROPERTY_LENGTH_FROM_VALUE',
+                'PROPERTY_LENGTH_TO_VALUE',
+                'PROPERTY_DIAMETER_FROM_VALUE',
+                'PROPERTY_DIAMETER_TO_VALUE',
+                'PROPERTY_VENDOR_VALUE',
+                'PROPERTY_VIBRATION_VALUE',
+                'PROPERTY_YEAR_VALUE',
+                'PROPERTY_SECTION_VALUE',
+                'PROPERTY_VOLUME_VALUE',
+                'PROPERTY_PRODUCT_VALUE',
             ],
             'OFFER' => [
+                'PRICE_FROM',
+                'PRICE_TO',
             ],
         ];
     }
