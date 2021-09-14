@@ -144,7 +144,7 @@ if (empty($aMenuLinksNew)) {
     $rests = Functions::getRests($offerIds);
 
     foreach ($offers as $offerId => $offer) {
-        $price = \Qsoft\Helpers\PriceUtils::getReducedPrice($offer['PROPERTY_BASEWHOLEPRICE_VALUE'], $offer['PROPERTY_BASEPRICE_VALUE']);
+        $price = \Qsoft\Helpers\PriceUtils::getCachedPriceForUser($offerId);
         if ((!isset($rests[$offerId]) || $rests[$offerId] < 1 || !$price)) {
             continue;
         }

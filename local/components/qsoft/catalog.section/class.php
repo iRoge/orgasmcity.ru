@@ -1269,7 +1269,7 @@ class QsoftCatalogSection extends ComponentHelper
                 continue;
             }
 
-            $price = PriceUtils::getReducedPrice($value["PROPERTY_BASEWHOLEPRICE_VALUE"], $value["PROPERTY_BASEPRICE_VALUE"]);
+            $price = PriceUtils::getCachedPriceForUser($offerId);
 
             if (!$price) {
                 continue;

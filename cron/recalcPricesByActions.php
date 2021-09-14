@@ -7,3 +7,6 @@ while (ob_get_level()) {
 set_time_limit(0);
 ini_set('memory_limit', '2048M');
 \Qsoft\Helpers\PriceUtils::recalcPrices();
+global $CACHE_MANAGER;
+$CACHE_MANAGER->ClearByTag("catalogAll");
+\Qsoft\Helpers\PriceUtils::getCachedPriceForUser(1);

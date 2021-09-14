@@ -11,9 +11,8 @@ class PriceUtils
     static private array $pricesCache;
 
 
-    public static function getCachedPriceForUser($offersIds)
+    public static function getCachedPriceForUser($offerId)
     {
-        $resultArray = [];
         if (empty(self::$pricesCache)) {
             global $CACHE_MANAGER;
             $cache = new CPHPCache();
@@ -69,15 +68,15 @@ class PriceUtils
             $bonusSystemHelper = new BonusSystem($USER->GetID());
             $userDiscount = $bonusSystemHelper->getCurrentBonus();
         }
-        foreach ($offersIds as $offerId) {
-            if (isset(self::$pricesCache[$offerId]) && self::$pricesCache[$offerId]['PRICE']) {
-                $resultArray[$offerId] = self::$pricesCache[$offerId];
-                $resultArray['DISCOUNT_WITHOUT_BONUS'] = self::$pricesCache[$offerId]['DISCOUNT'];
-                $resultArray[$offerId]['DISCOUNT'] = self::$pricesCache[$offerId]['DISCOUNT'] + $userDiscount;
-            } else {
-                $resultArray[$offerId] = null;
-            }
+
+        if (isset(self::$pricesCache[$offerId]) && self::$pricesCache[$offerId]['PRICE']) {
+            $resultArray = self::$pricesCache[$offerId];
+            $resultArray['DISCOUNT_WITHOUT_BONUS'] = self::$pricesCache[$offerId]['DISCOUNT'];
+            $resultArray['DISCOUNT'] = self::$pricesCache[$offerId]['DISCOUNT'] + $userDiscount;
+        } else {
+            $resultArray = null;
         }
+
         return $resultArray;
     }
 
@@ -143,7 +142,6 @@ class PriceUtils
                 ) {
                     continue;
                 }
-
                 foreach ($offersByProductID[$product['ID']] as $assortment) {
                     if (
                         empty($assortmentPrices[$assortment['ID']])
@@ -155,7 +153,8 @@ class PriceUtils
                         if (!$oldPrice) {
                             continue;
                         }
-                        $markupPercent = ($wholePrice - $basePrice) * 100 / $basePrice;
+                        $markupPercent = ($oldPrice - $wholePrice) * 100 / $wholePrice;
+
                         if ($markupPercent < 50) {
                             $discount = $action['PROPERTY_DISCOUNT_50_VALUE'];
                         } elseif ($markupPercent >= 50 && $markupPercent < 75) {
@@ -167,10 +166,11 @@ class PriceUtils
                         } else {
                             $discount = $action['PROPERTY_DISCOUNT_125_VALUE'];
                         }
+                        $price = self::calculatePrice($oldPrice, $discount);
                         $assortmentPrices[$assortment['ID']] = [
                             'DISCOUNT' => $discount,
-                            'PRICE' => self::calculatePrice($oldPrice, $discount),
-                            'OLD_PRICE' => $oldPrice,
+                            'PRICE' => $price,
+                            'OLD_PRICE' => $oldPrice > $price ? $oldPrice : null,
                         ];
                     }
                 }
@@ -185,7 +185,7 @@ class PriceUtils
                 $assortmentPrices[$id] = [
                     'DISCOUNT' => 0,
                     'PRICE' => self::calculatePrice($price, $action['PROPERTY_DISCOUNT_VALUE']),
-                    'OLD_PRICE' => $price,
+                    'OLD_PRICE' => null,
                     'WHOLEPRICE' => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
                 ];
             }
@@ -202,14 +202,11 @@ class PriceUtils
             if (isset($arPrice['OLD_PRICE'])) {
                 $props['CUSTOM_OLD_PRICE'] = $arPrice['OLD_PRICE'];
             }
-            if ($arPrice['WHOLEPRICE']) {
+            if (isset($arPrice['WHOLEPRICE'])) {
                 $props['BASEWHOLEPRICE'] = $arPrice['WHOLEPRICE'];
             }
-            if ($offerId == 564871) {
-                print_r($props);
-            }
 
-//            CIBlockElement::SetPropertyValuesEx($offerId, IBLOCK_OFFERS, $props);
+            CIBlockElement::SetPropertyValuesEx($offerId, IBLOCK_OFFERS, $props);
         }
     }
 

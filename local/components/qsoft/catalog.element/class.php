@@ -191,7 +191,8 @@ class QsoftCatalogElement extends ComponentHelper
             if (!$basePrice['VALUE'] || !$baseWholePrice['VALUE']) {
                 continue;
             }
-            $price = PriceUtils::getReducedPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
+            $offerFields = $objOffer->GetFields();
+            $price = PriceUtils::getCachedPriceForUser($offerFields['ID']);
             if (!$price) {
                 continue;
             }
@@ -199,7 +200,6 @@ class QsoftCatalogElement extends ComponentHelper
             $basePrice['VALUE'] = $price['PRICE'];
             $basePrice['PERCENT'] = $price['DISCOUNT'];
             $basePrice['WHOLEPRICE'] = $price['WHOLEPRICE'];
-            $offerFields = $objOffer->GetFields();
             $arOffers[$offerFields['ID']] = $offerFields;
             $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $basePrice;
             $arOffers[$offerFields['ID']]['PROPERTIES']['COLOR'] = $objOffer->GetProperties(
