@@ -191,7 +191,7 @@ class QsoftCatalogElement extends ComponentHelper
             if (!$basePrice['VALUE'] || !$baseWholePrice['VALUE']) {
                 continue;
             }
-            $price = PriceUtils::getPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
+            $price = PriceUtils::getReducedPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
             if (!$price) {
                 continue;
             }

@@ -105,7 +105,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             );
 
             while ($offer = $resOffers->Fetch()) {
-                $price = PriceUtils::getPrice($offer["PROPERTY_BASEWHOLEPRICE_VALUE"], $offer["PROPERTY_BASEPRICE_VALUE"]);
+                $price = PriceUtils::getReducedPrice($offer["PROPERTY_BASEWHOLEPRICE_VALUE"], $offer["PROPERTY_BASEPRICE_VALUE"]);
                 if (
                     isset($this->arParams['FILTERS']['PRICE_FROM']) && $price['PRICE'] < $this->arParams['FILTERS']['PRICE_FROM']
                     || isset($this->arParams['FILTERS']['PRICE_TO']) && $price['PRICE'] > $this->arParams['FILTERS']['PRICE_TO']

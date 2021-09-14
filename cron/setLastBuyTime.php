@@ -29,7 +29,7 @@ while ($offer = $res->GetNext()) {
 
 $offers = Functions::filterOffersByRests($offers);
 foreach ($offers as $offer) {
-    $price = \Qsoft\Helpers\PriceUtils::getPrice($offer['PROPERTY_BASEPRICE_VALUE'], $offer['PROPERTY_BASEWHOLEPRICE_VALUE'])['PRICE'];
+    $price = \Qsoft\Helpers\PriceUtils::getReducedPrice($offer['PROPERTY_BASEPRICE_VALUE'], $offer['PROPERTY_BASEWHOLEPRICE_VALUE'])['PRICE'];
     $needChange = false;
     if ($price < 500) {
         if (rand(1, 5*$mul) == 1) {

@@ -90,7 +90,7 @@ class Order
         if (!$arOffer["PROPERTY_CML2_LINK_VALUE"]) {
             return;
         }
-        $arPrice = PriceUtils::getPrice($arOffer['PROPERTY_BASEWHOLEPRICE_VALUE'], $arOffer['PROPERTY_BASEPRICE_VALUE']);
+        $arPrice = PriceUtils::getReducedPrice($arOffer['PROPERTY_BASEWHOLEPRICE_VALUE'], $arOffer['PROPERTY_BASEPRICE_VALUE']);
         if (!$arPrice) {
             $arFields = [];
             return;

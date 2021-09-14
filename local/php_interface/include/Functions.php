@@ -649,7 +649,7 @@ class Functions
                 "PROPERTY_CUSTOM_OLD_PRICE",
                 "PROPERTY_CUSTOM_DISCOUNT",
                 "PROPERTY_BASEWHOLEPRICE",
-                "PROPERTY_BASEPRICE_VALUE",
+                "PROPERTY_BASEPRICE",
             ];
 
             $resOffers = CIBlockElement::GetList(
@@ -669,6 +669,65 @@ class Functions
         }
 
         return $arOffers;
+    }
+
+    public static function getAllProducts(): array
+    {
+        global $CACHE_MANAGER;
+        $offerCache = new CPHPCache;
+        $arProducts = [];
+
+        if ($offerCache->InitCache(360000, 'allProducts', 'products')) {
+            $arProducts = $offerCache->GetVars()['allProducts'];
+        } elseif ($offerCache->StartDataCache()) {
+            $CACHE_MANAGER->StartTagCache('offers');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
+
+            $arFilter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => "Y",
+            ];
+
+            $arSelect = [
+                "ID",
+                "IBLOCK_ID",
+                "IBLOCK_SECTION_ID",
+                "XML_ID",
+                "NAME",
+                "CODE",
+                "DETAIL_PICTURE",
+                "PREVIEW_PICTURE",
+                "SORT",
+                "PROPERTY_ARTICLE",
+                "PROPERTY_DIAMETER",
+                "PROPERTY_LENGTH",
+                "PROPERTY_BESTSELLER",
+                "PROPERTY_NEW",
+                "PROPERTY_VENDOR",
+                "PROPERTY_VOLUME",
+                "PROPERTY_MATERIAL",
+                "PROPERTY_COLLECTION",
+                "PROPERTY_YEAR",
+                "PROPERTY_VIBRATION",
+            ];
+
+            $res = CIBlockElement::GetList(
+                ["SORT" => "ASC"],
+                $arFilter,
+                false,
+                false,
+                $arSelect,
+            );
+
+            while ($arProduct = $res->Fetch()) {
+                $arProducts[$arProduct['ID']] = $arProduct;
+            }
+
+            $CACHE_MANAGER->endTagCache();
+            $offerCache->EndDataCache(['allProducts' => $arProducts]);
+        }
+
+        return $arProducts;
     }
 
     public static function filterOffersByRests($offers)
