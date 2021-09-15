@@ -372,7 +372,7 @@ class QsoftCatalogSection extends ComponentHelper
 
     /**
      * load products for current and related sections
-     * products are stored in @var $this->products
+     * products are stored in @var $this- >products
      */
     private function loadProducts($all = false): void
     {
@@ -1790,7 +1790,7 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
-        
+
         if ($this->type === self::TYPE_SECTION) {
             if ($this->section['DEPTH_LEVEL'] > 1) {
                 $this->arResult['SAME_SECTIONS'] = $this->section['SAME_SECTIONS'];
@@ -1892,8 +1892,7 @@ class QsoftCatalogSection extends ComponentHelper
             ]
         );
 
-        while($arEnum = $propertyEnums->GetNext())
-        {
+        while ($arEnum = $propertyEnums->GetNext()) {
             $arPropsValues[$arEnum['ID']] = $arEnum['VALUE'];
         }
 
@@ -2033,11 +2032,11 @@ class QsoftCatalogSection extends ComponentHelper
             $description = null;
             if ($this->type == self::TYPE_SECTION || $this->type == self::TYPE_SALES) {
                 $description = 'В Городе Оргазма вы можете не дорого с доставкой купить любой товар для взрослых 18+ '
-                . 'из каталога ' . $this->section['NAME'];
+                    . 'из каталога ' . $this->section['NAME'];
             } elseif ($this->type == self::TYPE_GROUP) {
                 if ($this->isBrand) {
                     $description = 'В Городе Оргазма вы можете не дорого с доставкой купить любой товар для взрослых 18+ '
-                    . 'бренда ' . $this->group['NAME'];
+                        . 'бренда ' . $this->group['NAME'];
                 } else {
                     $description = 'В Городе Оргазма вы можете не дорого с доставкой купить любой товар для взрослых 18+ '
                         . 'по группировке ' . $this->group['NAME'];
@@ -2129,8 +2128,7 @@ class QsoftCatalogSection extends ComponentHelper
             'SECTION_ID' => $section['IBLOCK_SECTION_ID']
         ];
         $res = CIBlockSection::GetList(false, $arFilter, true, ['ID', 'NAME', 'SECTION_PAGE_URL']);
-        while($arResult = $res->GetNext())
-        {
+        while ($arResult = $res->GetNext()) {
             $arSections[] = $arResult;
         }
 

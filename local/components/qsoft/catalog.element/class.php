@@ -272,7 +272,7 @@ class QsoftCatalogElement extends ComponentHelper
                     [
                         'IBLOCK_ID' => IBLOCK_VENDORS,
                         'ACTIVE' => 'Y',
-                        'XML_ID' =>  $arProp['VALUE'],
+                        'XML_ID' => $arProp['VALUE'],
                     ],
                     false,
                     false,
@@ -512,7 +512,7 @@ class QsoftCatalogElement extends ComponentHelper
             if ($this->arParams["SET_TITLE"]) {
                 $this->arResult["META_TAGS"]["TITLE"] =
                     $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]
-                    ?: "Купить " . mb_strtolower($this->arResult["NAME"]);
+                        ?: "Купить " . mb_strtolower($this->arResult["NAME"]);
             }
 
             if ($this->arParams["ADD_ELEMENT_CHAIN"]) {

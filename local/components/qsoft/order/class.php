@@ -771,7 +771,7 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
 
-        $rest = Functions::getRests($offerId)[$offerId];
+        $rest = Functions::getRests([$offerId])[$offerId];
         if ($basketItem && (($basketItem->getQuantity() + $quantity) > $rest)) {
             $this->arResult["ERRORS"][] = "Не достаточно остатка на складе по данному товару.
             У вас в корзине уже " . $basketItem->getQuantity() . " шт. Свободного остатка: " . $rest ?? 0;
