@@ -269,7 +269,7 @@ class QsoftOrderComponent extends ComponentHelper
         $fio = explode('~', $_COOKIE['user_fio']);
         $email = explode('~', $_COOKIE['user_email']);
         $phone = explode('~', $_COOKIE['user_phone']);
-        if ($fio[1] == 'undefined' || $email[1]== 'undefined' || $phone[1] == 'undefined') {
+        if ($fio[1] == 'undefined' || $email[1] == 'undefined' || $phone[1] == 'undefined') {
             $fio[1] = $fio[0];
             $email[1] = $email[0];
             $phone[1] = $phone[0];
@@ -1281,8 +1281,7 @@ class QsoftOrderComponent extends ComponentHelper
         $shipmentCollection = $order->getShipmentCollection();
         $shipment = $shipmentCollection->createItem();
         $shipmentItemCollection = $shipment->getShipmentItemCollection();
-        foreach ($order->getBasket() as $item)
-        {
+        foreach ($order->getBasket() as $item) {
             $shipmentItem = $shipmentItemCollection->createItem($item);
             $shipmentItem->setQuantity($item->getQuantity());
         }
@@ -1563,18 +1562,18 @@ class QsoftOrderComponent extends ComponentHelper
         $this->orderProps = $order->getPropertyCollection();
         // добавляем некоторые свойства к тем, что уже имеем
         $this->postProps["LOCATION"] = $LOCATION->code;
-        $this->postProps["UTM_SOURCE"] = $_COOKIE['utm_source'] ? $_COOKIE['utm_source'] : '';
-        $this->postProps["UTM_MEDIUM"] = $_COOKIE['utm_medium'] ? $_COOKIE['utm_medium'] : '';
-        $this->postProps["UTM_CAMPAIGN"] = $_COOKIE['utm_campaign'] ? $_COOKIE['utm_campaign'] : '';
-        $this->postProps["UTM_CONTENT"] = $_COOKIE['utm_content'] ? $_COOKIE['utm_content'] : '';
-        $this->postProps["UTM_TERM"] = $_COOKIE['utm_term'] ? $_COOKIE['utm_term'] : '';
+        $this->postProps["UTM_SOURCE"] = $_COOKIE['utm_source'] ?: '';
+        $this->postProps["UTM_MEDIUM"] = $_COOKIE['utm_medium'] ?: '';
+        $this->postProps["UTM_CAMPAIGN"] = $_COOKIE['utm_campaign'] ?: '';
+        $this->postProps["UTM_CONTENT"] = $_COOKIE['utm_content'] ?: '';
+        $this->postProps["UTM_TERM"] = $_COOKIE['utm_term'] ?: '';
         //$this->postProps["CITY"] = $LOCATION->getName();
         //$this->postProps["AREA"] = $LOCATION->getArea();
         //$this->postProps['REGION'] = $LOCATION->getRegion();
 
         if ($USER->IsAuthorized()) {
-            $this->postProps['EMAIL_PROFILE'] = $this->user['EMAIL'] ? $this->user['EMAIL'] : '';
-            $this->postProps['PHONE_PROFILE'] = $this->user['PERSONAL_PHONE'] ? $this->user['PERSONAL_PHONE'] : '';
+            $this->postProps['EMAIL_PROFILE'] = $this->user['EMAIL'] ?: '';
+            $this->postProps['PHONE_PROFILE'] = $this->user['PERSONAL_PHONE'] ?: '';
         }
 
         if (empty($this->postProps['STREET'])) {
@@ -1641,7 +1640,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function getArrayFio($fio)
     {
-        $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
+        $fio = preg_replace('/[\s]{2,}/', ' ', $fio);
 
         return explode(' ', $fio);
     }
@@ -1798,8 +1797,8 @@ class QsoftOrderComponent extends ComponentHelper
             $this->arResult["DELIVERY"]["ARRAY"][$arDeliveryWaysId["DELIVERY_ID"]]['WAY_ID'] = $arDeliveryWaysId["WAY_ID"];
         }
         foreach ($this->arResult["DELIVERY"]["ARRAY"] as $key => $delivery) {
-                $arDeliveryWaysIds[$delivery['WAY_ID']]['DELIVERY_ID'][] = $key;
-                $arDeliveryWaysIds[$delivery['WAY_ID']]['PRICES'][] = $delivery['PRICE'];
+            $arDeliveryWaysIds[$delivery['WAY_ID']]['DELIVERY_ID'][] = $key;
+            $arDeliveryWaysIds[$delivery['WAY_ID']]['PRICES'][] = $delivery['PRICE'];
         }
 
         $rsDeliveryWays = WaysDeliveryTable::getList([
