@@ -1,4 +1,4 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 
@@ -19,7 +19,7 @@ $freeDeliveryMinSum = Option::get("respect", "free_delivery_min_summ", 4000);
 $basketMinSum = Option::get("respect", "basket_min_num", 1000);
 
 global $LOCATION, $APPLICATION; ?>
-<? if (!empty($arResult["ITEMS"])) : ?>
+<?php if (!empty($arResult["ITEMS"])) : ?>
 <script>
     var arDelIdsJs = <?=CUtil::PhpToJSObject($arResult["DELIVERY"]["PVZIDS"])?>;
     var deliveryMoscowSelfId = <?=MOSCOW_SELF_DELIVERY_ID?>;
@@ -28,9 +28,9 @@ global $LOCATION, $APPLICATION; ?>
     var paymentWayErrorText = "<?=Option::get("respect", "disabled_payment_click_text", "");?>";
     var freeDeliveryMinSum = <?=$freeDeliveryMinSum?>;
     var dadata_status = false;
-    <? if ($arResult['DADATA_STATUS']) : ?>
+    <?php if ($arResult['DADATA_STATUS']) : ?>
     dadata_status = true;
-    <?endif;?>
+    <?phpendif;?>
     var type = "ADDRESS";
     var region = "<?=$arResult['DADATA_REGION_NAME']?>";
     var city = "<?=$arResult['DADATA_CITY_NAME']?>";
@@ -39,11 +39,11 @@ global $LOCATION, $APPLICATION; ?>
     var PVZHideOnlyPrepayment = <?=CUtil::PhpToJSObject($arResult['DELIVERY']['PVZ_HIDE_ONLY_PREPAYMENT'])?>;
     var currentLocationCode = <?=$LOCATION->code; ?>;
 </script>
-    <? $APPLICATION->addHeadString('<script type="text/javascript" src="/local/templates/respect/cdek_widget/widget.js" id="widget_script"></script>') ?>
+    <?php $APPLICATION->addHeadString('<script type="text/javascript" src="/local/templates/respect/cdek_widget/widget.js" id="widget_script"></script>') ?>
 <div id="main-basket-block">
-    <? if ($this->__component->ajax) : ?>
-        <? $APPLICATION->RestartBuffer() ?>
-    <? endif ?>
+    <?php if ($this->__component->ajax) : ?>
+        <?php $APPLICATION->RestartBuffer() ?>
+    <?php endif ?>
     <div class="orders__select-size js-choose-size">
         <h2>Выберите размер</h2>
         <form method="post" name="name" class="form-after-cart js-action-form-popup-size">
@@ -52,7 +52,7 @@ global $LOCATION, $APPLICATION; ?>
             </div>
         </form>
     </div>
-    <? if (!empty($arResult['ITEMS'])) : ?>
+    <?php if (!empty($arResult['ITEMS'])) : ?>
     <div id="full_basket" class="col-xs-12 full_basket">
         <div class="main main--banner full_basket-container full_basket-container--local">
             <div class="checkout ">
@@ -62,12 +62,12 @@ global $LOCATION, $APPLICATION; ?>
                         <!-- orders -->
                         <div class="checkout__orders orders">
                             <div id="orders__row-container">
-                                <? if ($this->__component->checkType(array("offers"))) : ?>
-                                    <? $APPLICATION->RestartBuffer() ?>
-                                <? endif ?>
+                                <?php if ($this->__component->checkType(array("offers"))) : ?>
+                                    <?php $APPLICATION->RestartBuffer() ?>
+                                <?php endif ?>
                                 <!-- orders cards rows -->
-                                <? foreach ($arResult['ITEMS'] as $id => $arItem) : ?>
-                                    <? $arResult["BASKET"][] = [
+                                <?php foreach ($arResult['ITEMS'] as $id => $arItem) : ?>
+                                    <?php $arResult["BASKET"][] = [
                                         "id" => sprintf('%s-%s', $arItem["PRODUCT_ID"], $arResult['BRANCH_ID']),
                                         "price" => $arItem["PRICE"],
                                         "quantity" => $arItem["QUANTITY"],
@@ -81,7 +81,7 @@ global $LOCATION, $APPLICATION; ?>
                                          data-variant="<?=$arItem['COLOR']?>"
                                          data-quantity="<?=$arItem["QUANTITY"]?>"
                                     >
-                                        <? //блок изображения ?>
+                                        <?php //блок изображения ?>
                                         <div class="flex-product--img orders__block orders__block--img">
                                             <div class="orders__col">
                                                 <a href="/<?=$arItem['CODE'] ?>/"
@@ -95,16 +95,16 @@ global $LOCATION, $APPLICATION; ?>
                                                 </a>
                                             </div>
                                         </div>
-                                        <? //блок изображения end ?>
+                                        <?php //блок изображения end ?>
 
-                                        <? //наименование ?>
+                                        <?php //наименование ?>
                                         <div class="flex-product--name orders__col">
                                             <span class="orders__label--only-pc orders__article"><?= $arItem['ARTICLE'] ?></span>
                                             <h3 class="orders__title"><?= $arItem['NAME_WITH_ADDITIONS'] ?></h3>
                                         </div>
-                                        <? //наименование end ?>
+                                        <?php //наименование end ?>
 
-                                        <? //количество ?>
+                                        <?php //количество ?>
                                         <div class="flex-product--count orders__col">
                                             <span class="orders__label--only-mobile">Кол-во:</span>
                                             <div class="quantity-block">
@@ -113,9 +113,9 @@ global $LOCATION, $APPLICATION; ?>
                                                 <div class="quantity-arrow-plus">+</div>
                                             </div>
                                         </div>
-                                        <? //количество end ?>
+                                        <?php //количество end ?>
 
-                                        <? //стоимость ?>
+                                        <?php //стоимость ?>
                                         <div class="flex-product--price orders__col">
                                             <?php if ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) : ?>
                                             <div>
@@ -138,70 +138,70 @@ global $LOCATION, $APPLICATION; ?>
                                                 <span class="orders__price">
                                                 <span class="orders__price-num"
                                                       data-price="<?= $arItem['PRICE'] ?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?> ₽</span>
-                                                <? if ($arItem['OLD_PRICE'] && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
+                                                <?php if ($arItem['OLD_PRICE'] && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
                                                     <s><span class="orders__old-price-num"
                                                              data-price="<?= $arItem['OLD_PRICE'] ?>"><?= number_format($arItem['OLD_PRICE'], 0, "", "&nbsp;") ?>&nbsp;₽</span></s>
-                                                <? endif ?>
+                                                <?php endif ?>
                                                 </span>
                                             </div>
                                         </div>
-                                        <? //стоимость end ?>
+                                        <?php //стоимость end ?>
 
                                         <a class="orders__remove js-card-remove"
                                            data-offer-id="<?= $arItem["PRODUCT_ID"] ?>"
                                            data-id="<?= $id ?>"
                                            title="Удалить"></a>
                                     </div>
-                                <? endforeach ?>
+                                <?php endforeach ?>
                                 <!-- /orders cards rows -->
-                                <? if ($this->__component->checkType(array("offers"))) : ?>
-                                    <? //$APPLICATION->FinalActions() ?>
-                                    <? die() ?>
-                                <? endif ?>
+                                <?php if ($this->__component->checkType(array("offers"))) : ?>
+                                    <?php //$APPLICATION->FinalActions() ?>
+                                    <?php die() ?>
+                                <?php endif ?>
                             </div>
                         </div>
                         <div class="left-cart-block-local">
                             <!-- /orders -->
-                            <? if (empty($arResult["ERRORS"])) : ?>
+                            <?php if (empty($arResult["ERRORS"])) : ?>
                                 <!-- delivery -->
                                 <div class="checkout__block checkout__block--delivery">
                                     <div class="delivery-blocks-title-wrapper">
                                         Выберите способ доставки
                                     </div>
                                     <span class="err-order err-delivery"></span>
-                                    <? if (!empty($arResult["WAYS_DELIVERY"])) : ?>
+                                    <?php if (!empty($arResult["WAYS_DELIVERY"])) : ?>
                                         <div class="checkout__block checkout__block--flex">
-                                            <? foreach ($arResult["WAYS_DELIVERY"] as $arDeliveryWay) : ?>
+                                            <?php foreach ($arResult["WAYS_DELIVERY"] as $arDeliveryWay) : ?>
                                                 <div class="form__box form__box--1-2">
                                                     <div class="cart-delivery">
                                                         <div class="cart-delivery__wrapper">
-                                                            <?//Указывается нулевой индекс потому что несколько элементов прилетает только для ПВЗ, а логика их выбора описана в компоненте карты ПВЗ?>
+                                                            <?php //Указывается нулевой индекс потому что несколько элементов прилетает только для ПВЗ, а логика их выбора описана в компоненте карты ПВЗ?>
                                                             <input id="delivery_<?= $arDeliveryWay['DELIVERY'][0] ?>" class="<?=$arDeliveryWay['PVZ'] ? 'is-pvz ' : ''?>checkbox4 js-delivery cart-delivery__input" type="radio" name="DELIVERY"
                                                                    data-allowed-payments="<?=implode(',', $arDeliveryWay['ALLOWED_PAYMENTS'])?>"
-                                                                <? if ($arDeliveryWay['PVZ']) : ?>
-                                                                    <? foreach ($arDeliveryWay['ALLOWED_PVZ_PAYMENTS'] as $class => $paymentsIds) :?>
+                                                                <?php if ($arDeliveryWay['PVZ']) : ?>
+                                                                    <?php foreach ($arDeliveryWay['ALLOWED_PVZ_PAYMENTS'] as $class => $paymentsIds) :?>
                                                                         data-allowed-payments-<?=$class?>="<?=implode(',', $paymentsIds)?>"
-                                                                    <? endforeach;?>
-                                                                <?endif;?>
+                                                                    <?php endforeach;?>
+                                                                <?php endif;?>
                                                                    data-price="<?= min($arDeliveryWay['PRICES']) ?>"
                                                                    value="<?= $arDeliveryWay['DELIVERY'][0] ?>"
                                                                 <?=$arDeliveryWay['PVZ'] ? ' disabled="disabled" ' : ''?>
                                                             >
                                                             <label for="delivery_<?= $arDeliveryWay['DELIVERY'][0] ?>" class="cart-delivery__label delivery-label">
-                                                                <? if ($arDeliveryWay['PVZ']) : ?>
+                                                                <?php if ($arDeliveryWay['PVZ']) : ?>
                                                                     <div class="load-more-btn-loader filter-btn-loader"></div>
-                                                                <? endif?>
+                                                                <?php endif?>
                                                                 <div class="cart-delivery__header">
                                                                     <?= $arDeliveryWay['NAME'] ?>
                                                                 </div>
                                                                 <div class="cart-delivery__label-description">
                                                                     <?= $arDeliveryWay['DESCRIPTION'] ?>
                                                                 </div>
-                                                                <? if ($arDeliveryWay['PVZ']) : ?>
+                                                                <?php if ($arDeliveryWay['PVZ']) : ?>
                                                                     <div class="text-danger-pvz">
                                                                         Внимание! Для корректного отображения пунктов нужно выбрать ваш город слева сверху на сайте
                                                                     </div>
-                                                                <? endif;?>
+                                                                <?php endif;?>
                                                                 <div class="cart-delivery__price">
                                                                     <?= min($arDeliveryWay['PRICES']) == max($arDeliveryWay['PRICES']) ? max($arDeliveryWay['PRICES']) == 0 ? 'Бесплатно' : 'Стоимость доставки ' . number_format(max($arDeliveryWay['PRICES']), 0, "", "&nbsp;")." ₽" : 'Стоимость доставки от ' . number_format(min($arDeliveryWay['PRICES']), 0, "", "&nbsp;")."&nbsp;р."?>
                                                                 </div>
@@ -209,13 +209,13 @@ global $LOCATION, $APPLICATION; ?>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <? endforeach ?>
+                                            <?php endforeach ?>
                                         </div>
-                                    <? else : ?>
+                                    <?php else : ?>
                                         <div class="text--center">
                                             В вашем регионе не настроена ни одна служба доставки.<br>Сообщите об этом оператору интернет-магазина.
                                         </div>
-                                    <? endif ?>
+                                    <?php endif ?>
                                 </div>
                                 <!-- /delivery -->
                                 <!-- form -->
@@ -231,7 +231,7 @@ global $LOCATION, $APPLICATION; ?>
                                                     </div>
                                                     <span class="err-order err-payment"></span>
                                                     <div class="checkout__block--flex">
-                                                        <? foreach ($arResult["WAYS_PAYMENT"] as $arPaymentWay) :?>
+                                                        <?php foreach ($arResult["WAYS_PAYMENT"] as $arPaymentWay) :?>
                                                             <div class="form__box form__box--1-2 payment__type payment__type--disabled">
                                                                 <div class="cart-delivery">
                                                                     <div class="cart-delivery__wrapper">
@@ -255,7 +255,7 @@ global $LOCATION, $APPLICATION; ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        <? endforeach; ?>
+                                                        <?php endforeach; ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -270,7 +270,7 @@ global $LOCATION, $APPLICATION; ?>
                                                     <div class="err-order err-PROPS[FIO]"></div>
                                                 </div>
                                                 <div class="form__field form__field--1-2">
-                                                    <?
+                                                    <?php
                                                     $email = $arResult["USER"]["EMAIL"] ?: ($arResult["COOKIE_EMAIL"][1] ?: ($cookieAddress ? $_COOKIE['user_email'] : ''));
                                                     $email = !preg_match('`.*@orgasmcity.ru`i', $email) ? $email : '';
                                                     ?>
@@ -281,7 +281,7 @@ global $LOCATION, $APPLICATION; ?>
                                                     <input class="form__elem js-required js-phone" type="text" name="PROPS[PHONE]" value="<?= $arResult["USER"]["PERSONAL_PHONE"] ?: ($arResult["COOKIE_PHONE"][0]  ?: ($cookieAddress ? $_COOKIE['user_phone'] : ''))  ?>" placeholder="*Телефон">
                                                     <div class="err-order err-PROPS[PHONE]"></div>
                                                 </div>
-                                                <? $APPLICATION->IncludeComponent(
+                                                <?php $APPLICATION->IncludeComponent(
                                                     'qsoft:geolocation',
                                                     'cart',
                                                     array(
@@ -289,12 +289,12 @@ global $LOCATION, $APPLICATION; ?>
                                                         'CACHE_TIME' => 31536000,
                                                     )
                                                 ); ?>
-                                                <? if ($arResult["DELIVERY"]["PVZ"]) : ?>
+                                                <?php if ($arResult["DELIVERY"]["PVZ"]) : ?>
                                                     <div class="form__field form__field--1-2 js__pvz-enabled is-hidden">
                                                         <input id="cart__delivery-cdek-button" class="form__elem" type="button" value="Выбрать пункт выдачи заказов">
                                                         <input id="cart__delivery-cdek-input" class="form__elem js-required" type="hidden" name="PROPS[PICKPOINT_ID]" value="" placeholder="*Пункт выдачи">
                                                     </div>
-                                                <? endif ?>
+                                                <?php endif ?>
                                                 <div class="form__field form__field--1-2 js__pvz-disabled js-dadata-street">
                                                     <input id="street_user" class="form__elem js-required" type="text" name="PROPS[STREET_USER]" value="<?= $arResult["USER"]["PERSONAL_STREET"] ?: ($cookieAddress ? $_COOKIE['user_street'] : '') ?>" placeholder="*Улица">
                                                     <div class="err-order err-PROPS[STREET_USER]"></div>
@@ -328,7 +328,7 @@ global $LOCATION, $APPLICATION; ?>
                                     </div>
                                 </div>
                                 <!-- /form -->
-                            <? endif ?>
+                            <?php endif ?>
                         </div>
                     </div>
                     <!-- /main -->
@@ -395,9 +395,9 @@ global $LOCATION, $APPLICATION; ?>
                                 <!-- /cost -->
                             <?php } else { ?>
                                 <div class="checkout__error-wrapper">
-                                    <? foreach ($arResult["ERRORS"] as $error) : ?>
+                                    <?php foreach ($arResult["ERRORS"] as $error) : ?>
                                         <p class="checkout__error-text"><?= $error ?></p>
-                                    <? endforeach ?>
+                                    <?php endforeach ?>
                                 </div>
                             <?php } ?>
                         </div>

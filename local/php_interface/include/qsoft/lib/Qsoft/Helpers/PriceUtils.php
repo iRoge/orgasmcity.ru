@@ -157,11 +157,11 @@ class PriceUtils
 
                         if ($markupPercent < 50) {
                             $discount = $action['PROPERTY_DISCOUNT_50_VALUE'];
-                        } elseif ($markupPercent >= 50 && $markupPercent < 75) {
+                        } elseif ($markupPercent < 75) {
                             $discount = $action['PROPERTY_DISCOUNT_50_75_VALUE'];
-                        } elseif ($markupPercent >= 75 && $markupPercent < 100) {
+                        } elseif ($markupPercent < 100) {
                             $discount = $action['PROPERTY_DISCOUNT_75_100_VALUE'];
-                        } elseif ($markupPercent >= 100 && $markupPercent < 125) {
+                        } elseif ($markupPercent < 125) {
                             $discount = $action['PROPERTY_DISCOUNT_100_125_VALUE'];
                         } else {
                             $discount = $action['PROPERTY_DISCOUNT_125_VALUE'];
@@ -170,7 +170,7 @@ class PriceUtils
                         $assortmentPrices[$assortment['ID']] = [
                             'DISCOUNT' => $discount,
                             'PRICE' => $price,
-                            'OLD_PRICE' => $oldPrice > $price ? $oldPrice : null,
+                            'OLD_PRICE' => $oldPrice > $price ? $oldPrice : $price,
                         ];
                     }
                 }
@@ -184,8 +184,8 @@ class PriceUtils
                 $price = self::getReducedPrice($offer["PROPERTY_BASEWHOLEPRICE_VALUE"], $offer["PROPERTY_BASEPRICE_VALUE"]);
                 $assortmentPrices[$id] = [
                     'DISCOUNT' => 0,
-                    'PRICE' => self::calculatePrice($price, $action['PROPERTY_DISCOUNT_VALUE']),
-                    'OLD_PRICE' => null,
+                    'PRICE' => $price,
+                    'OLD_PRICE' => $price,
                     'WHOLEPRICE' => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
                 ];
             }
@@ -217,15 +217,15 @@ class PriceUtils
         $price = null;
         if ($markupPercent >= 150) {
             $price = self::calculatePrice($rrcPrice,25);
-        } elseif ($markupPercent < 150 && $markupPercent >= 135) {
+        } elseif ($markupPercent >= 135) {
             $price = self::calculatePrice($rrcPrice,20);
-        } elseif ($markupPercent < 135 && $markupPercent >= 120) {
+        } elseif ($markupPercent >= 120) {
             $price = self::calculatePrice($rrcPrice,15);
-        } elseif ($markupPercent < 120 && $markupPercent >= 85) {
+        } elseif ($markupPercent >= 85) {
             $price = self::calculatePrice($rrcPrice,10);
-        } elseif ($markupPercent < 85 && $markupPercent >= 65) {
+        } elseif ($markupPercent >= 65) {
             $price = self::calculatePrice($rrcPrice,5);
-        } elseif ($markupPercent < 65) {
+        } else {
             $price = self::calculatePrice($rrcPrice,0);
         }
 
