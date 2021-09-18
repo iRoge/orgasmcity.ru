@@ -32,8 +32,10 @@ function updateHasOrderBlock() {
     let elem = $('.haveOrder-input');
     let hasOrderBlock = elem.parent().find('.haveOrder-closed');
     if (elem.prop('checked') === true) {
+        elem.addClass('haveOrder-input-checked');
         hasOrderBlock.slideDown().show();
     } else {
+        elem.removeClass('haveOrder-input-checked');
         hasOrderBlock.slideUp().hide();
     }
 }

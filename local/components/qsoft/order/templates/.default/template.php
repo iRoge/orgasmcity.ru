@@ -171,9 +171,9 @@ global $LOCATION, $APPLICATION; ?>
                                     <span class="err-order err-delivery"></span>
                                     <?php if (!empty($arResult["WAYS_DELIVERY"])) { ?>
                                         <div class="checkout__block checkout__block--flex">
-                                            <?php foreach ($arResult["WAYS_DELIVERY"] as $arDeliveryWay) { ?>
+                                            <?php $firstIter = true; foreach ($arResult["WAYS_DELIVERY"] as $arDeliveryWay) {?>
                                                 <div class="form__box form__box--1-2">
-                                                    <div class="cart-delivery">
+                                                    <div class="cart-delivery <?=$firstIter ? 'fastiest-delivery' : ''?>">
                                                         <div class="cart-delivery__wrapper">
                                                             <?php //Указывается нулевой индекс потому что несколько элементов прилетает только для ПВЗ, а логика их выбора описана в компоненте карты ПВЗ?>
                                                             <input id="delivery_<?= $arDeliveryWay['DELIVERY'][0] ?>" class="<?=$arDeliveryWay['PVZ'] ? 'is-pvz ' : ''?>checkbox4 js-delivery cart-delivery__input" type="radio" name="DELIVERY"
@@ -209,7 +209,7 @@ global $LOCATION, $APPLICATION; ?>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <?php } ?>
+                                            <?php $firstIter = false; } ?>
                                         </div>
                                     <?php } else { ?>
                                         <div class="text--center">
@@ -231,9 +231,9 @@ global $LOCATION, $APPLICATION; ?>
                                                     </div>
                                                     <span class="err-order err-payment"></span>
                                                     <div class="checkout__block--flex">
-                                                        <?php foreach ($arResult["WAYS_PAYMENT"] as $arPaymentWay) {?>
+                                                        <?php $firstIter = true; foreach ($arResult["WAYS_PAYMENT"] as $arPaymentWay) {?>
                                                             <div class="form__box form__box--1-2 payment__type payment__type--disabled">
-                                                                <div class="cart-delivery">
+                                                                <div class="cart-delivery <?=in_array($arPaymentWay['ID'], DISCOUNT_PAYMENT_WAYS_IDS) ? 'prepayment-discount-header' : '' ?>">
                                                                     <div class="cart-delivery__wrapper">
                                                                         <input id="Payment_<?= $arPaymentWay['PAYMENT'] ?>"
                                                                                class="checkbox4 cart-delivery__input js-payment"
@@ -255,7 +255,7 @@ global $LOCATION, $APPLICATION; ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        <?php } ?>
+                                                        <?php $firstIter = false; } ?>
                                                     </div>
                                                 </div>
                                             </div>

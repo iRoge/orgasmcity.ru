@@ -138,7 +138,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     <img class="advantage-image" src="<?= SITE_TEMPLATE_PATH; ?>/img/prepaymentSale.webp" alt="Скидка по предоплате">
                                     <img class="advantage-image" src="<?= SITE_TEMPLATE_PATH; ?>/img/mostLowPrice.webp" alt="Самая низкая цена среди интернет магазинов">
                                 </div>
-                                <?php if ($USER->GetID() == 1) {
+                                <?php if ($USER->GetID() == 1 || $USER->GetID() == 15) {
                                     $wholesaleprice = $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE'];
                                     ?>
                                     Цена закупки <?=$wholesaleprice?> ₽

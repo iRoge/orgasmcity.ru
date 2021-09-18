@@ -28,6 +28,7 @@ const LOCATION_TYPE_REGION = 3; //Тип местоположения - реги
 const MOSCOW_SELF_DELIVERY_ID = 2; // ID доставки самовывоза в Мск
 
 const ONLINE_PAYMENT_CODES = ['TINKOFF']; //Массив кодов платежных систем для оплаты онлайн
+const DISCOUNT_PAYMENT_WAYS_IDS = [2]; // Массив айдишников способов оплат со скидкой 5%
 
 // Пароли и ключи доступа к сервисам
 const DADATA_TOKEN = '5d7f5ca931710f1ee0da45fa0627f84378149d4b'; // Token dadata

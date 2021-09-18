@@ -1290,3 +1290,49 @@ input[type="number"] {
         font-weight: bold;
     }
 }
+
+.prepayment-discount-header:after {
+    content: 'Дополнительная скидка -5%';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    background: linear-gradient(90deg, #0250C5 0%, #D43F8D 100%);
+    color: white;
+    font-size: 15px;
+    line-height: 17px;
+    padding: 1px 0 1px 30px;
+    font-family: gilroyRegular;
+    border-color: transparent;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    z-index: 1;
+}
+
+.prepayment-discount-header {
+    position: relative;
+}
+
+.fastiest-delivery:after {
+    content: 'Самый быстрый способ доставки';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    background: linear-gradient(90deg, #F83600 0%, #F9D423 100%);
+    color: white;
+    font-size: 15px;
+    line-height: 17px;
+    padding: 1px 0 1px 30px;
+    font-family: gilroyRegular;
+    border-color: transparent;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    z-index: 1;
+}
+
+.fastiest-delivery {
+    position: relative;
+}

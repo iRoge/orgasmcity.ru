@@ -443,7 +443,7 @@ if (!$arResult['IS_AJAX']) {
                                                             <?=count($arItem['ASSORTMENTS']) > 1 ? 'Купить' : 'В корзину'?>
                                                         </button>
                                                     </div>
-                                                    <?php if ($USER->GetID() == 1) {
+                                                    <?php if ($USER->GetID() == 1 || $USER->GetID() == 15) {
                                                         $wholesaleprice = $arItem['WHOLEPRICE'];
                                                         ?>
                                                         Цена закупки <?=$wholesaleprice?> ₽
