@@ -1347,44 +1347,71 @@ a.footer-element:hover {
 }
 
 @media (max-width: 767px) {
-    .footer-right-block {
-        justify-content: flex-start;
-        text-align: left;
+    .footer-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        text-align: end;
     }
+    /*.footer-right-block {*/
+    /*    justify-content: flex-start;*/
+    /*    text-align: left;*/
+    /*}*/
 
     .footer-element {
-        width: 48%;
+        width: 100%;
         height: 50px;
         flex-wrap: wrap;
     }
 
-    .footer-element:nth-child(2n) {
-        display: flex;
-        justify-content: flex-start;
-        text-align: start;
-    }
+    /*.footer-element:nth-child(2n) {*/
+    /*    display: flex;*/
+    /*    justify-content: flex-start;*/
+    /*    text-align: start;*/
+    /*}*/
 
-    .footer-element:nth-child(2n+1) {
-        display: flex;
-        justify-content: flex-end;
-        text-align: end;
-    }
+    /*.footer-element:nth-child(2n+1) {*/
+    /*    display: flex;*/
+    /*    justify-content: flex-end;*/
+    /*    text-align: end;*/
+    /*}*/
 
-    .social-element:nth-child(2n) {
-        display: flex;
-        justify-content: flex-end;
-        text-align: end;
-    }
+    /*.social-element:nth-child(2n) {*/
+    /*    display: flex;*/
+    /*    justify-content: flex-end;*/
+    /*    text-align: end;*/
+    /*}*/
 
-    .social-element:nth-child(2n+1) {
-        display: flex;
-        justify-content: flex-start;
-        text-align: start;
-    }
+    /*.social-element:nth-child(2n+1) {*/
+    /*    display: flex;*/
+    /*    justify-content: flex-start;*/
+    /*    text-align: start;*/
+    /*}*/
 
-    .footer-block h4 {
-        width: 100%;
+    .footer-block {
+        width: 48%;
         text-align: center;
+    }
+
+    .footer-block:nth-child(2n) {
+        display: flex;
+        justify-content: flex-end;
+        text-align: end;
+    }
+
+    .footer-block:nth-child(2n+1) {
+        display: flex;
+        justify-content: flex-start;
+        text-align: start;
+    }
+
+    .footer-block:nth-child(2n) h4 {
+        text-align: end;
+    }
+
+    .footer-block:nth-child(2n+1) {
+        text-align: start;
     }
 }
 

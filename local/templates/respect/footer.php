@@ -16,7 +16,7 @@
     false
 ); ?>
 <div class="footer col-xs-12">
-    <div class="main">
+    <div class="main footer-wrapper">
         <div class="footer-block col-lg-3 col-md-3 col-sm-3">
             <?php $APPLICATION->IncludeComponent(
                 "likee:social",
@@ -97,7 +97,7 @@
             <h4>Контактные данные</h4>
             <div class="footer-element right-footer-element"><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></div>
             <div class="footer-element right-footer-element"><a style="width: 100%;" href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a><br><span>Круглосуточно</span></div>
-            <div class="footer-element right-footer-element"><span>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</span></div>
+            <div class="footer-element right-footer-element" style="height: auto; padding-bottom: 5px"><span>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</span></div>
             <div class="footer-element right-footer-element"><span>Сайт только для взрослых</span><img style="margin-left: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/18plus.svg" alt="18+"></div>
         </div>
     </div>
