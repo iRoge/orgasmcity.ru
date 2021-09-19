@@ -789,6 +789,9 @@ class QsoftCatalogSection extends ComponentHelper
                     'PROPERTY_SECTION',
                     'PROPERTY_VOLUME',
                     'PROPERTY_PRODUCT',
+                    'PROPERTY_MATERIAL',
+                    'PROPERTY_PRICE_FROM',
+                    'PROPERTY_PRICE_TO',
                 ]
             )->GetNext();
 //            if ($group['PREVIEW_PICTURE']) {
@@ -884,7 +887,13 @@ class QsoftCatalogSection extends ComponentHelper
 
         foreach ($offersPropertiesMap as $key => $property) {
             if (!empty($this->group[$property])) {
-                $propertyName = $property;
+                if ($property === 'PROPERTY_PRICE_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_BASEPRICE';
+                } elseif ($property === 'PROPERTY_PRICE_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_BASEPRICE';
+                } else {
+                    $propertyName = $property;
+                }
 
                 $filter['OFFER'][$propertyName] = $this->group[$property];
             }
@@ -909,10 +918,11 @@ class QsoftCatalogSection extends ComponentHelper
                 'PROPERTY_SECTION_VALUE',
                 'PROPERTY_VOLUME_VALUE',
                 'PROPERTY_PRODUCT_VALUE',
+                'PROPERTY_MATERIAL_VALUE',
             ],
             'OFFER' => [
-                'PRICE_FROM',
-                'PRICE_TO',
+                'PROPERTY_PRICE_FROM_VALUE',
+                'PROPERTY_PRICE_TO_VALUE',
             ],
         ];
     }

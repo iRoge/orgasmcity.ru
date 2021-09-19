@@ -118,6 +118,9 @@ class PriceUtils
                 'PROPERTY_SECTION',
                 'PROPERTY_VOLUME',
                 'PROPERTY_PRODUCT',
+                'PROPERTY_MATERIAL',
+                'PROPERTY_PRICE_FROM',
+                'PROPERTY_PRICE_TO',
                 'PROPERTY_DISCOUNT_50',
                 'PROPERTY_DISCOUNT_50_75',
                 'PROPERTY_DISCOUNT_75_100',
@@ -139,10 +142,17 @@ class PriceUtils
                     || (!empty($action['PROPERTY_YEAR_VALUE']) && !in_array($product['PROPERTY_YEAR_VALUE'], $action['PROPERTY_YEAR_VALUE']))
                     || (!empty($action['PROPERTY_PRODUCT_VALUE']) && !in_array($product['XML_ID'], $action['PROPERTY_PRODUCT_VALUE']))
                     || (!empty($action['PROPERTY_SECTION_VALUE']) && !in_array($product['IBLOCK_SECTION_ID'], $action['PROPERTY_SECTION_VALUE']))
+                    || (!empty($action['PROPERTY_MATERIAL_VALUE']) && !in_array($product['PROPERTY_MATERIAL_VALUE'], $action['PROPERTY_MATERIAL_VALUE']))
                 ) {
                     continue;
                 }
                 foreach ($offersByProductID[$product['ID']] as $assortment) {
+                    if (
+                        !empty($action['PROPERTY_PRICE_FROM_VALUE']) && $assortment["PROPERTY_BASEPRICE_VALUE"] < $action['PROPERTY_PRICE_FROM_VALUE']
+                        || !empty($action['PROPERTY_PRICE_TO_VALUE']) && $assortment["PROPERTY_BASEPRICE_VALUE"] > $action['PROPERTY_PRICE_TO_VALUE']
+                    ) {
+                        continue;
+                    }
                     if (
                         empty($assortmentPrices[$assortment['ID']])
                         || $assortmentPrices[$assortment['ID']]['DISCOUNT'] < $action['PROPERTY_DISCOUNT_VALUE']
