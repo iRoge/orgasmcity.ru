@@ -473,7 +473,10 @@ switch ($GLOBALS['PAGE'][1]) {
         break;
 
     case 'personal':
-        $menuTemplate = 'horizontal-personal';?>
+        if ($USER->IsAuthorized()) {
+            $menuTemplate = 'horizontal-personal';
+        }
+        ?>
         <div class="after-lk-in main">
         <?php
         break;

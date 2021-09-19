@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_be
 $id = (int)$_POST['id'];
 $email = mb_strtolower($_POST['email']);
 $phone = $_POST['personal_phone'];
-$word = $_POST['captcha_word'];
+$word = strtoupper($_POST['captcha_word']);
 $sid = $_POST['captcha_sid'];
 $arrayAnswer = [
     'email' => 1,

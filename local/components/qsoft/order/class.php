@@ -1514,6 +1514,7 @@ class QsoftOrderComponent extends ComponentHelper
         $order->setBasket($this->basket);
 
         // доставка
+        $paymentWay = null;
         if (!$this->checkType(["1click"])) {
             $shipmentCollection = $order->getShipmentCollection();
             $shipment = $shipmentCollection->createItem();
@@ -1626,6 +1627,27 @@ class QsoftOrderComponent extends ComponentHelper
         $order->doFinalAction(true);
         $res = $order->save();
         $orderId = $order->getId();
+
+        if (!$this->checkType(["1click"]) && $paymentWay && $paymentWay['PREPAYMENT'] == 'Y') {
+            CEvent::Send("ORDER_CREATE", SITE_ID,
+                [
+                    "EMAIL_TO" => $this->postProps['EMAIL'],
+                    "ORDER_ID" => $orderId,
+                    "PRICE" => $order->getPrice(),
+                    "SERVER_NAME" => DOMAIN_NAME,
+                ]
+            );
+        } else {
+            CEvent::Send("ORDER_CREATE_PREPAYMENT", SITE_ID,
+                [
+                    "EMAIL_TO" => $this->postProps['EMAIL'],
+                    "ORDER_ID" => $orderId,
+                    "PRICE" => $order->getPrice(),
+                    "SERVER_NAME" => DOMAIN_NAME,
+                ]
+            );
+        }
+
         if ($res->isSuccess()) {
             // очищаем купоны из сессии
             $this->delCoupon();

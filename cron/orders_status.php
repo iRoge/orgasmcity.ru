@@ -99,6 +99,33 @@ while ($arOrder = $rsOrders->GetNext())
 						{
 							//echo $status_arr[$order_status]."<br>";
 							CSaleOrder::StatusOrder($arOrder["ID"], $status_arr[$order_status]);
+							if (in_array($status_arr[$order_status], ['SP', 'SC'])) {
+                                CEvent::Send("ORDER_SEND", SITE_ID,
+                                    [
+                                        "EMAIL_TO" => $arOrder['EMAIL'],
+                                        "SERVER_NAME" => DOMAIN_NAME,
+                                        "ORDER_ID" => $arOrder["ID"],
+                                    ]
+                                );
+                            }
+                            if ($status_arr[$order_status] == "IC") {
+                                CEvent::Send("ORDER_ASSEMBLY", SITE_ID,
+                                    [
+                                        "EMAIL_TO" => $arOrder['EMAIL'],
+                                        "SERVER_NAME" => DOMAIN_NAME,
+                                        "ORDER_ID" => $arOrder["ID"],
+                                    ]
+                                );
+                            }
+                            if ($status_arr[$order_status] == "F") {
+                                CEvent::Send("ORDER_DELIVERED", SITE_ID,
+                                    [
+                                        "EMAIL_TO" => $arOrder['EMAIL'],
+                                        "SERVER_NAME" => DOMAIN_NAME,
+                                        "ORDER_ID" => $arOrder["ID"],
+                                    ]
+                                );
+                            }
 							if (in_array($order_status, array(8,10,13))) {
 								CSaleOrder::CancelOrder($arOrder["ID"], "Y");
 							}
@@ -208,7 +235,6 @@ while ($arOrder = $rsOrders->GetNext())
 				}
 				else
 				{
-					
 					CSaleOrderPropsValue::Add($arFields);
 				}
 			}	
