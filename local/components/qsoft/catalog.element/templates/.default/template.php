@@ -247,7 +247,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                         <?php if ($arResult['LAST_BUY_DATE_TEXT']) { ?>
                                             <div class="last-buy-date-wrapper">
                                                 <div>
-                                                    <span>Этот товар был куплен последний раз: <b><?=$arResult['LAST_BUY_DATE_TEXT']?></b></span>
+                                                    <span>Этот товар был куплен последний раз: <span style="font-family: gilroyRegular; font-weight: 600;"><?=$arResult['LAST_BUY_DATE_TEXT']?></span></span>
                                                 </div>
                                             </div>
                                         <?php }?>

@@ -167,3 +167,10 @@
     background: white;
     border-radius: 15px;
 }
+
+.catalog-list-element-text-wrap {
+    height: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

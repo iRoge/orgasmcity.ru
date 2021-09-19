@@ -695,11 +695,11 @@ div.product-preorder-success button.button--blue:hover {
     background: #2A2A2A !important;
 }
 
-div.product-preorder-success a.button--orange {
-    background: #F0A740 !important;
+div.product-preorder-success a.button--purple {
+    background: linear-gradient(90deg, #65379B 0%, #886AEA 53%, #6457C6 100%)!important;
 }
 
-div.product-preorder-success a.button--orange:hover {
+div.product-preorder-success a.button--purple:hover {
     background: #2A2A2A !important;
 }
 
@@ -1316,6 +1316,8 @@ jdiv[class^="popupBlock_"] {
     display: flex;
     flex-wrap: wrap;
     padding: 5px 10px;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .footer-element {
@@ -1349,6 +1351,41 @@ a.footer-element:hover {
         justify-content: flex-start;
         text-align: left;
     }
+
+    .footer-element {
+        width: 48%;
+        height: 50px;
+        flex-wrap: wrap;
+    }
+
+    .footer-element:nth-child(2n) {
+        display: flex;
+        justify-content: flex-start;
+        text-align: start;
+    }
+
+    .footer-element:nth-child(2n+1) {
+        display: flex;
+        justify-content: flex-end;
+        text-align: end;
+    }
+
+    .social-element:nth-child(2n) {
+        display: flex;
+        justify-content: flex-end;
+        text-align: end;
+    }
+
+    .social-element:nth-child(2n+1) {
+        display: flex;
+        justify-content: flex-start;
+        text-align: start;
+    }
+
+    .footer-block h4 {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .right-footer-element, .right-footer-element a {
@@ -1376,7 +1413,7 @@ a.footer-element:hover {
     font-family: 'gilroyThin';
     font-size: 13px;
     line-height: 15px;
-    margin: 15px 0;
+    margin: 45px 0 15px 0;
 }
 
 .popup-footer {

@@ -202,7 +202,7 @@ if (empty($aMenuLinksNew)) {
             'ID' => $arSection['ID'],
             'CODE' => $arSection['CODE'],
             'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
-            '~NAME' => $arSection['~NAME'] . ' ' . $arSection['ID'],
+            '~NAME' => $arSection['~NAME'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
         );
         $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();
@@ -277,6 +277,8 @@ if (empty($aMenuLinksNew)) {
 
         $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
         $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
+        $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.webp';
+        $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.webp';
         $aMenuLinksNew[$menuIndex++] = array(
             htmlspecialcharsbx($arSection['~NAME']),
             $arSection['~SECTION_PAGE_URL'],
@@ -286,6 +288,7 @@ if (empty($aMenuLinksNew)) {
                 'IS_PARENT' => false,
                 'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
                 'IMG_PATH' => is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/779.svg',
+                'IMG_PATH_WEBP' => is_file($filePathWebp) ? $imgPathWebp : SITE_TEMPLATE_PATH . '/img/svg/catalogs/776.webp',
                 'ID' => $arSection['ID'],
             ),
         );
@@ -366,6 +369,8 @@ if (empty($aMenuLinksNew)) {
                 if ($arSalesSection3['IBLOCK_SECTION_ID'] == $arSalesSection2['ID']) {
                     $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.svg';
                     $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.svg';
+                    $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.webp';
+                    $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.webp';
                     $catalogPathCode = '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
                     $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . $catalogPathCode;
                     $arMenuLinkSales[] = array(
@@ -374,6 +379,7 @@ if (empty($aMenuLinksNew)) {
                         array($sPath),
                         array(
                             'IMG_PATH' => is_file($filePath) ? $imgPath :  SITE_TEMPLATE_PATH . '/img/svg/catalogs/779.svg',
+                            'IMG_PATH_WEBP' => is_file($filePathWebp) ? $imgPathWebp : SITE_TEMPLATE_PATH . '/img/svg/catalogs/776.webp',
                             'IS_PARENT' => false,
                             'DEPTH_LEVEL' => 2,
                             'FROM_IBLOCK' => true,

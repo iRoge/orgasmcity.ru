@@ -769,7 +769,7 @@ html, body {
 .auth-div-full input, .auth-div-full2 input, .page-form input {
     width: 100%;
     padding: 10px 20px;
-    background: #fff5f7;
+    background: white;
     border: 1px solid #d8d8d8;
     margin-bottom: 15px;
 }
@@ -3487,7 +3487,7 @@ a {
     width: 100%;
     height: 44px;
     padding: 20px;
-    background: #fff5f7;
+    background: white;
     border: 1px solid #d8d8d8;
     margin-bottom: 15px;
     display: flex;
@@ -6069,10 +6069,13 @@ label.color-label {
     }
 
     .sex-block {
-        padding: 10px 15px 20px;
+        padding: 0 15px 20px;
         position: relative;
         z-index: 1;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .mobile_menu_top {
@@ -6081,22 +6084,26 @@ label.color-label {
     }
 
     .sex-btn {
-        border-top: none;
-        border-right: 1px solid grey;
-        border-left: 1px solid grey;
-        border-bottom: 1px solid grey;
-        padding-right: 0px !important;
-        padding-left: 0px !important;
+        padding-right: 0!important;
+        padding-left: 0!important;
         text-align: center;
         border-left-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48%;
+        height: 50px;
+        background: white;
+        border-radius: 10px;
+        margin-top: 10px;
     }
 
-    .sex-btn:nth-child(1), .sex-btn:nth-child(2) {
-        border-top: 1px solid grey;
+    .sex-btn:first-child {
+        margin-top: 0;
     }
 
-    .sex-btn-left {
-        border-left-style: solid !important;
+    .sex-btn:nth-child(2) {
+        margin-top: 0;
     }
 
     .sex-btn--active {
@@ -6111,8 +6118,8 @@ label.color-label {
         display: block;
         font-family: 'gilroyMedium';
         font-size: 15px;
-        width: 100%;
-        margin: 0;
+        width: auto;
+        margin: 0 0 0 5px;
         padding: 10px 0;
     }
 
@@ -6149,9 +6156,11 @@ label.color-label {
     .topmenu {
         clear: both;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
+        border-radius: 10px;
+        padding-top: 5px;
     }
 
     .topmenu li {
@@ -6228,7 +6237,7 @@ label.color-label {
         align-items: flex-start;
         justify-content: center;
         text-align: center;
-        font-size: 13px;
+        font-size: 11px;
     }
 
     .mobile_soc_icon {

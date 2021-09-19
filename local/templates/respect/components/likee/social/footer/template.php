@@ -44,8 +44,8 @@ $icons = [
 
 <?php foreach ($icons as $value) { ?>
     <?php if (!empty($arResult[$value['name']])) { ?>
-        <a class="footer-element" target="_blank" href="<?=$arResult[$value['name']]?>">
-            <img src="<?=SITE_TEMPLATE_PATH?>/img/svg/<?=$value['icon']?>"/>
+        <a class="footer-element social-element" target="_blank" href="<?=$arResult[$value['name']]?>">
+            <img width="24" height="24" src="<?=SITE_TEMPLATE_PATH?>/img/svg/<?=$value['icon']?>"/>
             <span style="text-underline: none; margin-left: 20px; font-size: 13px; font-family: 'gilroyMedium'; color: <?=$value['color']?>"><?=$value['name']?></span>
         </a>
     <?php }?>

@@ -1,7 +1,10 @@
 .submenu-wrapper {
-    width: 50%;
-    height: 150px;
-    padding: 0 10px;
+    width: 48%;
+    height: 130px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 
 .submenu-wrapper a {
@@ -32,6 +35,10 @@
     justify-content: flex-start;
     text-align: left;
     flex-wrap: wrap;
+    background: white;
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-top: 5px;
 }
 
 .second-level-menu-wrapper .submenu-level2-item {

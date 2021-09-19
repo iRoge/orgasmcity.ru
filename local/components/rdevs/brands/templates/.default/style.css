@@ -1,12 +1,29 @@
 .in-vendor
 {
     width: 24%;
-    overflow:hidden;
+    height: 260px;
+    overflow: hidden;
     text-align: center;
     margin-top: 15px;
     padding: 30px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: transparent;
+    border-radius: 15px;
+    background: white;
 }
+
+.in-vendor a
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .in-vendor:hover
 {
     box-shadow: 2px 2px 15px rgba(0,0,0, .15);
@@ -33,7 +50,6 @@
     font-family: 'gilroyRegular';
     color: #000000;
     font-size: 14px;
-    height: 50px;
     padding: 15px 30px!important;
 }
 .text-in-vendor img
@@ -72,4 +88,37 @@
 {
     padding: 0!important;
     text-align: justify;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.brands-block-wrapper {
+    margin-bottom: 30px;
+}
+
+.vendor-no-img-text {
+    font-size: 25px;
+}
+
+@media(max-width: 1200px)
+{
+    .vendor-no-img-text {
+        font-size: 20px;
+    }
+}
+
+@media(max-width: 991px)
+{
+    .vendor-no-img-text {
+        font-size: 15px;
+    }
+}
+
+@media(max-width: 767px)
+{
+    .vendor-no-img-text {
+        font-size: 30px;
+    }
 }

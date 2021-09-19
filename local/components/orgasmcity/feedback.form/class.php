@@ -52,6 +52,7 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
         }
 
         $hasOrder = $_POST['HAS_ORDER'];
+        $order = null;
         if ($hasOrder) {
             $orderId = null;
             if (!$_POST['ORDER_ID']) {
@@ -92,11 +93,28 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
                 $genders[$enum_fields["VALUE"]] = $enum_fields["ID"];
             }
 
+            if ($hasOrder && $order) {
+                // Достаем свойство имеет ли заказ отзыв
+                foreach ($order->getPropertyCollection() as $prop) {
+                    $arProperty = $prop->getProperty();
+                    if ($arProperty['CODE'] == 'HAS_ORDER') {
+                        if ($prop->getValue() === 'N') {
+                            $prop->setValue('Y');
+                            $order->save();
+                            break;
+                        } else {
+                            $hasOrder = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
             $el = new CIBlockElement;
             $feedbackID = $el->Add([
                 'IBLOCK_ID' => IBLOCK_FEEDBACK,
                 'NAME' => $name,
-                'ACTIVE' => 'Y',
+                'ACTIVE' => $hasOrder ? 'Y' : 'N',
                 'DETAIL_TEXT' => $feedBackText,
                 'DETAIL_PICTURE' => isset($_FILES['PHOTO']) ? $_FILES['PHOTO'] : '',
             ]);

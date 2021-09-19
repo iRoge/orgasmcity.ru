@@ -16,7 +16,7 @@ $(document).ready(function() {
             if (response['SUCCESS']) {
                 errorsWrapper.hide();
                 successWrapper.show();
-                successMessageBlock.html('Ваш отзыв успешно отправлен на модерацию и скоро будет опубликован!');
+                successMessageBlock.html('Ваш отзыв успешно отправлен' + (response['HAS_ORDER'] ? '!' : ' на модерацию и скоро будет опубликован!'));
                 formWrapper.hide();
             } else {
                 let errors = response['ERRORS'];

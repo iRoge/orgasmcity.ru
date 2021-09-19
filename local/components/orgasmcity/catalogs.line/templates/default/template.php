@@ -22,7 +22,9 @@ if (!empty($arResult['ITEMS'])) {?>
                         <div class="catalog-list-element-img-wrap">
                             <img src="<?=$item['IMG_PATH']?>" alt="<?=$item['CODE']?>">
                         </div>
-                        <span style="height: 25%"><?=$item['NAME']?></span>
+                        <div class="catalog-list-element-text-wrap">
+                            <span><?=$item['NAME']?></span>
+                        </div>
                     </a>
                 </div>
             <?php } ?>
@@ -42,7 +44,9 @@ if (!empty($arResult['ITEMS'])) {?>
                             <div class="catalog-list-element-img-wrap">
                                 <img src="<?=$item['IMG_PATH']?>" alt="<?=$item['CODE']?>">
                             </div>
-                            <span style="height: 25%"><?=$item['NAME']?></span>
+                            <div class="catalog-list-element-text-wrap">
+                                <span><?=$item['NAME']?></span>
+                            </div>
                         </a>
                     </div>
                 <?php } ?>

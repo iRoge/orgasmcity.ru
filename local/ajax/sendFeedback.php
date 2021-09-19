@@ -32,14 +32,16 @@ if (!$_GET['FEEDBACK_TEXT']) {
 }
 
 $hasOrder = $_GET['HAS_ORDER'];
+$orderId = null;
+$order = null;
 if ($hasOrder) {
-    $orderId = null;
     if (!$_GET['ORDER_ID']) {
         $errors[] = 'Не заполненно поле "Ваше имя"';
     } else {
         $orderId = trim($_GET['ORDER_ID']);
     }
     if ($orderId) {
+        // Достаем заказ
         $order = Order::load($orderId);
         if (!$order) {
             $errors[] = 'Указанный email не соответствует email в заказе # ' . $orderId;
@@ -49,7 +51,7 @@ if ($hasOrder) {
             } else {
                 $orderEmail = trim(strtolower($_GET['ORDER_EMAIL']));
                 if (!filter_var($orderEmail, FILTER_VALIDATE_EMAIL)) {
-                    $errors[] = 'Не верно указан email в заказе';
+                    $errors[] = 'Не верно указан email';
                 }
                 $propertyCollection = $order->getPropertyCollection();
                 $realEmail = strtolower($propertyCollection->getUserEmail()->getValue());
@@ -72,11 +74,28 @@ if (empty($errors)) {
         $genders[$enum_fields["VALUE"]] = $enum_fields["ID"];
     }
 
+    if ($hasOrder && $order) {
+        // Достаем свойство имеет ли заказ отзыв
+        foreach ($order->getPropertyCollection() as $prop) {
+            $arProperty = $prop->getProperty();
+            if ($arProperty['CODE'] == 'HAS_ORDER') {
+                if ($prop->getValue() === 'N') {
+                    $prop->setValue('Y');
+                    $order->save();
+                    break;
+                } else {
+                    $hasOrder = false;
+                    break;
+                }
+            }
+        }
+    }
+
     $el = new CIBlockElement;
     $feedbackID = $el->Add([
         'IBLOCK_ID' => IBLOCK_FEEDBACK,
         'NAME' => $name,
-        'ACTIVE' => 'Y',
+        'ACTIVE' => $hasOrder ? 'Y' : 'N',
         'DETAIL_TEXT' => $feedBackText,
     ]);
     $props = [];

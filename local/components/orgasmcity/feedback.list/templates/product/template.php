@@ -73,7 +73,7 @@
         <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="500" style="resize: none; height: 100px" placeholder="Текст отзыва*"></textarea>
         <div class="haveOrder-wrapper">
             <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput">
-            <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически попадет на главную страницу</label>
+            <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически будет отображен)</label>
             <div class="haveOrder-closed">
                 <input class="feedback-form-element" name="ORDER_ID" type="text" placeholder="Номер вашего заказа*" value="">
                 <input class="feedback-form-element" name="ORDER_EMAIL" type="text" placeholder="Email, указанный в заказе*" value="">

@@ -18,15 +18,19 @@ IncludeTemplateLangFile(__FILE__);
 if (!empty($arResult)) {?>
     <div class="mobile_menu_top">
     <div class="sex-block col-xs-12">
-        <? $cou=0;
-        foreach ($arResult as $arItem) { ?>
-            <?$cou++;
-            if ($arItem['TEXT'] == '?????') {?>
-                <div class="sex-btn sex-btn-left col-xs-12" >
+        <? foreach ($arResult as $arItem) {?>
+            <? if ($arItem['TEXT'] == '?????') {?>
+                <div class="sex-btn col-xs-12">
+                    <? if (isset($arItem['PARAMS']['IMG_PATH'])) { ?>
+                        <img width="20" height="20" src="<?=$arItem['PARAMS']['IMG_PATH']?>" alt="<?=$arItem['TEXT']?>">
+                    <? } ?>
                     <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
                 </div>
             <?} elseif ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1) {?>
-            <div class="sex-btn <?=($cou % 2 == 1)? "sex-btn-left":""?> col-xs-6" >
+            <div class="sex-btn">
+                <? if (isset($arItem['PARAMS']['IMG_PATH'])) { ?>
+                    <img width="20" height="20" src="<?=$arItem['PARAMS']['IMG_PATH']?>" alt="<?=$arItem['TEXT']?>">
+                <? } ?>
                 <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
             </div>
             <?}?>
@@ -50,7 +54,7 @@ if (!empty($arResult)) {?>
                                         <?=$arItem2Level['TEXT']?>
                                     </span>
                                     <div class="sub-submenu">
-                                        <div style="margin-bottom: 30px">
+                                        <div style="margin-bottom: 10px">
                                             <a href="<?=$arItem2Level['LINK']?>">
                                                 <?=GetMessage("SHOW_ALL_ITEMS")?>
                                             </a>
@@ -70,7 +74,7 @@ if (!empty($arResult)) {?>
                                                         <div class="submenu-wrapper">
                                                             <a href="<?=$arItem4LevelChunks['LINK']?>">
                                                                 <div class="submenu-img-wrapper">
-                                                                    <img src="<?=$arItem4LevelChunks['PARAMS']['IMG_PATH']?>" alt="<?=$arItem4LevelChunks['TEXT']?>">
+                                                                    <img src="<?=$arItem4LevelChunks['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem4LevelChunks['TEXT']?>">
                                                                 </div>
                                                                 <span class="submenu-item submenu-item-main">
                                                                     <?=$arItem4LevelChunks['TEXT']?>
@@ -84,7 +88,7 @@ if (!empty($arResult)) {?>
                                                 <div class="submenu-wrapper">
                                                     <a href="<?=$arItem3Level['LINK']?>">
                                                         <div class="submenu-img-wrapper">
-                                                            <img src="<?=$arItem3Level['PARAMS']['IMG_PATH']?>" alt="<?=$arItem3Level['TEXT']?>">
+                                                            <img src="<?=$arItem3Level['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem3Level['TEXT']?>">
                                                         </div>
                                                         <span class="submenu-item submenu-item-main">
                                                             <?=$arItem3Level['TEXT']?>
@@ -100,7 +104,7 @@ if (!empty($arResult)) {?>
                                         <div class="submenu-wrapper">
                                             <a href="<?=$arItem2Level['LINK']?>">
                                                 <div class="submenu-img-wrapper">
-                                                    <img src="<?=$arItem2Level['PARAMS']['IMG_PATH']?>" alt="<?=$arItem2Level['TEXT']?>">
+                                                    <img src="<?=$arItem2Level['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem2Level['TEXT']?>">
                                                 </div>
                                                 <span class="submenu-item submenu-item-main arrow">
                                                     <?=$arItem2Level['TEXT']?>

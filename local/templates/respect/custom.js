@@ -210,7 +210,7 @@ function respercEvent__add_to_cart()
 		+ '<div class="popup-footer">'
 		+ '<button class="js-popup-close button button--xxl button--primary button--outline button--blue">Продолжить покупки</button>'
 		+ '<div>&nbsp;</div>'
-		+ '<a class="button button--xxl button--primary button--outline button--orange" href="/cart/">Оформить заказ</a>'
+		+ '<a class="button button--xxl button--primary button--outline button--purple" href="/cart/">Оформить заказ</a>'
 		+ '</div>'
 		+ '</div>';
 
