@@ -360,7 +360,7 @@ $res = CIBlockSection::GetList(
 );
 while ($arItem = $res->GetNext()) {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . 'catalog/groups/' . $arItem['CODE']);
+    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/groups/' . $arItem['CODE']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
