@@ -1,0 +1,19 @@
+.action-banners-list-main {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    padding: 0 15px;
+}
+
+@media (min-width:767px) and (max-width:992px) {
+    .action-banners-list-element:last-child {
+        padding-right: 0!important;
+    }
+    .action-banners-list-element:first-child {
+        padding-left: 0!important;
+    }
+    .action-banners-list-main {
+        padding: 0!important;
+    }
+}

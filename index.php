@@ -128,9 +128,15 @@ global $DEVICE;
             ),
             false
         );
-    } ?>
-    <div class="clearfix"></div>
-    <?php
+    }
+
+    $APPLICATION->IncludeComponent(
+        "orgasmcity:actions.banners",
+        "",
+        [],
+        false
+    );
+
     $APPLICATION->IncludeComponent(
         'bitrix:news.list',
         'home_advantages',
@@ -172,7 +178,14 @@ global $DEVICE;
             <img width="100%" src="<?=SITE_TEMPLATE_PATH . ($DEVICE->isMobile() ? '/img/howWorkMobile.webp' : '/img/howWork.webp')?>" alt="Как мы работаем">
         </div>
     </div>
-
+    <?php
+    $APPLICATION->IncludeComponent(
+        "orgasmcity:brands.list",
+        "",
+        [],
+        false
+    );
+    ?>
     <?php if (!$DEVICE->isMobile()) { ?>
         <div class="order-help-section">
             <div class="order-help-wrapper main">

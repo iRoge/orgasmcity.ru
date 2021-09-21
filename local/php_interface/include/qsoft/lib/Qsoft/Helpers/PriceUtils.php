@@ -95,7 +95,6 @@ class PriceUtils
                 'IBLOCK_ID' => IBLOCK_GROUPS,
                 'ACTIVE' => 'Y',
                 'PROPERTY_IS_ACTION' => true,
-                '>PROPERTY_DISCOUNT' => 0,
             ],
             false,
             false,

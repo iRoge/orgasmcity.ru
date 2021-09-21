@@ -7,6 +7,7 @@
  */
 
 use Bitrix\Iblock\Component\Tools;
+use Bitrix\Main\FileTable;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -79,91 +80,6 @@ class Functions
                 self::setArrayCache($sCacheKey, $arResult);
                 return $arResult;
             }
-        }
-    }
-
-
-    /**
-     * Возвращает массив с информацией о свойстве инфоблока по его коду
-     * @param string $sCode - символьный код инфоблока
-     * @param integer $iIblockID - ид инфоблока
-     * @return array|bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function getIBlockPropertyByCode($sCode, $iIblockID)
-    {
-        $sCacheKey = __METHOD__ . '.' . $iIblockID . '.'. $sCode;
-        if (\Bitrix\Main\Loader::includeModule('iblock')) {
-            if ($arReturn = self::getArrayCache($sCacheKey)) {
-                return $arReturn;
-            } else {
-                $res = CIBlockProperty::GetList(array("sort" => "asc", "name" => "asc"), array("ACTIVE" => "Y", "IBLOCK_ID" => $iIblockID, 'CODE' => $sCode));
-                $arResult = $res->fetch();
-                self::setArrayCache($sCacheKey, $arResult);
-                return $arResult;
-            }
-        }
-    }
-
-     /**
-     * Возвращает id инфоблока по артиклу
-     * @param string $Article - символьный код инфоблока
-     * @return array|bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function getIBlockElementByArticle($Article)
-    {
-        $sCacheKey = __METHOD__ . '.' . $Article;
-        if (\Bitrix\Main\Loader::includeModule('iblock')) {
-            if ($arReturn = self::getArrayCache($sCacheKey)) {
-                return $arReturn;
-            } else {
-                $arFilter = array('IBLOCK_ID'=> 16, 'PROPERTY_ARTICLE'=>$Article);
-                $arSelect = array("ID");
-                $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize"=>1), $arSelect);
-                $arResult = $res->fetch();
-                self::setArrayCache($sCacheKey, $arResult);
-                return $arResult;
-            }
-        }
-    }
-    /**
-     * Возвращает артикл инфоблока по id
-     * @param string $Article - символьный код инфоблока
-     * @return array|bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function getArticleByID($id)
-    {
-        $sCacheKey = __METHOD__ . '.' . $id;
-        if (\Bitrix\Main\Loader::includeModule('iblock')) {
-            if ($arReturn = self::getArrayCache($sCacheKey)) {
-                return $arReturn;
-            } else {
-                $arFilter = array('IBLOCK_ID'=> 16, 'ID'=>$id);
-                $arSelect = array("PROPERTY_ARTICLE");
-                $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize"=>1), $arSelect);
-                $arResult = $res->fetch();
-                self::setArrayCache($sCacheKey, $arResult);
-                return $arResult[PROPERTY_ARTICLE_VALUE];
-            }
-        }
-    }
-
-    /**
-     * Поиск по вложенным массивам
-     * @param arr $id - значение поиска
-     * @param arr $arSKU - массив массивов
-     * @return bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function ib_deep_in_array($id, $arSKU)
-    {
-        foreach ($arSKU as $value) {
-            if (in_array($id, $value, true)) {
-                return true;
-            }
-            return false;
         }
     }
 
@@ -728,6 +644,104 @@ class Functions
         }
 
         return $arProducts;
+    }
+
+    public static function getAllBrands(): array
+    {
+        $brandsCache = new CPHPCache();
+        global $CACHE_MANAGER;
+        $arBrands = [];
+
+        if ($brandsCache->initCache(360000, 'brands', 'brands')) {
+            $arBrands = $brandsCache->getVars()['array_brands'];
+        } elseif ($brandsCache->StartDataCache()) {
+            $CACHE_MANAGER->StartTagCache('brands');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
+
+            $res = CIBlockElement::GetList(
+                false,
+                [
+                    "IBLOCK_ID" => IBLOCK_VENDORS,
+                    'ACTIVE' => 'Y',
+                ],
+                false,
+                false,
+                [
+                    "ID",
+                    "NAME",
+                    "CODE",
+                    "SORT",
+                    "DESCRIPTION",
+                    "PREVIEW_PICTURE",
+                    "XML_ID"
+                ]
+            );
+
+            while ($arBrand = $res->GetNext(true, false)) {
+                $arBrand['SECTION_PAGE_URL'] = '/brands/' . $arBrand['CODE'] . '/';
+                $arBrands[$arBrand["ID"]] = $arBrand;
+
+                if (!empty($arBrand["PREVIEW_PICTURE"])) {
+                    $arImageIds[] = $arBrand["PREVIEW_PICTURE"];
+                }
+            }
+
+            if (!empty($arImageIds)) {
+                $arImages = self::getImages($arImageIds);
+
+                foreach ($arBrands as $id => &$arBrand) {
+                    if (!empty($arImages[$arBrand['PREVIEW_PICTURE']])) {
+                        $arBrand['PREVIEW_PICTURE'] = $arImages[$arBrand['PREVIEW_PICTURE']];
+                    }
+                }
+            }
+
+            uasort($arBrands, function ($a, $b) {
+                if ($a['PREVIEW_PICTURE'] && !$b['PREVIEW_PICTURE']) {
+                    return -1;
+                } elseif ($b['PREVIEW_PICTURE'] && !$a['PREVIEW_PICTURE']) {
+                    return 1;
+                } else {
+                    return strnatcmp($a['NAME'], $b['NAME']);
+                }
+            });
+
+            $CACHE_MANAGER->endTagCache();
+            $brandsCache->EndDataCache(['array_brands' => $arBrands]);
+        }
+
+        return $arBrands;
+    }
+
+    private static function getImages($arImageIds): array
+    {
+        $res = FileTable::getList([
+            "select" => [
+                "ID",
+                "SUBDIR",
+                "FILE_NAME",
+                "WIDTH",
+                "HEIGHT",
+                "CONTENT_TYPE",
+            ],
+            "filter" => [
+                "ID" => $arImageIds,
+            ],
+        ]);
+
+        $arImages = [];
+
+        while ($arImage = $res->Fetch()) {
+            $src = "/upload/" . $arImage["SUBDIR"] . "/" . $arImage["FILE_NAME"];
+
+            if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
+                continue;
+            }
+
+            $arImages[$arImage["ID"]] = $src;
+        }
+
+        return $arImages;
     }
 
     public static function filterOffersByRests($offers)
