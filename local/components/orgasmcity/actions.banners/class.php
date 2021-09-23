@@ -39,6 +39,7 @@ class NewComponent extends \CBitrixComponent
                     'IBLOCK_ID',
                     'PREVIEW_PICTURE',
                     'NAME',
+                    'CODE',
                 ]
             );
 

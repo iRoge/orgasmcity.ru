@@ -2,17 +2,17 @@
     display: flex!important;
     justify-content: center;
     align-items: center;
-    margin-top: 25px;
+    flex-wrap: wrap;
+    margin: 25px 0;
     padding: 0 15px;
 }
 
-@media (min-width:767px) and (max-width:992px) {
-    .action-banners-list-element:last-child {
-        padding-right: 0!important;
+@media (max-width:992px) {
+    .action-banners-list-element {
+        padding: 0!important;
+        margin: 15px 0;
     }
-    .action-banners-list-element:first-child {
-        padding-left: 0!important;
-    }
+
     .action-banners-list-main {
         padding: 0!important;
     }

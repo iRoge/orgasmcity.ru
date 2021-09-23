@@ -17,7 +17,7 @@
 ); ?>
 <div class="footer col-xs-12">
     <div class="main footer-wrapper">
-        <div class="footer-block col-lg-3 col-md-3 col-sm-3">
+        <div class="footer-block footer-social-block col-lg-3 col-md-3 col-sm-3">
             <?php $APPLICATION->IncludeComponent(
                 "likee:social",
                 "footer",
@@ -33,7 +33,7 @@
             ); ?>
             <img src="<?=SITE_TEMPLATE_PATH?>/img/designedBy.webp" alt="Designed by Grape.ov">
         </div>
-        <div class="footer-block col-lg-2 col-md-2 col-sm-2">
+        <div class="footer-block footer-information-block col-lg-2 col-md-2 col-sm-2">
             <h4>Информация</h4>
             <?php $APPLICATION->IncludeComponent(
                 'bitrix:menu',

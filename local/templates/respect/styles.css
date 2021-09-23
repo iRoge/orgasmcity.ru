@@ -1354,64 +1354,64 @@ a.footer-element:hover {
         flex-wrap: wrap;
         text-align: end;
     }
-    /*.footer-right-block {*/
-    /*    justify-content: flex-start;*/
-    /*    text-align: left;*/
-    /*}*/
+
+    .footer-right-block {
+        justify-content: flex-start;
+        text-align: left;
+    }
 
     .footer-element {
-        width: 100%;
+        width: 48%;
         height: 50px;
         flex-wrap: wrap;
     }
 
-    /*.footer-element:nth-child(2n) {*/
-    /*    display: flex;*/
-    /*    justify-content: flex-start;*/
-    /*    text-align: start;*/
-    /*}*/
-
-    /*.footer-element:nth-child(2n+1) {*/
-    /*    display: flex;*/
-    /*    justify-content: flex-end;*/
-    /*    text-align: end;*/
-    /*}*/
-
-    /*.social-element:nth-child(2n) {*/
-    /*    display: flex;*/
-    /*    justify-content: flex-end;*/
-    /*    text-align: end;*/
-    /*}*/
-
-    /*.social-element:nth-child(2n+1) {*/
-    /*    display: flex;*/
-    /*    justify-content: flex-start;*/
-    /*    text-align: start;*/
-    /*}*/
-
-    .footer-block {
-        width: 48%;
-        text-align: center;
-    }
-
-    .footer-block:nth-child(2n) {
-        display: flex;
-        justify-content: flex-end;
-        text-align: end;
-    }
-
-    .footer-block:nth-child(2n+1) {
+    .footer-element:nth-child(2n) {
         display: flex;
         justify-content: flex-start;
         text-align: start;
     }
 
-    .footer-block:nth-child(2n) h4 {
+    .footer-element:nth-child(2n+1) {
+        display: flex;
+        justify-content: flex-end;
         text-align: end;
     }
 
-    .footer-block:nth-child(2n+1) {
+    .footer-block {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-block h4 {
+        text-align: center;
+        width: 100%;
+    }
+
+    .footer-information-block, .footer-social-block {
+        width: 48%;
+    }
+
+    .footer-social-block {
+        margin-bottom: 25px;
+    }
+
+    .footer-information-block .footer-element, .footer-social-block .footer-element {
+        width: 100%;
+    }
+
+    .social-element {
         text-align: start;
+        justify-content: flex-start!important;
+    }
+
+    .footer-information-block .footer-element {
+        text-align: end;
+        justify-content: flex-end!important;
+    }
+
+    .footer-information-block h4 {
+        text-align: end;
     }
 }
 

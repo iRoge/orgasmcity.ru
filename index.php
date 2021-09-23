@@ -33,15 +33,12 @@ global $DEVICE;
         ?>
         </div>
         <?php
+
         $APPLICATION->IncludeComponent(
-            'orgasmcity:mini.banners',
-            'default',
-            [
-                'FILTERS' => [
-                    'IBLOCK_ID' => IBLOCK_MINI_BANNERS,
-                    "ACTIVE" => "Y",
-                ],
-            ]
+            "orgasmcity:actions.banners",
+            "",
+            [],
+            false
         );
 
         $APPLICATION->IncludeComponent(
@@ -59,7 +56,27 @@ global $DEVICE;
             ],
             false
         );
+
+        $APPLICATION->IncludeComponent(
+            'orgasmcity:mini.banners',
+            'default',
+            [
+                'FILTERS' => [
+                    'IBLOCK_ID' => IBLOCK_MINI_BANNERS,
+                    "ACTIVE" => "Y",
+                ],
+            ]
+        );
     } else {
+
+        $APPLICATION->IncludeComponent(
+            "orgasmcity:actions.banners",
+            "",
+            [],
+            false
+        );
+
+
         $APPLICATION->IncludeComponent(
             "likee:slider",
             "home-mob",
@@ -129,13 +146,6 @@ global $DEVICE;
             false
         );
     }
-
-    $APPLICATION->IncludeComponent(
-        "orgasmcity:actions.banners",
-        "",
-        [],
-        false
-    );
 
     $APPLICATION->IncludeComponent(
         'bitrix:news.list',

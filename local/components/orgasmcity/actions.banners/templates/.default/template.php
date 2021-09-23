@@ -18,7 +18,7 @@ $this->setFrameMode(true);
         <?php foreach ($arResult['ITEMS'] as $item) {?>
             <?php if ($item['CODE']) { ?>
                 <div class="col-lg-4 col-md-4 action-banners-list-element">
-                    <a href="<?=$item['CODE']?>">
+                    <a href="/catalog/groups/<?=$item['CODE']?>/">
                         <img width="100%" src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
                     </a>
                 </div>
