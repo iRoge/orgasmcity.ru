@@ -43,7 +43,7 @@
             <option value="4" <?=isset($_POST['SCORE']) && $_POST['SCORE'] == 4 ? 'selected' : ''?>>4</option>
             <option value="5" <?=isset($_POST['SCORE']) && $_POST['SCORE'] == 5 ? 'selected' : ''?>>5</option>
         </select>
-        <textarea class="feedback-form-element" name="FEEDBACK_TEXT" style="resize: none; height: 100px" placeholder="Текст отзыва*"><?=isset($_POST['FEEDBACK_TEXT']) ? $_POST['FEEDBACK_TEXT'] : ''?></textarea>
+        <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="300" style="resize: none; height: 100px" placeholder="Текст отзыва (максимум 300 символов)*"><?=isset($_POST['FEEDBACK_TEXT']) ? $_POST['FEEDBACK_TEXT'] : ''?></textarea>
         <div class="haveOrder-wrapper">
             <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput" <?=isset($_POST['HAS_ORDER']) && $_POST['HAS_ORDER'] == 1 ? 'checked' : ''?>>
             <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически попадет на главную страницу. Так же вы можете по желанию прикрепить фото товара)</label>

@@ -23,11 +23,11 @@
                 <img class="hidden-xs hidden-sm" height="100%" src="<?=$item['PROPERTY_GENDER_VALUE'] == 'Женщина' ? SITE_TEMPLATE_PATH . '/img/avatars/g' . ($item['ID'] % 11) . '.png' : SITE_TEMPLATE_PATH . '/img/avatars/m' . ($item['ID'] % 11) . '.png'?>" alt="Аватар">
                 <div class="product-feedback-item-text-wrapper">
                     <div class="product-feedback-item-title-wrapper">
-                        <div class="product-feedback-item-title" style="color: black; font-size: 22px; font-family: gilroySemiBold">@<?=$item['NAME']?></div>
+                        <div class="product-feedback-item-title">@<?=$item['NAME']?></div>
                         <div class="product-feedback-item-score-wrapper" title="Оценка <?=$item['PROPERTY_SCORE_VALUE']?> из 5">
                             <?php for ($i = 1; $i <= 5; $i++) { ?>
                                 <div class="product-feedback-item-heart-wrapper">
-                                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path style="fill: <?=$item['PROPERTY_SCORE_VALUE'] >= $i ? '#D18C8C' : '#E4E4E4'?>" d="M0.0595703 4.97532C0.0595703 -0.373625 7.1161 -2.356 9.28738 3.83611C11.4587 -2.356 18.5152 -0.373625 18.5152 4.97532C18.5152 10.7869 9.28738 18.1553 9.28738 18.1553C9.28738 18.1553 0.0595703 10.7869 0.0595703 4.97532Z" fill="#E4E4E4"/>
                                     </svg>
                                 </div>
@@ -70,7 +70,7 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
-        <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="500" style="resize: none; height: 100px" placeholder="Текст отзыва*"></textarea>
+        <textarea class="feedback-form-element" name="FEEDBACK_TEXT" maxlength="300" style="resize: none; height: 100px" placeholder="Текст отзыва (максимум 300 символов)*"></textarea>
         <div class="haveOrder-wrapper">
             <input type="checkbox" name="HAS_ORDER" value="1" class="haveOrder-input" id="haveOrderInput">
             <label for="haveOrderInput" class="haveOrder-input-label">Я совершал заказ (если вы укажете номер заказа с почтой, то ваш отзыв автоматически будет отображен)</label>

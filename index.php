@@ -203,5 +203,17 @@ global $DEVICE;
             </div>
         </div>
     <?php } ?>
+    <?php $APPLICATION->IncludeComponent(
+        "orgasmcity:feedback.list",
+        "main",
+        [
+            'FILTERS' => [
+                'IBLOCK_ID' => IBLOCK_FEEDBACK,
+                'ACTIVE' => 'Y',
+                'PROPERTY_PRODUCT_ID' => false
+            ],
+        ],
+        false
+    ); ?>
 </div>
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
