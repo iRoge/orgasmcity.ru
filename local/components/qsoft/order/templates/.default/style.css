@@ -1186,7 +1186,7 @@ input[type="number"] {
     }
 
     .subscribe_disabled {
-        margin-bottom: 0px !important;
+        margin-bottom: 0 !important;
     }
 
     .form__field--1-4 {
