@@ -202,7 +202,7 @@ if (empty($aMenuLinksNew)) {
             'ID' => $arSection['ID'],
             'CODE' => $arSection['CODE'],
             'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
-            '~NAME' => $arSection['~NAME'],
+            '~NAME' => $arSection['~NAME'] . ' ' . $arSection['ID'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
         );
         $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();

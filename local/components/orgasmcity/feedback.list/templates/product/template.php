@@ -80,6 +80,8 @@
                 <input class="feedback-form-element" name="ORDER_EMAIL" type="text" placeholder="Email, указанный в заказе*" value="">
             </div>
         </div>
-        <input class="feedback-form-submit" type="submit" name="SUBMIT" value="Отправить отзыв">
+        <div class="submit-feedback-wrapper">
+            <input class="feedback-form-submit" type="submit" name="SUBMIT" value="Отправить отзыв">
+        </div>
     </form>
 </div>

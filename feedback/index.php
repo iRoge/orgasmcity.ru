@@ -4,11 +4,13 @@ $APPLICATION->SetTitle("Форма отправки отзыва");
 $APPLICATION->IncludeComponent(
     "orgasmcity:feedback.form",
     "default",
-    array(
+    [
         "IBLOCK_CODE" => 'feedback',
-        "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "86400"
-    ),
+        "FILTERS" => [
+            "ACTIVE" => 'Y',
+            'PROPERTY_PRODUCT_ID' => false,
+        ]
+    ],
     false
 );
 

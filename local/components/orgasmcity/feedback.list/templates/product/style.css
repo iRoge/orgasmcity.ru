@@ -102,9 +102,10 @@
 }
 
 .feedback-form-submit {
-    background-color: #654670;
-    border: 1px solid rgba(200, 200, 200, .5);
-    color: #fefefe;
+    background: linear-gradient(0deg, #A18CD1, #A18CD1);
+    color: #FFFFFF;
+    border-radius: 35px 0 35px 35px;
+    border: transparent;
     cursor: pointer;
     font-family: 'gilroyRegular';
     font-size: 16px;
@@ -113,6 +114,13 @@
     outline: 0;
     text-transform: uppercase;
     width: 50%;
+}
+
+.submit-feedback-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 @media (max-width: 991px) {
