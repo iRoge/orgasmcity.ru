@@ -199,3 +199,10 @@
     width: 60%;
     font-family: gilroySemiBold
 }
+
+.feedback-date {
+    font-family: gilroyThin;
+    font-size: 15px;
+    color: black;
+}
+

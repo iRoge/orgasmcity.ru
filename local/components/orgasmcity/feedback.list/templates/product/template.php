@@ -34,6 +34,7 @@
                             <?php } ?>
                         </div>
                     </div>
+                    <span class="feedback-date"><?=$item['DATE_CREATE']?></span>
                     <div class="product-feedback-item-detail-text"><?=$item['DETAIL_TEXT']?></div>
                 </div>
             </div>
@@ -56,7 +57,7 @@
     </div>
     <form method="post" class="feedback-form" action="" enctype="multipart/form-data">
         <input hidden name="PRODUCT_ID" type="text" value="<?=$arResult['PRODUCT_ID']?>">
-        <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="" maxlength="25">
+        <input class="feedback-form-element" name="NAME" type="text" placeholder="Ваше имя*" value="" maxlength="15">
         <select name="GENDER" class="feedback-form-element feedback-form-select">
             <option value="">Ваш пол*</option>
             <option value="Женщина">Женщина</option>

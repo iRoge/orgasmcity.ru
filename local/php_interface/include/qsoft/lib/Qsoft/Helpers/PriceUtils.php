@@ -71,6 +71,7 @@ class PriceUtils
 
         if (isset(self::$pricesCache[$offerId]) && self::$pricesCache[$offerId]['PRICE']) {
             $resultArray = self::$pricesCache[$offerId];
+            $resultArray['PRICE'] = self::calculatePrice($resultArray['PRICE'], $userDiscount);
             $resultArray['DISCOUNT_WITHOUT_BONUS'] = self::$pricesCache[$offerId]['DISCOUNT'];
             $resultArray['DISCOUNT'] = self::$pricesCache[$offerId]['DISCOUNT'] + $userDiscount;
         } else {

@@ -93,3 +93,73 @@
     justify-content: center;
     margin: 50px 0;
 }
+
+.all-feedbacks-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 25px 0;
+}
+
+.feedback-block-wrapper {
+    border: transparent;
+    border-radius: 10px;
+    background: white;
+    height: auto;
+    margin: 10px 0;
+    padding: 10px 25px;
+    width: 100%;
+}
+
+.product-feedback-item-detail-text {
+    color: black;
+    font-size: 22px;
+    line-height: 26px;
+    font-family: gilroyRegular;
+    margin-top: 15px
+}
+
+.product-feedback-item-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 35px;
+}
+
+.product-feedback-item-score-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-feedback-item-title {
+    color: black;
+    font-size: 20px;
+    width: 60%;
+    font-family: gilroySemiBold
+}
+
+.product-feedback-item-text-wrapper {
+    padding: 0 20px;
+    width: 100%;
+}
+
+.product-feedback-item-heart-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+}
+
+.product-feedback-item-heart-wrapper svg {
+    width: 19px;
+    height: 19px;
+}
+
+.feedback-date {
+    font-family: gilroyThin;
+    font-size: 15px;
+    color: black;
+}

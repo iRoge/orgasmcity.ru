@@ -18,6 +18,7 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
 
     public function executeComponent()
     {
+        $this->arResult['ITEMS'] = $this->getItems();
         if (isset($_POST['SUBMIT'])) {
             $this->processPost();
         }
@@ -128,5 +129,35 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
         } else {
             $this->arResult['ERRORS'] = $errors;
         }
+    }
+
+    private function getItems()
+    {
+        $arItems = [];
+
+        $arFilter = $this->arParams['FILTERS'];
+        $arSelect = [
+            'ID',
+            'NAME',
+            'DETAIL_TEXT',
+            'DATE_CREATE',
+            'PROPERTY_GENDER',
+            'PROPERTY_SCORE',
+        ];
+
+        $result = CIBlockElement::GetList(
+            ["ID" => "DESC"],
+            $arFilter,
+            false,
+            ["nTopCount" => 40],
+            $arSelect,
+        );
+
+        while ($item = $result->GetNext()) {
+            $item['DATE_CREATE'] = FormatDate("x", MakeTimeStamp($item['DATE_CREATE']));
+            $arItems[$item['ID']] = $item;
+        }
+
+        return $arItems;
     }
 }
