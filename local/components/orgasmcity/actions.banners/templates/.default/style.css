@@ -9,12 +9,13 @@
 @media (max-width: 767px) {
     .action-banners-list-element {
         padding: 0!important;
-        margin: 15px 0;
+        margin: 10px 0;
     }
 
     .action-banners-list-main {
         flex-wrap: wrap;
         padding: 0!important;
+        margin: 5px 0;
     }
 }
 

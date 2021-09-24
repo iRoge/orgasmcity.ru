@@ -186,6 +186,14 @@ html, body {
     display: block;
 }
 
+@media (max-width: 767px) {
+    .main {
+        width: 92%;
+        margin-left: 4%;
+        display: block;
+    }
+}
+
 .table-size__heading {
     font-family: 'gilroySemiBold';
     color: #000000;
@@ -5610,7 +5618,7 @@ label.color-label {
     }
 
     .poisk-div {
-        height: 60px;
+        height: 45px;
         margin-top: -60px;
         top: -60px;
         left: 0;
