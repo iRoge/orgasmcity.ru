@@ -14,7 +14,7 @@
 $this->setFrameMode(true);
 ?>
 <?php if (!empty($arResult['ITEMS'])) {?>
-<div style="float: left; width: 100%;">
+<div style="float: left; width: 100%; margin: 25px 0">
     <h2 class="default-header"><?=$arParams['TITLE']?></h2>
     <div id="recommendeds-slider" class="main">
         <?php foreach ($arResult['ITEMS'] as $arItem) { ?>

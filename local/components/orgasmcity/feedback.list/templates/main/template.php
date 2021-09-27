@@ -14,7 +14,7 @@
 
 ?>
 <?php if (!empty($arResult['ITEMS'])) {?>
-    <div style="float: left; width: 100%;">
+    <div style="float: left; width: 100%; margin: 25px 0">
         <h2 class="default-header">Последние отзывы клиентов</h2>
         <div id="feedback-list" class="main">
             <?php foreach ($arResult['ITEMS'] as $item) { ?>
