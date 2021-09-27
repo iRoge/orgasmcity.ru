@@ -7023,6 +7023,22 @@ label.color-label {
 .bttn {
     background: linear-gradient(90deg, #65379B 0%, #886AEA 53%, #6457C6 100%);
     border: transparent;
+    border-radius: 10px;
+    color: #fefefe;
+    cursor: pointer;
+    font-family: 'gilroyMedium';
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: 1px;
+    padding: 16px 20px;
+    outline: 0;
+    -webkit-transition: 300ms;
+    transition: 300ms;
+}
+
+.bttn-pay {
+    background: linear-gradient(90deg, #65379B 0%, #886AEA 53%, #6457C6 100%);
+    border: transparent;
     width: 20%;
     border-radius: 10px;
     color: #fefefe;

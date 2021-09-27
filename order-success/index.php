@@ -96,7 +96,7 @@ if (!$orderId || !$order) {
                     <span>Сумма к оплате: <b><?= number_format($order->getPrice(), 0, '', ' ') . ' pублей' ?></b></span>
                 </div>
                 <div class="success-button-wrapper only-mobile">
-                    <button style="width: 100%!important;" class="bttn pay-button" data-order-id="<?= $orderId ?>">Оплатить заказ</button>
+                    <button style="width: 100%!important;" class="bttn-pay pay-button" data-order-id="<?= $orderId ?>">Оплатить заказ</button>
                 </div>
                 <?php if ($countOrder == 1) {?>
                     <div class="default-success-wrapper auth-help-block">
@@ -137,7 +137,7 @@ if (!$orderId || !$order) {
             </div>
         </div>
         <div class="success-button-wrapper only-pc">
-            <button class="bttn pay-button" data-order-id="<?= $orderId ?>">Оплатить заказ</button>
+            <button class="bttn-pay pay-button" data-order-id="<?= $orderId ?>">Оплатить заказ</button>
         </div>
         <div class="success-block-attention-wrapper">
             <div class="default-success-wrapper attention-block">

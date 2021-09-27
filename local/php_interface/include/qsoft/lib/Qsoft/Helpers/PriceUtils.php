@@ -153,29 +153,30 @@ class PriceUtils
                     ) {
                         continue;
                     }
+                    $basePrice = $assortment["PROPERTY_BASEPRICE_VALUE"];
+                    $wholePrice = $assortment["PROPERTY_BASEWHOLEPRICE_VALUE"];
+                    $oldPrice = self::getReducedPrice($wholePrice, $basePrice);
+                    if (!$oldPrice) {
+                        continue;
+                    }
+                    $markupPercent = ($oldPrice - $wholePrice) * 100 / $wholePrice;
+
+                    if ($markupPercent < 50) {
+                        $discount = $action['PROPERTY_DISCOUNT_50_VALUE'];
+                    } elseif ($markupPercent < 75) {
+                        $discount = $action['PROPERTY_DISCOUNT_50_75_VALUE'];
+                    } elseif ($markupPercent < 100) {
+                        $discount = $action['PROPERTY_DISCOUNT_75_100_VALUE'];
+                    } elseif ($markupPercent < 125) {
+                        $discount = $action['PROPERTY_DISCOUNT_100_125_VALUE'];
+                    } else {
+                        $discount = $action['PROPERTY_DISCOUNT_125_VALUE'];
+                    }
+
                     if (
                         empty($assortmentPrices[$assortment['ID']])
-                        || $assortmentPrices[$assortment['ID']]['DISCOUNT'] < $action['PROPERTY_DISCOUNT_VALUE']
+                        || $assortmentPrices[$assortment['ID']]['DISCOUNT'] < $discount
                     ) {
-                        $basePrice = $assortment["PROPERTY_BASEPRICE_VALUE"];
-                        $wholePrice = $assortment["PROPERTY_BASEWHOLEPRICE_VALUE"];
-                        $oldPrice = self::getReducedPrice($wholePrice, $basePrice);
-                        if (!$oldPrice) {
-                            continue;
-                        }
-                        $markupPercent = ($oldPrice - $wholePrice) * 100 / $wholePrice;
-
-                        if ($markupPercent < 50) {
-                            $discount = $action['PROPERTY_DISCOUNT_50_VALUE'];
-                        } elseif ($markupPercent < 75) {
-                            $discount = $action['PROPERTY_DISCOUNT_50_75_VALUE'];
-                        } elseif ($markupPercent < 100) {
-                            $discount = $action['PROPERTY_DISCOUNT_75_100_VALUE'];
-                        } elseif ($markupPercent < 125) {
-                            $discount = $action['PROPERTY_DISCOUNT_100_125_VALUE'];
-                        } else {
-                            $discount = $action['PROPERTY_DISCOUNT_125_VALUE'];
-                        }
                         $price = self::calculatePrice($oldPrice, $discount);
                         $assortmentPrices[$assortment['ID']] = [
                             'DISCOUNT' => $discount,
