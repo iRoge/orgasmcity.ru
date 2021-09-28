@@ -21,7 +21,7 @@ $waProlog = COption::GetOptionString('respect', 'whatsapp_text');
     }
 </script>
 
-<section class="advantages-section-wrapper">
+<section class="default-section advantages-section-wrapper">
     <div class="grid">
         <?
         foreach ($arResult['ITEMS'] as $item) : ?>

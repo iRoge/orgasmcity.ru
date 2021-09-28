@@ -1277,6 +1277,7 @@ jdiv[class^="popupBlock_"] {
     font-weight: 600;
     text-align: center;
     margin-bottom: 25px;
+    margin-top: 0!important;
     line-height: 48px;
     color: #000000;
 }
@@ -1295,10 +1296,6 @@ jdiv[class^="popupBlock_"] {
     .how-we-work-wrapper {
         padding: 0;
     }
-}
-
-.how-we-work-section {
-    margin-bottom: 20px;
 }
 
 .order-help-wrapper {

@@ -6,7 +6,7 @@ global $DEVICE;
 $counter = 0;
 ?>
 
-<div class="advantages-section-wrapper">
+<div class="default-section advantages-section-wrapper">
     <h2 class="default-header"><?= Loc::getMessage('HOME_ADVANTAGES_BLOCK_TITLE') ?></h2>
     <div class="advantages-list-wrapper main">
         <?php foreach ($arResult['ITEMS'] as $item) {

@@ -7058,3 +7058,15 @@ label.color-label {
         font-size: 18px;
     }
 }
+
+.default-section {
+    float: left;
+    width: 100%;
+    margin: 50px 0
+}
+
+@media (max-width: 767px) {
+    .default-section {
+        margin: 20ёpx 0
+    }
+}

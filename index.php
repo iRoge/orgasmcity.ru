@@ -33,12 +33,15 @@ global $DEVICE;
         ?>
         </div>
         <?php
-
         $APPLICATION->IncludeComponent(
-            "orgasmcity:actions.banners",
-            "",
-            [],
-            false
+            'orgasmcity:mini.banners',
+            'default',
+            [
+                'FILTERS' => [
+                    'IBLOCK_ID' => IBLOCK_MINI_BANNERS,
+                    "ACTIVE" => "Y",
+                ],
+            ]
         );
 
         $APPLICATION->IncludeComponent(
@@ -58,14 +61,10 @@ global $DEVICE;
         );
 
         $APPLICATION->IncludeComponent(
-            'orgasmcity:mini.banners',
-            'default',
-            [
-                'FILTERS' => [
-                    'IBLOCK_ID' => IBLOCK_MINI_BANNERS,
-                    "ACTIVE" => "Y",
-                ],
-            ]
+            "orgasmcity:actions.banners",
+            "",
+            [],
+            false
         );
     } else {
 
@@ -182,7 +181,7 @@ global $DEVICE;
         ]
     );
     ?>
-    <div class="how-we-work-section">
+    <div class="default-section">
         <h2 class="default-header">Как мы работаем</h2>
         <div class="how-we-work-wrapper main">
             <img width="100%" src="<?=SITE_TEMPLATE_PATH . ($DEVICE->isMobile() ? '/img/howWorkMobile.webp' : '/img/howWork.webp')?>" alt="Как мы работаем">

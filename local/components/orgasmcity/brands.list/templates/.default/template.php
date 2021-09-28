@@ -14,22 +14,24 @@
 $this->setFrameMode(true);
 ?>
 <?php if (!empty($arResult['ITEMS'])) {?>
-    <h2 class="default-header">Наши бренды</h2>
-    <div id="brands-list" class="main">
-        <?php foreach ($arResult['ITEMS'] as $arItem) { ?>
-            <div class="brand-card">
-                <a href="<?=$arItem['SECTION_PAGE_URL'];?>" title="<?=$arItem['NAME'];?>" class="brand-card-wrapper" style="text-decoration: none">
-                    <?php if ($arItem['PREVIEW_PICTURE']) { ?>
-                        <div class="card__img-box">
-                            <img width="100%"  src="<?=$arItem['PREVIEW_PICTURE']?>" alt="<?=$arItem['NAME'];?>"/>
-                        </div>
-                    <?php } else { ?>
-                        <div class="text-in-vendor">
-                            <span class="vendor-no-img-text text-in-vendor-title"><?=$arItem['NAME'];?></span>
-                        </div>
-                    <?php } ?>
-                </a>
-            </div>
-        <?php }?>
+    <div class="default-section">
+        <h2 class="default-header">Наши бренды</h2>
+        <div id="brands-list" class="main">
+            <?php foreach ($arResult['ITEMS'] as $arItem) { ?>
+                <div class="brand-card">
+                    <a href="<?=$arItem['SECTION_PAGE_URL'];?>" title="<?=$arItem['NAME'];?>" class="brand-card-wrapper" style="text-decoration: none">
+                        <?php if ($arItem['PREVIEW_PICTURE']) { ?>
+                            <div class="card__img-box">
+                                <img width="100%"  src="<?=$arItem['PREVIEW_PICTURE']?>" alt="<?=$arItem['NAME'];?>"/>
+                            </div>
+                        <?php } else { ?>
+                            <div class="text-in-vendor">
+                                <span class="vendor-no-img-text text-in-vendor-title"><?=$arItem['NAME'];?></span>
+                            </div>
+                        <?php } ?>
+                    </a>
+                </div>
+            <?php }?>
+        </div>
     </div>
 <?php }?>
