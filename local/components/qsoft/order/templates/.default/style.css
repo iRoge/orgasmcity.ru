@@ -85,7 +85,8 @@
 .err-delivery,
 .err-payment {
     text-transform: none;
-    margin-left: 20px;
+    margin: 10px 0 10px 20px;
+    display: block;
 }
 
 .subscribe_row > .form__field {
@@ -344,7 +345,7 @@ input[type="number"] {
 }
 
 .red-border {
-    border-color: red !important;
+    border: 1px solid red !important;
 }
 
 .checkbox4 + .cart-delivery__label {
@@ -1325,7 +1326,7 @@ input[type="number"] {
     color: white;
     font-size: 15px;
     line-height: 17px;
-    padding: 1px 0 1px 30px;
+    padding: 1px 0 1px 15px;
     font-family: gilroyRegular;
     border-color: transparent;
     border-top-left-radius: 10px;
