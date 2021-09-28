@@ -344,13 +344,25 @@ while ($arItem = $res->GetNext()) {
 }
 
 // Собираем кеш раздела избранных
-$res = CIBlockSection::GetList(
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/favorites');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+$output = curl_exec($ch);
+curl_close($ch);
+
+// Собираем кеш группировок
+$res = CIBlockElement::GetList(
     [
         "SORT" => "ASC",
     ],
     [
         "IBLOCK_ID" => IBLOCK_GROUPS,
+        "ACTIVE" => "Y",
     ],
+    false,
     false,
     [
         "ID",
