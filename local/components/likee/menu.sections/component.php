@@ -227,12 +227,8 @@ if (empty($aMenuLinksNew)) {
             ]
         ];
     }
-    //END CUSTOM
 
-
-    $arVariables = [];
-
-    if (($arParams['ID'] > 0) && (intval($arVariables['SECTION_ID']) <= 0) && Loader::includeModule('iblock')) {
+    if ($arParams['ID'] > 0) {
         $arSelect = ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'IBLOCK_SECTION_ID'];
         $arFilter = [
             'ID' => $arParams['ID'],
