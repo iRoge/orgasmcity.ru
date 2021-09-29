@@ -462,7 +462,7 @@ input[type="number"] {
 .buy-btn-wrapper {
     transition: 300ms;
     -webkit-transition: 300ms;
-    background: linear-gradient(276.86deg, #A18CD1 16.41%, #FBC2EB 95.12%);
+    background: linear-gradient(90deg, #65379B 0%, #886AEA 53%, #6457C6 100%);
     border-radius: 35px;
     border-color: transparent;
     height: 68px;

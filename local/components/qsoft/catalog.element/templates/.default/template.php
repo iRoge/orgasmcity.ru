@@ -121,7 +121,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                 </div>
                                 <br>
                                 <?php if ($arResult['USER_DISCOUNT']) { ?>
-                                <p>
+                                    <p>
                                         *скидка по бонусной программе в размере
                                         <span class="discount-yellow">
                                             <b><?=$arResult['USER_DISCOUNT']?>
@@ -129,8 +129,18 @@ foreach ($arResult['OFFERS'] as $offer) {
                                             </b>
                                         </span>
                                         включена в общую скидку <br>
-                                </p>
+                                    </p>
                                 <?php }?>
+                                <?php
+                                    $APPLICATION->IncludeComponent(
+                                        'orgasmcity:timer',
+                                        'card',
+                                        [
+//                                            'DATE_TO' => $arResult['TIMER_DATE'],
+                                            'DATE_TO' => '29.09.2021 00:00',
+                                        ]
+                                    );
+                                ?>
                                 <div class="advantage-image-wrapper">
                                     <?php if ($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] >= $freeDeliveryMinSum) { ?>
                                         <img class="advantage-image" src="<?= SITE_TEMPLATE_PATH; ?>/img/freeDelivery.webp" alt="Бесплатная доставка">

@@ -280,6 +280,12 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->arResult['SHOW_CATALOGS_LINE'] = $this->type == self::TYPE_SECTION;
 
+        $this->arResult['SHOW_TIMER'] = false;
+        if ($this->type == self::TYPE_GROUP && $this->group['PROPERTY_IS_ACTION_VALUE'] == 1 && $this->group['ACTIVE'] == 'Y') {
+            $this->arResult['SHOW_TIMER'] = true;
+            $this->arResult['TIMER_DATE'] = $this->group['DATE_ACTIVE_TO'];
+        }
+
         global $USER;
         $this->arResult['HAS_USER_DISCOUNT'] = false;
         if ($USER->IsAuthorized()) {
@@ -777,6 +783,8 @@ class QsoftCatalogSection extends ComponentHelper
                     'PREVIEW_PICTURE',
                     'DETAIL_PICTURE',
                     'NAME',
+                    'ACTIVE',
+                    'DATE_ACTIVE_TO',
                     'PROPERTY_BESTSELLER',
                     'PROPERTY_NEW',
                     'PROPERTY_LENGTH_FROM',
@@ -789,6 +797,7 @@ class QsoftCatalogSection extends ComponentHelper
                     'PROPERTY_SECTION',
                     'PROPERTY_VOLUME',
                     'PROPERTY_PRODUCT',
+                    'PROPERTY_IS_ACTION',
                     'PROPERTY_MATERIAL',
                     'PROPERTY_PRICE_FROM',
                     'PROPERTY_PRICE_TO',

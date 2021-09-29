@@ -615,12 +615,12 @@ font-family: 'gilroyRegular';
     margin-top: 20px;
     border: 1px solid rgba(200,200,200, .5);
 }
-.popup__container a.button--primary, .one-click-form  button {
+.popup__container a.button--primary, .one-click-form button {
     padding: 12px 0;
     background: #654670;
     width: 48%;
     color: #fff!important;
-    font-family: 'gilroyRegular';
+    font-family: 'gilroyMedium';
     font-size: 16px;
     text-align: center;
     margin: 15px 0;
@@ -639,7 +639,7 @@ font-family: 'gilroyRegular';
     background: #f0a740;
     width: 48%;
     color: #fff!important;
-    font-family: 'gilroyRegular';
+    font-family: 'gilroyMedium';
     font-size: 16px;
     text-align: center;
     border: 0;
@@ -688,11 +688,14 @@ font-family: 'gilroyRegular';
 }
 
 div.product-preorder-success button.button--blue {
-    background: #654670 !important;
+    background: linear-gradient(90deg, #FDFBFB 0%, #EBEDEE 100%); !important;
+    color: black!important;
 }
 
+
 div.product-preorder-success button.button--blue:hover {
-    background: #2A2A2A !important;
+    background: #2A2A2A!important;
+    color: white!important;
 }
 
 div.product-preorder-success a.button--purple {

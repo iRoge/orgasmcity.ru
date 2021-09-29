@@ -1,0 +1,57 @@
+.countdown-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.countdown {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 40%;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.countdown .day, .countdown .hour, .countdown .min, .countdown .sec {
+    padding: 5px;
+    width: 23%;
+    text-align: center;
+    background: #FFFFFF;
+    border-radius: 10px;
+}
+
+.countdown .day .num, .countdown .hour .num, .countdown .min .num, .countdown .sec .num {
+    display: block;
+    font-size: 40px;
+    color: black;
+    font-family: gilroyRegular;
+}
+
+.countdown .day .word, .countdown .hour .word, .countdown .min .word, .countdown .sec .word {
+    display: block;
+    font-size: 16px;
+    color: #000000;
+    font-family: gilroyRegular;
+}
+
+.countdown-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+@media (max-width: 767px) {
+    .countdown {
+        width: 100%;
+        padding: 0 5px;
+    }
+
+    .countdown .day .word, .countdown .hour .word, .countdown .min .word, .countdown .sec .word {
+        font-size: 15px;
+    }
+}

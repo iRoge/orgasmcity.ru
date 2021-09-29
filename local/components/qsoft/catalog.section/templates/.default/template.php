@@ -62,6 +62,16 @@ if (!$arResult['IS_AJAX']) {
                 ]
             );
         }
+
+        if ($arResult['SHOW_TIMER']) {
+            $APPLICATION->IncludeComponent(
+                'orgasmcity:timer',
+                'catalog',
+                [
+                    'DATE_TO' => $arResult['TIMER_DATE'],
+                ]
+            );
+        }
         ?>
         <!-- catalog -->
         <div class="catalog">
