@@ -137,7 +137,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                         'card',
                                         [
 //                                            'DATE_TO' => $arResult['TIMER_DATE'],
-                                            'DATE_TO' => '29.09.2021 00:00',
+                                            'DATE_TO' => '30.09.2021 00:00',
                                         ]
                                     );
                                 ?>

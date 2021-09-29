@@ -32,6 +32,7 @@ class PriceUtils
                     "PROPERTY_CUSTOM_PRICE",
                     "PROPERTY_CUSTOM_OLD_PRICE",
                     "PROPERTY_CUSTOM_DISCOUNT",
+                    "PROPERTY_CUSTOM_DISCOUNT_DATE_TO",
                     "PROPERTY_BASEWHOLEPRICE"
                 ];
 
@@ -49,6 +50,7 @@ class PriceUtils
                         'PRICE' => $offer['PROPERTY_CUSTOM_PRICE_VALUE'],
                         'DISCOUNT' => $offer['PROPERTY_CUSTOM_DISCOUNT_VALUE'],
                         'WHOLEPRICE' => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
+                        'PROPERTY_CUSTOM_DISCOUNT_DATE_TO' => $offer['PROPERTY_CUSTOM_DISCOUNT_DATE_TO_VALUE'],
                     ];
                 }
                 $cache->StartDataCache();
@@ -103,6 +105,7 @@ class PriceUtils
                 'DETAIL_TEXT',
                 'PREVIEW_PICTURE',
                 'DETAIL_PICTURE',
+                'DATE_ACTIVE_TO',
                 'NAME',
                 'PROPERTY_BESTSELLER',
                 'PROPERTY_NEW',
@@ -180,6 +183,7 @@ class PriceUtils
                             'DISCOUNT' => $discount,
                             'PRICE' => $price,
                             'OLD_PRICE' => $oldPrice > $price ? $oldPrice : $price,
+                            'CUSTOM_DISCOUNT_DATE_TO' => $action['DATE_ACTIVE_TO']
                         ];
                     }
                 }
@@ -196,6 +200,7 @@ class PriceUtils
                     'PRICE' => $price,
                     'OLD_PRICE' => $price,
                     'WHOLEPRICE' => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
+                    'CUSTOM_DISCOUNT_DATE_TO' => ''
                 ];
             }
         }
@@ -213,6 +218,9 @@ class PriceUtils
             }
             if (isset($arPrice['WHOLEPRICE'])) {
                 $props['BASEWHOLEPRICE'] = $arPrice['WHOLEPRICE'];
+            }
+            if (isset($arPrice['CUSTOM_DISCOUNT_DATE_TO'])) {
+                $props['CUSTOM_DISCOUNT_DATE_TO'] = $arPrice['CUSTOM_DISCOUNT_DATE_TO'];
             }
 
             CIBlockElement::SetPropertyValuesEx($offerId, IBLOCK_OFFERS, $props);

@@ -57,7 +57,6 @@ $(document).ready(function () {
             $(_config.target+' .min .num').html(addZero(minutes));
             $(_config.target+' .sec .num').html(addZero(seconds));
 
-            // If the count down is over, write some text
             if (distance < 0) {
                 $('.action-closed-wrapper').show();
                 $('.countdown').hide();
