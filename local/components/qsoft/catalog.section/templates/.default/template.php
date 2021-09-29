@@ -63,14 +63,22 @@ if (!$arResult['IS_AJAX']) {
             );
         }
 
-        if ($arResult['SHOW_TIMER']) {
-            $APPLICATION->IncludeComponent(
-                'orgasmcity:timer',
-                'catalog',
-                [
-                    'DATE_TO' => $arResult['TIMER_DATE'],
-                ]
-            );
+        if ($arResult['TIMER_DATE'] !== null) {
+            $showTimer = date('d.m.Y H:i:s') <= $arResult['TIMER_DATE'];
+            if ($showTimer) {
+                $APPLICATION->IncludeComponent(
+                    'orgasmcity:timer',
+                    'catalog',
+                    [
+                        'DATE_TO' => $arResult['TIMER_DATE'],
+                    ]
+                );
+            }
+            ?>
+            <div class="action-closed-wrapper" <?=$showTimer ? 'hidden' : ''?>>
+                Акция завершена!
+            </div>
+        <?php
         }
         ?>
         <!-- catalog -->

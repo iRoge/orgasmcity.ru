@@ -177,17 +177,6 @@ foreach ($arResult['OFFERS'] as $offer) {
                                         <div style="clear: both"></div>
                                     </div>
                                     <?php endif; ?>
-<!--                                    <div class="buttons-wrapper">-->
-<!--                                        <div class="sizes-popup-area">-->
-<!--                                            <a class="sizes-popup" href="#">-->
-                                    <?php //= Loc::getMessage("SIZES_INFO") ?><!--</a>-->
-<!--                                            <div class="sizes-popup-block" style="display:none;">-->
-<!--                                                <div class="tab-size-block">-->
-<!--                                                    --><?php //= $arResult['SECTION_SIZES_TAB']; ?>
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
                                     <?php if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS'])) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("COLOR") ?></h3>
                                     <div style="display: block; width: 100%;" class="js-color-selector">

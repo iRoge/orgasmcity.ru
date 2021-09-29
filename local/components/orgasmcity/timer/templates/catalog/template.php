@@ -1,4 +1,4 @@
-<?php use Bitrix\Main\Page\Asset;
+<?php
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @var array $arParams */
@@ -19,7 +19,7 @@ $this->setFrameMode(true);
     <div
             class="countdown"
             data-date="<?=$arResult['ARRAY_DATE_TO']['day']?>-<?=$arResult['ARRAY_DATE_TO']['month']?>-<?=$arResult['ARRAY_DATE_TO']['year']?>"
-            data-time="<?=$arResult['ARRAY_DATE_TO']['minute'] ?: '00'?>:<?=$arResult['ARRAY_DATE_TO']['second'] ?: '00'?>"
+            data-time="<?=$arResult['ARRAY_DATE_TO']['hour'] ?: '00'?>:<?=$arResult['ARRAY_DATE_TO']['minute'] ?: '00'?>:<?=$arResult['ARRAY_DATE_TO']['second'] ?: '00'?>"
     >
         <span class="countdown-title">До конца акции осталось</span>
         <div class="day"><span class="num"></span><span class="word"></span></div>

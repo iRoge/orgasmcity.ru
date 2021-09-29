@@ -17,15 +17,10 @@ class PriceUtils
             global $CACHE_MANAGER;
             $cache = new CPHPCache();
 
-            if ($cache->InitCache(86400, 'pricesCache', '/')) {
+            if ($cache->InitCache(86400, 'pricesCache', '/prices')) {
                 self::$pricesCache = $cache->getVars();
             }
             if (empty($aMenuLinksNew)) {
-                $cache->StartDataCache();
-                $CACHE_MANAGER->StartTagCache('/');
-                $CACHE_MANAGER->RegisterTag("catalogAll");
-                $CACHE_MANAGER->RegisterTag("pricesAll");
-
                 $arFilter = [
                     "IBLOCK_ID" => IBLOCK_OFFERS,
                     "ACTIVE" => "Y",
@@ -56,7 +51,10 @@ class PriceUtils
                         'WHOLEPRICE' => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
                     ];
                 }
-
+                $cache->StartDataCache();
+                $CACHE_MANAGER->StartTagCache('/prices');
+                $CACHE_MANAGER->RegisterTag("catalogAll");
+                $CACHE_MANAGER->RegisterTag("pricesAll");
                 $cache->EndDataCache(self::$pricesCache);
                 $CACHE_MANAGER->EndTagCache();
             }

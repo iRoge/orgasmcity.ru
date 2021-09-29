@@ -59,7 +59,8 @@ $(document).ready(function () {
 
             // If the count down is over, write some text
             if (distance < 0) {
-                $(".countdown").innerHTML = "EXPIRED";
+                $('.action-closed-wrapper').show();
+                $('.countdown').hide();
             }
         }
 
@@ -67,7 +68,6 @@ $(document).ready(function () {
     }
 
     const addZero = (x) => (x < 10 && x >= 0) ? "0"+x : x;
-    console.log(213);
     const timer = new countdown({
         target: '.countdown',
         dayWord: ' дней',
@@ -75,4 +75,13 @@ $(document).ready(function () {
         minWord: ' минут',
         secWord: ' секунд'
     });
+
+    var alreadyReloading = false;
+    function reloadWindow() {
+        if (!alreadyReloading) {
+            return;
+        }
+        alreadyReloading = true;
+        location.reload();
+    }
 });

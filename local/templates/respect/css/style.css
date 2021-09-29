@@ -6245,7 +6245,8 @@ label.color-label {
         align-items: flex-start;
         justify-content: center;
         text-align: center;
-        font-size: 11px;
+        font-size: 12px;
+        font-family: gilroyMedium;
     }
 
     .mobile_soc_icon {
@@ -7067,6 +7068,6 @@ label.color-label {
 
 @media (max-width: 767px) {
     .default-section {
-        margin: 20ёpx 0
+        margin: 20px 0
     }
 }

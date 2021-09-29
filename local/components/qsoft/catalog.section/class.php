@@ -236,10 +236,6 @@ class QsoftCatalogSection extends ComponentHelper
         return array_pop($arSections);
     }
 
-    /**
-     * @return mixed|void
-     * @throws \Bitrix\Main\LoaderException
-     */
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
@@ -280,9 +276,8 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->arResult['SHOW_CATALOGS_LINE'] = $this->type == self::TYPE_SECTION;
 
-        $this->arResult['SHOW_TIMER'] = false;
+        $this->arResult['TIMER_DATE'] = null;
         if ($this->type == self::TYPE_GROUP && $this->group['PROPERTY_IS_ACTION_VALUE'] == 1 && $this->group['ACTIVE'] == 'Y') {
-            $this->arResult['SHOW_TIMER'] = true;
             $this->arResult['TIMER_DATE'] = $this->group['DATE_ACTIVE_TO'];
         }
 
@@ -362,7 +357,7 @@ class QsoftCatalogSection extends ComponentHelper
                     $this->includeComponentTemplate();
                     return false;
                 }
-                $this->loadProducts(true);
+                $this->loadFavouritesProducts();
                 $this->loadOffers();
                 $this->getFavoritesProductsAndOffers();
                 break;
@@ -376,11 +371,7 @@ class QsoftCatalogSection extends ComponentHelper
         return true;
     }
 
-    /**
-     * load products for current and related sections
-     * products are stored in @var $this- >products
-     */
-    private function loadProducts($all = false): void
+    private function loadProducts(): void
     {
         if (!empty($this->products)) {
             return;
@@ -388,32 +379,28 @@ class QsoftCatalogSection extends ComponentHelper
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
-        $arProducts = [];
-        if ($this->initCache('products_' . $this->type)) {
-            if ($all) {
-                $arProducts = $this->getCachedVars('products_' . $this->type);
-            } else {
-                list($arProducts, $this->section) = $this->getCachedVars('products_section_' . $this->type);
-            }
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
 
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $arProducts = [];
+        if ($cache->InitCache(86400, 'products_' . serialize($this->arParams), '/products')) {
+            $productsAndSection = $cache->GetVars();
+            list($arProducts, $this->section) = $productsAndSection;
+        }
+        if (empty($productsAndSection)) {
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
             ];
 
-            if (!$all) {
-                $currentSection = $this->getCurrentSection($this->code);
-
-                if (!empty($currentSection)) {
-                    $currentSection['SAME_SECTIONS'] = $this->getSameSections($currentSection);
-                    $this->section = $currentSection;
-                    $relatedSections = $this->loadRelatedSections($currentSection);
-                    if (!empty($relatedSections)) {
-                        $arFilter['IBLOCK_SECTION_ID'] = $relatedSections;
-                    }
+            $currentSection = $this->getCurrentSection($this->code);
+            if (!empty($currentSection)) {
+                $currentSection['SAME_SECTIONS'] = $this->getSameSections($currentSection);
+                $this->section = $currentSection;
+                $relatedSections = $this->loadRelatedSections($currentSection);
+                if (!empty($relatedSections)) {
+                    $arFilter['IBLOCK_SECTION_ID'] = $relatedSections;
                 }
             }
 
@@ -426,25 +413,61 @@ class QsoftCatalogSection extends ComponentHelper
                 $arSelectFields
             );
             $arProducts = $this->processProducts($res);
-            if (!empty($arProducts)) {
-                $this->endTagCache();
-                if ($all) {
-                    $this->saveToCache('products_' . $this->type, $arProducts);
-                } else {
-                    $this->saveToCache('products_section_' . $this->type, [$arProducts, $currentSection]);
-                }
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            if (empty($arProducts)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache([$arProducts, $currentSection]);
             }
         }
         $this->products = $arProducts;
     }
 
-    /**
-     * @param $code
-     * @return array
-     */
+    private function loadFavouritesProducts(): void
+    {
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $arProducts = [];
+        if ($cache->InitCache(86400, 'products_' . $this->type, '/products')) {
+            $arProducts = $cache->GetVars();
+        }
+        if (empty($arProducts)) {
+            $arFilter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => "Y",
+            ];
+
+            $arSelectFields = self::DEFAULT_PRODUCT_FIELDS_TO_SELECT;
+            $res = CIBlockElement::GetList(
+                ["ID" => "ASC"],
+                $arFilter,
+                false,
+                false,
+                $arSelectFields
+            );
+            $arProducts = $this->processProducts($res);
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+
+            if (empty($arProducts)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
+            } else {
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($arProducts);
+            }
+        }
+        $this->products = $arProducts;
+    }
+
     private function getCurrentSection($code): array
     {
         $arSection = [];
@@ -486,11 +509,6 @@ class QsoftCatalogSection extends ComponentHelper
         return $arSection;
     }
 
-    /**
-     * load sections related to current section
-     * @param $arSection
-     * @return array
-     */
     private function loadRelatedSections($arSection): array
     {
         $arSectionIds = [];
@@ -611,13 +629,14 @@ class QsoftCatalogSection extends ComponentHelper
         if (!empty($this->offers)) {
             return;
         }
-        $arOffers = [];
-        if ($this->initCache('offers_' . $this->type)) {
-            $arOffers = $this->getCachedVars('offers_' . $this->type);
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
 
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+        $arOffers = [];
+        if ($cache->InitCache(86400, 'offers_' . serialize($this->arParams), '/offers')) {
+            $arOffers = $cache->GetVars();
+        }
+        if (empty($arOffers)) {
             $arSelectFields = self::DEFAULT_OFFER_FIELDS_TO_SELECT;
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_OFFERS,
@@ -635,12 +654,16 @@ class QsoftCatalogSection extends ComponentHelper
 
             $arOffers = $this->processOffers($res);
 
-            if (!empty($arOffers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers_' . $this->type, $arOffers);
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/groups');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+
+            if (empty($arOffers)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($arOffers);
             }
         }
 
@@ -654,9 +677,6 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$this->products[$arItem["PROPERTY_CML2_LINK_VALUE"]]) {
                 continue;
             }
-            if (!isset($arItem['PROPERTY_BASEPRICE_VALUE']) || !isset($arItem['PROPERTY_BASEWHOLEPRICE_VALUE'])) {
-                continue;
-            }
             $sizeRes = CIBlockElement::GetProperty(IBLOCK_OFFERS, $arItem["ID"], "sort", "asc", ['CODE' => 'SIZE']);
             $size = $sizeRes->GetNext();
             $arOffers[$arItem["ID"]] = [
@@ -664,8 +684,6 @@ class QsoftCatalogSection extends ComponentHelper
                 'PROPERTY_CML2_LINK_VALUE' => $arItem['PROPERTY_CML2_LINK_VALUE'],
                 'PROPERTY_SIZE_VALUE' => $size['VALUE'],
                 'PROPERTY_COLOR_VALUE' => $arItem['PROPERTY_COLOR_VALUE'],
-                'PROPERTY_BASEPRICE_VALUE' => $arItem['PROPERTY_BASEPRICE_VALUE'],
-                'PROPERTY_BASEWHOLEPRICE_VALUE' => $arItem['PROPERTY_BASEWHOLEPRICE_VALUE'],
             ];
         }
 
@@ -737,19 +755,26 @@ class QsoftCatalogSection extends ComponentHelper
         if (!empty($this->group)) {
             return true;
         }
-        $group = false;
-        if ($this->initCache('group_' . $this->code)) {
-            $group = $this->getCachedVars('group');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $group = null;
+        if ($cache->InitCache(86400, 'group_' . $this->code, '/groups')) {
+            $group = $cache->GetVars();
+        }
+        if (empty($group)) {
             $group = $this->loadGroup();
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/groups');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+
             if (empty($group)) {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->endTagCache();
-                $this->saveToCache('group', $group);
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($group);
             }
         }
 
@@ -803,54 +828,6 @@ class QsoftCatalogSection extends ComponentHelper
                     'PROPERTY_PRICE_TO',
                 ]
             )->GetNext();
-//            if ($group['PREVIEW_PICTURE']) {
-//                $temp = CFile::GetFileArray($group['PREVIEW_PICTURE']);
-//                $res = CIBlockElement::GetProperty(
-//                    IBLOCK_GROUPS,
-//                    $group["ID"],
-//                    [],
-//                    [
-//                        "CODE" => "ACTION_LINKS_DESKTOP",
-//                    ]
-//                );
-//                while ($arItem = $res->Fetch()) {
-//                    if (!$arItem["VALUE"]) {
-//                        continue;
-//                    }
-//                    $group["BANNER"]["DESKTOP_LINKS"][] = array(
-//                        "LINK" => $arItem["DESCRIPTION"],
-//                        "STYLE" => $this->getBannerLinkStyle($arItem["VALUE"], $temp["WIDTH"], $temp["HEIGHT"]),
-//                    );
-//                }
-//                if (!empty($group["BANNER"]["DESKTOP_LINKS"])) {
-//                    $group["BANNER"]["DESKTOP"] = $temp["SRC"];
-//                } else {
-//                    $group["BANNER"]["SINGLE"] = $temp["SRC"];
-//                }
-//            }
-//            if ($group['DETAIL_PICTURE']) {
-//                $temp = CFile::GetFileArray($group['DETAIL_PICTURE']);
-//                $res = CIBlockElement::GetProperty(
-//                    IBLOCK_GROUPS,
-//                    $group["ID"],
-//                    [],
-//                    [
-//                        "CODE" => "ACTION_LINKS_MOBILE",
-//                    ]
-//                );
-//                while ($arItem = $res->Fetch()) {
-//                    if (!$arItem["VALUE"]) {
-//                        continue;
-//                    }
-//                    $group["BANNER"]["MOBILE_LINKS"][] = array(
-//                        "LINK" => $arItem["DESCRIPTION"],
-//                        "STYLE" => $this->getBannerLinkStyle($arItem["VALUE"], $temp["WIDTH"], $temp["HEIGHT"]),
-//                    );
-//                }
-//                if (!empty($group["BANNER"]["MOBILE_LINKS"])) {
-//                    $group["BANNER"]["MOBILE"] = $temp["SRC"];
-//                }
-//            }
         }
 
         return $group ?: [];
@@ -1038,20 +1015,24 @@ class QsoftCatalogSection extends ComponentHelper
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
-        $cacheTag = 'products_group_' . $this->code;
-        if ($this->initCache($cacheTag)) {
-            $products = $this->getCachedVars('products');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
 
+        $cacheTag = 'products_group_' . $this->code;
+        if ($cache->InitCache(86400, $cacheTag, '/products')) {
+            $products = $cache->GetVars();
+        }
+        if (empty($products)) {
             $products = $this->loadProductsByFilter();
-            if (!empty($products)) {
-                $this->endTagCache();
-                $this->saveToCache('products', $products);
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            if (empty($products)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($products);
             }
         }
 
@@ -1074,22 +1055,26 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getGroupOffers()
     {
-        $offers = [];
-        $cacheTag = 'offers_group_' . $this->code;
-        if ($this->initCache($cacheTag)) {
-            $offers = $this->getCachedVars('offers');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
 
+        $offers = [];
+
+        if ($cache->InitCache(86400, 'offers_group_' . $this->code, '/offers')) {
+            $offers = $cache->GetVars();
+        }
+        if (empty($offers)) {
             $offers = $this->loadOffersByFilter();
 
-            if (!empty($offers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers', $offers);
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/offers');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            if (empty($offers)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($offers);
             }
         }
 
@@ -1147,57 +1132,19 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getSearchProducts()
     {
-        $products = [];
-
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
 
         $this->buildSearchFilter();
-
-        if ($this->initCache('search_products')) {
-            $products = $this->getCachedVars('products');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-            $this->registerTag('catalogSearch');
-
-            $products = $this->loadProductsByFilter();
-
-            if (!empty($products)) {
-                $this->endTagCache();
-                $this->saveToCache('products', $products);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
+        $products = $this->loadProductsByFilter();
 
         $this->products = $products;
     }
 
     private function getSearchOffers()
     {
-        $offers = [];
-
-        if ($this->initCache('search_offers')) {
-            $offers = $this->getCachedVars('offers');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-            $this->registerTag('catalogSearch');
-
-            $offers = $this->loadOffersByFilter();
-
-            if (!empty($offers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers', $offers);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
+        $offers = $this->loadOffersByFilter();
         $this->offers = $offers;
     }
 
@@ -2021,6 +1968,9 @@ class QsoftCatalogSection extends ComponentHelper
                     case self::TYPE_FAVORITES:
                         $seo['ELEMENT_PAGE_TITLE'] = 'Избранное';
                         break;
+                    case self::TYPE_SEARCH:
+                        $seo['ELEMENT_PAGE_TITLE'] = 'Поиск: ' . $this->arParams['SEARCH'];
+                        break;
                     default:
                         break;
                 }
@@ -2038,8 +1988,19 @@ class QsoftCatalogSection extends ComponentHelper
         } elseif (!empty($seo['ELEMENT_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['ELEMENT_META_KEYWORDS']);
         } else {
+            $additionalKeyword = '';
+            if ($this->type == self::TYPE_GROUP) {
+                $additionalKeyword = $this->group['NAME'];
+            } elseif($this->type == self::TYPE_SECTION) {
+                $additionalKeyword = $this->section['NAME'];
+            } elseif ($this->type == self::TYPE_FAVORITES) {
+                $additionalKeyword = 'избранные товары';
+            } elseif ($this->type == self::TYPE_SEARCH) {
+                $additionalKeyword = $this->arParams['SEARCH'];
+            }
+
             $APPLICATION->SetPageProperty("keywords",
-                'Купить секс-товары,секс-шоп,скидки,низкой цене, ' . ($this->type == self::TYPE_GROUP ? $this->group['NAME'] : $this->section['NAME'])
+                'Купить секс-товары,секс-шоп,секс шоп в москве,скидки,низкой цене, ' . $additionalKeyword
             );
         }
 
@@ -2062,6 +2023,8 @@ class QsoftCatalogSection extends ComponentHelper
                 }
             } elseif ($this->type == self::TYPE_FAVORITES) {
                 $description = 'Ваши избранные позиции в магазине товаров для взрослых Город Оргазма 18+';
+            } elseif ($this->type == self::TYPE_SEARCH) {
+                $description = 'Поиск среди товаров для взрослых по подстроке ' . $this->arParams['SEARCH'];
             }
 
             $APPLICATION->SetPageProperty("description", $description);
@@ -2156,20 +2119,25 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getBrand()
     {
-        $brand = false;
-        $cacheTag = 'brand_' . $this->code;
-        if ($this->initCache($cacheTag)) {
-            $brand = $this->getCachedVars('brand');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $brand = [];
+        if ($cache->InitCache(86400, 'brand_' . $this->code, '/brands')) {
+            $brand = $cache->GetVars();
+        }
+        if (empty($brand)) {
             $brand = $this->loadBrand();
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
             if (empty($brand)) {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->endTagCache();
-                $this->saveToCache('brand', $brand);
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($brand);
             }
         }
 

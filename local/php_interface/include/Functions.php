@@ -546,9 +546,6 @@ class Functions
         if ($offerCache->InitCache(360000, 'allOffers', 'offers')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
-            $CACHE_MANAGER->StartTagCache('offers');
-            $CACHE_MANAGER->RegisterTag('catalogAll');
-
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_OFFERS,
                 "ACTIVE" => "Y",
@@ -580,6 +577,9 @@ class Functions
                 $arOffers[$offer['ID']] = $offer;
             }
 
+            $CACHE_MANAGER->StartTagCache('offers');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
+
             $CACHE_MANAGER->endTagCache();
             $offerCache->EndDataCache(['allOffers' => $arOffers]);
         }
@@ -596,9 +596,6 @@ class Functions
         if ($offerCache->InitCache(360000, 'allProducts', 'products')) {
             $arProducts = $offerCache->GetVars()['allProducts'];
         } elseif ($offerCache->StartDataCache()) {
-            $CACHE_MANAGER->StartTagCache('offers');
-            $CACHE_MANAGER->RegisterTag('catalogAll');
-
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
@@ -625,7 +622,11 @@ class Functions
                 "PROPERTY_COLLECTION",
                 "PROPERTY_YEAR",
                 "PROPERTY_VIBRATION",
+                "SHOW_COUNTER",
             ];
+
+            $CACHE_MANAGER->StartTagCache('offers');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
 
             $res = CIBlockElement::GetList(
                 ["SORT" => "ASC"],
@@ -655,9 +656,6 @@ class Functions
         if ($brandsCache->initCache(360000, 'brands', 'brands')) {
             $arBrands = $brandsCache->getVars()['array_brands'];
         } elseif ($brandsCache->StartDataCache()) {
-            $CACHE_MANAGER->StartTagCache('brands');
-            $CACHE_MANAGER->RegisterTag('catalogAll');
-
             $res = CIBlockElement::GetList(
                 false,
                 [
@@ -706,6 +704,9 @@ class Functions
                 }
             });
 
+
+            $CACHE_MANAGER->StartTagCache('brands');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
             $CACHE_MANAGER->endTagCache();
             $brandsCache->EndDataCache(['array_brands' => $arBrands]);
         }

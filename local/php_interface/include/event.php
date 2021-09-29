@@ -69,18 +69,6 @@ function setUserGroup(&$arFields)
     }
 }
 
-$eventManager->addEventHandler('sale', 'registerInputTypes', 'registerInputTypePaySystemLocations');
-function registerInputTypePaySystemLocations(\Bitrix\Main\Event $event)
-{
-    \Bitrix\Sale\Internals\Input\Manager::register(
-        "PAY_SYSTEM_LOCATIONS",
-        array(
-            'CLASS' => '\Qsoft\PaySystemLocations\PaySystemLocationsInput',
-            'NAME' => 'Местоположения платежной системы',
-        )
-    );
-}
-
 
 if (mb_strpos($_SERVER['REQUEST_URI'], '/bitrix/admin') !== false) {
     $eventManager->AddEventHandler("main", "OnBeforeProlog", "checkAccessRights", 50);

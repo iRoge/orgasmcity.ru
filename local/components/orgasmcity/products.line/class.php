@@ -79,7 +79,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'offers|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
-            $this->cacheManager->StartTagCache('offers');
+            $this->cacheManager->StartTagCache('/offers');
             $this->cacheManager->RegisterTag('catalogAll');
 
             $arFilter = [
@@ -133,7 +133,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         if ($productsCache->InitCache(86400, 'products|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
             $arProducts = $productsCache->GetVars()['products'];
         } elseif ($productsCache->StartDataCache()) {
-            $this->cacheManager->StartTagCache('products');
+            $this->cacheManager->StartTagCache('/products');
             $this->cacheManager->RegisterTag('catalogAll');
             $arFilter = $this->arParams['FILTERS'];
 

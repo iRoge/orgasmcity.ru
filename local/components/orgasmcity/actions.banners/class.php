@@ -22,7 +22,7 @@ class NewComponent extends \CBitrixComponent
         if ($cache->InitCache(86400, 'actionBanners', 'banners')) {
             $arResultItems = $cache->GetVars()['banners'];
         } elseif ($cache->StartDataCache()) {
-            $CACHE_MANAGER->StartTagCache('actionBanners');
+            $CACHE_MANAGER->StartTagCache('/actionBanners');
             $CACHE_MANAGER->RegisterTag('catalogAll');
 
             $rsItems = CIBlockElement::GetList(

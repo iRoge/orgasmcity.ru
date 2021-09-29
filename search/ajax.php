@@ -18,7 +18,7 @@ if (
         $index = $cache->GetVars()['search_index'];
         $availableProds = $cache->GetVars()['available_prods'];
     } elseif ($cache->StartDataCache()) {
-        $CACHE_MANAGER->StartTagCache('/');
+        $CACHE_MANAGER->StartTagCache('/search');
         $CACHE_MANAGER->RegisterTag("catalogAll");
         // Достаем секции
         $index['sections'] = getSectionsIndex();

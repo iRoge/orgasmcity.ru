@@ -7,6 +7,14 @@ select, textarea, input {
 select:focus, textarea:focus, input:focus {
     outline: none;
 }
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+    margin: 0;
+}
 .icon,
 .selectize-control.multi .selectize-input:after,
 .selectize-control.single .selectize-input:after,
