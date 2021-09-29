@@ -111,25 +111,3 @@
 .slick-slider > .slick-arrow:not(.slick--no-inline) .slick-slider > .slick-arrow + .slick-list {
     width: 85%;
 }
-
-
-
-
-
-
-/*.slider .slides {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    padding-top: 39.725%;
-}
-.slider .slides .slick-list, .slider .slides .slick-track {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
-.slick-slider > .slick-list {
-    width: 100%;
-}*/

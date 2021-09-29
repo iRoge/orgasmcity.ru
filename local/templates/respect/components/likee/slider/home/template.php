@@ -16,7 +16,8 @@
 $this->setFrameMode(true);
 ?>
 <?php if (!empty($arResult['ITEMS'])) : ?>
-    <div class="slider main">
+<div class="slider" style="padding: 0">
+    <div class="main">
             <div id="main-slider<?= $arParams['CUSTOM_NUMBER'] ?>" class="slides<?php !empty($arResult['ITEMS'][0]['VIDEO']) and print ' slides--with-video' ?>"<?php !empty($arResult['SLICK']) and print " data-slick='".json_encode($arResult['SLICK'])."'"; ?>>
                 <?php $counter = 1;
                 foreach ($arResult['ITEMS'] as $arItem) :
@@ -73,15 +74,36 @@ $this->setFrameMode(true);
                             </div>
                         </div>
                     <?php elseif (!empty($arItem['LINK'])) : ?>
-                            <a href="<?= $arItem['LINK']; ?>" id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" <?= $dataProps?> data-mob-bg="<?=$arItem['MOBILE_SRC']?>" data-mob-link="<?=$arItem['PROPS']['MOBILE_LINK']['VALUE']?>" data-title="<?= $arItem['NAME']; ?>"><?= $bannerImg ?></a>
+                            <a
+                                    href="<?= $arItem['LINK']; ?>"
+                                    id="msi-<?= $arItem['ID'] ?>"
+                                    class="slides-item slider-one banner_item"
+                                    style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');"
+                                    <?=$dataProps?>
+                                    data-mob-bg="<?=$arItem['MOBILE_SRC']?>"
+                                    data-mob-link="<?=$arItem['PROPS']['MOBILE_LINK']['VALUE']?>"
+                                    data-title="<?= $arItem['NAME']; ?>"
+                            >
+                                <?=$bannerImg?>
+                            </a>
                     <?php else : ?>
-                            <div id="msi-<?= $arItem['ID'] ?>" class="slides-item slider-one banner_item" style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');" <?= $dataProps?> data-mob-bg="<?=$arItem['MOBILE_SRC']?>"><?= $bannerImg ?></div>
+                            <div
+                                    id="msi-<?=$arItem['ID'] ?>"
+                                    class="slides-item slider-one banner_item"
+                                    style="background-image:url('<?=$arItem['PREVIEW_PICTURE']['SRC']?>');"
+                                    <?=$dataProps?>
+                                    data-mob-bg="
+                                    <?=$arItem['MOBILE_SRC']?>"
+                            >
+                                <?=$bannerImg ?>
+                            </div>
                     <?php endif; ?>
                     <?php endif; ?>
                     <?php $counter++; ?>
                 <?php endforeach; ?>
             </div>
     </div>
+</div>
 <?php endif; ?>
 <?php if (! empty($arResult['HOME_BG_SRC'])) : ?>
     <div style="background-image: url('<?= $arResult['HOME_BG_SRC']; ?>')" class="home-bg__item"></div>

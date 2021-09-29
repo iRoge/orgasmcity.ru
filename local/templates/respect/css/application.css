@@ -344,6 +344,41 @@ label.radio > span .input__color,
   padding: 0 15px;
 }
 
+.slider .main {
+  padding: 0 30px;
+}
+
+#main-slider .slick-list {
+  padding: 0!important;
+}
+
+#main-slider .slick-list .slick-track {
+  padding: 0!important;
+}
+
+.slider .main .slides .slick-prev {
+  left: 20px;
+  z-index: 2;
+}
+
+.slider .main .slides .slick-next {
+  right: 20px;
+}
+
+.slider .main .slides .slick-arrow {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: rgba(237, 237, 237, 0.5);
+  background-position: center;
+  /*opacity: 0;*/
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.slider .main .slides .slick-arrow:hover {
+  background-color: rgba(237, 237, 237, 0.9);
+}
+
 .slider .slides {
   position: relative;
   overflow: hidden;
