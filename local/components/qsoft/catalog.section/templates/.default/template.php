@@ -48,16 +48,17 @@ if (!$arResult['IS_AJAX']) {
         </h1>
         <?php
         if ($arResult['SHOW_CATALOGS_LINE']) {
+            $filter = [
+                'IBLOCK_ID' => IBLOCK_CATALOG,
+                'ACTIVE' => 'Y',
+                'SECTION_ID' => $arResult['SECTION_ID'],
+            ];
             $APPLICATION->IncludeComponent(
                 'orgasmcity:catalogs.line',
                 'default',
                 [
                     'MAX_COUNT' => 24,
-                    'FILTERS' => [
-                        'IBLOCK_ID' => IBLOCK_CATALOG,
-                        "ACTIVE" => "Y",
-                        "SECTION_ID" => $arResult['PARENT_SECTION_ID'],
-                    ],
+                    'FILTERS' => $filter,
                     'ICONS_TYPE' => 'COLORED'
                 ]
             );

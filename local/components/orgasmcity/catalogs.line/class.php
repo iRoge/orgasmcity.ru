@@ -55,14 +55,27 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
             $maxCount = $this->arParams['MAX_COUNT'] ?? 12;
             while ($arSection = $rsSections->GetNext())
             {
-                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
-                $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/' . $arSection['ID'] . '.webp' : '/img/svg/catalogs/empty/' . $arSection['ID'] .'.svg');
+                $imgPath = SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/' . $arSection['ID'] . '.webp' : '/img/svg/catalogs/empty/' . $arSection['ID'] .'.svg');
                 $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/question.png';
                 $arSections[] = $arSection;
                 $count++;
                 if ($count == $maxCount) {
                     break;
                 }
+            }
+
+            if (isset($arFilter['SECTION_ID']) && $arFilter['SECTION_ID'] == 581) {
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/789' . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
+                $imgPath = SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/789.webp' : '/img/svg/catalogs/empty/789.svg');
+                $imgPath = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/question.png';
+                $arSections[] = [
+                    'ID' => 789,
+                    'CODE' => 'analnye-igrushki',
+                    'SECTION_PAGE_URL' => '/18/woman/analnye-igrushki/',
+                    'NAME' => 'Анальные игрушки',
+                    'IMG_PATH' => $imgPath
+                ];
             }
 
             $this->cacheManager->endTagCache();

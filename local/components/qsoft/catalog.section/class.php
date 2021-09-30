@@ -266,9 +266,9 @@ class QsoftCatalogSection extends ComponentHelper
         $this->buildNavChain();
 
         if ($this->type === self::TYPE_SECTION && !empty($this->section['ID'])) {
-            $this->arResult['PARENT_SECTION_ID'] = $this->section['ID'];
+            $this->arResult['SECTION_ID'] = $this->section['ID'];
         } else {
-            $this->arResult['PARENT_SECTION_ID'] = null;
+            $this->arResult['SECTION_ID'] = null;
         }
 
         $this->arResult['SECTION_TYPE'] = $this->type;
