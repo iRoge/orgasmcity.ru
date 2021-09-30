@@ -117,25 +117,28 @@ global $LOCATION, $APPLICATION; ?>
 
                                         <?php //стоимость ?>
                                         <div class="flex-product--price orders__col">
-                                            <?php if ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) { ?>
-                                            <div>
-                                                <span class="orders__label-old">Цена:&nbsp;</span>
-                                                <span class="orders__old-catalog-price"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?> ₽</span>
-                                            </div>
-                                            <?php } ?>
+                                            <?php if ($arItem['PRICE'] == 0) { ?>
+                                                    <div class="gift-title">Бесплатно</div>
+                                            <?php } else { ?>
+                                                <?php if ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) { ?>
+                                                    <div>
+                                                        <span class="orders__label-old">Цена:&nbsp;</span>
+                                                        <span class="orders__old-catalog-price"><?= number_format($arItem['OLD_CATALOG_PRICE'], 0, "", "&nbsp;") ?> ₽</span>
+                                                    </div>
+                                                <?php } ?>
 
-                                            <div class="coupon-success<?=isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE'] ? ' coupon-active' : ''?>">
-                                                Применен промокод
-                                            </div>
+                                                <div class="coupon-success<?=isset($arItem['OLD_PRICE']) && $arItem['OLD_PRICE'] > $arItem['PRICE'] ? ' coupon-active' : ''?>">
+                                                    Применен промокод
+                                                </div>
 
-                                            <div>
-                                                <span class="orders__label">Итого:&nbsp;</span>
-                                                <span class="<?= ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) ? 'orders__result-price--red' : 'orders__result-price'?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;₽</span>
-                                            </div>
+                                                <div>
+                                                    <span class="orders__label">Итого:&nbsp;</span>
+                                                    <span class="<?= ($arItem['OLD_CATALOG_PRICE'] !== $arItem['PRICE']) ? 'orders__result-price--red' : 'orders__result-price'?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?>&nbsp;₽</span>
+                                                </div>
 
-                                            <div class="orders__col orders__col--price" style="display: none!important;">
-                                                <span class="orders__label">Стоимость:</span>
-                                                <span class="orders__price">
+                                                <div class="orders__col orders__col--price" style="display: none!important;">
+                                                    <span class="orders__label">Стоимость:</span>
+                                                    <span class="orders__price">
                                                 <span class="orders__price-num"
                                                       data-price="<?= $arItem['PRICE'] ?>"><?= number_format($arItem['PRICE'], 0, "", "&nbsp;") ?> ₽</span>
                                                 <?php if ($arItem['OLD_PRICE'] && $arItem['PRICE'] < $arItem['OLD_PRICE']) { ?>
@@ -143,7 +146,8 @@ global $LOCATION, $APPLICATION; ?>
                                                              data-price="<?= $arItem['OLD_PRICE'] ?>"><?= number_format($arItem['OLD_PRICE'], 0, "", "&nbsp;") ?>&nbsp;₽</span></s>
                                                 <?php } ?>
                                                 </span>
-                                            </div>
+                                                </div>
+                                            <?php } ?>
                                         </div>
                                         <?php //стоимость end ?>
 

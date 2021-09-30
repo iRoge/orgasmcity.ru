@@ -45,3 +45,7 @@ const CATALOG_BIG_IMG_HEIGHT = 600;
 // Тинькофф эквайринг
 const TINKOFF_TERMINAL_ID = '1625037822712';
 const TINKOFF_TERMINAL_PASSWORD = '45l8bavs8jlhrq80';
+
+const COUPONS_FOR_GIFT = [
+    'SMAZKA' => 596712
+];

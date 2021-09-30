@@ -10,6 +10,16 @@ class PriceUtils
 {
     static private array $pricesCache;
 
+    static private array $pricesExceptions = [
+        596712 => [
+            'OLD_PRICE' => 430,
+            'PRICE' => 430,
+            'DISCOUNT' => 0,
+            'WHOLEPRICE' => null,
+            'DISCOUNT_DATE_TO' => '15.10.2021',
+        ]
+    ];
+
 
     public static function getCachedPriceForUser($offerId)
     {
@@ -69,11 +79,18 @@ class PriceUtils
             $userDiscount = $bonusSystemHelper->getCurrentBonus();
         }
 
+        $exception = null;
+        if (self::$pricesExceptions[$offerId]) {
+            $exception = self::$pricesExceptions[$offerId];
+        }
+
         if (isset(self::$pricesCache[$offerId]) && self::$pricesCache[$offerId]['PRICE']) {
             $resultArray = self::$pricesCache[$offerId];
-            $resultArray['PRICE'] = self::calculatePrice($resultArray['PRICE'], $userDiscount);
-            $resultArray['DISCOUNT_WITHOUT_BONUS'] = self::$pricesCache[$offerId]['DISCOUNT'];
-            $resultArray['DISCOUNT'] = self::$pricesCache[$offerId]['DISCOUNT'] + $userDiscount;
+            $resultArray['OLD_PRICE'] = $exception && $exception['OLD_PRICE'] !== null ? $exception['OLD_PRICE'] : self::$pricesCache[$offerId]['OLD_PRICE'];
+            $resultArray['PRICE'] = $exception && $exception['PRICE'] !== null ? $exception['PRICE'] : self::calculatePrice($resultArray['PRICE'], $userDiscount);
+            $resultArray['WHOLEPRICE'] = $exception && $exception['WHOLEPRICE'] !== null ? $exception['WHOLEPRICE'] : self::$pricesCache[$offerId]['WHOLEPRICE'];
+            $resultArray['DISCOUNT_WITHOUT_BONUS'] = $exception && $exception['DISCOUNT'] !== null ? $exception['DISCOUNT'] : self::$pricesCache[$offerId]['DISCOUNT'];
+            $resultArray['DISCOUNT'] = $exception && $exception['DISCOUNT'] !== null ? $exception['DISCOUNT'] : self::$pricesCache[$offerId]['DISCOUNT'] + $userDiscount;
         } else {
             $resultArray = null;
         }

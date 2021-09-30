@@ -1337,3 +1337,9 @@ input[type="number"] {
 .fastiest-delivery {
     position: relative;
 }
+
+.gift-title {
+    font-family: gilroySemiBold;
+    font-size: 20px;
+    color: #62B14E;
+}

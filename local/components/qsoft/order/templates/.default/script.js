@@ -298,7 +298,7 @@ $(document).ready(function(){
                         $("#cart__coupon-success").show().html("Промокод применен");
                     } else {
                         if (basketPrice >= sum) {
-                            if (coupon == data.coupon && $(".orders__price").find(".orders__old-price-num").data("price")){
+                            if (coupon == data.coupon && $(".orders__price").find(".orders__old-price-num").data("price")) {
                                 $("#cart__coupon").addClass("form__error-border");
                                 $("#cart__coupon-error").show().html("Данный промокод уже применен к корзине");
                             } else {
