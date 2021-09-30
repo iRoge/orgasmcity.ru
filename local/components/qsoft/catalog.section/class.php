@@ -336,11 +336,11 @@ class QsoftCatalogSection extends ComponentHelper
             case self::TYPE_GROUP:
                 if ($this->isBrand) {
                     if (!$this->getBrand()) {
-                        return false;
+                        return Functions::abort404();
                     }
                 } else {
                     if (!$this->getGroup()) {
-                        return false;
+                        return Functions::abort404();
                     }
                 }
                 $this->getGroupFilters();
@@ -764,7 +764,6 @@ class QsoftCatalogSection extends ComponentHelper
         }
         if (empty($group)) {
             $group = $this->loadGroup();
-
             $cache->StartDataCache();
             $CACHE_MANAGER->StartTagCache('/groups');
             $CACHE_MANAGER->RegisterTag("catalogAll");

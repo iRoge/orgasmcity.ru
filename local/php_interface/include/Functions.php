@@ -22,8 +22,16 @@ class Functions
 
     public static function abort404()
     {
+        global $APPLICATION;
         if (!defined("ERROR_404")) {
             define("ERROR_404", "Y");
+        }
+
+        \CHTTP::setStatus("404 Not Found");
+
+        if ($APPLICATION->RestartWorkarea()) {
+            require(\Bitrix\Main\Application::getDocumentRoot()."/404.php");
+            die();
         }
 
         return false;

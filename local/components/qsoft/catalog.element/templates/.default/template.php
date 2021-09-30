@@ -136,8 +136,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                         'orgasmcity:timer',
                                         'card',
                                         [
-//                                            'DATE_TO' => $arResult['TIMER_DATE'],
-                                            'DATE_TO' => '30.09.2021 00:00',
+                                            'DATE_TO' => $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'],
                                         ]
                                     );
                                 ?>

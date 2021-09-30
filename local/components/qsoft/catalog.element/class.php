@@ -180,17 +180,6 @@ class QsoftCatalogElement extends ComponentHelper
         ];
         $rsOffers = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
         while ($objOffer = $rsOffers->GetNextElement()) {
-            $basePrice = $objOffer->GetProperties(
-                [],
-                ['CODE' => 'BasePrice']
-            )['BasePrice'];
-            $baseWholePrice = $objOffer->GetProperties(
-                [],
-                ['CODE' => 'BasewholePrice']
-            )['BasewholePrice'];
-            if (!$basePrice['VALUE'] || !$baseWholePrice['VALUE']) {
-                continue;
-            }
             $offerFields = $objOffer->GetFields();
             $price = PriceUtils::getCachedPriceForUser($offerFields['ID']);
             if (!$price) {
@@ -200,6 +189,7 @@ class QsoftCatalogElement extends ComponentHelper
             $basePrice['VALUE'] = $price['PRICE'];
             $basePrice['PERCENT'] = $price['DISCOUNT'];
             $basePrice['WHOLEPRICE'] = $price['WHOLEPRICE'];
+            $basePrice['DISCOUNT_DATE_TO'] = $price['DISCOUNT_DATE_TO'];
             $arOffers[$offerFields['ID']] = $offerFields;
             $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $basePrice;
             $arOffers[$offerFields['ID']]['PROPERTIES']['COLOR'] = $objOffer->GetProperties(

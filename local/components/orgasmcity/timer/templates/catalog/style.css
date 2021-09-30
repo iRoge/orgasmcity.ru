@@ -45,6 +45,18 @@
     font-size: 20px;
 }
 
+.action-closed-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 40px;
+    font-family: gilroyRegular;
+    color: #FF8177;
+    margin-bottom: 25px;
+}
+
 @media (max-width: 767px) {
     .countdown {
         width: 100%;
@@ -53,5 +65,9 @@
 
     .countdown .day .word, .countdown .hour .word, .countdown .min .word, .countdown .sec .word {
         font-size: 15px;
+    }
+
+    .action-closed-wrapper {
+        font-size: 30px;
     }
 }

@@ -50,7 +50,7 @@ class PriceUtils
                         'PRICE' => $offer['PROPERTY_CUSTOM_PRICE_VALUE'],
                         'DISCOUNT' => $offer['PROPERTY_CUSTOM_DISCOUNT_VALUE'],
                         'WHOLEPRICE' => $offer['PROPERTY_BASEWHOLEPRICE_VALUE'],
-                        'PROPERTY_CUSTOM_DISCOUNT_DATE_TO' => $offer['PROPERTY_CUSTOM_DISCOUNT_DATE_TO_VALUE'],
+                        'DISCOUNT_DATE_TO' => $offer['PROPERTY_CUSTOM_DISCOUNT_DATE_TO_VALUE'],
                     ];
                 }
                 $cache->StartDataCache();
