@@ -2081,7 +2081,7 @@ a.in-zagolovok {
 }
 
 .count {
-    background: #A18CD1;
+    background: linear-gradient(223.45deg, #AC32E4 16.22%, #7918F2 47.95%, #4801FF 82.34%);
     line-height: 18px;
     font-family: 'gilroyRegular';
     font-size: 10px;
@@ -6463,7 +6463,7 @@ label.color-label {
     display: block;
     width: 20px;
     height: 20px;
-    background-color: #eea558;
+    background: linear-gradient(223.45deg, #AC32E4 16.22%, #7918F2 47.95%, #4801FF 82.34%);
     border-radius: 50%;
 }
 
