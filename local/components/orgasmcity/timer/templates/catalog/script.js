@@ -13,17 +13,6 @@ $(document).ready(function () {
             tarmin = parseInt(tarTime[1]);
         }
 
-        let months = [31, new Date().getFullYear() % 4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        let dateNow = new Date();
-        let dayNow = dateNow.getDate();
-        let monthNow = dateNow.getMonth() + 1;
-        let yearNow = dateNow.getFullYear();
-        let hourNow = dateNow.getHours();
-        let minNow = dateNow.getMinutes();
-        let count_day = 0, count_hour = 0, count_min = 0;
-        let count_day_isSet = false;
-        let isOver = false;
-
         // Set the date we're counting down to
         const countDownDate = new Date(year, month-1, day, tarhour, tarmin, 0, 0).getTime();
 
@@ -59,29 +48,23 @@ $(document).ready(function () {
 
             // If the count down is over, write some text
             if (distance < 0) {
-                $('.action-closed-wrapper').show();
+                $('.action-closed-wrapper').css('display', 'flex');
                 $('.countdown').hide();
+                clearInterval(timerId);
             }
         }
 
-        updateTime();
+        let timerId = setInterval(function() {
+            updateTime();
+        }, 1000);
     }
 
     const addZero = (x) => (x < 10 && x >= 0) ? "0"+x : x;
-    const timer = new countdown({
+    new countdown({
         target: '.countdown',
         dayWord: ' дней',
         hourWord: ' часов',
         minWord: ' минут',
         secWord: ' секунд'
     });
-
-    var alreadyReloading = false;
-    function reloadWindow() {
-        if (!alreadyReloading) {
-            return;
-        }
-        alreadyReloading = true;
-        location.reload();
-    }
 });

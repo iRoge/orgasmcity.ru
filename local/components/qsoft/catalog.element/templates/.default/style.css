@@ -632,3 +632,7 @@ input[type="number"] {
 .r3 {
     float: right;
 }
+
+.product-detail-card-price-wrapper {
+    width: 40%;
+}

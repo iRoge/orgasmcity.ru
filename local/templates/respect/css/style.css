@@ -102,6 +102,12 @@
     }
 }
 
+@media (max-width: 767px) {
+    .right-cartochka__container {
+        padding: 0!important;
+    }
+}
+
 .purchase-show-block {
     align-items: center;
     display: flex;
@@ -4743,7 +4749,6 @@ label.color-label {
 
     .info-- {
         margin-left: 0 !important;
-        margin-bottom: 20px !important;
     }
 
     @media (max-width: 767px) {
@@ -4761,6 +4766,7 @@ label.color-label {
 
         .info-- {
             position: relative;
+            padding: 0 5px!important;
         }
 
         .info--::after {
@@ -6402,6 +6408,11 @@ label.color-label {
     .blue-menu span {
         font-size: 24px;
         color: white;
+    }
+
+    .carto > .main {
+        width: 100% !important;
+        margin-left: 0 !important;
     }
 }
 

@@ -31,5 +31,5 @@ if ($showTimer) { ?>
     </div>
 <?php } ?>
 <div class="action-closed-wrapper" <?=$showTimer ? 'hidden' : ''?>>
-    Акция завершена!
+    <span class="action-closed-span">Акция завершена!</span>
 </div>

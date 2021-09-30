@@ -55,11 +55,14 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
     font-size: 30px;
     font-family: gilroyRegular;
     color: #FF8177;
+}
+
+.action-closed-span {
     width: 377px;
 }
 
@@ -75,5 +78,11 @@
 
     .action-closed-wrapper {
         font-size: 25px;
+    }
+}
+
+@media (max-width: 991px) {
+    .action-closed-span {
+        width: 100%;
     }
 }

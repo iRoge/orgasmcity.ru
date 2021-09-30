@@ -103,7 +103,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                         <h1 class="h1-cart"><?= $arResult["NAME"] ?></h1>
                         <?php if (!empty($arResult['MIN_PRICE_OFFER'])) : ?>
                             <div class="right-cartochka__inner-wrap">
-                                <div>
+                                <div class="product-detail-card-price-wrapper">
                                     <?php if (!empty($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) &&
                                         $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] < $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['OLD_VALUE']) : ?>
                                         <div class="js-old-price-block" style="display: inherit;">
@@ -119,7 +119,6 @@ foreach ($arResult['OFFERS'] as $offer) {
                                         <?= Loc::getMessage("RUB") ?>
                                     </p>
                                 </div>
-                                <br>
                                 <?php if ($arResult['USER_DISCOUNT']) { ?>
                                     <p>
                                         *скидка по бонусной программе в размере
@@ -132,13 +131,15 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     </p>
                                 <?php }?>
                                 <?php
-                                    $APPLICATION->IncludeComponent(
-                                        'orgasmcity:timer',
-                                        'card',
-                                        [
-                                            'DATE_TO' => $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'],
-                                        ]
-                                    );
+                                    if ($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO']) {
+                                        $APPLICATION->IncludeComponent(
+                                            'orgasmcity:timer',
+                                            'card',
+                                            [
+                                                'DATE_TO' => $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'],
+                                            ]
+                                        );
+                                    }
                                 ?>
                                 <div class="advantage-image-wrapper">
                                     <?php if ($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] >= $freeDeliveryMinSum) { ?>
