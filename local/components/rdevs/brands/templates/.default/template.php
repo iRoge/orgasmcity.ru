@@ -13,7 +13,7 @@
                      <a href="<?=$brand['SECTION_PAGE_URL'];?>" title="<?=$brand['NAME'];?>" style="text-decoration: none">
                         <?php if ($brand['PREVIEW_PICTURE']) { ?>
                             <div class="col-xs-12 card__img-box" style="padding: 0!important;">
-                                <img src="<?=$brand['PREVIEW_PICTURE']?>" alt="<?=$brand['NAME'];?>" class="col-xs-12"/>
+                                <img data-src="<?=$brand['PREVIEW_PICTURE']?>" alt="<?=$brand['NAME'];?>" class="lazy-img col-xs-12"/>
                             </div>
                             <div class="col-xs-12 text-in-vendor">
                                 <span class="text-in-vendor-title"><?=$brand['NAME'];?></span>

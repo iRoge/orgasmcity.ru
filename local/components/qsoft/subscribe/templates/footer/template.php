@@ -6,7 +6,7 @@
         <div class="subscribe-wrapper">
             <div class="main">
                 <div class="col-lg-6 col-md-9 col-sm-9 subscribe-left-wrapper">
-                    <img class="subscribe-first-img" src="<?=SITE_TEMPLATE_PATH?>/img/subscribe1.webp" alt="Подписка">
+                    <img class="lazy-img subscribe-first-img" data-src="<?=SITE_TEMPLATE_PATH?>/img/subscribe1.webp" alt="Подписка">
                 </div>
                 <div class="col-lg-4 col-md-3 col-sm-3 subscribe-center-wrapper">
                     <div class="subscribe-message">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 hidden-xs hidden-md hidden-sm subscribe-right-wrapper">
-                    <img class="subscribe-second-img" src="<?=SITE_TEMPLATE_PATH?>/img/subscribe2.webp" alt="Подписка 2">
+                    <img class="lazy-img subscribe-second-img" data-src="<?=SITE_TEMPLATE_PATH?>/img/subscribe2.webp" alt="Подписка 2">
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="subscribe-wrapper">
             <div class="main">
                 <div class="col-lg-6 col-md-9 col-sm-9 subscribe-left-wrapper">
-                    <img class="subscribe-first-img" src="<?=SITE_TEMPLATE_PATH?>/img/subscribe1.webp" alt="Подписка">
+                    <img class="lazy-img subscribe-first-img" data-src="<?=SITE_TEMPLATE_PATH?>/img/subscribe1.webp" alt="Подписка">
                 </div>
                 <div class="col-lg-4 col-md-3 col-sm-3 subscribe-center-wrapper">
                     <form id="subscribe-form" novalidate method="post">
@@ -37,7 +37,7 @@
                     </form>
                 </div>
                 <div class="col-lg-2 hidden-xs hidden-md hidden-sm subscribe-right-wrapper">
-                    <img class="subscribe-second-img" src="<?=SITE_TEMPLATE_PATH?>/img/subscribe2.webp" alt="Подписка 2">
+                    <img class="lazy-img subscribe-second-img" data-src="<?=SITE_TEMPLATE_PATH?>/img/subscribe2.webp" alt="Подписка 2">
                 </div>
             </div>
         </div>

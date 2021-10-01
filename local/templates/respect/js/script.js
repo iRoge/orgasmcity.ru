@@ -96,6 +96,8 @@ $(function () {
 });
 
 $(document).ready(function () {
+    $('.lazy-img').lazyLoadXT();
+
     let regForm = $('#reg-form-popup'),
         authForm = $('#auth-form'),
         regInput = $('#vkl20'),

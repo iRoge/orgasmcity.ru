@@ -19,12 +19,12 @@ $this->setFrameMode(true);
             <?php if ($item['CODE']) { ?>
                 <div class="col-lg-4 col-md-4 action-banners-list-element">
                     <a href="/catalog/groups/<?=$item['CODE']?>/">
-                        <img width="100%" src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
+                        <img class="lazy-img" width="100%" data-src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
                     </a>
                 </div>
             <?php } else { ?>
                 <div class="col-lg-4 col-md-4 action-banners-list-element">
-                    <img width="100%" src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
+                    <img class="lazy-img" width="100%" data-src="<?=$item['PREVIEW_PICTURE_SRC']?>" alt="<?=$item['NAME']?>">
                 </div>
             <?php } ?>
         <?php } ?>

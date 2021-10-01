@@ -14,7 +14,7 @@
 }
 
 .catalog-list-element-wrapper {
-    display: flex !important;
+    display: inline-flex !important;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;

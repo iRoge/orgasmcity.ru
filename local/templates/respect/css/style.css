@@ -104,7 +104,7 @@
 
 @media (max-width: 767px) {
     .right-cartochka__container {
-        padding: 0!important;
+        padding: 0 !important;
     }
 }
 
@@ -273,7 +273,7 @@ html, body {
 }
 
 .from {
-    padding: 0!important;
+    padding: 0 !important;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -1439,9 +1439,8 @@ html, body {
 }
 
 .active-menu div.menu-arrow {
-    display: block!important;
+    display: block !important;
 }
-
 
 
 .main-top {
@@ -1900,7 +1899,6 @@ a.in-zagolovok {
 }
 
 
-
 .footer {
     min-height: 100px !important;
     background-color: #654670;
@@ -2081,7 +2079,7 @@ a.in-zagolovok {
 }
 
 .count {
-    background: linear-gradient(223.45deg, #AC32E4 16.22%, #7918F2 47.95%, #4801FF 82.34%);в
+    background: linear-gradient(223.45deg, #AC32E4 16.22%, #7918F2 47.95%, #4801FF 82.34%);
     line-height: 18px;
     font-family: 'gilroyRegular';
     font-size: 10px;
@@ -2546,17 +2544,19 @@ a.in-zagolovok {
     .about-brand p {
         width: 100%;
     }
+
     .catalog-wrapper {
-        padding: 0 5px!important;
+        padding: 0 5px !important;
     }
+
     .count {
         right: 5%;
     }
 }
 
 a {
-    outline: none!important;
-    text-decoration: none!important;
+    outline: none !important;
+    text-decoration: none !important;
 }
 
 .btn-grey {
@@ -2907,8 +2907,8 @@ a {
 
 @media (max-width: 991px) {
     .after-lk-in {
-        margin-left: 0!important;
-        width: 100%!important;
+        margin-left: 0 !important;
+        width: 100% !important;
     }
 }
 
@@ -3610,8 +3610,8 @@ input::-webkit-inner-spin-button {
 }
 
 .checkbox3:checked + label {
-    font-family: gilroyMedium!important;
-    color: #000000!important;
+    font-family: gilroyMedium !important;
+    color: #000000 !important;
 }
 
 .checkbox3 + label:before {
@@ -4370,8 +4370,7 @@ label.color-label {
 }
 
 @media (max-width: 1090px) {
-    .phone-top-mob
-    {
+    .phone-top-mob {
         display: inline-block;
         font-size: 14px;
     }
@@ -4519,8 +4518,7 @@ label.color-label {
         font-family: 'gilroyRegular';
         overflow: visible;
         background: linear-gradient(
-                90deg
-                , #9795F0 0%, #FBC8D4 100%);
+                90deg, #9795F0 0%, #FBC8D4 100%);
         border-radius: 5px;
         border-color: transparent;
     }
@@ -4587,7 +4585,7 @@ label.color-label {
     }
 
     .phone-top-mob {
-        padding: 0!important;
+        padding: 0 !important;
     }
 
     .info {
@@ -4766,7 +4764,7 @@ label.color-label {
 
         .info-- {
             position: relative;
-            padding: 0 5px!important;
+            padding: 0 5px !important;
         }
 
         .info--::after {
@@ -6098,8 +6096,8 @@ label.color-label {
     }
 
     .sex-btn {
-        padding-right: 0!important;
-        padding-left: 0!important;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
         text-align: center;
         border-left-style: none;
         display: flex;
@@ -6381,21 +6379,21 @@ label.color-label {
 
 @media (max-width: 991px) and (min-width: 768px) {
     .logo-div {
-        padding-left: 0!important;
+        padding-left: 0 !important;
     }
 
     .search-div {
-        padding-right: 0!important;
+        padding-right: 0 !important;
         justify-content: space-between;
     }
 
     .main-search-form {
-        width: 65%!important;
+        width: 65% !important;
         margin-left: 15px;
     }
 
     .blue-menu {
-        width: 30%!important;
+        width: 30% !important;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -6588,13 +6586,15 @@ label.color-label {
 
 @media (max-width: 767px) {
     .header-mail-icon {
-        margin-top: 0!important;
+        margin-top: 0 !important;
         margin-right: 10px;
     }
+
     .header-call-icon {
-        margin-top: 0!important;
-        margin-left: 0!important;
+        margin-top: 0 !important;
+        margin-left: 0 !important;
     }
+
     .header-container {
         height: 100%
     }
@@ -6853,9 +6853,11 @@ label.color-label {
     .logo {
         width: 120px;
     }
+
     .menu {
-        margin-bottom: 0!important;
+        margin-bottom: 0 !important;
     }
+
     .hide-menu {
         top: 62px
     }
@@ -6921,7 +6923,7 @@ label.color-label {
     }
 
     .right-block-top {
-        padding-right: 0!important;
+        padding-right: 0 !important;
     }
 }
 
@@ -6930,14 +6932,14 @@ label.color-label {
     justify-content: flex-end;
     align-items: center;
     margin-top: 10px;
-    padding-left: 0!important;
+    padding-left: 0 !important;
 }
 
-.right-block-top a  {
+.right-block-top a {
     display: block;
 }
 
-.right-block-top div, .right-block-top a  {
+.right-block-top div, .right-block-top a {
     text-decoration: none;
     font-family: 'gilroyRegular';
     font-style: normal;
@@ -6953,8 +6955,8 @@ label.color-label {
 }
 
 .right-block-top > div {
-    padding-left: 5px!important;
-    padding-right: 5px!important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
 }
 
 .right-block-top span {
@@ -6974,8 +6976,7 @@ label.color-label {
     position: relative;
     bottom: 0;
     background: linear-gradient(
-            90deg
-            , #9795F0 0%, #FBC8D4 100%);
+            90deg, #9795F0 0%, #FBC8D4 100%);
     background-origin: content-box;
     height: 2px;
 }
@@ -6986,7 +6987,7 @@ label.color-label {
 
 @media (max-width: 991px) {
     .header-border-wrapper {
-        width: 1000px!important;
+        width: 1000px !important;
         padding: 0;
     }
 
@@ -7021,15 +7022,14 @@ label.color-label {
     font-family: 'gilroyRegular';
     overflow: visible;
     background: linear-gradient(
-            90deg
-            , #9795F0 0%, #FBC8D4 100%);
+            90deg, #9795F0 0%, #FBC8D4 100%);
     border-radius: 5px;
     border-color: transparent;
     position: relative;
 }
 
 .main-search-form input {
-    outline: none!important;
+    outline: none !important;
 }
 
 .bttn {
@@ -7081,4 +7081,17 @@ label.color-label {
     .default-section {
         margin: 20px 0
     }
+}
+
+.lazy-hidden {
+    opacity: 0
+}
+
+.lazy-loaded {
+    -webkit-transition: opacity .3s;
+    -moz-transition: opacity .3s;
+    -ms-transition: opacity .3s;
+    -o-transition: opacity .3s;
+    transition: opacity .3s;
+    opacity: 1
 }

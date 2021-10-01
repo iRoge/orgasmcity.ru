@@ -184,7 +184,7 @@ global $DEVICE;
     <div class="default-section">
         <h2 class="default-header">Как мы работаем</h2>
         <div class="how-we-work-wrapper main">
-            <img width="100%" src="<?=SITE_TEMPLATE_PATH . ($DEVICE->isMobile() ? '/img/howWorkMobile.webp' : '/img/howWork.webp')?>" alt="Как мы работаем">
+            <img width="100%" class="lazy-img" data-src="<?=SITE_TEMPLATE_PATH . ($DEVICE->isMobile() ? '/img/howWorkMobile.webp' : '/img/howWork.webp')?>" alt="Как мы работаем">
         </div>
     </div>
     <?php
@@ -198,7 +198,7 @@ global $DEVICE;
     <?php if (!$DEVICE->isMobile()) { ?>
         <div class="order-help-section">
             <div class="order-help-wrapper main">
-                <img width="100%" src="<?=SITE_TEMPLATE_PATH?>/img/clientHelpBlock.webp" alt="Не знаете что выбрать?">
+                <img width="100%" class="lazy-img" data-src="<?=SITE_TEMPLATE_PATH?>/img/clientHelpBlock.webp" alt="Не знаете что выбрать?">
             </div>
         </div>
     <?php } ?>

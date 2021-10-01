@@ -285,6 +285,8 @@ SmartFilter.prototype.goToPageNum = function (btn) {
             $navigation.empty();
         }
         lds_ring.css('visibility', 'hidden');
+
+        $('.lazy-img').lazyLoadXT();
     });
 };
 
