@@ -21,7 +21,7 @@ $searchMap = explode(" ", $searchMap);
 // Получаем города вместе с их регионами
 $cache = new CPHPCache();
 $cities = [];
-if ($cache->InitCache(31536000, 'geo_cities')) {
+if ($cache->InitCache(31536000, '/geo_cities')) {
     $cities = $cache->GetVars()['cities'];
 } elseif ($cache->StartDataCache()) {
     $locationList = LocationTable::getList([

@@ -551,7 +551,7 @@ class Functions
         $offerCache = new CPHPCache;
         $arOffers = [];
 
-        if ($offerCache->InitCache(360000, 'allOffers', 'offers')) {
+        if ($offerCache->InitCache(360000, 'allOffers', '/offers')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
             $arFilter = [
@@ -601,7 +601,7 @@ class Functions
         $offerCache = new CPHPCache;
         $arProducts = [];
 
-        if ($offerCache->InitCache(360000, 'allProducts', 'products')) {
+        if ($offerCache->InitCache(360000, 'allProducts', '/products')) {
             $arProducts = $offerCache->GetVars()['allProducts'];
         } elseif ($offerCache->StartDataCache()) {
             $arFilter = [

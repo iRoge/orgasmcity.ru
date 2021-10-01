@@ -45,7 +45,7 @@ class RdevsBrands extends CBitrixComponent
 
         $cache = new CPHPCache;
 
-        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), 'seo')) {
+        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), '/seo')) {
             $seo = $cache->GetVars()['seo'];
         } elseif ($cache->StartDataCache()) {
             $ipropValues = new IblockValues(IBLOCK_VENDORS);
@@ -81,7 +81,7 @@ class RdevsBrands extends CBitrixComponent
         global $CACHE_MANAGER;
         $arProducts = [];
 
-        if ($productsCache->InitCache($this->arParams['CACHE_TIME'], 'brand_products')) {
+        if ($productsCache->InitCache(86400, '/brand_products')) {
             $arProducts = $productsCache->GetVars()['products'];
         } elseif ($productsCache->StartDataCache()) {
             $CACHE_MANAGER->StartTagCache('products');

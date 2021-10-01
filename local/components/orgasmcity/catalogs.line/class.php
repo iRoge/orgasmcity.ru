@@ -37,7 +37,7 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
         $productsCache = new CPHPCache;
         $arSections = [];
 
-        if ($productsCache->InitCache(86400, 'catalogs|' . serialize($this->arParams['FILTERS']), 'catalogsLine')) {
+        if ($productsCache->InitCache(86400, 'catalogs|' . serialize($this->arParams['FILTERS']), '/catalogsLine')) {
             $arSections = $productsCache->GetVars()['catalogs'];
         } elseif ($productsCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('/catalogsLine');

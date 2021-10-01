@@ -76,7 +76,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         $offerCache = new CPHPCache;
         $arOffers = [];
 
-        if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'offers|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
+        if ($offerCache->InitCache(86400, 'offers|' . serialize($this->arParams['FILTERS']), '/productsLine')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('/offers');
@@ -118,7 +118,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                 $arOffers[$offer['ID']] = $offer;
             }
 
-            $this->cacheManager->endTagCache();
+            $this->cacheManager->EndTagCache();
             $offerCache->EndDataCache(['allOffers' => $arOffers]);
         }
 
@@ -130,7 +130,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         $productsCache = new CPHPCache;
         $arProducts = [];
 
-        if ($productsCache->InitCache(86400, 'products|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
+        if ($productsCache->InitCache(86400, 'products|' . serialize($this->arParams['FILTERS']), '/productsLine')) {
             $arProducts = $productsCache->GetVars()['products'];
         } elseif ($productsCache->StartDataCache()) {
             $this->cacheManager->StartTagCache('/products');
@@ -138,7 +138,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             $arFilter = $this->arParams['FILTERS'];
 
             $arProducts = $this->getProductsByFilter($arFilter);
-            $this->cacheManager->endTagCache();
+            $this->cacheManager->EndTagCache();
             $productsCache->EndDataCache(['products' => $arProducts]);
         }
 

@@ -19,7 +19,7 @@ class NewComponent extends \CBitrixComponent
         global $CACHE_MANAGER;
         $cache = new CPHPCache;
         $arResultItems = [];
-        if ($cache->InitCache(86400, 'actionBanners', 'banners')) {
+        if ($cache->InitCache(86400, 'actionBanners', '/banners')) {
             $arResultItems = $cache->GetVars()['banners'];
         } elseif ($cache->StartDataCache()) {
             $CACHE_MANAGER->StartTagCache('/actionBanners');

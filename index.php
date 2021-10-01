@@ -43,7 +43,6 @@ global $DEVICE;
                 ],
             ]
         );
-
         $APPLICATION->IncludeComponent(
             "likee:slider",
             "home",
@@ -59,7 +58,6 @@ global $DEVICE;
             ],
             false
         );
-
         $APPLICATION->IncludeComponent(
             "orgasmcity:actions.banners",
             "",
@@ -213,6 +211,7 @@ global $DEVICE;
             ],
         ],
         false
-    ); ?>
+    );
+    ?>
 </div>
 <?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

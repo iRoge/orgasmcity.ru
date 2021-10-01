@@ -31,7 +31,7 @@ class OrgasmCityMiniBannersComponent extends CBitrixComponent
         $cache = new CPHPCache;
         $arResultItems = [];
 
-        if ($cache->InitCache(86400, 'banners|' . serialize($this->arParams['FILTERS']), 'banners')) {
+        if ($cache->InitCache(86400, 'banners|' . serialize($this->arParams['FILTERS']), '/banners')) {
             $arResultItems = $cache->GetVars()['banners'];
         } elseif ($cache->StartDataCache()) {
             $this->cacheManager->StartTagCache('/miniBanners');

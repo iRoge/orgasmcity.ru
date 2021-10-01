@@ -1924,7 +1924,7 @@ class QsoftCatalogSection extends ComponentHelper
         global $APPLICATION;
         $seo = [];
         $cache = new CPHPCache();
-        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), 'seo')) {
+        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), '/seo')) {
             $seo = $cache->GetVars()['seo'];
         } elseif ($cache->StartDataCache()) {
             switch ($this->type) {
