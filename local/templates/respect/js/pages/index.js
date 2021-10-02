@@ -48,16 +48,6 @@
         dots: true,
         mobileFirst: true
       });
-      $('#products-slider').slick({
-        arrows: false,
-        dots: true,
-        infinite: true,
-        respondTo: 'window',
-        appendDots: $('#products-slider-pagination'),
-        adaptiveHeight: true,
-          autoplay: true,
-          autoplaySpeed: RESPECT_OPTIONS.MAIN_SLIDER_SPEED * 1000,
-      });
       return $('#vertical-slider').slick({
         dots: true,
         prevArrow: $('#vertical-slider-prev'),
