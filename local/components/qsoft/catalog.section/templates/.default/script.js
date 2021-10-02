@@ -225,6 +225,7 @@ SmartFilter.prototype.updateCatalog = function (url, params = {}, request,data) 
     lds_ring.css('visibility', 'hidden');
     $('.lds-ring-container').hide();
     $('.filter-btn-loader').hide();
+    $('.lazy-img').lazyLoadXT();
 };
 
 SmartFilter.prototype.clearFilter = function () {

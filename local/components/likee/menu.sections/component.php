@@ -202,7 +202,7 @@ if (empty($aMenuLinksNew)) {
             'ID' => $arSection['ID'],
             'CODE' => $arSection['CODE'],
             'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
-            '~NAME' => $arSection['~NAME'] . ' ' . $arSection['ID'],
+            '~NAME' => $arSection['~NAME'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
         );
         $arResult['ELEMENT_LINKS'][$arSection['ID']] = array();
@@ -283,7 +283,7 @@ if (empty($aMenuLinksNew)) {
                 'FROM_IBLOCK' => true,
                 'IS_PARENT' => false,
                 'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
-                'IMG_PATH' => is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/779.svg',
+                'IMG_PATH' => is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/default.svg',
                 'IMG_PATH_WEBP' => is_file($filePathWebp) ? $imgPathWebp : SITE_TEMPLATE_PATH . '/img/svg/catalogs/776.webp',
                 'ID' => $arSection['ID'],
             ),
@@ -374,7 +374,7 @@ if (empty($aMenuLinksNew)) {
                         $sPath,
                         array($sPath),
                         array(
-                            'IMG_PATH' => is_file($filePath) ? $imgPath :  SITE_TEMPLATE_PATH . '/img/svg/catalogs/779.svg',
+                            'IMG_PATH' => is_file($filePath) ? $imgPath :  SITE_TEMPLATE_PATH . '/img/svg/catalogs/default.svg',
                             'IMG_PATH_WEBP' => is_file($filePathWebp) ? $imgPathWebp : SITE_TEMPLATE_PATH . '/img/svg/catalogs/776.webp',
                             'IS_PARENT' => false,
                             'DEPTH_LEVEL' => 2,

@@ -14,7 +14,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @var array $templateData */
 /** @var \CBitrixComponent $component */
 $this->setFrameMode(true);
-$showTimer = date('d.m.Y H:i:s') <= $arResult['DATE_TO'];
+$showTimer = strtotime(date('d.m.Y H:i:s')) <= strtotime($arResult['DATE_TO']);
 if ($showTimer) { ?>
     <div class="countdown-wrapper">
         <div

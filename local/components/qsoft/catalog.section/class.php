@@ -797,6 +797,7 @@ class QsoftCatalogSection extends ComponentHelper
                     'IBLOCK_ID' => IBLOCK_GROUPS,
                     'CODE' => $this->code,
                     'ACTIVE' => 'Y',
+                    '<DATE_ACTIVE_TO' => '01.01.2050 00:00:00',
                 ],
                 false,
                 false,
@@ -1629,12 +1630,14 @@ class QsoftCatalogSection extends ComponentHelper
         uasort($items, function ($a, $b) use ($middlePrice) {
             $aDiff = abs($a['PRICE'] - $middlePrice);
             $bDiff = abs($b['PRICE'] - $middlePrice);
+            $aHasDiscount = $a['DISCOUNT'] && $a['DISCOUNT_DATE_TO'];
+            $bHasDiscount = $b['DISCOUNT'] && $b['DISCOUNT_DATE_TO'];
             if (
                 ($aDiff < 75000 && $bDiff < 75000 || $aDiff > 75000 && $bDiff > 75000)
                 && (
                     $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
                     || $b['PROPERTY_NEW_VALUE'] != $a['PROPERTY_NEW_VALUE']
-                    || !!$b['DISCOUNT'] != !!$a['DISCOUNT']
+                    || $bHasDiscount != $aHasDiscount
                 )
             ) {
                 $countAdditionsA = (int)(bool)$a['PROPERTY_BESTSELLER_VALUE'] + (int)(bool)$a['PROPERTY_NEW_VALUE'];
@@ -1646,9 +1649,9 @@ class QsoftCatalogSection extends ComponentHelper
                     } elseif ($countAdditionsA < $countAdditionsB) {
                         return 1;
                     } else {
-                        if ($a['DISCOUNT'] && !$b['DISCOUNT']) {
+                        if ($aHasDiscount && !$bHasDiscount) {
                             return -1;
-                        } elseif ($b['DISCOUNT'] && !$a['DISCOUNT']) {
+                        } elseif ($bHasDiscount && !$aHasDiscount) {
                             return 1;
                         }
                     }

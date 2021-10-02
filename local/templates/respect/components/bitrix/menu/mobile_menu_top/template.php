@@ -29,7 +29,9 @@ if (!empty($arResult)) {?>
             <?} elseif ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1) {?>
             <div class="sex-btn">
                 <? if (isset($arItem['PARAMS']['IMG_PATH'])) { ?>
-                    <img width="20" height="20" src="<?=$arItem['PARAMS']['IMG_PATH']?>" alt="<?=$arItem['TEXT']?>">
+                    <div class="mob-catalog-img-wrapper">
+                        <img width="20" height="20" src="<?=$arItem['PARAMS']['IMG_PATH']?>" alt="<?=$arItem['TEXT']?>">
+                    </div>
                 <? } ?>
                 <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
             </div>

@@ -420,7 +420,9 @@ if (!$arResult['IS_AJAX']) {
                                                         <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
                                                     <?php } ?>
                                                     <?php if ($arItem['DISCOUNT']) { ?>
-                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                                                        <?php if ($arItem['DISCOUNT_DATE_TO']) { ?>
+                                                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                                                        <?php } ?>
                                                         <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                                                     <?php } ?>
                                                 </div>

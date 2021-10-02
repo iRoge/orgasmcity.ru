@@ -30,7 +30,7 @@ class NewComponent extends \CBitrixComponent
                 [
                     'IBLOCK_ID' => IBLOCK_GROUPS,
                     'ACTIVE' => 'Y',
-                    'PROPERTY_IS_ACTION' => true,
+                    'PROPERTY_SHOW_ACTION' => 1,
                 ],
                 false,
                 false,

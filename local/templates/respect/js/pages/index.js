@@ -18,7 +18,8 @@
       $('#main-slider').slick({
         arrows: true,
         dots: true,
-        mobileFirst: true
+        mobileFirst: true,
+        lazyLoad: 'ondemand'
       });
       $('#main-slider2').slick({
         arrows: true,

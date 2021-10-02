@@ -173,7 +173,6 @@
         }
     </script>
 
-    <?php if (!$_ENV['IS_LOCAL_DEBUG']) { ?>
     <!-- Jivosite -->
     <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>
     <!-- Yandex.Metrika counter -->
@@ -193,7 +192,6 @@
     <noscript><div><img src="https://mc.yandex.ru/watch/82799680" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1" async></script>
-    <?php } ?>
     <script type="text/javascript" async>
         window.metrikaData = window.metrikaData || [];
         window.dataLayer = window.dataLayer || [];

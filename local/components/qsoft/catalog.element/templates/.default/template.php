@@ -72,7 +72,9 @@ foreach ($arResult['OFFERS'] as $offer) {
                         </div>
                     <?php endif; ?>
                     <div class="hidden-xs" style="margin-top: 40px">
-                        <?php $APPLICATION->IncludeComponent(
+                        <?php
+
+                        $APPLICATION->IncludeComponent(
                             "orgasmcity:feedback.list",
                             "product",
                             [
@@ -84,7 +86,9 @@ foreach ($arResult['OFFERS'] as $offer) {
                                 ],
                             ],
                             false
-                        ); ?>
+                        );
+
+                        ?>
                     </div>
                 </div>
 
@@ -131,7 +135,11 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     </p>
                                 <?php }?>
                                 <?php
-                                    if ($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO']) {
+                                    if (
+                                            $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO']
+                                            && strtotime(date('d.m.Y H:i:s')) < strtotime($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'])
+                                            && strtotime('01.01.2030 00:00:00') > strtotime($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'])
+                                    ) {
                                         $APPLICATION->IncludeComponent(
                                             'orgasmcity:timer',
                                             'card',
