@@ -39,7 +39,7 @@ table.bx-auth-table td {
     border: 1px solid #d8d8d8;
     font-size: 16px;
     font-weight: 400;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
 }
 
 .forgot-password input {
@@ -125,10 +125,10 @@ div.bx-auth div.bx-auth-secure-icon {
 }
 
 .auth_link, .alert {
-    font-family: 'firalight', sans-serif;
+    font-family: 'gilroyRegular', sans-serif;
     font-size: 15px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     margin: 0 !important;
 }
 
@@ -147,7 +147,7 @@ div.bx-auth div.bx-auth-secure-icon {
 }
 
 #forgot_password_error {
-    font-family: 'firaregular', sans-serif;
+    font-family: 'gilroyRegular', sans-serif;
 }
 
 #forgot_password_error p {
@@ -165,10 +165,10 @@ div.bx-auth div.bx-auth-secure-icon {
 }
 
 .alert {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     padding: 0 !important;
     margin-bottom: 15px !important;
 }

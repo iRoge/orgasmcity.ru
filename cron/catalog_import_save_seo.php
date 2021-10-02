@@ -36,7 +36,7 @@ else
 if (!defined('LANGUAGE_ID') || preg_match('/^[a-z]{2}$/i', LANGUAGE_ID) !== 1)
 	die('Language id is absent - defined site is bad');
 
-set_time_limit (0);
+set_time_limit(0);
 
 if (!defined("CATALOG_LOAD_NO_STEP"))
 	define("CATALOG_LOAD_NO_STEP", true);

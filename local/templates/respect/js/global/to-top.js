@@ -4,7 +4,7 @@
 
     function ToTop() {
       this._toggle = $('<a href="#" class="to-top-toggle js-scroll">').appendTo($('body'));
-      this._toggle.append($('<i class="icon icon-arrow-up">'));
+      this._toggle.append($('<img width="100%" src="/img/upArrow.svg" alt="Поднять вверх">'));
       $(window).on('scroll', _.bind(this._scrollHandler, this));
       this._scrollHandler();
 

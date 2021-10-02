@@ -7,6 +7,7 @@
  */
 
 use Bitrix\Iblock\Component\Tools;
+use Bitrix\Main\FileTable;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -21,8 +22,16 @@ class Functions
 
     public static function abort404()
     {
+        global $APPLICATION;
         if (!defined("ERROR_404")) {
             define("ERROR_404", "Y");
+        }
+
+        \CHTTP::setStatus("404 Not Found");
+
+        if ($APPLICATION->RestartWorkarea()) {
+            require(\Bitrix\Main\Application::getDocumentRoot()."/404.php");
+            die();
         }
 
         return false;
@@ -79,91 +88,6 @@ class Functions
                 self::setArrayCache($sCacheKey, $arResult);
                 return $arResult;
             }
-        }
-    }
-
-
-    /**
-     * Возвращает массив с информацией о свойстве инфоблока по его коду
-     * @param string $sCode - символьный код инфоблока
-     * @param integer $iIblockID - ид инфоблока
-     * @return array|bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function getIBlockPropertyByCode($sCode, $iIblockID)
-    {
-        $sCacheKey = __METHOD__ . '.' . $iIblockID . '.'. $sCode;
-        if (\Bitrix\Main\Loader::includeModule('iblock')) {
-            if ($arReturn = self::getArrayCache($sCacheKey)) {
-                return $arReturn;
-            } else {
-                $res = CIBlockProperty::GetList(array("sort" => "asc", "name" => "asc"), array("ACTIVE" => "Y", "IBLOCK_ID" => $iIblockID, 'CODE' => $sCode));
-                $arResult = $res->fetch();
-                self::setArrayCache($sCacheKey, $arResult);
-                return $arResult;
-            }
-        }
-    }
-
-     /**
-     * Возвращает id инфоблока по артиклу
-     * @param string $Article - символьный код инфоблока
-     * @return array|bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function getIBlockElementByArticle($Article)
-    {
-        $sCacheKey = __METHOD__ . '.' . $Article;
-        if (\Bitrix\Main\Loader::includeModule('iblock')) {
-            if ($arReturn = self::getArrayCache($sCacheKey)) {
-                return $arReturn;
-            } else {
-                $arFilter = array('IBLOCK_ID'=> 16, 'PROPERTY_ARTICLE'=>$Article);
-                $arSelect = array("ID");
-                $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize"=>1), $arSelect);
-                $arResult = $res->fetch();
-                self::setArrayCache($sCacheKey, $arResult);
-                return $arResult;
-            }
-        }
-    }
-    /**
-     * Возвращает артикл инфоблока по id
-     * @param string $Article - символьный код инфоблока
-     * @return array|bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function getArticleByID($id)
-    {
-        $sCacheKey = __METHOD__ . '.' . $id;
-        if (\Bitrix\Main\Loader::includeModule('iblock')) {
-            if ($arReturn = self::getArrayCache($sCacheKey)) {
-                return $arReturn;
-            } else {
-                $arFilter = array('IBLOCK_ID'=> 16, 'ID'=>$id);
-                $arSelect = array("PROPERTY_ARTICLE");
-                $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize"=>1), $arSelect);
-                $arResult = $res->fetch();
-                self::setArrayCache($sCacheKey, $arResult);
-                return $arResult[PROPERTY_ARTICLE_VALUE];
-            }
-        }
-    }
-
-    /**
-     * Поиск по вложенным массивам
-     * @param arr $id - значение поиска
-     * @param arr $arSKU - массив массивов
-     * @return bool
-     * @throws \Bitrix\Main\LoaderException
-     */
-    public static function ib_deep_in_array($id, $arSKU)
-    {
-        foreach ($arSKU as $value) {
-            if (in_array($id, $value, true)) {
-                return true;
-            }
-            return false;
         }
     }
 
@@ -587,18 +511,6 @@ class Functions
         return false;
     }
 
-    public static function checkMobileDevice()
-    {
-        $arMobileAgent = array('ipad', 'iphone', 'android', 'pocket', 'palm', 'windows ce', 'windowsce', 'cellphone', 'opera mobi', 'ipod', 'small', 'sharp', 'sonyericsson', 'symbian', 'opera mini', 'nokia', 'htc_', 'samsung', 'motorola', 'smartphone', 'blackberry', 'playstation portable', 'tablet browser');
-        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
-        foreach ($arMobileAgent as $value) {
-            if (strpos($userAgent, $value) !== false) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static function getRests($offerIds): array
     {
         $rests = [];
@@ -633,33 +545,107 @@ class Functions
         return $rests;
     }
 
+    public static function getAllOffersNoCache(): array
+    {
+        $arOffers = [];
+
+        $arFilter = [
+            "IBLOCK_ID" => IBLOCK_OFFERS,
+            "ACTIVE" => "Y",
+            "!PROPERTY_CML2_LINK" => false,
+        ];
+
+        $arSelect = [
+            "ID",
+            "IBLOCK_ID",
+            "PROPERTY_CML2_LINK",
+            "PROPERTY_SIZE",
+            "PROPERTY_COLOR",
+            "PROPERTY_CUSTOM_PRICE",
+            "PROPERTY_CUSTOM_OLD_PRICE",
+            "PROPERTY_CUSTOM_DISCOUNT",
+            "PROPERTY_BASEWHOLEPRICE",
+            "PROPERTY_BASEPRICE",
+        ];
+
+        $resOffers = CIBlockElement::GetList(
+            ["SORT" => "ASC"],
+            $arFilter,
+            false,
+            false,
+            $arSelect,
+        );
+
+        while ($offer = $resOffers->Fetch()) {
+            $arOffers[$offer['ID']] = $offer;
+        }
+
+        return $arOffers;
+    }
+
     public static function getAllOffers(): array
     {
         global $CACHE_MANAGER;
         $offerCache = new CPHPCache;
         $arOffers = [];
 
-        if ($offerCache->InitCache(360000, 'allOffers', 'offers')) {
+        if ($offerCache->InitCache(360000, 'allOffers', '/offers')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
+            $arOffers = self::getAllOffersNoCache();
+
             $CACHE_MANAGER->StartTagCache('offers');
             $CACHE_MANAGER->RegisterTag('catalogAll');
 
+            $CACHE_MANAGER->endTagCache();
+            $offerCache->EndDataCache(['allOffers' => $arOffers]);
+        }
+
+        return $arOffers;
+    }
+
+    public static function getAllProducts(): array
+    {
+        global $CACHE_MANAGER;
+        $offerCache = new CPHPCache;
+        $arProducts = [];
+
+        if ($offerCache->InitCache(360000, 'allProducts', '/products')) {
+            $arProducts = $offerCache->GetVars()['allProducts'];
+        } elseif ($offerCache->StartDataCache()) {
             $arFilter = [
-                "IBLOCK_ID" => IBLOCK_OFFERS,
+                "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
-                "!PROPERTY_CML2_LINK" => false,
             ];
 
             $arSelect = [
                 "ID",
                 "IBLOCK_ID",
-                "PROPERTY_CML2_LINK",
-                "PROPERTY_SIZE",
-                "PROPERTY_COLOR",
+                "IBLOCK_SECTION_ID",
+                "XML_ID",
+                "NAME",
+                "CODE",
+                "DETAIL_PICTURE",
+                "PREVIEW_PICTURE",
+                "SORT",
+                "PROPERTY_ARTICLE",
+                "PROPERTY_DIAMETER",
+                "PROPERTY_LENGTH",
+                "PROPERTY_BESTSELLER",
+                "PROPERTY_NEW",
+                "PROPERTY_VENDOR",
+                "PROPERTY_VOLUME",
+                "PROPERTY_MATERIAL",
+                "PROPERTY_COLLECTION",
+                "PROPERTY_YEAR",
+                "PROPERTY_VIBRATION",
+                "SHOW_COUNTER",
             ];
 
-            $resOffers = CIBlockElement::GetList(
+            $CACHE_MANAGER->StartTagCache('offers');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
+
+            $res = CIBlockElement::GetList(
                 ["SORT" => "ASC"],
                 $arFilter,
                 false,
@@ -667,16 +653,113 @@ class Functions
                 $arSelect,
             );
 
-            while ($offer = $resOffers->Fetch()) {
-                $arOffers[$offer['ID']] = $offer;
+            while ($arProduct = $res->Fetch()) {
+                $arProducts[$arProduct['ID']] = $arProduct;
             }
 
-            $CACHE_MANAGER
-                ->endTagCache();
-            $offerCache->EndDataCache(['allOffers' => $arOffers]);
+            $CACHE_MANAGER->endTagCache();
+            $offerCache->EndDataCache(['allProducts' => $arProducts]);
         }
 
-        return $arOffers;
+        return $arProducts;
+    }
+
+    public static function getAllBrands(): array
+    {
+        $brandsCache = new CPHPCache();
+        global $CACHE_MANAGER;
+        $arBrands = [];
+
+        if ($brandsCache->initCache(360000, 'brands', 'brands')) {
+            $arBrands = $brandsCache->getVars()['array_brands'];
+        } elseif ($brandsCache->StartDataCache()) {
+            $res = CIBlockElement::GetList(
+                false,
+                [
+                    "IBLOCK_ID" => IBLOCK_VENDORS,
+                    'ACTIVE' => 'Y',
+                ],
+                false,
+                false,
+                [
+                    "ID",
+                    "NAME",
+                    "CODE",
+                    "SORT",
+                    "DESCRIPTION",
+                    "PREVIEW_PICTURE",
+                    "XML_ID"
+                ]
+            );
+
+            while ($arBrand = $res->GetNext(true, false)) {
+                $arBrand['SECTION_PAGE_URL'] = '/brands/' . $arBrand['CODE'] . '/';
+                $arBrands[$arBrand["ID"]] = $arBrand;
+
+                if (!empty($arBrand["PREVIEW_PICTURE"])) {
+                    $arImageIds[] = $arBrand["PREVIEW_PICTURE"];
+                }
+            }
+
+            if (!empty($arImageIds)) {
+                $arImages = self::getImages($arImageIds);
+
+                foreach ($arBrands as $id => &$arBrand) {
+                    if (!empty($arImages[$arBrand['PREVIEW_PICTURE']])) {
+                        $arBrand['PREVIEW_PICTURE'] = $arImages[$arBrand['PREVIEW_PICTURE']];
+                    }
+                }
+            }
+
+            uasort($arBrands, function ($a, $b) {
+                if ($a['PREVIEW_PICTURE'] && !$b['PREVIEW_PICTURE']) {
+                    return -1;
+                } elseif ($b['PREVIEW_PICTURE'] && !$a['PREVIEW_PICTURE']) {
+                    return 1;
+                } else {
+                    return strnatcmp($a['NAME'], $b['NAME']);
+                }
+            });
+
+
+            $CACHE_MANAGER->StartTagCache('brands');
+            $CACHE_MANAGER->RegisterTag('catalogAll');
+            $CACHE_MANAGER->endTagCache();
+            $brandsCache->EndDataCache(['array_brands' => $arBrands]);
+        }
+
+        return $arBrands;
+    }
+
+    private static function getImages($arImageIds): array
+    {
+        $res = FileTable::getList([
+            "select" => [
+                "ID",
+                "SUBDIR",
+                "FILE_NAME",
+                "WIDTH",
+                "HEIGHT",
+                "CONTENT_TYPE",
+            ],
+            "filter" => [
+                "ID" => $arImageIds,
+            ],
+        ]);
+
+        $arImages = [];
+
+        while ($arImage = $res->Fetch()) {
+            $src = "/upload/" . $arImage["SUBDIR"] . "/" . $arImage["FILE_NAME"];
+
+            if (!exif_imagetype($_SERVER["DOCUMENT_ROOT"] . $src)) {
+                continue;
+            }
+
+            $arImages[$arImage["ID"]] = $src;
+        }
+
+        return $arImages;
     }
 
     public static function filterOffersByRests($offers)

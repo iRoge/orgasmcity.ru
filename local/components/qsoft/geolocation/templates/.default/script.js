@@ -1,64 +1,67 @@
-var component = $('.user-region, .location-icon, .current-locality');
-var background = $('.podlozhka');
-var close = $('.geoposition__close');
-var popup = $('.geoposition');
-var tooltip = $('.tooltip-window');
-var tooltipAccept = $('.tooltip-window__button--ok');
-var tooltipReject = $('.tooltip-window__button--no');
-var autodetect = $('.geoposition__set-city-auto');
-var locality = $('.geoposition__city');
-var geoForm = $(".geoposition__form");
-var okButton = $('.geoposition__button--ok, .geoposition__button-mobile');
+$(document).ready(function() {
+    let component = $('.user-region, .location-icon, .current-locality');
+    let background = $('.podlozhka');
+    let close = $('.geoposition__close');
+    let popup = $('.geoposition');
+    let tooltip = $('.tooltip-window');
+    let tooltipAccept = $('.tooltip-window__button--ok');
+    let tooltipReject = $('.tooltip-window__button--no');
+    let autodetect = $('.geoposition__set-city-auto');
+    let locality = $('.geoposition__city');
+    let geoForm = $(".geoposition__form");
+    let okButton = $('.geoposition__button--ok, .geoposition__button-mobile');
 
-component.click(function() {
-    popup.css('display', 'flex');
-    background.css('display', 'block');
-    tooltip.css('display', 'none');
-});
+    component.click(function() {
+        popup.css('display', 'flex');
+        background.css('display', 'block');
+        tooltip.css('display', 'none');
+    });
 
-background.click(function() {
-    popup.css('display', 'none');
-});
+    background.click(function() {
+        popup.css('display', 'none');
+        background.css('display', 'none');
+    });
 
-close.click(function() {
-    popup.css('display', 'none');
-    background.css('display', 'none');
-});
+    close.click(function() {
+        popup.css('display', 'none');
+        background.css('display', 'none');
+    });
 
-tooltip.click(function() {
-    tooltip.css('display', 'none');
-});
+    tooltip.click(function() {
+        tooltip.css('display', 'none');
+    });
 
-tooltipAccept.click(function() {
-    tooltip.css('display', 'none');
-});
+    tooltipAccept.click(function() {
+        tooltip.css('display', 'none');
+    });
 
-tooltipReject.click(function() {
-    tooltip.css('display', 'none');
-    popup.css('display', 'flex');
-    background.css('display', 'block');
-});
+    tooltipReject.click(function() {
+        tooltip.css('display', 'none');
+        popup.css('display', 'flex');
+        background.css('display', 'block');
+    });
 
-autodetect.click(function() {
-    updateUserLocality('auto');
-});
+    autodetect.click(function() {
+        updateUserLocality('auto');
+    });
 
-locality.click(function() {
-    updateUserLocality($(this).attr('id'));
-});
+    locality.click(function() {
+        updateUserLocality($(this).attr('id'));
+    });
 
-geoForm.submit(function() {
-    return false;
-})
+    geoForm.submit(function() {
+        return false;
+    })
 
-okButton.click(function() {
-    $("#geo_location_search").next("span").find(".select2-selection").removeClass("red_border");
-    code = $("#geo_location_code").val();
-    if (code) {
-        updateUserLocality(code);
-    } else {
-        $("#geo_location_search").next("span").find(".select2-selection").addClass("red_border");
-    }
+    okButton.click(function() {
+        $("#geo_location_search").next("span").find(".select2-selection").removeClass("red_border");
+        let code = $("#geo_location_code").val();
+        if (code) {
+            updateUserLocality(code);
+        } else {
+            $("#geo_location_search").next("span").find(".select2-selection").addClass("red_border");
+        }
+    });
 });
 
 function updateUserLocality(localityCode) {

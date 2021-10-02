@@ -2,9 +2,9 @@
     margin-bottom: 80px;
 }
 .alert {
-    font-family: 'firalight',sans-serif;
+    font-family: 'gilroyRegular',sans-serif;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     font-size: 13px;
     text-align: center;
     margin: 15px 0 0!important;
@@ -22,7 +22,7 @@
     width: 100% !important;
 }
 .js-password__input {
-    font-family: 'firaregular',sans-serif;
+    font-family: 'gilroyRegular',sans-serif;
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -30,7 +30,7 @@
     border: 1px solid rgba(200,200,200, .5);
 }
 #forgotten_error {
-    font-family: 'firaregular',sans-serif;
+    font-family: 'gilroyRegular',sans-serif;
 }
 #forgotten_error p {
     margin: 0 0 10px !important;

@@ -14,7 +14,7 @@
     margin-bottom: 20px;
     margin-top: 20px;
     font-size: 45px;
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'vollkornsemi';
 }
 
@@ -81,7 +81,6 @@
 }
 
 .advantages-section-wrapper {
-    margin-bottom: 50px;
     padding-left: 15px;
     padding-right: 15px;
 }

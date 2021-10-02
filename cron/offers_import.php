@@ -301,6 +301,8 @@ if (CModule::IncludeModule("catalog"))
 
 // Чистим кэш и отправляем запрос на каждую страницу каталога для автогенерации кеша
 $CACHE_MANAGER->ClearByTag("catalogAll");
+
+// Собираем кеш главной страницы
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -310,6 +312,8 @@ curl_setopt($ch, CURLOPT_HEADER, 0);
 
 $output = curl_exec($ch);
 curl_close($ch);
+
+// Собираем кеш по каталогам
 $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
 $res = CIBlockSection::GetList(
     [
@@ -338,15 +342,45 @@ while ($arItem = $res->GetNext()) {
     $output = curl_exec($ch);
     curl_close($ch);
 }
+
+// Собираем кеш раздела избранных
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/favorites');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
 curl_setopt($ch, CURLOPT_HEADER, 0);
-
 $output = curl_exec($ch);
 curl_close($ch);
+
+// Собираем кеш группировок
+$res = CIBlockElement::GetList(
+    [
+        "SORT" => "ASC",
+    ],
+    [
+        "IBLOCK_ID" => IBLOCK_GROUPS,
+        "ACTIVE" => "Y",
+    ],
+    false,
+    false,
+    [
+        "ID",
+        "NAME",
+        "CODE",
+    ]
+);
+while ($arItem = $res->GetNext()) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/groups/' . $arItem['CODE']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+
+    $output = curl_exec($ch);
+    curl_close($ch);
+}
 
 $end_time = time();
 echo "work_time ".ceil(($end_time - $start_time)/60)." minutes\n";

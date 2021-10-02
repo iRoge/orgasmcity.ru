@@ -37,6 +37,14 @@ if ($success == 'true') {
                 $paymentCollection = $order->getPaymentCollection();
                 $onePayment = $paymentCollection[0];
                 $onePayment->setPaid("Y"); // выставляем оплату
+                CEvent::Send("ORDER_PAID", SITE_ID,
+                    [
+                        "EMAIL_TO" => $this->request->get('EMAIL'),
+                        "SERVER_NAME" => DOMAIN_NAME,
+                        "ORDER_ID" => $order->getId(),
+                        "PRICE" => $order->getPrice()
+                    ]
+                );
                 $order->setField('STATUS_ID', 'ZS'); // Устанавливаем статус "Подтвержден, отправить заказ поставщику"
                 $order->save();
                 global $USER;

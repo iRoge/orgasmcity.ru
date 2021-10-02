@@ -225,6 +225,7 @@ SmartFilter.prototype.updateCatalog = function (url, params = {}, request,data) 
     lds_ring.css('visibility', 'hidden');
     $('.lds-ring-container').hide();
     $('.filter-btn-loader').hide();
+    $('.lazy-img').lazyLoadXT();
 };
 
 SmartFilter.prototype.clearFilter = function () {
@@ -246,13 +247,13 @@ SmartFilter.prototype.clearFilter = function () {
 };
 
 SmartFilter.prototype.nextPage = function (btn) {
-    $("html, body").animate({scrollTop: 0}, 500);
     btn = $(btn);
     let lds_ring = $('.lds-ring--settings');
     lds_ring.css('visibility', 'visible');
     $(".load-more-btn-main").hide();
     $(".load-more-btn-loader:not(.filter-btn-loader)").addClass("load-more-btn-loader-visible");
     BX.ajax.get(btn.data('href'), { 'load_more': 'Y' }, function (data) {
+        $("html, body").animate({scrollTop: $('.catalog__main').offset().top - 55}, 500);
         let $catalog = $(SmartFilter.prototype.cards);
         history.pushState(null, null, btn.data('href'));
         $catalog.html('');
@@ -269,11 +270,11 @@ SmartFilter.prototype.nextPage = function (btn) {
 };
 
 SmartFilter.prototype.goToPageNum = function (btn) {
-    $("html, body").animate({scrollTop: 0}, 500);
     btn = $(btn);
     let lds_ring = $('.lds-ring--settings');
     lds_ring.css('visibility', 'visible');
     BX.ajax.post(btn.data('url'), { 'load_more': 'Y' }, function (data) {
+        $("html, body").animate({scrollTop: $('.catalog__main').offset().top - 55}, 500);
         let $catalog = $(SmartFilter.prototype.cards);
         history.pushState(null, null, btn.data('url'));
         $catalog.html($(data).find(SmartFilter.prototype.cards).html());
@@ -285,6 +286,8 @@ SmartFilter.prototype.goToPageNum = function (btn) {
             $navigation.empty();
         }
         lds_ring.css('visibility', 'hidden');
+
+        $('.lazy-img').lazyLoadXT();
     });
 };
 
@@ -345,8 +348,9 @@ SmartFilter.prototype.setFilterButtonsStyle = function (request) {
     if (request === 'filter' || request === 'reset') {
         filter_status_area.text('показать');
         filter_reset_btn.removeClass('filter__disabled-reset-btn').prop('disabled', false);
-        filters_btn_reset.removeClass('filters__btn--disabled').prop('disabled', false);
+        filters_btn_reset.prop('disabled', false);
         filters_status_text_btn.prop('disabled', false);
+        filters_status_text_btn.addClass('filter__status-text-btn-active');
         filters_btn_submit.removeClass('filters__btn--disabled').prop('disabled', false);
     }
 
@@ -354,14 +358,16 @@ SmartFilter.prototype.setFilterButtonsStyle = function (request) {
         if ($('.js-filter-wrapper').find('.in-left-catalog--checked').length == 0) {
             filter_status_area.text('показано')
             filter_reset_btn.addClass('filter__disabled-reset-btn').prop('disabled', true);
-            filters_btn_reset.addClass('filters__btn--disabled').prop('disabled', true);
+            filters_btn_reset.prop('disabled', true);
             filters_status_text_btn.prop('disabled', true);
+            filters_status_text_btn.removeClass('filter__status-text-btn-active');
             filters_btn_submit.addClass('filters__btn--disabled').prop('disabled', true);
         } else {
             filter_status_area.text('показано')
             filter_reset_btn.removeClass('filter__disabled-reset-btn').prop('disabled', false);
-            filters_btn_reset.removeClass('filters__btn--disabled').prop('disabled', false);
+            filters_btn_reset.prop('disabled', false);
             filters_status_text_btn.prop('disabled', true);
+            filters_status_text_btn.removeClass('filter__status-text-btn-active');
             filters_btn_submit.addClass('filters__btn--disabled').prop('disabled', true);
         }
     }
@@ -380,7 +386,7 @@ SmartFilter.prototype.hideFilter = function () {
     $('.podlozhka').hide();
     $('body').css('overflow-y', '');
     $('body,html').animate({
-        scrollTop: $('.zagolovok').offset().top
+        scrollTop: $('.catalog__main').offset().top - 55
     }, 800);
 };
 
@@ -573,26 +579,14 @@ $(document).ready(function() {
         $viewItems.removeClass('view__item--active');
         $viewItem.addClass('view__item--active');
         if (viewType === 'big') {
-            $cards.addClass('cards--big');
-            $('.card__img-pic').each(function() {
-                let that = $(this);
-                that.attr('data-src-small', that.attr('src'));
-                if (that.attr('src') != null){
-                    that.attr('src', that.data('src-big'));
-                } else {
-                    that.attr('data-src', that.data('src-big'));
-                }
+            $cards.find('.product-card').each(function() {
+                $(this).removeClass('col-lg-3').removeClass('col-sm-4').removeClass('col-md-4').removeClass('col-xs-6');
+                $(this).addClass('col-lg-4').addClass('col-sm-6').addClass('col-md-6').addClass('col-xs-12');
             });
         } else {
-            $cards.removeClass('cards--big');
-            $('.card__img-pic').each(function() {
-                let that = $(this);
-                that.attr('data-src-big', that.attr('src'));
-                if (that.attr('src') != null){
-                    that.attr('src', that.data('src-small'));
-                } else {
-                    that.attr('data-src', that.data('src-small'));
-                }
+            $cards.find('.product-card').each(function() {
+                $(this).removeClass('col-lg-4').removeClass('col-sm-6').removeClass('col-md-6').removeClass('col-xs-12');
+                $(this).addClass('col-lg-3').addClass('col-sm-4').addClass('col-md-4').addClass('col-xs-6');
             });
         }
         saveSettingsInCookie();
@@ -610,7 +604,6 @@ $(document).ready(function() {
                 smartFilter.clickOnSectionFilter(this);
             }
         });
-        $('.in-left-catalog').last().addClass('in-left-catalog--last');
         $('.lds-ring-container-first').css('display', 'none');
     });
 
@@ -684,8 +677,6 @@ $(document).ready(function() {
     });
 
     $(window).on('resize', truncateItemTitle);
-
-    $('.in-left-catalog').last().addClass('in-left-catalog--last');
 
     $(window).on('scroll', function () {
         if ( $(window).scrollTop() > $('div.cards').offset().top - 50){

@@ -21,6 +21,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
     public function executeComponent()
     {
         $this->arResult['ITEMS'] = $this->getItems();
+        $this->arResult['FAVORITES_PROD_IDS'] = $this->getFavorites();
 
         $this->includeComponentTemplate();
     }
@@ -49,12 +50,13 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                 $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['OLD_PRICE'] = $offer['PRICE']['OLD_PRICE'];
                 $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['DISCOUNT'] = $offer['PRICE']['DISCOUNT'];
             }
+            $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['OFFERS'][] = $offer;
         }
 
         if ($GLOBALS['device_type'] == 'mobile') {
-            $numImgs = 8;
-        } else {
             $numImgs = 12;
+        } else {
+            $numImgs = 15;
         }
         if (count($arItems) > $numImgs) {
             $randKeys = array_rand($arItems, $numImgs);
@@ -74,10 +76,10 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         $offerCache = new CPHPCache;
         $arOffers = [];
 
-        if ($offerCache->InitCache($this->arParams['CACHE_TIME'], 'offers|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
+        if ($offerCache->InitCache(86400, 'offers|' . serialize($this->arParams['FILTERS']), '/productsLine')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
-            $this->cacheManager->StartTagCache('offers');
+            $this->cacheManager->StartTagCache('/offers');
             $this->cacheManager->RegisterTag('catalogAll');
 
             $arFilter = [
@@ -103,7 +105,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             );
 
             while ($offer = $resOffers->Fetch()) {
-                $price = PriceUtils::getPrice($offer["PROPERTY_BASEWHOLEPRICE_VALUE"], $offer["PROPERTY_BASEPRICE_VALUE"]);
+                $price = \Qsoft\Helpers\PriceUtils::getCachedPriceForUser($offer['ID']);
                 if (
                     isset($this->arParams['FILTERS']['PRICE_FROM']) && $price['PRICE'] < $this->arParams['FILTERS']['PRICE_FROM']
                     || isset($this->arParams['FILTERS']['PRICE_TO']) && $price['PRICE'] > $this->arParams['FILTERS']['PRICE_TO']
@@ -116,7 +118,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
                 $arOffers[$offer['ID']] = $offer;
             }
 
-            $this->cacheManager->endTagCache();
+            $this->cacheManager->EndTagCache();
             $offerCache->EndDataCache(['allOffers' => $arOffers]);
         }
 
@@ -128,16 +130,15 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         $productsCache = new CPHPCache;
         $arProducts = [];
 
-        if ($productsCache->InitCache(86400, 'products|' . serialize($this->arParams['FILTERS']), 'productsLine')) {
+        if ($productsCache->InitCache(86400, 'products|' . serialize($this->arParams['FILTERS']), '/productsLine')) {
             $arProducts = $productsCache->GetVars()['products'];
         } elseif ($productsCache->StartDataCache()) {
-            $this->cacheManager->StartTagCache('products');
+            $this->cacheManager->StartTagCache('/products');
             $this->cacheManager->RegisterTag('catalogAll');
-
             $arFilter = $this->arParams['FILTERS'];
 
             $arProducts = $this->getProductsByFilter($arFilter);
-            $this->cacheManager->endTagCache();
+            $this->cacheManager->EndTagCache();
             $productsCache->EndDataCache(['products' => $arProducts]);
         }
 
@@ -153,6 +154,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             "NAME",
             "CODE",
             "PROPERTY_BESTSELLER",
+            "PROPERTY_NEW",
             "DETAIL_PICTURE"
         ];
 
@@ -212,5 +214,20 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
         }
 
         return $arProducts;
+    }
+
+    private function getFavorites()
+    {
+        $arFavoritesIds = [];
+        global $USER;
+        if ($USER->IsAuthorized()) { // Для авторизованного получаем из User
+            $arUser = $USER->GetByID($USER->GetID())->Fetch();
+            $arFavoritesIds = array_flip($arUser['UF_FAVORITES']);
+        } else {
+            if (isset($_COOKIE['favorites'])) {
+                $arFavoritesIds = unserialize($_COOKIE['favorites']);
+            }
+        }
+        return $arFavoritesIds;
     }
 }

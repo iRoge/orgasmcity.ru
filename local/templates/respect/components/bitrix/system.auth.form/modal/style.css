@@ -1,5 +1,5 @@
 .in-auth-form {
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     width: 100%;
     margin: 0 auto;
@@ -8,7 +8,7 @@
 .in-auth-form > input {
     width: 100%;
     padding: 10px 20px;
-    background: #fff5f7;
+    background: white;
     border: 1px solid #d8d8d8;
     margin-bottom: 15px;
 }
@@ -19,16 +19,16 @@
 
 .in-auth-form a {
     color: #337ab7;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
 .in-auth-form input[type=submit] {
-    background: #ff5e5e;
+    background: #654670;
     text-transform: uppercase;
     margin-top: 30px;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
 }
 

@@ -16,7 +16,6 @@ $this->setFrameMode(true);
 
 
 <div class="social-icons">
-
     <? if (!empty($arResult['FACEBOOK_LINK'])): ?>
         <a title="Facebook" target="_blank" href="<?= $arResult['FACEBOOK_LINK']; ?>"><i class="icon icon-facebook"></i></a>
     <? endif; ?>
@@ -32,6 +31,4 @@ $this->setFrameMode(true);
     <? if (!empty($arResult['TELEGRAM_LINK'])): ?>
         <a title="Telegram" target="_blank" href="<?= $arResult['TELEGRAM_LINK']; ?>"><i class="icon icon-telegram tele-foot"></i></a>
     <? endif; ?>
-
-
 </div>

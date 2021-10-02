@@ -29,7 +29,7 @@ if (!$arResult['IS_AJAX']) {
 <script>
     var currentHost = "<?=$arResult['CURRENT_HOST']?>";
 </script>
-<div class="col-xs-12">
+<div class="col-xs-12 catalog-wrapper">
     <div class="main main--banner">
         <?php $APPLICATION->IncludeComponent(
             "bitrix:breadcrumb",
@@ -46,6 +46,34 @@ if (!$arResult['IS_AJAX']) {
             $APPLICATION->ShowTitle(false);
             ?>
         </h1>
+        <?php
+        if ($arResult['SHOW_CATALOGS_LINE']) {
+            $filter = [
+                'IBLOCK_ID' => IBLOCK_CATALOG,
+                'ACTIVE' => 'Y',
+                'SECTION_ID' => $arResult['SECTION_ID'],
+            ];
+            $APPLICATION->IncludeComponent(
+                'orgasmcity:catalogs.line',
+                'default',
+                [
+                    'MAX_COUNT' => 24,
+                    'FILTERS' => $filter,
+                    'ICONS_TYPE' => 'COLORED'
+                ]
+            );
+        }
+
+        if ($arResult['TIMER_DATE'] !== null) {
+            $APPLICATION->IncludeComponent(
+                'orgasmcity:timer',
+                'catalog',
+                [
+                    'DATE_TO' => $arResult['TIMER_DATE'],
+                ]
+            );
+        }
+        ?>
         <!-- catalog -->
         <div class="catalog">
             <!-- banner -->
@@ -197,9 +225,9 @@ if (!$arResult['IS_AJAX']) {
                                 <?php if (!empty($arResult['SAME_SECTIONS']) && $arResult['IS_AJAX']) :?>
                                     <div class="in-left-catalog subsections-block">
                                         <div class="name-h3 <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'active-name-h3'?>">
-                                            <h3>
+                                            <div class="filter-name">
                                                 Похожие разделы
-                                            </h3>
+                                            </div>
                                             <svg class="minus" <?=$GLOBALS['device_type'] == 'mobile' ? '' : 'style="display: inline; position: absolute"'?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>
@@ -207,11 +235,11 @@ if (!$arResult['IS_AJAX']) {
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: block;"'?>>
-                                            <ul class=" filter__main-list">
+                                        <div class="in-in-left scrollbar-inner max-height-400" data-filter="type" <?=$GLOBALS['device_type'] == 'mobile' ? 'style="display: none"' : 'style="display: flex;"'?>>
+                                            <ul class="filter__main-list">
                                                 <?php foreach ($arResult['SAME_SECTIONS'] as $section) :?>
                                                     <li class="filter__type-item">
-                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'firalight'; font-size: 20px; color: #4e4e4e;">
+                                                        <a class="name-h3" href="<?=$section['SECTION_PAGE_URL']?>" style="display: block; width: 100%; font-weight: bold; font-family: 'gilroyRegular'; font-size: 15px; color: #000000;">
                                                             <?=$section['NAME']?>
                                                         </a>
                                                     </li>
@@ -232,9 +260,9 @@ if (!$arResult['IS_AJAX']) {
                                                         <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#close"></use>
                                                     </svg>
                                                 </a>
-                                                <h3>
+                                                <div class="filter-name">
                                                     <?= GetMessage($filterKey) ?>
-                                                </h3>
+                                                </div>
                                                 <svg class="minus"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:inline"' : '' ?>>
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                                 </svg>
@@ -242,17 +270,17 @@ if (!$arResult['IS_AJAX']) {
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                                 </svg>
                                             </div>
-                                            <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>>
-                                                <div class="from">
-                                                    <span>От</span>
+                                            <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:flex"' : '' ?>>
+                                                <div class="from-filter">
+                                                    <span>От:</span>
                                                     <input id="min_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="min_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MIN_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
                                                            placeholder="<?= $arResult['FILTER']['MIN_' . $filterKey] ?>">
                                                 </div>
-                                                <div class="to">
-                                                    <span>До</span>
+                                                <div class="to-filter">
+                                                    <span>До:</span>
                                                     <input id="max_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="max_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MAX_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
@@ -277,9 +305,9 @@ if (!$arResult['IS_AJAX']) {
                                                     <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#close"></use>
                                                 </svg>
                                             </a>
-                                            <h3>
+                                            <div class="filter-name">
                                                 <?= GetMessage($filterKey) ?>
-                                            </h3>
+                                            </div>
                                             <svg class="minus"<?= $arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:inline"' : '' ?>>
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#minus"></use>
                                             </svg>
@@ -287,7 +315,7 @@ if (!$arResult['IS_AJAX']) {
                                                 <use xlink:href="/local/templates/respect/icons/icons-sprite.svg#plus"></use>
                                             </svg>
                                         </div>
-                                        <div class="in-in-left scrollbar-inner"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:block"' : '' ?>
+                                        <div class="in-in-left scrollbar-inner"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:flex"' : '' ?>
                                              data-filter-name="<?= $jsKey ?>">
                                             <?php if ($filterKey === 'COLORS') :?>
                                                 <?php foreach ($value as $xml_id => $color) : ?>
@@ -315,7 +343,7 @@ if (!$arResult['IS_AJAX']) {
                                                 <?php endforeach; ?>
                                             <?php else :?>
                                                 <?php foreach ($value as $key => $item) : ?>
-                                                <div>
+
                                                     <input id="<?=$jsKey ?>_<?=sha1($key)?>"
                                                            class="checkbox_size"
                                                            type="checkbox"
@@ -329,7 +357,7 @@ if (!$arResult['IS_AJAX']) {
                                                         <?php endif; ?>
                                                            onchange="smartFilter.click(this)">
                                                     <label for="<?=$jsKey ?>_<?=sha1($key)?>" <?= !empty($item['DISABLED']) ? 'class="mydisabled"' : '' ?>><?=$item['VALUE'] ?></label>
-                                                </div>
+
                                                 <?php endforeach; ?>
                                             <?php endif;?>
                                         </div>
@@ -350,22 +378,22 @@ if (!$arResult['IS_AJAX']) {
                         <div class="filters__bottom">
                             <input type="button"
                                    class="filters__btn filters__btn--submit filters__btn-text--desktop js-filter-button-submit filters__btn--disabled"
-                                   value="ПРИМЕНИТЬ ВСЕ ФИЛЬТРЫ" disabled>
+                                   value="Применить фильтр" disabled>
                             <input type="button"
                                    class="filters__btn filters__btn--reset filters__reset-btn filters__btn-text--desktop js-filter-button-reset filters__btn--disabled"
-                                   value="СБРОСИТЬ ВСЕ ФИЛЬТРЫ" disabled>
+                                   value="Сбросить все фильтры" disabled>
                             <input type="button"
                                    class="filters__btn filters__btn--reset filters__reset-btn filters__btn-text--mobile js-filter-button-reset filters__btn--disabled"
-                                   value="СБРОСИТЬ" disabled>
+                                   value="Сбросить" disabled>
                             <input type="button"
                                    class="filters__btn filters__btn--submit filters__btn-text--mobile js-filter-button-submit js-filter-button-mobile filters__btn--disabled"
-                                   value="ПРИМЕНИТЬ" disabled>
+                                   value="Применить" disabled>
                         </div>
                     </div>
                     <!-- /filter -->
-                    <div class="catalog__content-col catalog__content-col--main col-xs-9" style="display: flex; flex-direction: column">
+                    <div class="catalog__content-col catalog__content-col--main col-xs-9">
                         <!-- cards -->
-                        <div class="catalog__cards cards js-cards <?= $arResult['USER_SETTINGS']['GRID'] == 'big' ? 'cards--big' : '' ?>">
+                        <div class="catalog__cards cards js-cards<?=$arResult['USER_SETTINGS']['GRID'] == ' big' ? ' cards--big' : '' ?>">
                             <div class="cards__box">
                                 <?php if ($arResult['BANNER']['DESKTOP']) : ?>
                                     <div class="cards__banner stock-banner stock-banner--internal">
@@ -380,80 +408,65 @@ if (!$arResult['IS_AJAX']) {
                                     </div>
                                 <?php endif ?>
                                 <?php if ($arResult['ITEMS']->nSelectedCount > 0) : ?>
-                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) : ?>
-                                        <!-- card -->
-                                        <div class="cards__item">
-                                            <div class="card">
-                                                <div class="btn-div">
-                                                    <?php if ($arItem['PRICE'] >= $freeDeliveryMinSum) { ?>
-                                                        <img class="props-icon-img free-delivery" alt="Бесплатная доставка" src="/img/delivery_free.svg">
-                                                        <div class="icon__tooltip" style="left: 0">
-                                                            Бесплатная доставка для корзин от <?=$freeDeliveryMinSum?> рублей
-                                                        </div>
-                                                    <?php } ?>
-                                                    <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES_PROD_IDS'][$arItem['ID']]) ? ' active' : '' ?>" data-id="<?= $arItem['ID'] ?>">
-                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 18" xml:space="preserve">
-                                                                        <g>
-                                                                            <path d="M18.4,1.8c-1-1.1-2.5-1.8-4-1.8l-3.1,1.1c-0.5,0.4-0.9,0.8-1.3,1.3c-0.4-0.5-0.8-1-1.3-1.3
-                                                                                   C7.8,0.4,6.7,0,5.6,0c-1.5,0-3,0.6-4,1.8C0.6,2.9,0,4.4,0,6.1C0,7.8,0.6,9.4,2,11c1.2,1.5,2.9,3,5,4.7c0.7,0.6,1.5,1.3,2.3,2
-                                                                                   C9.4,17.9,9.7,18,10,18s0.6-0.1,0.8-0.3c0.8-0.7,1.6-1.4,2.3-2c2-1.7,3.8-3.2,5-4.7c1.4-1.6,2-3.2,2-4.9C20,4.4,19.4,2.9,18.4,1.8
-                                                                                   z"/>
-                                                                        </g>
-                                                                    </svg>
-                                                    </button>
+                                    <?php while ($arItem = $arResult['ITEMS']->Fetch()) { ?>
+                                        <div class="product-card<?=$arResult['USER_SETTINGS']['GRID'] == 'big' ? ' col-lg-4 col-md-6 col-sm-6 col-xs-12' : ' col-lg-3 col-md-4 col-sm-4 col-xs-6' ?>">
+                                            <div class="product-card-wrapper">
+                                                <div class="product-icons-wrap">
+                                                    <!--                            <img src="" alt="">-->
                                                     <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
-                                                        <img class="props-icon-img hit-img" alt="Хит продаж" src="/img/hit.png">
-                                                        <div class="icon__tooltip" style="right: 0">
-                                                            Хит продаж
-                                                        </div>
+                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
+                                                    <?php } ?>
+                                                    <?php if ($arItem['PROPERTY_NEW_VALUE']) { ?>
+                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
+                                                    <?php } ?>
+                                                    <?php if ($arItem['DISCOUNT']) { ?>
+                                                        <?php if ($arItem['DISCOUNT_DATE_TO']) { ?>
+                                                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                                                        <?php } ?>
+                                                        <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                                                     <?php } ?>
                                                 </div>
-                                                <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="card__img" target="_blank">
-                                                    <div class="card__img-box">
-                                                        <?php if ($arItem['DISCOUNT_WITHOUT_BONUS']) {?>
-                                                        <img class="sale-img" src="/img/sale.png" alt="Скидка">
-                                                        <?php }?>
-                                                        <img
-                                                            <?php if ($arResult['USER_SETTINGS']['GRID'] == 'big') : ?>
-                                                                src="<?= $arItem['DETAIL_PICTURE_BIG'] ;?>"
-                                                                data-src-small="<?= $arItem['DETAIL_PICTURE'] ?>"
-                                                            <?php else : ?>
-                                                                src="<?= $arItem['DETAIL_PICTURE'] ;?>"
-                                                                data-src-big="<?= $arItem['DETAIL_PICTURE_BIG'] ?>"
-                                                            <?php endif; ?>
-                                                            class="card__img-pic pic-active pic-one"
-                                                            alt="<?= $arItem['NAME'] ?>"
-                                                        >
+                                                <button title="Добавить в избранное" type="button" class="heart__btn<?=isset($arResult['FAVORITES_PROD_IDS'][$arItem['ID']]) ? ' active' : '' ?> js-favour-heart" data-id="<?=$arItem['ID']?>">
+                                                    <svg width="30" height="30" viewBox="0 0 23 22" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 5.86414C0 -0.440483 8.73003 -2.77704 11.4163 4.52139C14.1025 -2.77704 22.8325 -0.440483 22.8325 5.86414C22.8325 12.714 11.4163 21.3989 11.4163 21.3989C11.4163 21.3989 0 12.714 0 5.86414Z" fill="black"/>
+                                                    </svg>
+                                                </button>
+                                                <a target="_blank" class="product-href-wrapper" href="<?=$arItem["DETAIL_PAGE_URL"]?>">
+                                                    <div class="product-img-wrapper">
+                                                        <img class="product-img lazy-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
                                                     </div>
-                                                    <div class="card__info">
-                                                        <div class="card__meta">
-                                                            <div class="card__prices">
-                                                                <div class="card__prices-top">
-                                                                    <span class="card__price <?= $arItem['PRICE'] < $arItem['OLD_PRICE'] ? " card__price--discount" : "" ?>">
-                                                                        <span class="card__price-num"><?= number_format($arItem['PRICE'], 0, '', ' '); ?></span> р.
-                                                                    </span>
-                                                                    <?php if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
-                                                                        <span class="card__discount <?=$arResult['HAS_USER_DISCOUNT'] ? 'discount-yellow' : ''?>">
-                                                                            -<?= $arItem['DISCOUNT'] ?>%
-                                                                        </span>
-                                                                    <?php endif ?>
-                                                                </div>
-                                                                <?php if (!empty($arItem['OLD_PRICE']) && $arItem['PRICE'] < $arItem['OLD_PRICE']) : ?>
-                                                                    <span class="card__price-old" style="display:block;"><?= number_format($arItem['OLD_PRICE'], 0, '', ' '); ?> р.</span>
-                                                                <?php endif ?>
-                                                            </div>
-                                                            <?php if ($USER->GetID() == 1) {?>
-                                                                <span>Закупка <?=$arItem['WHOLEPRICE']?>р.</span>
-                                                                <span>Наценка на закупку <?=(int)(($arItem['PRICE'] - $arItem['WHOLEPRICE'])*100/$arItem['WHOLEPRICE'])?>%</span>
-                                                            <?php } ?>
-                                                        </div>
-                                                        <span class="card__title"><?= $arItem['NAME'] ?></span>
-                                                    </div>
+                                                    <span class="product-title"><?=$arItem['NAME']?></span>
                                                 </a>
+                                                <div class="product-card-bottom">
+                                                    <div class="product-card-price-wrapper">
+                                                        <?php if ($arItem['DISCOUNT']) { ?>
+                                                            <span class="product-card-old-price"><?=number_format($arItem['OLD_PRICE'], 0, '', ' ');?> ₽</span>
+                                                        <?php } ?>
+                                                        <span class="product-card-price<?=$arItem['DISCOUNT'] ? ' price-red' : ''?>"><?=number_format($arItem['PRICE'], 0, '', ' ');?> ₽</span>
+                                                    </div>
+                                                    <div class="product-card-buy-btn-wrapper">
+                                                        <button
+                                                                data-url="<?=$arItem["DETAIL_PAGE_URL"]?>"
+                                                                <?=count($arItem['ASSORTMENTS']) > 1 ? '' : 'data-id="' . reset($arItem['ASSORTMENTS'])['ID'] . '"'?>
+                                                                onclick="addItemToCartOrOpenDetail(this)"
+                                                                data-name="<?=$arItem['NAME']?>"
+                                                                data-price="<?=$arItem['PRICE']?>"
+                                                                class="product-card-buy-btn"
+                                                        >
+                                                            <?=count($arItem['ASSORTMENTS']) > 1 ? 'Купить' : 'В корзину'?>
+                                                        </button>
+                                                    </div>
+                                                    <?php if ($USER->GetID() == 1 || $USER->GetID() == 15) {
+                                                        $wholesaleprice = $arItem['WHOLEPRICE'];
+                                                        ?>
+                                                        Цена закупки <?=$wholesaleprice?> ₽
+                                                        <br>
+                                                        Наценка <?=(int)(($arItem['PRICE'] - $wholesaleprice)*100/$wholesaleprice)?>%
+                                                    <?php }?>
+                                                </div>
                                             </div>
                                         </div>
-                                        <!-- /card -->
-                                    <?php endwhile ?>
+                                    <?php } ?>
                                 <?php else : ?>
                                     <div class="page-massage <?= !empty($arResult['TAGS']) ? 'recomendation' : '' ?>">
                                         <?php if (CSite::InDir('/catalog/favorites/')) : ?>

@@ -462,10 +462,3 @@ if (!function_exists('debugTime')) {
         }
     }
 }
-
-function dd($text)
-{
-    debugmessage($text);
-    die();
-}
-?>

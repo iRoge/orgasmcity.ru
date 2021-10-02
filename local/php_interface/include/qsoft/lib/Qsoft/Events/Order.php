@@ -17,50 +17,6 @@ use \Qsoft\Sailplay\Tasks\TaskManager;
 
 class Order
 {
-    private const STATUS_RESERV = 'R';
-    private const STATUS_PURCHASE = 'P';
-    public function OnOrderSaveHandler(Event $event)
-    {
-        try {
-            if (!Loader::includeModule("likee.exchange")) {
-                return;
-            };
-        } catch (LoaderException $e) {
-            return;
-        }
-        $isNew = $event->getParameter("IS_NEW");
-        if (!$isNew) {
-            return;
-        }
-        $order = $event->getParameter('ENTITY');
-        $orderId = $order->getId();
-        static::log("=============");
-        static::log("orderId: ".$orderId);
-        $basket = $order->getBasket();
-        foreach ($basket as $basketItem) {
-            $prodId = $basketItem->getProductId();
-            $quantity = $basketItem->getQuantity();
-            $status = static::getReservStatus();
-            static::log("productId: ".$prodId.", quantity: ".$quantity.", status: ".$status);
-            ReserveStorageTable::add([
-                'PRODUCT_ID' => $prodId,
-                'QUANTITY' => $quantity,
-                'ORDER_ID' => $orderId,
-                'STATUS' => $status,
-            ]);
-        }
-    }
-    private static function getReservStatus()
-    {
-        $context = Context::getCurrent();
-        $request = $context->getRequest();
-        $action = $request->get('action');
-        if ($action === 'reserv') {
-            return self::STATUS_RESERV;
-        } else {
-            return self::STATUS_PURCHASE;
-        }
-    }
     public static function OnGetOptimalPriceResultHandler(&$arFields)
     {
         // если нет ID ТП, то ничего не делаем
@@ -90,7 +46,7 @@ class Order
         if (!$arOffer["PROPERTY_CML2_LINK_VALUE"]) {
             return;
         }
-        $arPrice = PriceUtils::getPrice($arOffer['PROPERTY_BASEWHOLEPRICE_VALUE'], $arOffer['PROPERTY_BASEPRICE_VALUE']);
+        $arPrice = PriceUtils::getCachedPriceForUser($arOffer['ID']);
         if (!$arPrice) {
             $arFields = [];
             return;
@@ -104,55 +60,5 @@ class Order
     protected static function log($message)
     {
         orgasm_logger($message, "orderEvents.txt");
-    }
-
-    public function OnSaleStatusOrderHandler($orderId, $orderStatus)
-    {
-        if ($orderStatus != 'O') {
-            return;
-        }
-        $data = [];
-        $order = Sale::load($orderId);
-        $orderPropertyCollection = $order->getPropertyCollection();
-        foreach ($orderPropertyCollection as $orderPropertyItem) {
-            if ($orderPropertyItem->getField('CODE') == "ORDER_TYPE") {
-                $orderType = $orderPropertyItem->getField('VALUE');
-            }
-            if ($orderPropertyItem->getField('CODE') == "PHONE") {
-                $data['order_phone'] = $orderPropertyItem->getField('VALUE');
-            }
-            if ($orderPropertyItem->getField('CODE') == "EMAIL") {
-                $data['order_email'] = $orderPropertyItem->getField('VALUE');
-            }
-        }
-        if ($orderType == 'RESERVATION') {
-            return;
-        }
-
-        $data['order_num'] = $orderId;
-        $data['type_order'] = $orderType;
-        $data['l_date'] = $order->getDateInsert()->getTimestamp();
-        $basket = $order->getBasket();
-        $i = 1;
-
-        foreach ($basket as $basketItem) {
-            $basketPropertyCollection = $basketItem->getPropertyCollection();
-            foreach ($basketPropertyCollection as $basketPropertyItem) {
-                if ($basketPropertyItem->getField('CODE') == "KOD_1S") {
-                    $sku = $basketPropertyItem->getField('VALUE');
-                }
-            }
-            $cart[$i] = [
-                'sku' => $sku,
-                'price' => $basketItem->getPrice(),
-                'quantity' => $basketItem->getQuantity()
-            ];
-            $i++;
-        }
-        $data['cart'] = json_encode($cart);
-
-        $taskManager = new TaskManager();
-        $taskManager->setUser($order->getUserId());
-        $taskManager->addTask('sendOrder', $data);
     }
 }

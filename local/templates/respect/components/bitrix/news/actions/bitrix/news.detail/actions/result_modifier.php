@@ -19,7 +19,6 @@ $cp = $this->__component;
 if (is_object($cp)) {
     $cp->arResult['DETAIL_TEXT'] = empty($arResult['DETAIL_TEXT']) ? $arResult['PREVIEW_TEXT'] : $arResult['DETAIL_TEXT'];
     $cp->arResult['ENABLE_SUBSCRIBE'] = !empty($arResult['DISPLAY_PROPERTIES']['ENABLE_SUBSCRIBE']['VALUE_XML_ID']);
-    $cp->arResult['ENABLE_CONTEST'] = !empty($arResult['DISPLAY_PROPERTIES']['ENABLE_CONTEST']['VALUE_XML_ID']);
     $cp->arResult['CONTEST_END'] = empty($arResult['PROPERTIES']['CONTEST_END']['VALUE']['TEXT']) ? '' : $arResult['PROPERTIES']['CONTEST_END']['~VALUE']['TEXT'];
     $cp->arResult['CONTEST_RULES'] = empty($arResult['PROPERTIES']['CONTEST_RULES']['VALUE']['TEXT']) ? '' : $arResult['PROPERTIES']['CONTEST_RULES']['~VALUE']['TEXT'];
 
@@ -81,7 +80,7 @@ if (is_object($cp)) {
     }
 
     $cp->SetResultCacheKeys([
-        'DETAIL_TEXT', 'ENABLE_SUBSCRIBE', 'ENABLE_CONTEST',
+        'DETAIL_TEXT', 'ENABLE_SUBSCRIBE',
         'CONTEST_END', 'CONTEST_RULES', 'CONTEST_INSTA_RESULT_EMAILS',
         'CONTEST_BTN_COLOR', 'CONTEST_THANKYOU_TEXT', 'CONTEST_TYPE',
         'CONTEST_BTN_TEXT_COLOR', 'CONTEST_BTN_ENROLL_TEXT',

@@ -26,7 +26,6 @@
     <?
     \Bitrix\Main\Loader::includeModule('likee.site');
     \Bitrix\Main\Loader::includeModule('likee.location');
-
     global $LOCATION;
 
     $APPLICATION->ShowHead();
@@ -56,6 +55,7 @@
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/wNumb.js');
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/nouislider.js');
 
+//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inputmask.bundle.min.js');
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.validate.js');
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/messages_ru.js');
@@ -67,6 +67,7 @@
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tinycolor.js');
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inview.js');
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/swiper.js');
+      \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/lazy.min.js');
 
 //    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/ajax.js');
     \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/popup.js');
@@ -119,7 +120,6 @@
         }
     }
     ?>
-    <script src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>
     <script type="text/javascript" data-skip-moving="true" >
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(
@@ -172,8 +172,11 @@
             document.location.reload();
         }
     </script>
+
+    <!-- Jivosite -->
+    <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>
     <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
+    <script type="text/javascript" async>
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
             m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
         (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
@@ -185,13 +188,12 @@
             webvisor:true,
             ecommerce:"metrikaData"
         });
-        window.metrikaData = window.metrikaData || [];
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/82799680" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-    <!—- Global site tag (gtag.js) - Google Analytics -—>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1"></script>
-    <script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1" async></script>
+    <script type="text/javascript" async>
+        window.metrikaData = window.metrikaData || [];
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -240,8 +242,8 @@ $APPLICATION->ShowViewContent('geolocation_popup');
 ?>
 
 <div class="top col-xs-12 tolltips">
-    <div class="main top-border">
-        <div class="col-md-8 col-sm-8 col-xs-12 info">
+    <div class="main" style="display: flex;align-items: center;height: 100%;">
+        <div class="col-lg-4 col-md-3 col-sm-4 col-xs-12 info">
             <? $APPLICATION->IncludeComponent(
                 'qsoft:geolocation',
                 '.default',
@@ -251,44 +253,44 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                 )
             ); ?>
             <?php $phone = SUPPORT_PHONE?>
-            <div class="col-xs-4 pull-right phone-xs">
+            <div class="col-xs-3 phone-xs">
                 <p class="header-container">
-                    <img class="header-mail-icon mail mail2" src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
+                    <img class="header-mail-icon mail mail2" src="<?=SITE_TEMPLATE_PATH; ?>/img/svg/support.svg" alt="mail"/>
                     <a class="header-call-icon" href="tel:+<?=str_replace([' ', '(', ')', '-', '+'], '', $phone)?>"></a>
                 </p>
-
             </div>
-            <div class="col-sm-3 hidden-xs phone-top">
-                <p class="phone-top-first hidden-sm">
-                    <span>Режим работы телефонной справочной: </span>
-                    <span>с 12.00 - 18.00 СБ, ВС - выходной</a></span>
-                </p>
-                <p class="phone-top-second">
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-3 hidden-xs info">
+            <div class="phone-top">
+                <img class="phone-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/svg/phone.svg"/>
+                <p class="phone-top-first">
                     <span>Интернет-магазин: </span>
                     <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
                 </p>
-            </div>
-
-            <div class="col-sm-5 hidden-xs phone-top-mob">
-                Телефон: <span><a class="phone-top-link" href="tel:<?=$phone?>"><?=$phone?></a></span>
+                <p class="hidden-sm phone-top-second">
+                    <span>Режим работы справочной: </span>
+                    <span>с 12.00 - 18.00 СБ, ВС - выходной</span>
+                </p>
             </div>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12 right-block-top">
-            <div class="col-md-6 col-sm-6 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
+        <div class="col-lg-3 col-md-4 col-sm-5 hidden-xs right-block-top">
+            <div class="col-md-3 col-sm-3 hidden-xs auth<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                 <?php
                     $APPLICATION->ShowViewContent("AUTH_HEAD_BLOCK");
                 ?>
             </div>
-            <div class="col-md-2 col-sm-2 hidden-xs mail mail2">
-                <img src="<?= SITE_TEMPLATE_PATH; ?>/img/envelope.png"/>
+            <div class="col-md-3 col-sm-3 hidden-xs mail mail2">
+                <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/support.svg"/>
+                <span>Поддержка</span>
             </div>
-            <div class="col-md-2 col-sm-2 hidden-xs cart heart">
+            <div class="col-md-3 col-sm-3 hidden-xs cart heart">
                 <a class="favorites_header" href="/catalog/favorites/">
                     <p class="count count--heart in-full"><?= $_COOKIE['favorites_count'] ?? '0'?></p>
-                    <img src="<?= SITE_TEMPLATE_PATH; ?>/img/transparent-heart.png"/>
+                    <img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/heart.svg"/>
+                    <span>Избранное</span>
                 </a>
             </div>
-            <div class="col-md-2 col-sm-2 hidden-xs cart">
+            <div class="col-md-3 col-sm-3 hidden-xs cart">
                 <? $APPLICATION->IncludeComponent(
                     "likee:basket.small",
                     "",
@@ -305,6 +307,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
             </div>
         </div>
     </div>
+    <div class="header-border-wrapper main"><div class="header-border"></div></div>
 </div>
 <div class="menu-spacer">
     <div class="poisk-div">
@@ -320,10 +323,10 @@ $APPLICATION->ShowViewContent('geolocation_popup');
     </div>
     <div class="menu-wrap">
         <div class="menu col-xs-12">
-            <div class="main clearfix">
-                <div class="col-md-2 col-sm-2 col-xs-2 logo-div">
-                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.png" class="logo header__logotype"/></a>
-                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.png" class="logo-small"/></a>
+            <div class="main clearfix" style="display: flex; align-items: center">
+                <div class="col-md-2 col-sm-2 col-xs-3 logo-div">
+                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.svg" class="logo header__logotype"/></a>
+                    <a href="/"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/logo_new.svg" class="logo-small"/></a>
                 </div>
                 <div class="col-md-8 menu-div">
                     <?
@@ -336,7 +339,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                                 'MENU_CACHE_TYPE' => 'N',
                                 'MENU_CACHE_TIME' => '604800',
                                 'MENU_CACHE_USE_GROUPS' => 'Y',
-                                'MENU_CACHE_GET_VARS' => array(),
+                                'MENU_CACHE_GET_VARS' => [],
                                 'MAX_LEVEL' => '3',
                                 'CHILD_MENU_TYPE' => '',
                                 'USE_EXT' => 'Y',
@@ -347,7 +350,7 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         );
                         ?>
                 </div>
-                <div class="col-md-2 col-sm-10 col-xs-10 pull-right search-div header__search" style="padding-left: 0px">
+                <div class="col-md-2 col-sm-10 col-xs-9 search-div header__search" style="padding-left: 0">
                     <? $APPLICATION->IncludeComponent(
                         "bitrix:search.form",
                         "top",
@@ -357,15 +360,14 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                         ),
                         false
                     ); ?>
-
                     <div class="hidden-sm col-xs-2 mail touch-for-poisk">
-                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/search.png" style="margin-top: 18px;"/>
+                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/search-colored.svg" width="20px" height="20px"/>
                     </div>
                     <div class="hidden-sm col-xs-2 mail auth2<?=$USER->IsAuthorized() ? '' : ' ent'?>">
                         <? if (!$USER->IsAuthorized()) : ?>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cabinet.svg" width="20px" height="20px"/>
                         <? else : ?>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/man.png" style="margin-top: 16px;"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cabinet.svg" width="20px" height="20px"/>
                             <div class="auth-div menu_mob_fly" style="margin-top: 10px!important;">
                                 <a href="/personal/orders/">История заказов</a><br />
                                 <a href="/personal/bonuses/">Бонусы</a><br />
@@ -378,14 +380,13 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                     <div class="hidden-sm col-xs-2 cart heart">
                         <a class="favorites_header" href="/catalog/favorites/">
                             <p class="count count--heart"><?=$favoritesCount?></p>
-                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/transparent-heart.png"/>
+                            <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/heart.svg" width="20px" height="20px"/>
                         </a>
                     </div>
-
                     <div class="hidden-sm col-xs-2 cart">
                         <? $APPLICATION->IncludeComponent(
                             "likee:basket.small",
-                            "",
+                            "mobile",
                             array(
                                 "PATH_TO_BASKET" => "/cart/",
                                 "PATH_TO_ORDER" => "/order/",
@@ -396,8 +397,10 @@ $APPLICATION->ShowViewContent('geolocation_popup');
                             )
                         ); ?>
                     </div>
-
-                    <div class="blue-menu"></div>
+                    <div class="blue-menu hidden-lg hidden-md col-xs-2">
+                        <img src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/burger.svg" alt="Burger" width="20px" height="20px">
+                        <span>Каталог</span>
+                    </div>
                     <div class="cls-blue-menu"></div>
                 </div>
             </div>
@@ -426,16 +429,15 @@ if (in_array($GLOBALS['device_type'], ['mobile', 'tablet']) && $bMainPage) {
     );
 }?>
 <?
-$bShowTitle = !CSite::InDir(SITE_DIR . 'payment-success/')
-    && !CSite::InDir(SITE_DIR . 'payment-error/')
-    && !CSite::InDir(SITE_DIR . 'faq/')
+$bShowTitle = !CSite::InDir(SITE_DIR . 'faq/')
     && !CSite::InDir(SITE_DIR . 'index.php')
     && !(defined('HIDE_TITLE') && HIDE_TITLE === true);
 
 $bContentContainer = $bShowTitle
     && !CSite::InDir(SITE_DIR . 'personal/')
     && !CSite::InDir(SITE_DIR . 'brands/')
-    && !CSite::InDir(SITE_DIR . 'refund/');
+    && !CSite::InDir(SITE_DIR . 'refund/')
+    && !CSite::InDir(SITE_DIR . 'order-success/');
 
 ?>
 
@@ -472,8 +474,11 @@ switch ($GLOBALS['PAGE'][1]) {
         break;
 
     case 'personal':
-        $menuTemplate = 'horizontal-personal';?>
-        <div class="after-lk-in col-md-8 col-md-offset-2 main">
+        if ($USER->IsAuthorized()) {
+            $menuTemplate = 'horizontal-personal';
+        }
+        ?>
+        <div class="after-lk-in main">
         <?php
         break;
 
@@ -483,7 +488,6 @@ switch ($GLOBALS['PAGE'][1]) {
 }
 
 if (isset($menuTemplate)) : ?>
-    <div class="<?= ($menuTemplate == 'horizontal-personal') ? 'desktop-sl' : '' ?>">
         <?php
         $APPLICATION->IncludeComponent(
             'bitrix:menu',
@@ -503,5 +507,4 @@ if (isset($menuTemplate)) : ?>
             ]
         );
         ?>
-    </div>
 <?php endif; ?>

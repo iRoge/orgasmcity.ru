@@ -37,8 +37,9 @@ $(function () {
                     window.localStorage['onlineTime'] = 0;
                 }
                 window.localStorage['onlineTime'] = Number(window.localStorage['onlineTime']) + 5;
-                if (Number(window.localStorage['onlineTime']) === 30) {
+                if (Number(window.localStorage['onlineTime']) === 5) {
                     let element = $('.js-popup-banner');
+                    element.prepend('<img src="/img/surprise.webp" alt="Surprise" width="100%" height="100%">')
                     element.show();
                     Popup.show(element, {
                         onShow: function () {

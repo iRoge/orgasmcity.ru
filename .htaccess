@@ -31,7 +31,9 @@ ErrorDocument 404 /404.php
   ExpiresActive on
   ExpiresByType image/jpeg    "access plus 3 day"
   ExpiresByType image/gif     "access plus 3 day"
+  ExpiresByType image/webp    "access plus 3 day"
   ExpiresByType font/ttf      "access plus 1 month"
   ExpiresByType font/woff     "access plus 1 month"
+  ExpiresByType font/woff2    "access plus 1 month"
   ExpiresByType image/svg+xml "access plus 1 month"
 </IfModule>

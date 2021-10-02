@@ -1,5 +1,5 @@
 .blue {
-    color: #4e4e4e;
+    color: #000000;
     font-family: 'firamedium';
     font-size: 16px;
     margin-top: 0px !important;
@@ -29,8 +29,8 @@ p .blue {
 }
 
 .active-blue {
-    color: #ff5e5e !important;
-    font-family: 'firaregular' !important;
+    color: #654670 !important;
+    font-family: 'gilroyRegular' !important;
     border-bottom: 0 !important;
     font-size: 16px;
     margin-top: 0px !important;
@@ -42,7 +42,7 @@ p .blue {
 
 .after-blue {
     display: none;
-    border-bottom: 1px solid #ff5e5e;
+    border-bottom: 1px solid #654670;
     padding: 0 !important;
     margin-bottom: 15px !important;
 }
@@ -62,12 +62,12 @@ p .blue {
 
 .infopage-section {
     font-size: 20px !important;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     /*margin-top: 0px;*/
     /*margin-bottom: 0px;*/
     font-size: 16px;
     line-height: 30px;
-    color: #4e4e4e;
+    color: #000000;
     padding-top: 15px;
     /*padding-bottom: 0px;*/
 }

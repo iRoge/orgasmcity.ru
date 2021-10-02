@@ -65,3 +65,12 @@
     position: relative;
     /*z-index: 15;*/
 }
+
+.banner_item {
+    padding: 0 10px!important;
+    height: 277px;
+}
+
+.banner_item img {
+    height: 277px;
+}

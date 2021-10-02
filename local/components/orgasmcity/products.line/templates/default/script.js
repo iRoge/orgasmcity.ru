@@ -14,37 +14,42 @@ $(document).ready(function() {
         loop: true,
         autoplay: false,
         speed: 800,
+        infinite: false,
+        lazyLoad: 'ondemand',
         responsive: [
             {
                 breakpoint: 1280,
                 settings: {
-                    slidesToShow: 4,
-                    slidesToScroll : 4,
-                    infinite: true
+                    slidesToShow: 5,
+                    slidesToScroll : 5,
                 }
             },
             {
-                breakpoint: 993,
+                breakpoint: 992,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll : 3,
-                    infinite: true
                 }
             },
             {
-                breakpoint: 414,
+                breakpoint: 600,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll : 2,
-                    infinite: true
+                }
+            },
+            {
+                breakpoint: 400,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll : 1,
                 }
             },
             {
                 breakpoint: 1,
                 settings: {
-                    slidesToShow: 2,
-                    slidesToScroll : 2,
-                    infinite: true
+                    slidesToShow: 1,
+                    slidesToScroll : 1,
                 }
             },
         ]

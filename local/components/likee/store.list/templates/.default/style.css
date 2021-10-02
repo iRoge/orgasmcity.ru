@@ -42,10 +42,10 @@ input[type="search"] {
 }
 .korpus .tabs-item.active
 {
-    background-color: #ff5e5e;
+    background-color: #654670;
     color: #ffffff;
-    border: 1px solid #ff5e5e;
-    /*font-family: 'firalight';*/
+    border: 1px solid #654670;
+    /*font-family: 'gilroyRegular';*/
 }
 @media (min-width: 991px) {
   .korpus .tabs-item:hover {

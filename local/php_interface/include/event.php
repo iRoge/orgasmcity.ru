@@ -15,6 +15,19 @@ $eventManager->addEventHandler('main', 'OnBeforeUserAdd', 'lowerUserEmail');
 $eventManager->addEventHandler('main', 'OnBeforeUserRegister', 'subscribeUser');
 $eventManager->addEventHandler('main', 'OnBeforeUserAdd', 'subscribeUser');
 $eventManager->addEventHandler('main', 'OnBeforeUserUpdate', 'lowerUserEmail');
+$eventManager->addEventHandler('main', 'OnAfterUserAdd', 'sendRegistrationMessage');
+
+function sendRegistrationMessage(&$arFields)
+{
+    CEvent::Send("USER_REGISTRATION", SITE_ID,
+        [
+            "EMAIL_TO" => $arFields['EMAIL'],
+            "LOGIN" => $arFields['EMAIL'],
+            "PASSWORD" => $arFields['CONFIRM_PASSWORD'],
+            "SERVER_NAME" => DOMAIN_NAME,
+        ]
+    );
+}
 
 function lowerUserEmail(&$arFields)
 {
@@ -54,18 +67,6 @@ function setUserGroup(&$arFields)
             'GROUP_ID' => $registeredUsersGroupID
         ]);
     }
-}
-
-$eventManager->addEventHandler('sale', 'registerInputTypes', 'registerInputTypePaySystemLocations');
-function registerInputTypePaySystemLocations(\Bitrix\Main\Event $event)
-{
-    \Bitrix\Sale\Internals\Input\Manager::register(
-        "PAY_SYSTEM_LOCATIONS",
-        array(
-            'CLASS' => '\Qsoft\PaySystemLocations\PaySystemLocationsInput',
-            'NAME' => 'Местоположения платежной системы',
-        )
-    );
 }
 
 

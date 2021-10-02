@@ -38,6 +38,12 @@ class QsoftSubscribeComponent extends \CBitrixComponent
         $this->arResult['MESSAGE'] = "Спасибо за подписку!";
         if (!$mailing) {
             SubscribeManager::addSubscriber($this->request->get('EMAIL'));
+            CEvent::Send("USER_SUBSCRIBE", SITE_ID,
+                [
+                    "EMAIL_TO" => $this->request->get('EMAIL'),
+                    "SERVER_NAME" => DOMAIN_NAME,
+                ]
+            );
         } else {
             if ($mailing['ACTIVE'] === 'Y') {
                 $this->arResult['MESSAGE'] = "Вы уже подписаны!";

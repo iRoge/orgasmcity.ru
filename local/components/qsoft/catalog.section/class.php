@@ -15,7 +15,6 @@ use Qsoft\Helpers\PriceUtils;
  */
 class QsoftCatalogSection extends ComponentHelper
 {
-    private const TYPE_ALL_CATALOG = 'all';
     private const TYPE_SECTION = 'section';
     private const TYPE_SEARCH = 'search';
     private const TYPE_SALES = 'sales';
@@ -84,10 +83,13 @@ class QsoftCatalogSection extends ComponentHelper
         "PROPERTY_DIAMETER",
         "PROPERTY_LENGTH",
         "PROPERTY_BESTSELLER",
+        "PROPERTY_NEW",
         "PROPERTY_VENDOR",
         "PROPERTY_VOLUME",
         "PROPERTY_MATERIAL",
         "PROPERTY_COLLECTION",
+        "PROPERTY_YEAR",
+        "PROPERTY_VIBRATION",
         "SHOW_COUNTER",
     ];
 
@@ -188,10 +190,7 @@ class QsoftCatalogSection extends ComponentHelper
         $sectionUrl = $APPLICATION->GetCurPage(false);
         $code = $arParams['SECTION_CODE'];
 
-        if ($sectionUrl == '/catalog/') {
-            //Ассортимент магазина
-            $type = self::TYPE_ALL_CATALOG;
-        } elseif ($sectionUrl == '/catalog/search/') {
+        if ($sectionUrl == '/catalog/search/') {
             $type = self::TYPE_SEARCH;
             $arParams['SEARCH'] = $this->getSearchParam();
         } elseif ($type !== self::TYPE_SEARCH && !$code) {
@@ -212,15 +211,15 @@ class QsoftCatalogSection extends ComponentHelper
     {
         $isSpecial = strpos($sectionUrl, 'catalog') !== false;
         if ($isSpecial) {
-            if (strpos($sectionUrl, '/hits/') !== false) {
-                $sectionUrl = str_replace('/catalog/hits', '', $sectionUrl);
-                return 'hits';
-            } elseif (strpos($sectionUrl, '/sales/') !== false) {
+            if (strpos($sectionUrl, '/sales/') !== false) {
                 $sectionUrl = str_replace('/catalog/sales', '', $sectionUrl);
                 return 'sales';
             } elseif (strpos($sectionUrl, '/favorites/') !== false) {
                 $sectionUrl = str_replace('/catalog/favorites', '', $sectionUrl);
                 return 'favorites';
+            } elseif (strpos($sectionUrl, '/groups/') !== false) {
+                $sectionUrl = str_replace('/catalog/groups', '', $sectionUrl);
+                return 'group';
             }
         } elseif (strpos($sectionUrl, '/brands/') !== false) {
             $this->isBrand = true;
@@ -233,17 +232,10 @@ class QsoftCatalogSection extends ComponentHelper
     private function getCode($sectionUrl)
     {
         $arSections = explode('/', $sectionUrl);
-        $code = array_pop($arSections);
-        if (strpos($code, 'tag_') !== false) {
-            $code = substr($code, 4);
-        }
-        return $code;
+
+        return array_pop($arSections);
     }
 
-    /**
-     * @return mixed|void
-     * @throws \Bitrix\Main\LoaderException
-     */
     public function executeComponent()
     {
         Loader::includeModule('highloadblock');
@@ -272,13 +264,22 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->getSeo();
         $this->buildNavChain();
+
         if ($this->type === self::TYPE_SECTION && !empty($this->section['ID'])) {
             $this->arResult['SECTION_ID'] = $this->section['ID'];
-        } elseif ($this->type === self::TYPE_ALL_CATALOG) {
-            $this->arResult['SECTION_ID'] = $this->getSecondLevelSections();
+        } else {
+            $this->arResult['SECTION_ID'] = null;
         }
+
         $this->arResult['SECTION_TYPE'] = $this->type;
         $this->arResult['PROPS'] = $this->props;
+
+        $this->arResult['SHOW_CATALOGS_LINE'] = $this->type == self::TYPE_SECTION;
+
+        $this->arResult['TIMER_DATE'] = null;
+        if ($this->type == self::TYPE_GROUP && $this->group['PROPERTY_IS_ACTION_VALUE'] == 1) {
+            $this->arResult['TIMER_DATE'] = $this->group['DATE_ACTIVE_TO'];
+        }
 
         global $USER;
         $this->arResult['HAS_USER_DISCOUNT'] = false;
@@ -287,9 +288,6 @@ class QsoftCatalogSection extends ComponentHelper
             $this->arResult['HAS_USER_DISCOUNT'] = (bool)$bonusSystemHelper->getCurrentBonus();
         }
         $this->includeComponentTemplate();
-
-        $GLOBALS['CATALOG_SECTION_ID'] = $this->arResult['SECTION_ID'];
-        $GLOBALS['CATALOG_ELEMENT_IDS'] = $this->arResult['CATALOG_ELEMENT_IDS'];
     }
 
     public function init()
@@ -338,12 +336,11 @@ class QsoftCatalogSection extends ComponentHelper
             case self::TYPE_GROUP:
                 if ($this->isBrand) {
                     if (!$this->getBrand()) {
-                        return false;
+                        return Functions::abort404();
                     }
                 } else {
-                    return Functions::abort404();
                     if (!$this->getGroup()) {
-                        return false;
+                        return Functions::abort404();
                     }
                 }
                 $this->getGroupFilters();
@@ -360,7 +357,7 @@ class QsoftCatalogSection extends ComponentHelper
                     $this->includeComponentTemplate();
                     return false;
                 }
-                $this->loadProducts(true);
+                $this->loadFavouritesProducts();
                 $this->loadOffers();
                 $this->getFavoritesProductsAndOffers();
                 break;
@@ -374,11 +371,7 @@ class QsoftCatalogSection extends ComponentHelper
         return true;
     }
 
-    /**
-     * load products for current and related sections
-     * products are stored in @var $this->products
-     */
-    private function loadProducts($all = false): void
+    private function loadProducts(): void
     {
         if (!empty($this->products)) {
             return;
@@ -386,32 +379,28 @@ class QsoftCatalogSection extends ComponentHelper
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
-        $arProducts = [];
-        if ($this->initCache('products_' . $this->type)) {
-            if ($all) {
-                $arProducts = $this->getCachedVars('products_' . $this->type);
-            } else {
-                list($arProducts, $this->section) = $this->getCachedVars('products_section_' . $this->type);
-            }
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
 
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $arProducts = [];
+        if ($cache->InitCache(86400, 'products_' . serialize($this->arParams), '/products')) {
+            $productsAndSection = $cache->GetVars();
+            list($arProducts, $this->section) = $productsAndSection;
+        }
+        if (empty($productsAndSection)) {
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_CATALOG,
                 "ACTIVE" => "Y",
             ];
 
-            if (!$all) {
-                $currentSection = $this->getCurrentSection($this->code);
-
-                if (!empty($currentSection)) {
-                    $currentSection['SAME_SECTIONS'] = $this->getSameSections($currentSection);
-                    $this->section = $currentSection;
-                    $relatedSections = $this->loadRelatedSections($currentSection);
-                    if (!empty($relatedSections)) {
-                        $arFilter['IBLOCK_SECTION_ID'] = $relatedSections;
-                    }
+            $currentSection = $this->getCurrentSection($this->code);
+            if (!empty($currentSection)) {
+                $currentSection['SAME_SECTIONS'] = $this->getSameSections($currentSection);
+                $this->section = $currentSection;
+                $relatedSections = $this->loadRelatedSections($currentSection);
+                if (!empty($relatedSections)) {
+                    $arFilter['IBLOCK_SECTION_ID'] = $relatedSections;
                 }
             }
 
@@ -424,25 +413,61 @@ class QsoftCatalogSection extends ComponentHelper
                 $arSelectFields
             );
             $arProducts = $this->processProducts($res);
-            if (!empty($arProducts)) {
-                $this->endTagCache();
-                if ($all) {
-                    $this->saveToCache('products_' . $this->type, $arProducts);
-                } else {
-                    $this->saveToCache('products_section_' . $this->type, [$arProducts, $currentSection]);
-                }
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            if (empty($arProducts)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache([$arProducts, $currentSection]);
             }
         }
         $this->products = $arProducts;
     }
 
-    /**
-     * @param $code
-     * @return array
-     */
+    private function loadFavouritesProducts(): void
+    {
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $arProducts = [];
+        if ($cache->InitCache(86400, 'products_' . $this->type, '/products')) {
+            $arProducts = $cache->GetVars();
+        }
+        if (empty($arProducts)) {
+            $arFilter = [
+                "IBLOCK_ID" => IBLOCK_CATALOG,
+                "ACTIVE" => "Y",
+            ];
+
+            $arSelectFields = self::DEFAULT_PRODUCT_FIELDS_TO_SELECT;
+            $res = CIBlockElement::GetList(
+                ["ID" => "ASC"],
+                $arFilter,
+                false,
+                false,
+                $arSelectFields
+            );
+            $arProducts = $this->processProducts($res);
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+
+            if (empty($arProducts)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
+            } else {
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($arProducts);
+            }
+        }
+        $this->products = $arProducts;
+    }
+
     private function getCurrentSection($code): array
     {
         $arSection = [];
@@ -484,39 +509,6 @@ class QsoftCatalogSection extends ComponentHelper
         return $arSection;
     }
 
-    /**
-     * @return array
-     */
-    private function getSecondLevelSections(): array
-    {
-        $arSections = [];
-
-        $res = CIBlockSection::GetList(
-            [],
-            [
-                "IBLOCK_ID" => IBLOCK_CATALOG,
-                "ACTIVE" => "Y",
-                "DEPTH_LEVEL" => 1,
-            ],
-            false,
-            [
-                "ID",
-            ],
-            false
-        );
-
-        while ($arItem = $res->Fetch()) {
-            $arSections[] = $arItem['ID'];
-        }
-
-        return $arSections;
-    }
-
-    /**
-     * load sections related to current section
-     * @param $arSection
-     * @return array
-     */
     private function loadRelatedSections($arSection): array
     {
         $arSectionIds = [];
@@ -559,6 +551,7 @@ class QsoftCatalogSection extends ComponentHelper
             }
             $arProducts[$arItem["ID"]] = [
                 "ID" => $arItem["ID"],
+                "CODE" => $arItem["CODE"],
                 "NAME" => $arItem['NAME'],
                 "XML_ID" => $arItem['XML_ID'],
                 "DETAIL_PICTURE" => $arItem["DETAIL_PICTURE"],
@@ -568,6 +561,7 @@ class QsoftCatalogSection extends ComponentHelper
                 "PROPERTY_LENGTH_VALUE" => $arItem["PROPERTY_LENGTH_VALUE"],
                 "PROPERTY_BESTSELLER_VALUE" => $arItem["PROPERTY_BESTSELLER_VALUE"],
                 "PROPERTY_VENDOR_VALUE" => $arItem["PROPERTY_VENDOR_VALUE"],
+                "PROPERTY_NEW_VALUE" => $arItem["PROPERTY_NEW_VALUE"],
                 "PROPERTY_VOLUME_VALUE" => $arItem["PROPERTY_VOLUME_VALUE"],
                 "PROPERTY_MATERIAL_VALUE" => $arItem["PROPERTY_MATERIAL_VALUE"],
                 "PROPERTY_COLLECTION_VALUE" => $arItem["PROPERTY_COLLECTION_VALUE"],
@@ -635,13 +629,14 @@ class QsoftCatalogSection extends ComponentHelper
         if (!empty($this->offers)) {
             return;
         }
-        $arOffers = [];
-        if ($this->initCache('offers_' . $this->type)) {
-            $arOffers = $this->getCachedVars('offers_' . $this->type);
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
 
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+        $arOffers = [];
+        if ($cache->InitCache(86400, 'offers_' . serialize($this->arParams), '/offers')) {
+            $arOffers = $cache->GetVars();
+        }
+        if (empty($arOffers)) {
             $arSelectFields = self::DEFAULT_OFFER_FIELDS_TO_SELECT;
             $arFilter = [
                 "IBLOCK_ID" => IBLOCK_OFFERS,
@@ -659,12 +654,16 @@ class QsoftCatalogSection extends ComponentHelper
 
             $arOffers = $this->processOffers($res);
 
-            if (!empty($arOffers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers_' . $this->type, $arOffers);
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/groups');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+
+            if (empty($arOffers)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($arOffers);
             }
         }
 
@@ -678,17 +677,13 @@ class QsoftCatalogSection extends ComponentHelper
             if (!$this->products[$arItem["PROPERTY_CML2_LINK_VALUE"]]) {
                 continue;
             }
-            if (!isset($arItem['PROPERTY_BASEPRICE_VALUE']) || !isset($arItem['PROPERTY_BASEWHOLEPRICE_VALUE'])) {
-                continue;
-            }
             $sizeRes = CIBlockElement::GetProperty(IBLOCK_OFFERS, $arItem["ID"], "sort", "asc", ['CODE' => 'SIZE']);
             $size = $sizeRes->GetNext();
             $arOffers[$arItem["ID"]] = [
+                'ID' => $arItem["ID"],
                 'PROPERTY_CML2_LINK_VALUE' => $arItem['PROPERTY_CML2_LINK_VALUE'],
                 'PROPERTY_SIZE_VALUE' => $size['VALUE'],
                 'PROPERTY_COLOR_VALUE' => $arItem['PROPERTY_COLOR_VALUE'],
-                'PROPERTY_BASEPRICE_VALUE' => $arItem['PROPERTY_BASEPRICE_VALUE'],
-                'PROPERTY_BASEWHOLEPRICE_VALUE' => $arItem['PROPERTY_BASEWHOLEPRICE_VALUE'],
             ];
         }
 
@@ -760,19 +755,26 @@ class QsoftCatalogSection extends ComponentHelper
         if (!empty($this->group)) {
             return true;
         }
-        $group = false;
-        if ($this->initCache('group_' . $this->code)) {
-            $group = $this->getCachedVars('group');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $group = null;
+        if ($cache->InitCache(86400, 'group_' . $this->code, '/groups')) {
+            $group = $cache->GetVars();
+        }
+        if (empty($group)) {
             $group = $this->loadGroup();
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/groups');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            $CACHE_MANAGER->RegisterTag("groupsAll");
+
             if (empty($group)) {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->endTagCache();
-                $this->saveToCache('group', $group);
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($group);
             }
         }
 
@@ -780,7 +782,7 @@ class QsoftCatalogSection extends ComponentHelper
             return Functions::abort404();
         }
         $this->group = $group;
-        $this->arResult["BANNER"] = $group["BANNER"] ?? array();
+        $this->arResult["BANNER"] = $group["BANNER"] ?? [];
 
         return true;
     }
@@ -795,7 +797,7 @@ class QsoftCatalogSection extends ComponentHelper
                 [
                     'IBLOCK_ID' => IBLOCK_GROUPS,
                     'CODE' => $this->code,
-                    'ACTIVE' => 'Y',
+                    'PROPERTY_CREATE_CATALOG' => 1,
                 ],
                 false,
                 false,
@@ -806,108 +808,29 @@ class QsoftCatalogSection extends ComponentHelper
                     'PREVIEW_PICTURE',
                     'DETAIL_PICTURE',
                     'NAME',
+                    'ACTIVE',
+                    'DATE_ACTIVE_TO',
+                    'PROPERTY_BESTSELLER',
+                    'PROPERTY_NEW',
+                    'PROPERTY_LENGTH_FROM',
+                    'PROPERTY_LENGTH_TO',
+                    'PROPERTY_DIAMETER_FROM',
+                    'PROPERTY_DIAMETER_TO',
+                    'PROPERTY_VENDOR',
+                    'PROPERTY_VIBRATION',
+                    'PROPERTY_YEAR',
                     'PROPERTY_SECTION',
+                    'PROPERTY_VOLUME',
+                    'PROPERTY_PRODUCT',
+                    'PROPERTY_IS_ACTION',
+                    'PROPERTY_MATERIAL',
                     'PROPERTY_PRICE_FROM',
                     'PROPERTY_PRICE_TO',
-                    'PROPERTY_ARTICLE',
-                    'PROPERTY_OFFERS_SIZE',
-                    'PROPERTY_LININGMATERIAL',
-                    'PROPERTY_UPPERMATERIAL',
-                    'PROPERTY_RHODEPRODUCT',
-                    'PROPERTY_SEASON',
-                    'PROPERTY_COLOR',
-                    'PROPERTY_MLT',
-                    'PROPERTY_MRT',
-                    'PROPERTY_SUBTYPEPRODUCT',
-                    'PROPERTY_COLLECTION',
-                    'PROPERTY_COUNTRY',
-                    'PROPERTY_HEELHEIGHT',
-                    'PROPERTY_PRICESEGMENTID',
-                    'PROPERTY_SEGMENT_FROM',
-                    'PROPERTY_SEGMENT_TO',
-                    'PROPERTY_SKU_ADDITIONAL',
-                    'PROPERTY_SKU_EXCLUDE',
-                    'PROPERTY_F_STORES_O',
-                    'PROPERTY_F_STORES_R',
-                    'PROPERTY_IS_ACTION',
-                    'PROPERTY_BRAND',
-                    'PROPERTY_COLORS',
-                    'PROPERTY_ONLINE_TRY_ON',
-                    'PROPERTY_IS_BRAND',
-                    'PROPERTY_STYLE',
-                    'PROPERTY_ZASTEGKA',
-                    'PROPERTY_HEELHEIGHT_TYPE',
-                    'PROPERTY_MATERIALSTELKI',
-                    'PROPERTY_VIDKABLUKA',
-                    'PROPERTY_TOP_ARTICLES',
                 ]
-            )->Fetch();
-            // Проверяем группу на галочку о брендовой группировке
-            if (strpos($this->arParams['SECTION_URL'], '/brands/') === false && $group['PROPERTY_IS_BRAND_VALUE'] == 'Y' || strpos($this->arParams['SECTION_URL'], '/brands/') !== false && $group['PROPERTY_IS_BRAND_VALUE'] !== 'Y') {
-                return false;
-            }
-            if ($group['PROPERTY_IS_ACTION_VALUE'] === 'Да') {
-                if ($group['PREVIEW_PICTURE']) {
-                    $temp = CFile::GetFileArray($group['PREVIEW_PICTURE']);
-                    $res = CIBlockElement::GetProperty(
-                        IBLOCK_GROUPS,
-                        $group["ID"],
-                        array(),
-                        array(
-                            "CODE" => "ACTION_LINKS_DESKTOP",
-                        )
-                    );
-                    while ($arItem = $res->Fetch()) {
-                        if (!$arItem["VALUE"]) {
-                            continue;
-                        }
-                        $group["BANNER"]["DESKTOP_LINKS"][] = array(
-                            "LINK" => $arItem["DESCRIPTION"],
-                            "STYLE" => $this->getBannerLinkStyle($arItem["VALUE"], $temp["WIDTH"], $temp["HEIGHT"]),
-                        );
-                    }
-                    if (!empty($group["BANNER"]["DESKTOP_LINKS"])) {
-                        $group["BANNER"]["DESKTOP"] = $temp["SRC"];
-                    } else {
-                        $group["BANNER"]["SINGLE"] = $temp["SRC"];
-                    }
-                }
-                if ($group['DETAIL_PICTURE']) {
-                    $temp = CFile::GetFileArray($group['DETAIL_PICTURE']);
-                    $res = CIBlockElement::GetProperty(
-                        IBLOCK_GROUPS,
-                        $group["ID"],
-                        array(),
-                        array(
-                            "CODE" => "ACTION_LINKS_MOBILE",
-                        )
-                    );
-                    while ($arItem = $res->Fetch()) {
-                        if (!$arItem["VALUE"]) {
-                            continue;
-                        }
-                        $group["BANNER"]["MOBILE_LINKS"][] = array(
-                            "LINK" => $arItem["DESCRIPTION"],
-                            "STYLE" => $this->getBannerLinkStyle($arItem["VALUE"], $temp["WIDTH"], $temp["HEIGHT"]),
-                        );
-                    }
-                    if (!empty($group["BANNER"]["MOBILE_LINKS"])) {
-                        $group["BANNER"]["MOBILE"] = $temp["SRC"];
-                    }
-                }
-            }
+            )->GetNext();
         }
 
         return $group ?: [];
-    }
-
-    private function getBannerLinkStyle($val, $w, $h)
-    {
-        $val = explode(",", trim($val));
-        return "left:" . (intval(100 * $val[0] / $w)) . "%;" .
-            "top:" . (intval(100 * $val[1] / $h)) . "%;" .
-            "right:" . (100 - intval(100 * $val[2] / $w)) . "%;" .
-            "bottom:" . (100 - intval(100 * $val[3] / $h)) . "%";
     }
 
     private function getGroupFilters()
@@ -921,35 +844,46 @@ class QsoftCatalogSection extends ComponentHelper
         ];
 
         foreach ($productPropertiesMap as $property) {
-            if (!empty($this->group[$property . '_VALUE'])) {
-                $propertyName = ($property === 'PROPERTY_SECTION') ? 'IBLOCK_SECTION_ID' : $property;
-                $filter['PRODUCT'][$propertyName] = $this->group[$property . '_VALUE'];
+            if (!empty($this->group[$property])) {
+                if ($property === 'PROPERTY_SECTION_VALUE') {
+                    $propertyName = 'IBLOCK_SECTION_ID';
+                } elseif ($property === 'PROPERTY_LENGTH_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_LENGTH';
+                } elseif ($property === 'PROPERTY_LENGTH_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_LENGTH';
+                } elseif ($property === 'PROPERTY_DIAMETER_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_DIAMETER';
+                } elseif ($property === 'PROPERTY_DIAMETER_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_DIAMETER';
+                } elseif ($property === 'PROPERTY_PRODUCT_VALUE') {
+                    $propertyName = 'XML_ID';
+                } elseif ($property === 'PROPERTY_YEAR_VALUE') {
+                    $propertyName = 'PROPERTY_YEAR';
+                } elseif ($property === 'PROPERTY_VENDOR_VALUE') {
+                    $propertyName = 'PROPERTY_VENDOR';
+                } elseif ($property === 'PROPERTY_VOLUME_VALUE') {
+                    $propertyName = 'PROPERTY_VOLUME';
+                } else {
+                    $propertyName = $property;
+                }
+
+                $filter['PRODUCT'][$propertyName] = $this->group[$property];
             }
         }
 
-        foreach ($offersPropertiesMap as $key => $value) {
-            if (!empty($this->group[$key . '_VALUE'])) {
-                $filter['OFFER'][$value] = $this->group[$key . '_VALUE'];
+        foreach ($offersPropertiesMap as $key => $property) {
+            if (!empty($this->group[$property])) {
+                if ($property === 'PROPERTY_PRICE_TO_VALUE') {
+                    $propertyName = '<=PROPERTY_BASEPRICE';
+                } elseif ($property === 'PROPERTY_PRICE_FROM_VALUE') {
+                    $propertyName = '>=PROPERTY_BASEPRICE';
+                } else {
+                    $propertyName = $property;
+                }
+
+                $filter['OFFER'][$propertyName] = $this->group[$property];
             }
         }
-
-//        /**
-//         * артикулы для фильтра
-//         * TODO - файл с артикулами
-//         */
-//        $this->getFilterArticles($filter);
-//
-//        /**
-//         * обработка размеров
-//         */
-//        $this->getFilterSizes($filter);
-//
-//        /**
-//         * обработка секций
-//         */
-//        $this->getFilterSections($filter);
-//
-//        $this->getFilterPrices($filter, $this->group);
 
         $this->ibFilter = $filter;
     }
@@ -958,9 +892,23 @@ class QsoftCatalogSection extends ComponentHelper
     {
         return [
             'PRODUCT' => [
-                'PROPERTY_VENDOR'
+                'PROPERTY_NEW_VALUE',
+                'PROPERTY_BESTSELLER_VALUE',
+                'PROPERTY_LENGTH_FROM_VALUE',
+                'PROPERTY_LENGTH_TO_VALUE',
+                'PROPERTY_DIAMETER_FROM_VALUE',
+                'PROPERTY_DIAMETER_TO_VALUE',
+                'PROPERTY_VENDOR_VALUE',
+                'PROPERTY_VIBRATION_VALUE',
+                'PROPERTY_YEAR_VALUE',
+                'PROPERTY_SECTION_VALUE',
+                'PROPERTY_VOLUME_VALUE',
+                'PROPERTY_PRODUCT_VALUE',
+                'PROPERTY_MATERIAL_VALUE',
             ],
             'OFFER' => [
+                'PROPERTY_PRICE_FROM_VALUE',
+                'PROPERTY_PRICE_TO_VALUE',
             ],
         ];
     }
@@ -1067,20 +1015,25 @@ class QsoftCatalogSection extends ComponentHelper
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
-        $cacheTag = 'products_group_' . $this->code;
-        if ($this->initCache($cacheTag)) {
-            $products = $this->getCachedVars('products');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
 
+        $cacheTag = 'products_group_' . $this->code;
+        if ($cache->InitCache(86400, $cacheTag, '/groups')) {
+            $products = $cache->GetVars();
+        }
+        if (empty($products)) {
             $products = $this->loadProductsByFilter();
-            if (!empty($products)) {
-                $this->endTagCache();
-                $this->saveToCache('products', $products);
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/groups');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            $CACHE_MANAGER->RegisterTag("groupsAll");
+            if (empty($products)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($products);
             }
         }
 
@@ -1090,7 +1043,6 @@ class QsoftCatalogSection extends ComponentHelper
     private function loadProductsByFilter()
     {
         $arSelectFields = self::DEFAULT_PRODUCT_FIELDS_TO_SELECT;
-
         $res = CIBlockElement::GetList(
             [],
             $this->ibFilter['PRODUCT'],
@@ -1104,22 +1056,27 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getGroupOffers()
     {
-        $offers = [];
-        $cacheTag = 'offers_group_' . $this->code;
-        if ($this->initCache($cacheTag)) {
-            $offers = $this->getCachedVars('offers');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
 
+        $offers = [];
+
+        if ($cache->InitCache(86400, 'offers_group_' . $this->code, '/groups')) {
+            $offers = $cache->GetVars();
+        }
+        if (empty($offers)) {
             $offers = $this->loadOffersByFilter();
 
-            if (!empty($offers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers', $offers);
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/groups');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
+            $CACHE_MANAGER->RegisterTag("groupsAll");
+            if (empty($offers)) {
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($offers);
             }
         }
 
@@ -1177,57 +1134,19 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getSearchProducts()
     {
-        $products = [];
-
         if (empty($this->props)) {
             $this->props = $this->getPropertyValues();
         }
 
         $this->buildSearchFilter();
-
-        if ($this->initCache('search_products')) {
-            $products = $this->getCachedVars('products');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-            $this->registerTag('catalogSearch');
-
-            $products = $this->loadProductsByFilter();
-
-            if (!empty($products)) {
-                $this->endTagCache();
-                $this->saveToCache('products', $products);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
+        $products = $this->loadProductsByFilter();
 
         $this->products = $products;
     }
 
     private function getSearchOffers()
     {
-        $offers = [];
-
-        if ($this->initCache('search_offers')) {
-            $offers = $this->getCachedVars('offers');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
-            $this->registerTag('catalogSearch');
-
-            $offers = $this->loadOffersByFilter();
-
-            if (!empty($offers)) {
-                $this->endTagCache();
-                $this->saveToCache('offers', $offers);
-            } else {
-                $this->abortTagCache();
-                $this->abortCache();
-            }
-        }
-
+        $offers = $this->loadOffersByFilter();
         $this->offers = $offers;
     }
 
@@ -1307,18 +1226,24 @@ class QsoftCatalogSection extends ComponentHelper
         }
 
         $items = [];
+
+        if ($this->type === self::TYPE_SALES) {
+            global $USER;
+            $userDiscount = (new BonusSystem($USER->GetID()))->getCurrentBonus();
+        }
+
         foreach ($this->offers as $offerId => $value) {
             if (!$isFavoritesCatalog && (!isset($rests[$offerId]) || $rests[$offerId] < 1)) {
                 continue;
             }
 
-            $price = PriceUtils::getPrice($value["PROPERTY_BASEWHOLEPRICE_VALUE"], $value["PROPERTY_BASEPRICE_VALUE"]);
+            $price = PriceUtils::getCachedPriceForUser($offerId);
 
             if (!$price) {
                 continue;
             }
 
-            if ($this->type === self::TYPE_SALES && !$price['DISCOUNT']) {
+            if ($this->type === self::TYPE_SALES && ($price['DISCOUNT'] - $userDiscount) <= 0) {
                 continue;
             }
 
@@ -1707,11 +1632,44 @@ class QsoftCatalogSection extends ComponentHelper
         uasort($items, function ($a, $b) use ($middlePrice) {
             $aDiff = abs($a['PRICE'] - $middlePrice);
             $bDiff = abs($b['PRICE'] - $middlePrice);
+            $aHasDiscount = $a['DISCOUNT'] && $a['DISCOUNT_DATE_TO'];
+            $bHasDiscount = $b['DISCOUNT'] && $b['DISCOUNT_DATE_TO'];
             if (
-                ($aDiff < 750 && $bDiff < 750 || $aDiff > 750 && $bDiff > 750)
-                && $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
+                ($aDiff < 75000 && $bDiff < 75000 || $aDiff > 75000 && $bDiff > 75000)
+                && (
+                    $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
+                    || $b['PROPERTY_NEW_VALUE'] != $a['PROPERTY_NEW_VALUE']
+                    || $bHasDiscount != $aHasDiscount
+                )
             ) {
-                return $b['PROPERTY_BESTSELLER_VALUE'] <=> $a['PROPERTY_BESTSELLER_VALUE'];
+                $countAdditionsA = (int)(bool)$a['PROPERTY_BESTSELLER_VALUE'] + (int)(bool)$a['PROPERTY_NEW_VALUE'];
+                $countAdditionsB = (int)(bool)$b['PROPERTY_BESTSELLER_VALUE'] + (int)(bool)$b['PROPERTY_NEW_VALUE'];
+
+                if ($countAdditionsA || $countAdditionsB) {
+                    if ($countAdditionsA > $countAdditionsB) {
+                        return -1;
+                    } elseif ($countAdditionsA < $countAdditionsB) {
+                        return 1;
+                    } else {
+                        if ($aHasDiscount && !$bHasDiscount) {
+                            return -1;
+                        } elseif ($bHasDiscount && !$aHasDiscount) {
+                            return 1;
+                        }
+                    }
+                }
+
+                if ((int)$a['PROPERTY_BESTSELLER_VALUE'] > (int)$b['PROPERTY_BESTSELLER_VALUE']) {
+                    return -1;
+                } elseif ((int)$a['PROPERTY_BESTSELLER_VALUE'] < (int)$b['PROPERTY_BESTSELLER_VALUE']) {
+                    return 1;
+                }
+
+                if ((int)$a['PROPERTY_NEW_VALUE'] > (int)$b['PROPERTY_NEW_VALUE']) {
+                    return -1;
+                } elseif ((int)$a['PROPERTY_NEW_VALUE'] < (int)$b['PROPERTY_NEW_VALUE']) {
+                    return 1;
+                }
             }
 
             return $aDiff <=> $bDiff;
@@ -1802,7 +1760,7 @@ class QsoftCatalogSection extends ComponentHelper
 
         $this->arResult['JS_KEYS'] = array_flip(self::PRODUCT_PROPERTIES);
         $this->arResult['FILTER_KEYS'] = self::FILTER_KEYS;
-        
+
         if ($this->type === self::TYPE_SECTION) {
             if ($this->section['DEPTH_LEVEL'] > 1) {
                 $this->arResult['SAME_SECTIONS'] = $this->section['SAME_SECTIONS'];
@@ -1904,8 +1862,7 @@ class QsoftCatalogSection extends ComponentHelper
             ]
         );
 
-        while($arEnum = $propertyEnums->GetNext())
-        {
+        while ($arEnum = $propertyEnums->GetNext()) {
             $arPropsValues[$arEnum['ID']] = $arEnum['VALUE'];
         }
 
@@ -1972,29 +1929,22 @@ class QsoftCatalogSection extends ComponentHelper
         global $APPLICATION;
         $seo = [];
         $cache = new CPHPCache();
-        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), 'seo')) {
+        if ($cache->InitCache(86400, 'seo|' . $APPLICATION->GetCurPage(), '/seo')) {
             $seo = $cache->GetVars()['seo'];
         } elseif ($cache->StartDataCache()) {
             switch ($this->type) {
                 case self::TYPE_SECTION:
                     $ipropValues = new SectionValues(IBLOCK_CATALOG, $this->section['ID']);
-                    //$seo['DESCRIPTION'] = $this->section['DESCRIPTION'];
-                    //TODO Надо избравиться от этого запроса. Сделано временно.
-                    $seo['DESCRIPTION'] = CIBlockSection::GetList([], ['ID' => $this->section['ID']], false, ['DESCRIPTION'], false)->Fetch()['DESCRIPTION'];
                     break;
                 case self::TYPE_GROUP:
                     if ($this->isBrand) {
                         $ipropValues = new ElementValues(IBLOCK_VENDORS, $this->group['ID']);
-                        $seo['DESCRIPTION'] = $this->group['DESCRIPTION'];
+                    } else {
+                        $ipropValues = new ElementValues(IBLOCK_GROUPS, $this->group['ID']);
                     }
                     break;
                 case self::TYPE_SEARCH:
                     $cache->AbortDataCache();
-                    $seo['DESCRIPTION'] = $seo['SECTION_META_TITLE'] = $seo['SECTION_PAGE_TITLE'] = substr(
-                        'Поиск: ' . $this->arParams['SEARCH'],
-                        0,
-                        80
-                    );
                     break;
                 default:
                     break;
@@ -2022,6 +1972,9 @@ class QsoftCatalogSection extends ComponentHelper
                     case self::TYPE_FAVORITES:
                         $seo['ELEMENT_PAGE_TITLE'] = 'Избранное';
                         break;
+                    case self::TYPE_SEARCH:
+                        $seo['ELEMENT_PAGE_TITLE'] = 'Поиск: ' . $this->arParams['SEARCH'];
+                        break;
                     default:
                         break;
                 }
@@ -2039,8 +1992,19 @@ class QsoftCatalogSection extends ComponentHelper
         } elseif (!empty($seo['ELEMENT_META_KEYWORDS'])) {
             $APPLICATION->SetPageProperty("keywords", $seo['ELEMENT_META_KEYWORDS']);
         } else {
+            $additionalKeyword = '';
+            if ($this->type == self::TYPE_GROUP) {
+                $additionalKeyword = $this->group['NAME'];
+            } elseif($this->type == self::TYPE_SECTION) {
+                $additionalKeyword = $this->section['NAME'];
+            } elseif ($this->type == self::TYPE_FAVORITES) {
+                $additionalKeyword = 'избранные товары';
+            } elseif ($this->type == self::TYPE_SEARCH) {
+                $additionalKeyword = $this->arParams['SEARCH'];
+            }
+
             $APPLICATION->SetPageProperty("keywords",
-                'Купить секс-товары,секс-шоп,скидки,низкой цене, ' . ($this->isBrand ? $this->group['NAME'] : $this->section['NAME'])
+                'Купить секс-товары,секс-шоп,секс шоп в москве,скидки,низкой цене, ' . $additionalKeyword
             );
         }
 
@@ -2049,16 +2013,31 @@ class QsoftCatalogSection extends ComponentHelper
         } elseif (!empty($seo['ELEMENT_META_DESCRIPTION'])) {
             $APPLICATION->SetPageProperty("description", $seo['ELEMENT_META_DESCRIPTION']);
         } else {
-            $APPLICATION->SetPageProperty("description",
-                'В Городе Оргазма вы можете не дорого со скидкой купить на выбор любой товар '
-                . ($this->isBrand ? 'бренда ' . $this->group['NAME'] : 'из каталога ' . $this->section['NAME'])
-            );
+            $description = null;
+            if ($this->type == self::TYPE_SECTION || $this->type == self::TYPE_SALES) {
+                $description = 'В Городе Оргазма вы можете не дорого с доставкой купить любой товар для взрослых 18+ '
+                    . 'из каталога ' . $this->section['NAME'];
+            } elseif ($this->type == self::TYPE_GROUP) {
+                if ($this->isBrand) {
+                    $description = 'В Городе Оргазма вы можете не дорого с доставкой купить любой товар для взрослых 18+ '
+                        . 'бренда ' . $this->group['NAME'];
+                } else {
+                    $description = 'В Городе Оргазма вы можете не дорого с доставкой купить любой товар для взрослых 18+ '
+                        . 'по группировке ' . $this->group['NAME'];
+                }
+            } elseif ($this->type == self::TYPE_FAVORITES) {
+                $description = 'Ваши избранные позиции в магазине товаров для взрослых Город Оргазма 18+';
+            } elseif ($this->type == self::TYPE_SEARCH) {
+                $description = 'Поиск среди товаров для взрослых по подстроке ' . $this->arParams['SEARCH'];
+            }
+
+            $APPLICATION->SetPageProperty("description", $description);
         }
 
-        if (!empty($seo['SECTION_PAGE_TITLE'])) {
-            $this->arResult['TITLE'] = $seo['SECTION_PAGE_TITLE'];
-        } elseif (!empty($seo['ELEMENT_PAGE_TITLE'])) {
+        if (!empty($seo['ELEMENT_PAGE_TITLE'])) {
             $this->arResult['TITLE'] = $seo['ELEMENT_PAGE_TITLE'];
+        } elseif (!empty($seo['SECTION_PAGE_TITLE'])) {
+            $this->arResult['TITLE'] = $seo['SECTION_PAGE_TITLE'];
         }
     }
 
@@ -2083,12 +2062,12 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-        $title = 'Купить ' . ($this->type == self::TYPE_SALES ? 'со скидкой ' : '');
+        $title = ($this->type == self::TYPE_GROUP && !$this->isBrand ? '' : 'Купить ') . ($this->type == self::TYPE_SALES ? 'со скидкой ' : '');
         foreach ($chain as $item) {
             $APPLICATION->AddChainItem($item['title'], $item['url']);
         }
         $title .= mb_strtolower(implode(' ', array_column($chain, 'title')));
-        if ($this->isBrand) {
+        if ($this->type == self::TYPE_GROUP) {
             $title .= ' ' . $this->group['NAME'];
         }
         $title .= ' в интернет магазине Город Оргазма';
@@ -2135,8 +2114,7 @@ class QsoftCatalogSection extends ComponentHelper
             'SECTION_ID' => $section['IBLOCK_SECTION_ID']
         ];
         $res = CIBlockSection::GetList(false, $arFilter, true, ['ID', 'NAME', 'SECTION_PAGE_URL']);
-        while($arResult = $res->GetNext())
-        {
+        while ($arResult = $res->GetNext()) {
             $arSections[] = $arResult;
         }
 
@@ -2145,20 +2123,25 @@ class QsoftCatalogSection extends ComponentHelper
 
     private function getBrand()
     {
-        $brand = false;
-        $cacheTag = 'brand_' . $this->code;
-        if ($this->initCache($cacheTag)) {
-            $brand = $this->getCachedVars('brand');
-        } elseif ($this->startCache()) {
-            $this->startTagCache();
-            $this->registerTag("catalogAll");
+        global $CACHE_MANAGER;
+        $cache = new CPHPCache();
+
+        $brand = [];
+        if ($cache->InitCache(86400, 'brand_' . $this->code, '/brands')) {
+            $brand = $cache->GetVars();
+        }
+        if (empty($brand)) {
             $brand = $this->loadBrand();
+
+            $cache->StartDataCache();
+            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->RegisterTag("catalogAll");
             if (empty($brand)) {
-                $this->abortTagCache();
-                $this->abortCache();
+                $CACHE_MANAGER->AbortTagCache();
+                $cache->AbortDataCache();
             } else {
-                $this->endTagCache();
-                $this->saveToCache('brand', $brand);
+                $CACHE_MANAGER->EndTagCache();
+                $cache->EndDataCache($brand);
             }
         }
 

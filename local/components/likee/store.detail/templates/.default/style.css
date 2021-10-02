@@ -168,9 +168,9 @@
 }
 .shop-card__bonus {
     color: white;
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 14px;
-    background: #ff5e5e;
+    background: #654670;
     text-transform: uppercase;
     padding: 12px 17px;
     display: block;
@@ -192,7 +192,7 @@
 .shop-card__phones {
     display: flex;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .shop-header__item {
         width: 100%;
         margin-bottom: 10px;

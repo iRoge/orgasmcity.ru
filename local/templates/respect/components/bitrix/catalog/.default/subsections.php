@@ -72,13 +72,13 @@
         {
           text-decoration: none;
           color: #8e8787!important;
-          font-family: 'firalight';
+          font-family: 'gilroyRegular';
           font-size: 14px;
         }
         .section:hover > a
         {
 
-          color: #ff5e5e!important;
+          color: #654670!important;
         }
         .wrapper-scroll::-webkit-scrollbar
         {
@@ -91,7 +91,7 @@
         }
         .wrapper-scroll::-webkit-scrollbar-thumb:hover
         {
-          background: #ff5e5e;
+          background: #654670;
         }
 </style>
 <script src="<?= SITE_TEMPLATE_PATH; ?>/js/horwheel.js"></script>

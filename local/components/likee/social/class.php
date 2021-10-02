@@ -16,9 +16,7 @@ class LikeeSocialComponent extends \CBitrixComponent
     {
         if ($this->startResultCache()) {
             foreach($this->arParams as $sKey => $sParam) {
-                if (strpos($sKey, '_LINK') > 0) {
-                    $this->arResult[$sKey] = $sParam;
-                }
+                $this->arResult[$sKey] = $sParam;
             }
             $this->includeComponentTemplate();
         }

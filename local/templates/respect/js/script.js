@@ -96,6 +96,8 @@ $(function () {
 });
 
 $(document).ready(function () {
+    $('.lazy-img').lazyLoadXT();
+
     let regForm = $('#reg-form-popup'),
         authForm = $('#auth-form'),
         regInput = $('#vkl20'),
@@ -152,15 +154,6 @@ $(document).ready(function () {
         $('.mail-div .popup').show(0);
     });
 
-    $('.grey-first').on('change', function () {
-        let $option = $(this);
-        if ($option.val() == '0') {
-            $option.css('color', '#b8b4b4');
-        } else {
-            $option.css('color', '#4e4e4e');
-        }
-    }).change();
-
     $(window).resize(function () {
         $('.hide-menu').css('height', 'auto').each(function () {
             let heightLeftHide = $('.left-hide-menu', this).outerHeight(true);
@@ -196,28 +189,6 @@ $(document).ready(function () {
     }, function () {
         $(this).hide();
         $(this).prev('.menu-ul-li').find('.menu-ul-li-a').toggleClass('active-menu');
-    });
-
-    $('.banner_item').on('click', function () {
-        let bannerElem = $(this);
-        let oGTMPush = {
-            'event': 'MTRENDO',
-            'eventCategory': 'EEC',
-            'eventAction': 'view_promotion',
-            'eventLabel': bannerElem.data('rblockName'),  // название баннера/акции
-            'ecommerce': {
-                'promoView': {
-                    'promotions': [{
-                        'name': bannerElem.data('rblockName'),  // название баннера/акции
-                        'id': bannerElem.data('rblockId'),   // id баннера, если есть
-                        'creative': bannerElem.data('prodCreative'),  // место размещения баннера
-                        'position': bannerElem.data('prodPosition') //позиция в блоке
-                    }]
-                }
-            }
-        };
-        window.dataLayer = window.dataLayer || [];
-        dataLayer.push(oGTMPush);
     });
 
     if ($(window).width() > 767) {
@@ -326,8 +297,6 @@ $(document).ready(function () {
         $('body').css('overflow', 'hidden');
         $('.blue-menu-div').animate({"margin-left": "0px"}, 300);
         $('.podlozhka').fadeIn(600);
-        $('.cls-blue-menu').css('display', 'inline-block');
-        $('.blue-menu').css('display', 'none');
     });
 
     $('.podlozhka').click(function () {
@@ -341,10 +310,7 @@ $(document).ready(function () {
             }
             $('.blue-menu-div').animate({"margin-left": menuAnimateWidth}, 300);
             $('.podlozhka').fadeOut(600);
-            $('.cls-blue-menu').css('display', 'none');
-            $('.blue-menu').css('display', 'inline-block');
             $('.vou2').hide();
-            $('.cls-blue-menu2').hide();
             $('.mail-div').hide();
             $('.auth-div-full').hide(0);
         }
@@ -368,8 +334,7 @@ $(document).ready(function () {
         }
         $('.blue-menu-div').animate({"margin-left": menuAnimateWidth}, 300);
         $('.podlozhka').fadeOut(600);
-        $('.cls-blue-menu').css('display', 'none');
-        $('.blue-menu').css('display', 'inline-block');
+        $('.blue-menu').css('display', 'flex');
         $('body').css('overflow', 'auto');
     });
 
@@ -399,9 +364,9 @@ $(document).ready(function () {
         });
     });
 
-    $('.submenu-item').click(function (e) {
+    $('.submenu-level2-item').click(function (e) {
         let e_target = $(e.target);
-        if (e_target.is('.submenu-item')) {
+        if (e_target.is('.submenu-level2-item')) {
             let that = $(this);
             (e_target).siblings().slideToggle();
             that.toggleClass('arrow-down');
@@ -412,8 +377,8 @@ $(document).ready(function () {
     $('.more-span').click(function (e) {
         let that = $(this);
         e.preventDefault();
-        that.next('.blue-menu-div-div ul').toggle('300');
-        that.find('span').toggleClass('open-ul');
+        that.next('.blue-menu-div-div ul').toggle('200');
+        that.toggleClass('open-ul');
     });
 
     $('.order-info-grid').click(function () {
@@ -445,14 +410,14 @@ $(document).ready(function () {
         onlinePayment($(this));
     });
 
-    $(document).on('click', '.heart__btn', function () {
+    $(document).on('click', '.js-favour-heart', function () {
         let button = $(this);
         button.toggleClass('active');
         BX.ajax.post('/catalog/favorites/', 'changeFavourite=Y&ID=' + $(this).data('id'), function (response) {
             response = JSON.parse(response);
             if (response.res == 'error') {
                 button.toggleClass('active');
-                Popup.show('<div style="text-align: center; padding: 0px 40px;"><article style="font-size: 1.4em;">' + response.text + '</article></div>');
+                Popup.show('<div style="text-align: center; padding: 0 40px;"><article style="font-size: 1.4em;">' + response.text + '</article></div>');
             } else {
                 let count = Number($('.count--heart.in-full').text());
                 if (response.res == 'add') {
@@ -508,4 +473,63 @@ function phoneMaskCreate(phoneInput, needStar = true) {
             e.stopPropagation();
         }
     });
+}
+
+//функция для клика на кнопку "Добавить в корзину"
+function addToCartHandler(offerId, quantity, productData) {
+    let data = {
+        action: "basketAdd",
+        offerId: offerId,
+        quantity: quantity,
+    };
+    $.ajax({
+        method: "POST",
+        url: "/cart/",
+        data: data,
+        dataType: "json",
+        success: function (data) {
+            if (data.status == "ok") {
+                updateSmallBasket(quantity);
+                respercEvent__add_to_cart();
+                ym(82799680,'reachGoal','add_in_cart');
+                if (productData) {
+                    productData['quantity'] = quantity;
+                    window.metrikaData.push({
+                        "ecommerce": {
+                            "add": {
+                                "products": [
+                                    productData
+                                ]
+                            }
+                        },
+                    });
+                }
+                return;
+            }
+            let error_text = '<div class="product-preorder-success">'
+                + '<h2>Ошибка</h2>'
+                + '<div class="popup-footer" style="justify-content: center">'
+                + '<div class="js-size-popup popup-error text-danger">'
+                + (Array.isArray(data.text) ? data.text.join("<br>") : 'Возникла ошибка при добавлении товара в корзину. Обратитесь в поддержку')
+                + '</div>'
+                + '</div>'
+                + '</div>';
+            Popup.show(error_text, {});
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+}
+
+function addItemToCartOrOpenDetail(buttonElem) {
+    let btn = $(buttonElem);
+    let offerId = btn.data('id');
+    if (offerId) {
+        let productData = $(buttonElem).data();
+        addToCartHandler(offerId, 1, productData);
+    } else {
+        console.log(btn.data());
+        window.open(btn.data('url'), '_blank');
+    }
 }

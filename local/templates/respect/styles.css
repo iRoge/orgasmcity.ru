@@ -1,3 +1,20 @@
+body {
+    font-family: gilroyRegular;
+}
+select, textarea, input {
+    outline: none;
+}
+select:focus, textarea:focus, input:focus {
+    outline: none;
+}
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+    margin: 0;
+}
 .icon,
 .selectize-control.multi .selectize-input:after,
 .selectize-control.single .selectize-input:after,
@@ -26,7 +43,7 @@ label.radio > span .input__color,
     -moz-osx-font-smoothing: grayscale;
 }
 .body-settings {
-    max-width: 1600px;
+    max-width: 2000px;
     margin: 0 auto;
 }
 .icon-lg {
@@ -428,7 +445,7 @@ label.radio > span .input__color,
     }
 }
 .selectize selectize--inline{
-font-family: 'firaregular';
+font-family: 'gilroyRegular';
     padding: 12px 20px;
     background: #fff5f7;
     outline: 0;
@@ -574,11 +591,11 @@ font-family: 'firaregular';
     }
 }
 .product-preorder-success header, .product-preorder header,.popup header{
-    font-family: 'vollkornsemibold';
-    color: #4e4e4e;
+    font-family: 'gilroySemiBold';
+    color: #000000;
     text-align: center;
     display: inline-block;
-    margin-top: 50px;
+    margin: 15px 0;
     font-size: 40px;
     line-height: 1;
     text-transform: inherit;
@@ -598,21 +615,20 @@ font-family: 'firaregular';
     }
 }
 .popup .input-group.input-group--phone input{
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 20px;
     width: 100%;
-    background: #fff5f7;
+    background: white;
     outline: 0;
     margin-top: 20px;
     border: 1px solid rgba(200,200,200, .5);
 }
-.popup__container a.button--primary, .one-click-form  button {
+.popup__container a.button--primary, .one-click-form button {
     padding: 12px 0;
-    background: #ff5e5e;
+    background: #654670;
     width: 48%;
-    text-transform: uppercase;
     color: #fff!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyMedium';
     font-size: 16px;
     text-align: center;
     margin: 15px 0;
@@ -630,12 +646,10 @@ font-family: 'firaregular';
     padding: 12px 0;
     background: #f0a740;
     width: 48%;
-    text-transform: uppercase;
     color: #fff!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyMedium';
     font-size: 16px;
     text-align: center;
-    margin: 15px 1%;
     border: 0;
     outline: 0;
     cursor: pointer;
@@ -649,11 +663,11 @@ font-family: 'firaregular';
 .skip-check-phone,
 .skip-check-phone2 {
     padding: 12px 0;
-    background: #ff5e5e;
+    background: #654670;
     width: 48%;
     text-transform: uppercase;
     color: #fff!important;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     text-align: center;
     margin: 15px 1%;
@@ -664,7 +678,7 @@ font-family: 'firaregular';
 }
 @media (max-width: 599px) {
     .popup__container button.button--primary{
-        margin: 15px 0px;
+        margin: 15px 0;
     }
 }
 .product-preorder-success footer div{
@@ -682,18 +696,21 @@ font-family: 'firaregular';
 }
 
 div.product-preorder-success button.button--blue {
-    background: #ff5e5e !important;
+    background: linear-gradient(90deg, #FDFBFB 0%, #EBEDEE 100%); !important;
+    color: black!important;
 }
+
 
 div.product-preorder-success button.button--blue:hover {
-    background: #2A2A2A !important;
+    background: #2A2A2A!important;
+    color: white!important;
 }
 
-div.product-preorder-success a.button--orange {
-    background: #F0A740 !important;
+div.product-preorder-success a.button--purple {
+    background: linear-gradient(90deg, #65379B 0%, #886AEA 53%, #6457C6 100%)!important;
 }
 
-div.product-preorder-success a.button--orange:hover {
+div.product-preorder-success a.button--purple:hover {
     background: #2A2A2A !important;
 }
 
@@ -706,9 +723,19 @@ div.product-preorder-success a.button--orange:hover {
     padding: 30px 15px;
 }
 .popup {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     min-width: inherit!important;
     width: 100%;
     padding: 30px 15px;
+}
+.popup:after {
+    background: linear-gradient(
+            90deg, rgba(234, 223, 223, 0.8) 59%, rgba(236, 226, 223, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 .popup .container{
     width: inherit!important;
@@ -787,7 +814,7 @@ div.product-preorder-success a.button--orange:hover {
     }
 }   
 
-@media (min-width: 699px) and (max-width: 992px){
+@media (min-width: 699px) and (max-width: 991px){
     .popup--preorder aside{
         box-sizing: border-box;
         width: 33%;
@@ -907,23 +934,23 @@ div.product-preorder-success a.button--orange:hover {
 .order-info .order-info__input{
     padding: 10px 15px;
     border: 2px solid rgba(240,240,240, 1);
-    font-family: 'firalight';
+    font-family: 'gilroyRegular';
     font-size: 15px!important;
 }
 .order-info .order-info__submit{
     display: block;
-    background: #ff5e5e;
+    background: #654670;
     text-transform: uppercase;
     margin-top: 30px;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     font-size: 16px;
     height: 51px;
     line-height: 47px;
     color: #fff!important;
 }
 .js-preorder-submit{
-    border: 4px solid #ff5e5e;
-    background-color: #ff5e5e;
+    border: 4px solid #654670;
+    background-color: #654670;
     color: #fff;
     text-transform: uppercase;
 }
@@ -957,21 +984,20 @@ div.product-preorder-success a.button--orange:hover {
 	display: none;
 	list-style-type: none;
     padding: 0 20px;
-    margin-top: -2px;
-    box-shadow: 0px 2px 15px rgba(0,0,0, .2);
+    box-shadow: 0 2px 15px rgba(0,0,0, .2);
     z-index: 100000;
     position: absolute;
     background: #fff;
     height: auto;
     line-height: 18px;
-    width: 100%;
 }
 .auth-div-personal a {
 	display: block;
     width: 100%;
     text-align: left;
-    color: #4e4e4e;
-    font-family: 'firaregular';
+    color: #000000;
+    font-family: 'gilroyRegular';
+    font-size: 14px;
 }
 .auth-div-personal a:nth-of-type(1) {
     margin-top: 20px;
@@ -985,7 +1011,7 @@ div.product-preorder-success a.button--orange:hover {
 .installment-rules,
 .installment-partner {
     text-align: center;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
     padding: 12px 0;
     text-transform: uppercase;
     text-decoration: none;
@@ -1008,7 +1034,7 @@ div.product-preorder-success a.button--orange:hover {
     border: 3px solid #f0a740;
     background:transparent;
     outline: 0;
-    color: #4e4e4e;
+    color: #000000;
     font-size: 16px;
     width: 80%;
     border-radius: 0;
@@ -1053,12 +1079,12 @@ div.product-preorder-success a.button--orange:hover {
     }
 }
 .buttonFastBuy-loader{
-    background-color: #ff5e5e;
+    background-color: #654670;
     display:none;
 }
 .buttonReservation-loader
 {
-    background-color: #ff5e5e;
+    background-color: #654670;
     display:none;
 }
 .one-click-preloader-div{
@@ -1070,7 +1096,7 @@ div.product-preorder-success a.button--orange:hover {
     background: url(/img/bars.svg) right no-repeat !important;
     -webkit-background-size: contain !important;
     background-size: contain !important;
-    background-color: #ff5e5e !important;
+    background-color: #654670 !important;
     border:none !important;
     pointer-events: none;
     cursor: default;
@@ -1083,7 +1109,7 @@ div.product-preorder-success a.button--orange:hover {
     background: url(/img/bars.svg) calc(100% - 40px) no-repeat !important;
     -webkit-background-size: contain !important;
     background-size: contain !important;
-    background-color: #ff5e5e !important;
+    background-color: #654670 !important;
     border:none !important;
     pointer-events: none;
     cursor: default;
@@ -1093,7 +1119,7 @@ div.product-preorder-success a.button--orange:hover {
     background: url(/img/bars.svg) right no-repeat !important;
     -webkit-background-size: contain !important;
     background-size: contain !important;
-    background-color: #ff5e5e !important;
+    background-color: #654670 !important;
     border:none !important;
     width: 100%;
     pointer-events: none;
@@ -1153,7 +1179,7 @@ div.product-preorder-success a.button--orange:hover {
     width: 20px;
     height: 20px;
     border: 3px solid;
-    border-color: #ff5e5e transparent transparent transparent;
+    border-color: #654670 transparent transparent transparent;
 }
 
 
@@ -1174,7 +1200,7 @@ div.product-preorder-success a.button--orange:hover {
     width: 55px;
     height: 55px;
     border: 6px solid;
-    border-color: #ff5e5e transparent transparent transparent;
+    border-color: #654670 transparent transparent transparent;
 }
 .vacancy--button {
     display: inline;
@@ -1188,7 +1214,7 @@ div.product-preorder-success a.button--orange:hover {
 .button-vacancies {
     position: relative;
     border: 0;
-    background-color: #ff5e5e;
+    background-color: #654670;
     color: #fff;
     text-transform: uppercase;
     white-space: normal;
@@ -1217,10 +1243,10 @@ div.product-preorder-success a.button--orange:hover {
 }
 
 #seller_loguot_btn {
-    background: #ff5e5e;
+    background: #654670;
     text-transform: uppercase;
     color: #fefefe;
-    font-family: 'firaregular';
+    font-family: 'gilroyRegular';
 }
 
 jdiv[class^="button_"] {
@@ -1241,13 +1267,191 @@ jdiv[class^="popupBlock_"] {
 }
 
 .slick-next {
-    right: -22px;
+    right: -12px;
 }
 
 .slick-prev {
-    left: -20px;
+    left: -12px;
 }
 
 .discount-yellow {
     color: #e28400;
+}
+
+.show-test {
+    display: block!important;
+}
+
+.default-header {
+    font-family: 'gilroySemiBold'!important;
+    font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 25px;
+    margin-top: 0!important;
+    line-height: 48px;
+    color: #000000;
+}
+
+.how-we-work-wrapper {
+    display: flex!important;
+    align-items: center;
+    padding: 0 30px;
+}
+
+@media (max-width: 767px) {
+    .default-header {
+        margin-top: 20px;
+        font-size: 30px;
+    }
+    .how-we-work-wrapper {
+        padding: 0;
+    }
+}
+
+.order-help-wrapper {
+    display: flex!important;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.order-help-section {
+    margin: 40px 0;
+}
+
+.footer-block {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-element {
+    height: 50px;
+    display: block;
+    width: 100%;
+}
+
+a.footer-element:hover {
+    text-underline: none;
+    text-decoration: none;
+}
+
+.footer-block h4 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    font-family: 'gilroySemiBold';
+    color: #ffffff;
+    margin: 0 0 20px 0;
+}
+
+.footer-right-block {
+    color: white;
+    text-align: right;
+    justify-content: flex-end;
+}
+
+@media (max-width: 767px) {
+    .footer-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        text-align: end;
+    }
+
+    .footer-right-block {
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .footer-element {
+        width: 48%;
+        height: 50px;
+        flex-wrap: wrap;
+    }
+
+    .footer-element:nth-child(2n) {
+        display: flex;
+        justify-content: flex-start;
+        text-align: start;
+    }
+
+    .footer-element:nth-child(2n+1) {
+        display: flex;
+        justify-content: flex-end;
+        text-align: end;
+    }
+
+    .footer-block {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-block h4 {
+        text-align: center;
+        width: 100%;
+    }
+
+    .footer-information-block, .footer-social-block {
+        width: 48%;
+    }
+
+    .footer-social-block {
+        margin-bottom: 25px;
+    }
+
+    .footer-information-block .footer-element, .footer-social-block .footer-element {
+        width: 100%;
+    }
+
+    .social-element {
+        text-align: start;
+        justify-content: flex-start!important;
+    }
+
+    .footer-information-block .footer-element {
+        text-align: end;
+        justify-content: flex-end!important;
+    }
+
+    .footer-information-block h4 {
+        text-align: end;
+    }
+}
+
+.right-footer-element, .right-footer-element a {
+    font-size: 13px;
+    font-family: 'gilroyRegular';
+    text-decoration: none;
+    text-underline: none;
+    color: #FFFFFF;
+
+}
+
+.right-footer-element a:hover {
+    text-decoration: none;
+    text-underline: none;
+    color: #F8C0EA;
+}
+
+.rights-line {
+    width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-family: 'gilroyThin';
+    font-size: 13px;
+    line-height: 15px;
+    margin: 45px 0 15px 0;
+}
+
+.popup-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

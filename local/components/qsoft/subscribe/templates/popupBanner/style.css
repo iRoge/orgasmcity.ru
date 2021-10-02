@@ -16,7 +16,7 @@ input#EMAIL.red_border_sub {
 }
 
 .surprise-banner {
-    background: transparent;
+    background: transparent!important;
     padding: 0!important;
 }
 

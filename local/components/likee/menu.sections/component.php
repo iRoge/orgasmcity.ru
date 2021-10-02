@@ -42,7 +42,7 @@ if (empty($aMenuLinksNew)) {
     $arResult['SECTIONS'] = [];
     $arResult['ELEMENT_LINKS'] = [];
     if (!Loader::includeModule('iblock')) {
-        $this->AbortResultCache();
+        $cache->AbortDataCache();
         $CACHE_MANAGER->AbortTagCache();
         return [];
     }
@@ -61,6 +61,7 @@ if (empty($aMenuLinksNew)) {
         [
             "ID",
             "NAME",
+            "CODE",
         ]
     );
     $arMainSectionIds = [];
@@ -143,7 +144,7 @@ if (empty($aMenuLinksNew)) {
     $rests = Functions::getRests($offerIds);
 
     foreach ($offers as $offerId => $offer) {
-        $price = \Qsoft\Helpers\PriceUtils::getPrice($offer['PROPERTY_BASEWHOLEPRICE_VALUE'], $offer['PROPERTY_BASEPRICE_VALUE']);
+        $price = \Qsoft\Helpers\PriceUtils::getCachedPriceForUser($offerId);
         if ((!isset($rests[$offerId]) || $rests[$offerId] < 1 || !$price)) {
             continue;
         }
@@ -185,12 +186,13 @@ if (empty($aMenuLinksNew)) {
         $arOrder,
         $arFilter,
         false,
-        array(
+        [
             'ID',
             'DEPTH_LEVEL',
             'NAME',
             'SECTION_PAGE_URL',
-        )
+            'CODE',
+        ]
     );
 
     $rsSections->SetUrlTemplates('', $arParams['SECTION_URL']);
@@ -198,6 +200,7 @@ if (empty($aMenuLinksNew)) {
     while ($arSection = $rsSections->GetNext()) {
         $arResult['SECTIONS'][] = array(
             'ID' => $arSection['ID'],
+            'CODE' => $arSection['CODE'],
             'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
             '~NAME' => $arSection['~NAME'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
@@ -216,19 +219,16 @@ if (empty($aMenuLinksNew)) {
 
     if ($bSpecSec['SALES']) {
         $arResult['SALES'] = [
-            'UF_NAME' => 'СКИДКИ ДО 40%',
+            'UF_NAME' => 'Скидки до -40%',
             'UF_CODE' => 'sales',
             'PROPS' => [
-                'TEXT_COLOR' => '#ff002c'
+                'TEXT_COLOR' => 'white',
+                'IS_SPECIAL' => 'Y'
             ]
         ];
     }
-    //END CUSTOM
 
-
-    $arVariables = [];
-
-    if (($arParams['ID'] > 0) && (intval($arVariables['SECTION_ID']) <= 0) && Loader::includeModule('iblock')) {
+    if ($arParams['ID'] > 0) {
         $arSelect = ['ID', 'IBLOCK_ID', 'DETAIL_PAGE_URL', 'IBLOCK_SECTION_ID'];
         $arFilter = [
             'ID' => $arParams['ID'],
@@ -271,6 +271,10 @@ if (empty($aMenuLinksNew)) {
 
         $arResult['ELEMENT_LINKS'][$arSection['ID']][] = urldecode($arSection['~SECTION_PAGE_URL']);
 
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
+        $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
+        $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.webp';
+        $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.webp';
         $aMenuLinksNew[$menuIndex++] = array(
             htmlspecialcharsbx($arSection['~NAME']),
             $arSection['~SECTION_PAGE_URL'],
@@ -279,6 +283,9 @@ if (empty($aMenuLinksNew)) {
                 'FROM_IBLOCK' => true,
                 'IS_PARENT' => false,
                 'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
+                'IMG_PATH' => is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/svg/catalogs/default.svg',
+                'IMG_PATH_WEBP' => is_file($filePathWebp) ? $imgPathWebp : SITE_TEMPLATE_PATH . '/img/svg/catalogs/776.webp',
+                'ID' => $arSection['ID'],
             ),
         );
 
@@ -324,9 +331,6 @@ if (empty($aMenuLinksNew)) {
 
             $arSectionsToAdd = [];
             while ($arSection = $nav->Fetch()) {
-                if ($arSection['ID'] == 642) {
-                    continue 2;
-                }
                 if ($arSection['DEPTH_LEVEL'] == 4) {
                     continue;
                 }
@@ -356,15 +360,23 @@ if (empty($aMenuLinksNew)) {
                     continue;
                 }
                 if ($arSalesSection3['IBLOCK_SECTION_ID'] == $arSalesSection2['ID']) {
-                    $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
+                    $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.svg';
+                    $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.svg';
+                    $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.webp';
+                    $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.webp';
+                    $catalogPathCode = '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
+                    $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . $catalogPathCode;
                     $arMenuLinkSales[] = array(
                         $arSalesSection3['NAME'],
                         $sPath,
                         array($sPath),
                         array(
+                            'IMG_PATH' => is_file($filePath) ? $imgPath :  SITE_TEMPLATE_PATH . '/img/svg/catalogs/default.svg',
+                            'IMG_PATH_WEBP' => is_file($filePathWebp) ? $imgPathWebp : SITE_TEMPLATE_PATH . '/img/svg/catalogs/776.webp',
                             'IS_PARENT' => false,
                             'DEPTH_LEVEL' => 2,
                             'FROM_IBLOCK' => true,
+                            'ID' => $arSalesSection3['ID'],
                         ),
                         ''
                     );

@@ -10,19 +10,14 @@ class EventsSectionComponent extends EventsComponent
     private array $sections = [];
     private int $currentSectionId = 0;
     private array $arGtmTypes = [
-        'actions' => 'Акции',
-        'trends' => 'Тренды',
-        'news' => 'Новости',
-        'articles' => 'Статьи',
-        'lookbooks' => 'Лукбуки',
-        'konkursy-oprosy' => 'Конкурсы-опросы',
+        'blog' => 'Блог',
     ];
 
     public function executeComponent()
     {
         $this->initCache();
         $this->sections = $this->loadSections();
-        if ($this->arParams['IBLOCK_CODE'] == 'events') {
+        if ($this->arParams['IBLOCK_CODE'] == 'blog') {
             $this->loadEvents();
         } else {
             $this->loadElementGroup();
@@ -57,10 +52,8 @@ class EventsSectionComponent extends EventsComponent
 
     private function loadElementGroup()
     {
-        global $LOCATION;
         if ($this->cache->initCache($this->arParams['CACHE_TIME'], 'allElement', $this->cacheDir)) {
             $arEvents = $this->cache->getVars()['events'];
-            $elementsForLocation = $this->cache->getVars()['location'];
         } elseif ($this->cache->StartDataCache()) {
             $res = CIBlockSection::GetList(
                 ['SORT' => 'DESC'],
@@ -78,17 +71,13 @@ class EventsSectionComponent extends EventsComponent
 
             $ibName = $this->getIBName();
 
-            while ($arItem = $res->Fetch()) {
+            while ($arItem = $res->GetNext()) {
                 $arItem['PREVIEW_TEXT'] = $arItem['DESCRIPTION'];
 
                 $arItem['SECTION'] = $this->sections['MENU'][$arItem['IBLOCK_SECTION_ID']]['EXTERNAL_ID'];
                 $arItem['GTM_TYPE'] = $this->arGtmTypes[$arItem['SECTION']];
                 $arItem['DETAIL_PAGE_URL'] = str_replace('#SECTION_CODE#', $arItem['SECTION'], $arItem['SECTION_PAGE_URL']);
-                $arItem['DETAIL_PAGE_URL'] = str_replace('#CODE#', $arItem['CODE'], $arItem['DETAIL_PAGE_URL']);
                 $arItem['DETAIL_PAGE_URL'] .= $arItem['CODE'] . '/';
-                if ($arItem['UF_IS_LOOKBOOK']) {
-                    $arItem['DETAIL_PAGE_URL'] .= '1/';
-                }
 
                 // определение даты для сортировки
                 if (!empty($arItem['UF_DATE_ACTIVE_FROM'])) {
@@ -116,16 +105,6 @@ class EventsSectionComponent extends EventsComponent
                 $arItem['IB_NAME'] = $ibName ?? '';
                 $arIdPreview[] = $arItem['PICTURE'];
 
-                if (!empty($arItem['UF_LOCATION'])) {
-                    $arItem['UF_LOCATION'] = unserialize($arItem['UF_LOCATION']);
-                    if (!empty($arItem['UF_LOCATION'])) {
-                        foreach ($arItem['UF_LOCATION'] as $arlocationInfo) {
-                            $elementsForLocation[$arlocationInfo[1]][$arItem['ID']] = $arItem['ID'];
-                        }
-                    } else {
-                        $elementsForLocation['ALL'][$arItem['ID']] = $arItem['ID'];
-                    }
-                }
                 $arEvents[$arItem['ID']] = $arItem;
             }
 
@@ -151,26 +130,13 @@ class EventsSectionComponent extends EventsComponent
         uasort($arEvents, 'cmp');
 
         if (!empty($arEvents)) {
-            $this->cache->EndDataCache(['events' => $arEvents, 'location' => $elementsForLocation]);
+            $this->cache->EndDataCache(['events' => $arEvents]);
         } else {
             $this->cache->AbortDataCache();
         }
 
-        $arLocElementsIds = $elementsForLocation['ALL'];
-
-        foreach ($LOCATION->getParentCodes() as $locationCode) {
-            if ($elementsForLocation[$locationCode]) {
-                $arLocElementsIds = array_merge($arLocElementsIds, $elementsForLocation[$locationCode]);
-            }
-        }
-
-        $arEvents = array_intersect_key($arEvents, array_flip($arLocElementsIds));
-
         foreach ($arEvents as $eventNum => $arEvent) {
             if ($this->arParams['CURRENT_SECTION'] != $this->arParams['DEFAULT_SECTION']['EXTERNAL_ID'] && $arEvent['SECTION'] != $this->arParams['CURRENT_SECTION']) {
-                unset($arEvents[$eventNum]);
-            }
-            if ($arEvent['UF_NO_SHOW_IN_SECTION']) {
                 unset($arEvents[$eventNum]);
             }
         }
@@ -180,10 +146,9 @@ class EventsSectionComponent extends EventsComponent
 
     private function loadEvents()
     {
-        global $LOCATION;
-        if ($this->cache->initCache($this->arParams['CACHE_TIME'], 'allEvents', $this->cacheDir)) {
-            $arEvents = $this->cache->getVars()['events'];
-            $eventsForLocation = $this->cache->getVars()['location'];
+        $arEvents = [];
+        if ($this->cache->initCache($this->arParams['CACHE_TIME'], 'allPosts', $this->cacheDir)) {
+            $arEvents = $this->cache->getVars()['posts'];
         } elseif ($this->cache->StartDataCache()) {
             $res = CIBlockElement::GetList(
                 ['DATE_CREATE' => 'DESC'],
@@ -207,7 +172,6 @@ class EventsSectionComponent extends EventsComponent
                     'PREVIEW_TEXT',
                     'DETAIL_PAGE_URL',
                     'PROPERTY_LOCATION',
-                    'PROPERTY_NO_SHOW_IN_SECTION',
                     'PROPERTY_ELEMENT_LINK',
                 ]
             );
@@ -245,13 +209,6 @@ class EventsSectionComponent extends EventsComponent
 
                 $arItem['IB_NAME'] = $ibName ?? '';
                 $arIdPreview[] = $arItem['PREVIEW_PICTURE'];
-                if ($arItem['PROPERTY_LOCATION_VALUE']) {
-                    foreach ($arItem['PROPERTY_LOCATION_VALUE'] as $locationCode) {
-                        $eventsForLocation[$locationCode][$arItem['ID']] = $arItem['ID'];
-                    }
-                } else {
-                    $eventsForLocation['ALL'][$arItem['ID']] = $arItem['ID'];
-                }
 
                 $arEvents[$arItem['ID']] = $arItem;
             }
@@ -277,27 +234,14 @@ class EventsSectionComponent extends EventsComponent
             uasort($arEvents, 'cmp');
 
             if (!empty($arEvents)) {
-                $this->cache->EndDataCache(['events' => $arEvents, 'location' => $eventsForLocation]);
+                $this->cache->EndDataCache(['posts' => $arEvents]);
             } else {
                 $this->cache->AbortDataCache();
             }
         }
 
-        $arLocEventsIds = $eventsForLocation['ALL'];
-
-        foreach ($LOCATION->getParentCodes() as $locationCode) {
-            if ($eventsForLocation[$locationCode]) {
-                $arLocEventsIds = array_merge($arLocEventsIds, $eventsForLocation[$locationCode]);
-            }
-        }
-
-        $arEvents = array_intersect_key($arEvents, array_flip($arLocEventsIds));
-
         foreach ($arEvents as $eventNum => $arEvent) {
-            if ($this->arParams['CURRENT_SECTION'] != 'events' && $arEvent['SECTION'] != $this->arParams['CURRENT_SECTION']) {
-                unset($arEvents[$eventNum]);
-            }
-            if ($arEvent['PROPERTY_NO_SHOW_IN_SECTION_VALUE'] == 'Y') {
+            if ($this->arParams['CURRENT_SECTION'] != 'blog' && $arEvent['SECTION'] != $this->arParams['CURRENT_SECTION']) {
                 unset($arEvents[$eventNum]);
             }
         }
@@ -368,10 +312,10 @@ class EventsSectionComponent extends EventsComponent
             }
         }
 
-        $APPLICATION->SetTitle($seo['SECTION_PAGE_TITLE']);
-        $APPLICATION->SetPageProperty("title", $seo['SECTION_META_TITLE']);
-        $APPLICATION->SetPageProperty("keywords", $seo['SECTION_META_KEYWORDS']);
-        $APPLICATION->SetPageProperty("description", $seo['SECTION_META_DESCRIPTION']);
+        $APPLICATION->SetTitle($seo['SECTION_PAGE_TITLE'] ?? 'Блог');
+        $APPLICATION->SetPageProperty("title", $seo['SECTION_META_TITLE'] ?? 'Блог о сексологии в Городе Оргазма');
+        $APPLICATION->SetPageProperty("keywords", $seo['SECTION_META_KEYWORDS'] ?? 'сексология, блог о сексе, секс товары, товары для взрослых, обзор секс товаров, обзор вибраторов, обзор дилдо, обзор фалосов, обзор мастурбаторов');
+        $APPLICATION->SetPageProperty("description", $seo['SECTION_META_DESCRIPTION'] ?? 'В Городе Оргазма вы можете узнать множество полезной информации о товарах для взрослых: обзор вибраторов, обзор дилдо, обзор фалосов, обзор мастурбаторов');
     }
 
     private function getIBName()

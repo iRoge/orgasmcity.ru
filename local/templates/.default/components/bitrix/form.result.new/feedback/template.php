@@ -73,7 +73,7 @@ if ($arResult["isFormNote"] == "Y") : ?>
                     $htmlNameValue = 'form_text_' . $arQuestion["STRUCTURE"][0]["ID"];
                     $selectedValue = isset($_REQUEST[$htmlNameValue]) ? $_REQUEST[$htmlNameValue] : '';
                     ?>
-                <select class="feedback-selectize" name="<?= $htmlNameValue ?>" style="background-color: #fff5f7">
+                <select class="feedback-selectize" name="<?= $htmlNameValue ?>">
                     <option value=""><?= $label ?></option>
                     <? foreach ($arSubjectList as $subject) :?>
                         <option value="<?= $subject ?>"<?= ($subject == $selectedValue ? ' selected' : '') ?>><?= $subject ?></option>
@@ -124,9 +124,9 @@ if ($arResult["isFormNote"] == "Y") : ?>
          name="web_form_submit"
          value="Отправить сообщение"/>
 
-        <div id="feedback_checkbox_policy" class="col-xs-12">
-            <input type="checkbox" id="feedback_checkbox_policy_checked" name="feedback_checkbox_policy" class="checkbox3" checked/>
-            <label for="feedback_checkbox_policy_checked" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="<?= OFFER_FILENAME ?>">политикой конфиденциальности</a>.</label>
-        </div>
+<!--        <div id="feedback_checkbox_policy" class="col-xs-12">-->
+<!--            <input type="checkbox" id="feedback_checkbox_policy_checked" name="feedback_checkbox_policy" class="checkbox3" checked/>-->
+<!--            <label for="feedback_checkbox_policy_checked" class="checkbox--_">Я соглашаюсь на обработку моих персональных данных и ознакомлен(а) с <a href="--><?//= OFFER_FILENAME ?><!--">политикой конфиденциальности</a>.</label>-->
+<!--        </div>-->
     <?=$arResult["FORM_FOOTER"]?>
 <?php endif; ?>

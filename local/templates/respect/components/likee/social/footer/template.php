@@ -1,4 +1,4 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 /** @var array $arResult */
@@ -13,24 +13,41 @@
 /** @var string $componentPath */
 /** @var LikeeSocialComponent $component */
 $this->setFrameMode(true);
-$icons = array(
-    array("FACEBOOK_LINK", "fb.png"),
-    array("INSTAGRAM_LINK", "insta.png"),
-    array("VK_LINK", "vk.png"),
-    array("TELEGRAM_LINK", "telegram.png"),
-    array("PINTEREST_LINK", "pinterest.png"),
-    array("YOUTUBE_LINK", "youtube.png"),
-);
-$i = 0;?>
-<div class="mobile_soc_icon">
-<? foreach ($icons as $value) : ?>
-    <? if (!empty($arResult[$value[0]])) : ?>
-        <? if ($i % 3 == 0 && $i != 0) : ?>
-            </div>
-            <div class="mobile_soc_icon">
-        <? endif ?>
-        <a target="_blank" href="<?= $arResult[$value[0]]; ?>"><img src="<?= SITE_TEMPLATE_PATH; ?>/img/<?= $value[1] ?>" /></a>
-        <? $i++; ?>
-    <? endif; ?>
-<? endforeach; ?>
-</div>
+$icons = [
+    [
+        'name' => 'INSTAGRAM',
+        'icon' => 'Instagram.svg',
+        'color' => '#FF8D74'
+    ],
+    [
+        'name' => 'WhatsApp',
+        'icon' => 'Whatsapp.svg',
+        'color' => '#BDFBA0'
+    ],
+    [
+        'name' => 'TELEGRAM',
+        'icon' => 'Telegram.svg',
+        'color' => '#B3E6FF'
+    ],
+    [
+        'name' => 'VK.COM',
+        'icon' => 'Vk.svg',
+        'color' => '#0194FF'
+    ],
+    [
+        'name' => 'Spotify',
+        'icon' => 'Spotifi.svg',
+        'color' => '#63B861'
+    ],
+];
+?>
+
+<?php foreach ($icons as $value) { ?>
+    <?php if (!empty($arResult[$value['name']])) { ?>
+        <a class="footer-element social-element" target="_blank" href="<?=$arResult[$value['name']]?>">
+            <img width="24" height="24" src="<?=SITE_TEMPLATE_PATH?>/img/svg/<?=$value['icon']?>"/>
+            <span class="social-element-text" style="color: <?=$value['color']?>"><?=$value['name']?></span>
+        </a>
+    <?php }?>
+<?php } ?>
+

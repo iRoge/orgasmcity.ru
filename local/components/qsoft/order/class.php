@@ -2,6 +2,8 @@
 
 use Bitrix\Highloadblock\HighloadBlockTable as HLBT;
 use Bitrix\Sale\BasketBase;
+use Bitrix\Sale\BasketItem;
+use Bitrix\Sale\DiscountCouponsManagerBase;
 use Bitrix\Sale\Internals\CollectableEntity;
 use Likee\Site\Helpers\HL;
 use \Likee\Site\User;
@@ -14,7 +16,7 @@ use \Bitrix\Sale\Order;
 use \Bitrix\Sale\Basket;
 use \Bitrix\Sale\PaySystem\Manager as PayManager;
 use \Bitrix\Sale\Delivery\Services\Manager as DelManager;
-use \Bitrix\Sale\DiscountCouponsManager as CouponsManager;
+use \Bitrix\Sale\DiscountCouponsManager;
 use Qsoft\DeliveryWays\WaysByDeliveryServicesTable;
 use Qsoft\DeliveryWays\WaysDeliveryTable;
 use \Qsoft\Helpers\ComponentHelper;
@@ -24,7 +26,6 @@ use Qsoft\Helpers\SubscribeManager;
 use Qsoft\PaymentWays\WaysByPaymentServicesTable;
 use Qsoft\PaymentWays\WaysPaymentTable;
 use Qsoft\Pvzmap\PVZFactory;
-use Qsoft\Pvzmap\PVZTable;
 
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
@@ -269,7 +270,7 @@ class QsoftOrderComponent extends ComponentHelper
         $fio = explode('~', $_COOKIE['user_fio']);
         $email = explode('~', $_COOKIE['user_email']);
         $phone = explode('~', $_COOKIE['user_phone']);
-        if ($fio[1] == 'undefined' || $email[1]== 'undefined' || $phone[1] == 'undefined') {
+        if ($fio[1] == 'undefined' || $email[1] == 'undefined' || $phone[1] == 'undefined') {
             $fio[1] = $fio[0];
             $email[1] = $email[0];
             $phone[1] = $phone[0];
@@ -350,9 +351,10 @@ class QsoftOrderComponent extends ComponentHelper
         // очищаем имеющиеся купоны
         $this->delCoupon(true);
         // добавляем новый
-        $res = CouponsManager::add($this->arResult["COUPON"]);
+        $res = DiscountCouponsManager::add($this->arResult["COUPON"]);
+
         if ($res) {
-            $arCoupons = CouponsManager::get(true, array(), true, true);
+            $arCoupons = DiscountCouponsManager::get(true, array(), true, true);
             $arCoupon = array_shift($arCoupons);
             $this->checkCouponStatus($arCoupon);
         } else {
@@ -363,26 +365,26 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function delCoupon($check = false)
     {
-        $arCoupons = CouponsManager::get(true, array(), true, true);
+        $arCoupons = DiscountCouponsManager::get(true, array(), true, true);
         if (!empty($arCoupons)) {
             foreach ($arCoupons as $arCoupon) {
                 if ($check && $this->arResult["COUPON"] == $arCoupon["COUPON"]) {
                     $this->checkCouponStatus($arCoupon);
                 }
-                CouponsManager::delete($arCoupon["COUPON"]);
+                DiscountCouponsManager::delete($arCoupon["COUPON"]);
             }
         }
     }
 
     private function checkCouponStatus($arCoupon)
     {
-        if ($arCoupon["STATUS"] == CouponsManager::STATUS_NOT_FOUND) {
+        if ($arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_NOT_FOUND) {
             $this->arResult["ERRORS"][] = "Промокод не существует";
-        } elseif ($arCoupon["STATUS"] == CouponsManager::STATUS_FREEZE) {
+        } elseif ($arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_FREEZE) {
             $this->arResult["ERRORS"][] = "Промокод использован максимальное количество раз";
-        } elseif ($arCoupon["STATUS"] == CouponsManager::STATUS_ENTERED
-            || $arCoupon["STATUS"] == CouponsManager::STATUS_NOT_APPLYED
-            || $arCoupon["STATUS"] == CouponsManager::STATUS_APPLYED
+        } elseif ($arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_ENTERED
+            || $arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_NOT_APPLYED
+            || $arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_APPLYED
         ) {
             if ($this->loadBasket()) {
                 $this->applyCoupon();
@@ -399,7 +401,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function getCoupon()
     {
-        $arCoupons = CouponsManager::get(true, array(), true, true);
+        $arCoupons = DiscountCouponsManager::get(true, array(), true, true);
         if (count($arCoupons) == 1) {
             $this->arResult["COUPON"] = reset($arCoupons)["COUPON"];
             $this->applyCoupon();
@@ -408,12 +410,22 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function applyCoupon()
     {
-        // все, что нужно, чтобы применить скидки к корзине
-        // создать пустой объект заказа
+        if (isset(COUPONS_FOR_GIFT[$this->arResult["COUPON"]])) {
+            $basketItems = $this->basket->getBasketItems();
+            /** @var BasketItem $item */
+            $productExists = false;
+            foreach ($basketItems as $item) {
+                if ($item->getProductId() == COUPONS_FOR_GIFT[$this->arResult["COUPON"]]) {
+                    $productExists = true;
+                }
+            }
+            if (!$productExists) {
+                $this->createBasketItem(COUPONS_FOR_GIFT[$this->arResult["COUPON"]]);
+                $this->basket->save();
+            }
+        }
         $order = $this->createNewOrder();
-        // присвоить ему корзину
         $order->setBasket($this->basket);
-        // конец
     }
 
     // функции проверки данных
@@ -459,7 +471,6 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function checkProps()
     {
-        global $LOCATION;
         global $USER;
         // при оформлении заказа у нас ОБЯЗАТЕЛЬНО должен быть заполнен телефон в нужном формате
         if (!$this->postProps['PHONE']) {
@@ -706,8 +717,10 @@ class QsoftOrderComponent extends ComponentHelper
         $arBasketItems = $this->basket->getBasketItems();
         // Актуализируем цены в корзине
         foreach ($arBasketItems as $basketItem) {
-            $this->createBasketItem($basketItem->getProductId(), $basketItem->getQuantity());
+            $offerID = $basketItem->getProductId();
+            $qty = $basketItem->getQuantity();
             $basketItem->delete();
+            $this->createBasketItem($offerID, $qty);
         }
         $this->basket->save();
         return (bool)$this->basket;
@@ -771,7 +784,7 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
 
-        $rest = Functions::getRests($offerId)[$offerId];
+        $rest = Functions::getRests([$offerId])[$offerId];
         if ($basketItem && (($basketItem->getQuantity() + $quantity) > $rest)) {
             $this->arResult["ERRORS"][] = "Не достаточно остатка на складе по данному товару.
             У вас в корзине уже " . $basketItem->getQuantity() . " шт. Свободного остатка: " . $rest ?? 0;
@@ -798,33 +811,41 @@ class QsoftOrderComponent extends ComponentHelper
         $this->returnError();
     }
 
-    private function deleteFromBasket($offerId, $quantity)
+    private function deleteFromBasket($offerId, $quantityToDelete)
     {
         // проверяем есть ли ТП с таким ID
         // $this->basket->getExistsItem не работает, тк он сверяет все свойства, а у нас их ещё нет
         $arBasketItems = $this->basket->getBasketItems();
+        /** @var BasketItem $arItem */
+        $offerQuantityInBasket = 0;
         foreach ($arBasketItems as $arItem) {
             if ($arItem->getProductId() == $offerId) {
-                $resultQty = $arItem->getQuantity() - $quantity;
-                if ($resultQty < 1) {
-                    $arItem->delete();
-                } else {
-                    $arItem->delete();
-                    $arItem = $this->createBasketItem($offerId, $resultQty);
-                }
-                $res = $this->basket->save();
-                if (empty($this->offers)) {
-                    $this->checkBasketAvailability();
-                }
-                if ($res->isSuccess()) {
-                    $price = $this->getSumPrice($this->offers);
-                    $this->checkBasketSumLimit();
-                    if (!empty($this->arResult['ERRORS'])) {
-                        $this->returnError($this->arResult['ERRORS'][0]);
+                $offerQuantityInBasket += $arItem->getQuantity();
+                if ($quantityToDelete > 0) {
+                    if ($arItem->getQuantity() > $quantityToDelete) {
+                        $resultQty = $arItem->getQuantity() - $quantityToDelete;
+                        $arItem->delete();
+                        $this->createBasketItem($offerId, $resultQty);
+                        $quantityToDelete -= $arItem->getQuantity();
+                        $offerQuantityInBasket -= $arItem->getQuantity();
                     } else {
-                        $this->returnOk($price, null, $resultQty);
+                        $arItem->delete();
+                        $quantityToDelete -= $arItem->getQuantity();
+                        $offerQuantityInBasket -= $arItem->getQuantity();
                     }
                 }
+            }
+        }
+        if (empty($this->offers)) {
+            $this->checkBasketAvailability();
+        }
+        if ($this->basket->save()) {
+            $price = $this->getSumPrice($this->offers);
+            $this->checkBasketSumLimit();
+            if (!empty($this->arResult['ERRORS'])) {
+                $this->returnError($this->arResult['ERRORS'][0]);
+            } else {
+                $this->returnOk($price, null, $offerQuantityInBasket);
             }
         }
         $this->arResult["ERRORS"][] = "Не удалось удалить товар из корзины";
@@ -1039,10 +1060,15 @@ class QsoftOrderComponent extends ComponentHelper
         foreach ($basketItems as $arItem) {
             $offerId = $arItem->getProductId();
             if ($full) {
-                $arOffers[$offerId] = [
-                    "QUANTITY" => $arItem->getQuantity(),
-                    "BASKET_PRICE" => $arItem->getPrice() * $arItem->getQuantity(),
-                ];
+                if (!isset($arOffers[$offerId])) {
+                    $arOffers[$offerId] = [
+                        "QUANTITY" => $arItem->getQuantity(),
+                        "BASKET_PRICE" => $arItem->getPrice() * $arItem->getQuantity(),
+                    ];
+                } else {
+                    $arOffers[$offerId]['QUANTITY'] += $arItem->getQuantity();
+                    $arOffers[$offerId]['BASKET_PRICE'] = $arOffers[$offerId]['BASKET_PRICE'] + $arItem->getPrice() * $arItem->getQuantity();
+                }
             } else {
                 $arOffers[$offerId] = $offerId;
             }
@@ -1073,7 +1099,7 @@ class QsoftOrderComponent extends ComponentHelper
         );
         $arOffersNew = [];
         while ($arItem = $res->Fetch()) {
-            $price = PriceUtils::getPrice($arItem["PROPERTY_BASEWHOLEPRICE_VALUE"], $arItem["PROPERTY_BASEPRICE_VALUE"]);
+            $price = PriceUtils::getCachedPriceForUser($arItem["ID"]);
             if (!$price) {
                 continue;
             }
@@ -1171,11 +1197,11 @@ class QsoftOrderComponent extends ComponentHelper
             $nameWithAdditions = $arProducts[$value["PRODUCT_ID"]]["NAME"];
             $nameAdditions = [];
             if ($value["SIZE"]) {
-                $nameAdditions[] = 'Размер: <b>' . $value["SIZE"] . '</b>';
+                $nameAdditions[] = 'Размер: ' . $value["SIZE"];
             }
             if ($value['COLOR']) {
                 $value['COLOR'] = $arColors[$value['COLOR']];
-                $nameAdditions[] = 'Цвет: <b>' . $value['COLOR'] . '</b>';
+                $nameAdditions[] = 'Цвет: ' . $value['COLOR'];
             }
             if (!empty($nameAdditions)) {
                 $nameWithAdditions .= '<br>' . implode(', ', $nameAdditions);
@@ -1281,8 +1307,7 @@ class QsoftOrderComponent extends ComponentHelper
         $shipmentCollection = $order->getShipmentCollection();
         $shipment = $shipmentCollection->createItem();
         $shipmentItemCollection = $shipment->getShipmentItemCollection();
-        foreach ($order->getBasket() as $item)
-        {
+        foreach ($order->getBasket() as $item) {
             $shipmentItem = $shipmentItemCollection->createItem($item);
             $shipmentItem->setQuantity($item->getQuantity());
         }
@@ -1492,11 +1517,11 @@ class QsoftOrderComponent extends ComponentHelper
         global $USER;
         global $LOCATION;
         // удаляем купоны у резерва и 1 клика
-        $arCoupons = CouponsManager::get(true, array(), true, true);
+        $arCoupons = DiscountCouponsManager::get(true, array(), true, true);
         if (!empty($arCoupons)) {
             if ($this->checkType(["1click"])) {
                 foreach ($arCoupons as $arCoupon) {
-                    CouponsManager::delete($arCoupon["COUPON"]);
+                    DiscountCouponsManager::delete($arCoupon["COUPON"]);
                 }
             } else {
                 if (count($arCoupons) == 1) {
@@ -1515,6 +1540,7 @@ class QsoftOrderComponent extends ComponentHelper
         $order->setBasket($this->basket);
 
         // доставка
+        $paymentWay = null;
         if (!$this->checkType(["1click"])) {
             $shipmentCollection = $order->getShipmentCollection();
             $shipment = $shipmentCollection->createItem();
@@ -1563,18 +1589,18 @@ class QsoftOrderComponent extends ComponentHelper
         $this->orderProps = $order->getPropertyCollection();
         // добавляем некоторые свойства к тем, что уже имеем
         $this->postProps["LOCATION"] = $LOCATION->code;
-        $this->postProps["UTM_SOURCE"] = $_COOKIE['utm_source'] ? $_COOKIE['utm_source'] : '';
-        $this->postProps["UTM_MEDIUM"] = $_COOKIE['utm_medium'] ? $_COOKIE['utm_medium'] : '';
-        $this->postProps["UTM_CAMPAIGN"] = $_COOKIE['utm_campaign'] ? $_COOKIE['utm_campaign'] : '';
-        $this->postProps["UTM_CONTENT"] = $_COOKIE['utm_content'] ? $_COOKIE['utm_content'] : '';
-        $this->postProps["UTM_TERM"] = $_COOKIE['utm_term'] ? $_COOKIE['utm_term'] : '';
+        $this->postProps["UTM_SOURCE"] = $_COOKIE['utm_source'] ?: '';
+        $this->postProps["UTM_MEDIUM"] = $_COOKIE['utm_medium'] ?: '';
+        $this->postProps["UTM_CAMPAIGN"] = $_COOKIE['utm_campaign'] ?: '';
+        $this->postProps["UTM_CONTENT"] = $_COOKIE['utm_content'] ?: '';
+        $this->postProps["UTM_TERM"] = $_COOKIE['utm_term'] ?: '';
         //$this->postProps["CITY"] = $LOCATION->getName();
         //$this->postProps["AREA"] = $LOCATION->getArea();
         //$this->postProps['REGION'] = $LOCATION->getRegion();
 
         if ($USER->IsAuthorized()) {
-            $this->postProps['EMAIL_PROFILE'] = $this->user['EMAIL'] ? $this->user['EMAIL'] : '';
-            $this->postProps['PHONE_PROFILE'] = $this->user['PERSONAL_PHONE'] ? $this->user['PERSONAL_PHONE'] : '';
+            $this->postProps['EMAIL_PROFILE'] = $this->user['EMAIL'] ?: '';
+            $this->postProps['PHONE_PROFILE'] = $this->user['PERSONAL_PHONE'] ?: '';
         }
 
         if (empty($this->postProps['STREET'])) {
@@ -1608,9 +1634,46 @@ class QsoftOrderComponent extends ComponentHelper
             }
         }
         // сохраняем заказ
+        $basketItems = $this->basket->getBasketItems();
+        /** @var CollectableEntity $arItem */
+        foreach ($basketItems as $arItem) {
+            $prodId = null;
+            $basketPropertyCollection = $arItem->getPropertyCollection();
+            foreach ($basketPropertyCollection as $basketPropertyItem) {
+                if ($basketPropertyItem->getField('CODE') == "PRODUCT_ID") {
+                    $prodId = $basketPropertyItem->getField('VALUE');
+                }
+            }
+            if ($prodId) {
+                $dateTime = \Bitrix\Main\Type\DateTime::createFromTimestamp(time());
+                $props['LAST_BUY_DATE'] = $dateTime->format('d.m.Y H:i:s');
+                CIBlockElement::SetPropertyValuesEx($prodId, IBLOCK_CATALOG, $props);
+            }
+        }
         $order->doFinalAction(true);
         $res = $order->save();
         $orderId = $order->getId();
+
+        if (!$this->checkType(["1click"]) && $paymentWay && $paymentWay['PREPAYMENT'] == 'Y') {
+            CEvent::Send("ORDER_CREATE", SITE_ID,
+                [
+                    "EMAIL_TO" => $this->postProps['EMAIL'],
+                    "ORDER_ID" => $orderId,
+                    "PRICE" => $order->getPrice(),
+                    "SERVER_NAME" => DOMAIN_NAME,
+                ]
+            );
+        } else {
+            CEvent::Send("ORDER_CREATE_PREPAYMENT", SITE_ID,
+                [
+                    "EMAIL_TO" => $this->postProps['EMAIL'],
+                    "ORDER_ID" => $orderId,
+                    "PRICE" => $order->getPrice(),
+                    "SERVER_NAME" => DOMAIN_NAME,
+                ]
+            );
+        }
+
         if ($res->isSuccess()) {
             // очищаем купоны из сессии
             $this->delCoupon();
@@ -1625,7 +1688,7 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function getArrayFio($fio)
     {
-        $fio = preg_replace('/[\s]{2,}/', ' ', $this->postProps['FIO']);
+        $fio = preg_replace('/[\s]{2,}/', ' ', $fio);
 
         return explode(' ', $fio);
     }
@@ -1782,8 +1845,8 @@ class QsoftOrderComponent extends ComponentHelper
             $this->arResult["DELIVERY"]["ARRAY"][$arDeliveryWaysId["DELIVERY_ID"]]['WAY_ID'] = $arDeliveryWaysId["WAY_ID"];
         }
         foreach ($this->arResult["DELIVERY"]["ARRAY"] as $key => $delivery) {
-                $arDeliveryWaysIds[$delivery['WAY_ID']]['DELIVERY_ID'][] = $key;
-                $arDeliveryWaysIds[$delivery['WAY_ID']]['PRICES'][] = $delivery['PRICE'];
+            $arDeliveryWaysIds[$delivery['WAY_ID']]['DELIVERY_ID'][] = $key;
+            $arDeliveryWaysIds[$delivery['WAY_ID']]['PRICES'][] = $delivery['PRICE'];
         }
 
         $rsDeliveryWays = WaysDeliveryTable::getList([

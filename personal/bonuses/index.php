@@ -1,24 +1,11 @@
 <?php
-
-use Qsoft\Helpers\BonusSystem;
-
 require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 $APPLICATION->SetTitle('Личный кабинет');
 
-global $USER;
-if (!$USER->IsAuthorized()) {
-    LocalRedirect('/auth/?back_url=/personal/bonuses/');
-}
-$bonusHelper = new BonusSystem($USER->GetID());
-$bonusHelper->recalcUserBonus();
-?>
-<div style="margin-bottom: 30px">
-<span style="font-size: 14pt;">
-    Общая сумма оплаченных заказов = <b><?=$bonusHelper->getUsersPaidOrdersSum()?> рублей</b><br>
-    Ваша скидка = <b><?=$bonusHelper->getCurrentBonus()?>%</b> <br>
-    Узнать про бонусную программу и возможность снизить цену вы можете на <a href="/company_bonus/">странице</a>
-</span>
-</div>
+$APPLICATION->IncludeComponent(
+    'orgasmcity:user.bonus.info',
+    'default',
+    []
+);
 
-
-<? require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/footer.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/footer.php');

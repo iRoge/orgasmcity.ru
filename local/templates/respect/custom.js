@@ -102,18 +102,14 @@ function hide_wait () {
 			let right = 1;
 
 			rightClosestPriorityButtons.forEach(function (element) {
-                if (element.state.visible) {
+				if (element.state.visible) {
 					right += positionStep;
-                }
-            });
+				}
+			});
 
 			this.element.root.style.right = right + 'rem';
 		} else {
-			if (window.matchMedia('(min-width: 768px)').matches) {
-				this.element.root.style.right = 5 + 'rem';
-			} else {
-				this.element.root.style.right = 1 + 'rem';
-			}
+			this.element.root.style.right = positionStep + 'rem';
 		}
 	}
 	
@@ -142,7 +138,7 @@ function hide_wait () {
 	$(document).ready(function () {
 		// WhatsApp
 
-		if (window.matchMedia('(max-width: 768px)').matches) {
+		if (window.matchMedia('(max-width: 767px)').matches) {
 			let whatsAppButtonElement = document.querySelector('.js-whatsapp');
 	
 			if (whatsAppButtonElement) {
@@ -156,7 +152,7 @@ function hide_wait () {
 
 		// Jivosite
 
-		if (window.matchMedia('(max-width: 768px)').matches) {
+		if (window.matchMedia('(max-width: 767px)').matches) {
 			window.jivo_onLoadCallback = function () {
 				let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
 
@@ -211,11 +207,11 @@ function respercEvent__add_to_cart()
 {
 	let popupContent = '<div class="product-preorder-success">'
 		+ '<header>Товар добавлен в корзину</header>'
-		+ '<footer>'
+		+ '<div class="popup-footer">'
 		+ '<button class="js-popup-close button button--xxl button--primary button--outline button--blue">Продолжить покупки</button>'
 		+ '<div>&nbsp;</div>'
-		+ '<a class="button button--xxl button--primary button--outline button--orange" href="/cart/">Оформить заказ</a>'
-		+ '</footer>'
+		+ '<a class="button button--xxl button--primary button--outline button--purple" href="/cart/">Оформить заказ</a>'
+		+ '</div>'
 		+ '</div>';
 
 	Popup.show(popupContent, {

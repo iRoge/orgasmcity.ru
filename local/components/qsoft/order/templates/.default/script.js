@@ -51,7 +51,7 @@ $(document).ready(function(){
                 } else {
                     let errorText = '<div class="product-preorder-success">'
                         + '<h2>Ошибка</h2>'
-                        + '<div class="js-size-popup text-danger">'
+                        + '<div class="js-size-popup text-danger" style="font-size: 20px">'
                         + data.text.join("<br>")
                         + '</div>'
                         + '</div>';
@@ -139,7 +139,7 @@ $(document).ready(function(){
                     el.closest('.js-card').slideUp("normal", function() {
                         // $(this).remove();
                         let leftBlock = $('.left-cart-block-local');
-                        let rightBlock = $('.right-cart-block-local');
+                        let rightBlock = $('.right-cart-block');
                         leftBlock.empty();
                         rightBlock.empty();
                         rightBlock.append('<div class="checkout__error-wrapper"><p class="checkout__error-text text-danger">' + data['text'] + '</p></div>');
@@ -295,14 +295,15 @@ $(document).ready(function(){
                     });
                     if (basketPrice < sum) {
                         reloadProducts();
+                        $("#cart__coupon-success").show().html("Промокод применен");
                     } else {
                         if (basketPrice >= sum) {
-                            if (coupon == data.coupon && $(".orders__price").find(".orders__old-price-num").data("price")){
+                            if (coupon == data.coupon && $(".orders__price").find(".orders__old-price-num").data("price")) {
                                 $("#cart__coupon").addClass("form__error-border");
-                                $("#cart__coupon-error").html("Данный промокод уже применен к корзине");
+                                $("#cart__coupon-error").show().html("Данный промокод уже применен к корзине");
                             } else {
                                 $("#cart__coupon").addClass("form__error-border");
-                                $("#cart__coupon-error").html("Промокод не соответствует условиям");
+                                $("#cart__coupon-error").show().html("Промокод не соответствует условиям");
                             }
                         }
                         calculatePrice(basketPrice);
@@ -310,7 +311,7 @@ $(document).ready(function(){
                     return;
                 }
                 $("#cart__coupon").addClass("form__error-border");
-                $("#cart__coupon-error").html(data.text);
+                $("#cart__coupon-error").show().html(data.text);
             },
             error: function(jqXHR, exception) {
                 $("#art__coupon-button").removeAttr("disabled");
@@ -362,7 +363,7 @@ $(document).ready(function(){
         }
         let delPrice = getDeliveryPrice();
         if (changeDeliveryBasketNum === 1) {
-            $("#cart__delivery-price").html(basketPrice >= freeDeliveryMinSum ? formatPrice(0) : formatPrice(delPrice));
+            $("#cart__delivery-price").html(basketPrice >= freeDeliveryMinSum ? formatPrice(0) : (delPrice > 0 ? '+ ' : '') + formatPrice(delPrice));
         }
 
         // Блок размера скидки за предоплату
@@ -371,7 +372,7 @@ $(document).ready(function(){
         let orderPrice = sum + delPrice;
         let paymentCheckedBlock = $('.js-payment:checked');
         if (paymentCheckedBlock && paymentCheckedBlock.data('prepayment') == 'Y') {
-            prepaymentDiscountBlock.html(formatPrice(Math.round(-prepaymentDiscount)));
+            prepaymentDiscountBlock.html('- ' + formatPrice(Math.round(prepaymentDiscount)));
             orderPrice -= Math.round(prepaymentDiscount);
             prepaymentDiscountBlock.parent().removeClass("is-hidden");
         } else {
@@ -383,7 +384,7 @@ $(document).ready(function(){
             $("#cart__discount-block").addClass("is-hidden");
         } else {
             $("#cart__discount-block").removeClass("is-hidden");
-            $("#cart__discount-price").html(formatPrice(-(oldSum - sum)));
+            $("#cart__discount-price").html("- " + formatPrice(oldSum - sum));
         }
     }
 
@@ -503,48 +504,57 @@ $(document).ready(function(){
                 window.loadPVZMap();
             } else {
                 if (checkIfCheckboxIsActive('js-delivery')) {
-                    hiddenBlock('close','all');
+                    hideOrOpenBlock('close','all');
                     calculatePrice(false, 1);
                     let labels = $('#b-order').find('.delivery-label');
                     labels.each(function () {
                         $(this).removeClass('red-border');
                     });
                     checkPaymentWay($(this).data('allowedPayments'));
-
-                    hiddenBlock('open','checkout__form');
+                    hideOrOpenBlock('open','checkout__form');
+                    if (targetDeviceType === 'tablet' || targetDeviceType === 'mobile') {
+                        $('body,html').animate({
+                            scrollTop: $('.checkout__block--payment').offset().top - 55
+                        }, 800);
+                    }
                 }
             }
         });
         $(".js-payment").on("click", function() {
             clickedElem = $(this);
             if (checkIfCheckboxIsActive('js-payment')) {
-                hiddenBlock('close', 'checkout__block--contact-info');
-                hiddenBlock('close', 'basket-textarea');
+                hideOrOpenBlock('close', 'checkout__block--contact-info');
+                hideOrOpenBlock('close', 'basket-textarea');
 
                 let labels = $('#b-order').find('.payment-label');
                 labels.each(function () {
                     $(this).removeClass('red-border');
                 });
 
-                hiddenBlock('open', 'checkout__block--contact-info');
-                hiddenBlock('open', 'basket-textarea');
+                hideOrOpenBlock('open', 'checkout__block--contact-info');
+                hideOrOpenBlock('open', 'basket-textarea');
                 calculatePrice();
+                if (targetDeviceType === 'tablet' || targetDeviceType === 'mobile') {
+                    $('body,html').animate({
+                        scrollTop: $('.checkout__block--contact-info').offset().top - 55
+                    }, 800);
+                }
             }
         });
         $('.needComment').on('change', function () {
             clickedElem = $(this);
             if ($(this).prop('checked') === true) {
-                hiddenBlock('open', 'form__elem--textarea');
+                hideOrOpenBlock('open', 'form__elem--textarea');
             } else {
-                hiddenBlock('close', 'form__elem--textarea');
+                hideOrOpenBlock('close', 'form__elem--textarea');
             }
         });
         $('.havePromocode').on('change', function () {
             clickedElem = $(this);
             if ($(this).prop('checked') === true) {
-                hiddenBlock('open', 'coupon-container');
+                hideOrOpenBlock('open', 'coupon-container');
             } else {
-                hiddenBlock('close', 'coupon-container');
+                hideOrOpenBlock('close', 'coupon-container');
             }
         });
 
@@ -837,7 +847,7 @@ function formatPrice(num) {
         return "Бесплатно";
     }
     let format = new Intl.NumberFormat('ru-RU').format(num);
-    format += " р.";
+    format += " ₽";
     return format;
 }
 
@@ -860,7 +870,7 @@ function checkIfCheckboxIsActive(className) {
     }
 }
 
-function hiddenBlock(action, blockClass) {
+function hideOrOpenBlock(action, blockClass) {
     if (blockClass === 'all') {
         let blocks = $('#b-order .hidden-block');
 

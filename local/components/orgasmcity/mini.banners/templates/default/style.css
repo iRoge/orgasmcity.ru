@@ -1,0 +1,23 @@
+.banners-list-main {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    margin: 25px 0;
+    padding: 0 15px;
+}
+
+.banners-list-element {
+
+}
+
+@media (min-width: 768px) and (max-width:992px) {
+    .banners-list-element:last-child {
+        padding-right: 0!important;
+    }
+    .banners-list-element:first-child {
+        padding-left: 0!important;
+    }
+    .banners-list-main {
+        padding: 0!important;
+    }
+}

@@ -1,39 +1,31 @@
 <?php
 $aMenuLinks = Array(
     Array(
-        "О компании",
-        "/company_about/",
-        Array(),
-        Array("itemclass"=>"hideincart"),
-        ""
-    ),
-    Array(
-        "Бренды",
-        "/brands/",
-        Array(),
-        Array(),
-        ""
-    ),
-//    Array(
-//        "Новости",
-//        "/events/news/",
-//        Array(),
-//        Array("itemclass"=>"hideincart"),
-//        ""
-//    ),
-    Array(
-        "Контакты",
+        "Обратная связь",
         "/company_contacts/",
         Array(),
         Array(),
         ""
     ),
+    array(
+        'Возврат товара',
+        '/company_repayment/',
+        array(),
+        array(),
+        ''
+    ),
     Array(
         'Карта сайта',
         '/search/map.php',
         array(),
-        array("itemclass" => "hideincart"),
+        array(),
+        ''
+    ),
+    Array(
+        'Наши сексологи',
+        '#',
+        array(),
+        array(),
         ''
     ),
 );
-?>

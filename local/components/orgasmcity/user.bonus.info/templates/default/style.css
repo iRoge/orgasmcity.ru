@@ -1,0 +1,124 @@
+.bonus-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 25px!important;
+    height: 140px;
+    width: 49%;
+}
+
+.bonus-block-sum-text {
+    color: #46B61F;
+    font-size: 30px;
+    line-height: 36px;
+    font-family: gilroyBold;
+}
+
+.bonus-block-discount-text {
+    color: #FF0000;
+    font-size: 45px;
+    line-height: 54px;
+    font-family: gilroyBold;
+}
+
+.bonus-block-text {
+    width: 65%;
+    color: black;
+    font-size: 30px;
+    line-height: 35px;
+    font-family: gilroyMedium;
+}
+
+.bonus-block-wrapper {
+    padding: 0 30px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.bonus-how-work-block-wrapper {
+    padding: 0 30px;
+    margin: 40px 0 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+.bonus-block-text-info-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 0 30px;
+}
+
+.bonus-block-text-info {
+    width: 100%;
+    padding: 25px 15px;
+    font-size: 24px;
+    line-height: 28px;
+    font-family: gilroyMedium;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 10px;
+}
+
+
+@media (min-width: 992px) {
+
+}
+
+.bonus-block-how-work {
+    background: linear-gradient(276.96deg, #A18CD1 16.34%, #FBC2EB 101.77%);
+    border-bottom-left-radius: 35px;
+    border-top-right-radius: 35px;
+    height: 50px;
+    width: 49%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 25px!important;
+    color: white;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    font-family: gilroySemiBold;
+}
+
+@media (max-width: 1350px) {
+    .bonus-block-how-work {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 991px) {
+    .bonus-block {
+        width: 100%;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        padding: 15px!important;
+    }
+    .bonus-block-text {
+        width: 100%;
+        font-size: 20px;
+        line-height: 20px;
+    }
+    .bonus-block-how-work {
+        width: 100%;
+        font-size: 15px;
+        line-height: 15px;
+    }
+    .bonus-block-text-info {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}

@@ -1,0 +1,35 @@
+.brand-card-wrapper {
+    background: #FFFFFF;
+    position: relative;
+    border-radius: 10px;
+    height: 180px!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+    .default-header {
+        margin-top: 20px;
+    }
+}
+
+.brand-card {
+    margin: 0 15px;
+}
+
+.card__img-box {
+    width: 100%;
+    padding: 0 5px;
+}
+
+.text-in-vendor
+{
+    width: 100%;
+    font-family: 'gilroyMedium';
+    color: #000000;
+    font-size: 18px;
+    padding: 0 5px!important;
+    text-align: center;
+}

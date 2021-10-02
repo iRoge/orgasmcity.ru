@@ -180,18 +180,8 @@ class QsoftCatalogElement extends ComponentHelper
         ];
         $rsOffers = CIBlockElement::GetList($arOrder, $arFilter, false, false, $arSelect);
         while ($objOffer = $rsOffers->GetNextElement()) {
-            $basePrice = $objOffer->GetProperties(
-                [],
-                ['CODE' => 'BasePrice']
-            )['BasePrice'];
-            $baseWholePrice = $objOffer->GetProperties(
-                [],
-                ['CODE' => 'BasewholePrice']
-            )['BasewholePrice'];
-            if (!$basePrice['VALUE'] || !$baseWholePrice['VALUE']) {
-                continue;
-            }
-            $price = PriceUtils::getPrice($baseWholePrice['VALUE'], $basePrice['VALUE']);
+            $offerFields = $objOffer->GetFields();
+            $price = PriceUtils::getCachedPriceForUser($offerFields['ID']);
             if (!$price) {
                 continue;
             }
@@ -199,7 +189,7 @@ class QsoftCatalogElement extends ComponentHelper
             $basePrice['VALUE'] = $price['PRICE'];
             $basePrice['PERCENT'] = $price['DISCOUNT'];
             $basePrice['WHOLEPRICE'] = $price['WHOLEPRICE'];
-            $offerFields = $objOffer->GetFields();
+            $basePrice['DISCOUNT_DATE_TO'] = $price['DISCOUNT_DATE_TO'];
             $arOffers[$offerFields['ID']] = $offerFields;
             $arOffers[$offerFields['ID']]['PROPERTIES']['PRICE'] = $basePrice;
             $arOffers[$offerFields['ID']]['PROPERTIES']['COLOR'] = $objOffer->GetProperties(
@@ -231,6 +221,8 @@ class QsoftCatalogElement extends ComponentHelper
             "length",
             "bestseller",
             "vendor",
+            "country",
+            "year",
             "volume",
             "material",
             "collection",
@@ -238,7 +230,6 @@ class QsoftCatalogElement extends ComponentHelper
             'material',
             "function",
             "vibration",
-            "year",
         ];
 
         foreach ($arPropsToShow as $prop_code) {
@@ -271,7 +262,7 @@ class QsoftCatalogElement extends ComponentHelper
                     [
                         'IBLOCK_ID' => IBLOCK_VENDORS,
                         'ACTIVE' => 'Y',
-                        'XML_ID' =>  $arProp['VALUE'],
+                        'XML_ID' => $arProp['VALUE'],
                     ],
                     false,
                     false,
@@ -279,15 +270,20 @@ class QsoftCatalogElement extends ComponentHelper
                         'ID',
                         'NAME',
                         'IBLOCK_ID',
-                        'CODE'
+                        'CODE',
+                        'PROPERTY_COUNTRY',
                     ])->GetNext();
                 $arProp['VALUE'] = $vendor['NAME'];
-
                 $arProp['CODE_VALUE'] = $vendor['CODE'];
+                $arProps['country'] = [
+                    'CODE' => 'country',
+                    'NAME' => 'Страна',
+                    'VALUE' => $vendor['PROPERTY_COUNTRY_VALUE']
+                ];
             }
         }
 
-        return $arProps;
+        return array_replace(array_flip($arPropsToShow), $arProps);
     }
 
     private function prepareResult(): void
@@ -329,6 +325,9 @@ class QsoftCatalogElement extends ComponentHelper
             $bonusSystemHelper = new BonusSystem($USER->GetID());
             $this->arResult['USER_DISCOUNT'] = $bonusSystemHelper->getCurrentBonus();
         }
+
+        $property = CIBlockElement::GetProperty(IBLOCK_CATALOG, $this->arResult['ID'], "sort", "asc", ["CODE" => "LAST_BUY_DATE"])->GetNext();
+        $this->arResult['LAST_BUY_DATE_TEXT'] = $property["VALUE"] ? FormatDate("x", MakeTimeStamp($property["VALUE"])) : null;
     }
 
     private function beforeTemplate(): void
@@ -503,7 +502,7 @@ class QsoftCatalogElement extends ComponentHelper
             if ($this->arParams["SET_TITLE"]) {
                 $this->arResult["META_TAGS"]["TITLE"] =
                     $this->arResult["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"]
-                    ?: "Купить " . mb_strtolower($this->arResult["NAME"]);
+                        ?: "Купить " . mb_strtolower($this->arResult["NAME"]);
             }
 
             if ($this->arParams["ADD_ELEMENT_CHAIN"]) {
@@ -746,6 +745,7 @@ class QsoftCatalogElement extends ComponentHelper
         foreach ($offers as $id => $offer) {
             if (!isset($arRests[$id]) || $arRests[$id] == 0) {
                 unset($offers[$id]);
+                continue;
             }
             $offers[$id]['REST'] = $arRests[$id];
         }

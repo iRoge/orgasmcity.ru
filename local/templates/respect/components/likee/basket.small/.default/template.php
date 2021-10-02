@@ -16,7 +16,8 @@ $this->setFrameMode(true);
 
 <a id="basket-small" class="shortcut" href="<?= $arParams['PATH_TO_BASKET']; ?>">
 	<p class="shortcut-informer count"><?= $arResult['COUNT']; ?></p>
-	<img src="<?= SITE_TEMPLATE_PATH; ?>/img/cart-bestsel.png" />
+	<img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cart.svg"  alt="Корзина"/>
+    <span>Корзина</span>
 </a>
 
 <script style="display: none;">

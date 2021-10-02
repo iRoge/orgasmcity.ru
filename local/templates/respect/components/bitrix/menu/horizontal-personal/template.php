@@ -15,7 +15,7 @@
 
 $this->setFrameMode(true);
 ?>
-<div class="clearfix">
+<div class="personal-menu-wrapper">
     <? if (!empty($arResult)) : ?>
     <div class="links-wrapper">
         <? foreach ($arResult as $arItem) : ?>
@@ -23,7 +23,7 @@ $this->setFrameMode(true);
                 ?> lk-menu__item_active<?
                                    endif; ?>" href="<?= $arItem['LINK'] ?>"><?= $arItem['TEXT'] ?></a>
         <? endforeach; ?>
+        <hr style="width: 90%">
     </div>
-        <hr>
     <? endif; ?>
 </div>

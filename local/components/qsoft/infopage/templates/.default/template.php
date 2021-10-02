@@ -1,6 +1,7 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
+global $DEVICE;
 ?>
 <div class="infopage-block">
 <? if (!empty($arResult['PREVIEW_PICTURE'])) : ?>
@@ -28,7 +29,7 @@
                 'CACHE_TIME' => '36000000',
                 'CACHE_FILTER' => 'N',
                 'CACHE_GROUPS' => 'N',
-                'IS_MOBILE' => Functions::checkMobileDevice()
+                'IS_MOBILE' => $DEVICE->isMobile() || $DEVICE->isTablet()
             ]
         );?>
     </span>
