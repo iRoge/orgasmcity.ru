@@ -68,3 +68,9 @@
     color: #000000;
     margin-top: 25px;
 }
+
+@media (max-width: 767px) {
+    .infopage-section {
+        margin-top: 15px;
+    }
+}

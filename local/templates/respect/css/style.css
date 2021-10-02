@@ -4708,8 +4708,8 @@ label.color-label {
     }
 
     .form-after-cart {
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 5px!important;
+        padding-right: 5px!important;
         /*padding-bottom: 5%;*/
         display: block;
     }
@@ -4813,7 +4813,8 @@ label.color-label {
         }
 
         .right-cartochka__inner-wrap {
-            margin-left: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
         }
 
         .after-hr-cart {
@@ -5831,10 +5832,6 @@ label.color-label {
 
     .form-in-after-cart select {
         width: 100%;
-    }
-
-    .form-after-cart {
-        /*margin-left: 5px !important;*/
     }
 
     .right-cartochka {
