@@ -3,9 +3,9 @@
 namespace Sprint\Migration;
 
 
-class sdf20211002170736 extends Version
+class addGroupsInfoblock20210824132231 extends Version
 {
-    protected $description = "sdf";
+    protected $description = "Добавляет инфоблок группировок с акциями";
 
     protected $moduleVersion = "3.25.1";
 
