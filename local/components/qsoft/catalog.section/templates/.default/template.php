@@ -457,7 +457,7 @@ if (!$arResult['IS_AJAX']) {
                                                         </button>
                                                     </div>
                                                     <?php if ($USER->GetID() == 1 || $USER->GetID() == 15) {
-                                                        $wholesaleprice = 0.9 * $arItem['WHOLEPRICE'];
+                                                        $wholesaleprice = $arItem['WHOLEPRICE'];
                                                         ?>
                                                         Цена закупки <?=$wholesaleprice?> ₽
                                                         <br>

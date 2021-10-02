@@ -100,7 +100,7 @@ class PriceUtils
 
     public static function recalcPrices()
     {
-        $offers = Functions::getAllOffers();
+        $offers = Functions::getAllOffersNoCache();
         $offersByProductID = [];
         foreach ($offers as $offer) {
             $offersByProductID[$offer['PROPERTY_CML2_LINK_VALUE']][] = $offer;
@@ -178,7 +178,7 @@ class PriceUtils
                         continue;
                     }
                     $markupPercent = ($oldPrice - $wholePrice) * 100 / $wholePrice;
-
+                    
                     if ($markupPercent < 50) {
                         $discount = $action['PROPERTY_DISCOUNT_50_VALUE'];
                     } elseif ($markupPercent < 75) {

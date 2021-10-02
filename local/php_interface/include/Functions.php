@@ -545,6 +545,44 @@ class Functions
         return $rests;
     }
 
+    public static function getAllOffersNoCache(): array
+    {
+        $arOffers = [];
+
+        $arFilter = [
+            "IBLOCK_ID" => IBLOCK_OFFERS,
+            "ACTIVE" => "Y",
+            "!PROPERTY_CML2_LINK" => false,
+        ];
+
+        $arSelect = [
+            "ID",
+            "IBLOCK_ID",
+            "PROPERTY_CML2_LINK",
+            "PROPERTY_SIZE",
+            "PROPERTY_COLOR",
+            "PROPERTY_CUSTOM_PRICE",
+            "PROPERTY_CUSTOM_OLD_PRICE",
+            "PROPERTY_CUSTOM_DISCOUNT",
+            "PROPERTY_BASEWHOLEPRICE",
+            "PROPERTY_BASEPRICE",
+        ];
+
+        $resOffers = CIBlockElement::GetList(
+            ["SORT" => "ASC"],
+            $arFilter,
+            false,
+            false,
+            $arSelect,
+        );
+
+        while ($offer = $resOffers->Fetch()) {
+            $arOffers[$offer['ID']] = $offer;
+        }
+
+        return $arOffers;
+    }
+
     public static function getAllOffers(): array
     {
         global $CACHE_MANAGER;
@@ -554,36 +592,7 @@ class Functions
         if ($offerCache->InitCache(360000, 'allOffers', '/offers')) {
             $arOffers = $offerCache->GetVars()['allOffers'];
         } elseif ($offerCache->StartDataCache()) {
-            $arFilter = [
-                "IBLOCK_ID" => IBLOCK_OFFERS,
-                "ACTIVE" => "Y",
-                "!PROPERTY_CML2_LINK" => false,
-            ];
-
-            $arSelect = [
-                "ID",
-                "IBLOCK_ID",
-                "PROPERTY_CML2_LINK",
-                "PROPERTY_SIZE",
-                "PROPERTY_COLOR",
-                "PROPERTY_CUSTOM_PRICE",
-                "PROPERTY_CUSTOM_OLD_PRICE",
-                "PROPERTY_CUSTOM_DISCOUNT",
-                "PROPERTY_BASEWHOLEPRICE",
-                "PROPERTY_BASEPRICE",
-            ];
-
-            $resOffers = CIBlockElement::GetList(
-                ["SORT" => "ASC"],
-                $arFilter,
-                false,
-                false,
-                $arSelect,
-            );
-
-            while ($offer = $resOffers->Fetch()) {
-                $arOffers[$offer['ID']] = $offer;
-            }
+            $arOffers = self::getAllOffersNoCache();
 
             $CACHE_MANAGER->StartTagCache('offers');
             $CACHE_MANAGER->RegisterTag('catalogAll');
