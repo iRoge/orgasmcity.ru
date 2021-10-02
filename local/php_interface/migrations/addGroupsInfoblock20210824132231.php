@@ -3,9 +3,9 @@
 namespace Sprint\Migration;
 
 
-class ASD20211002021326 extends Version
+class sdf20211002170736 extends Version
 {
-    protected $description = "ASD";
+    protected $description = "sdf";
 
     protected $moduleVersion = "3.25.1";
 
@@ -335,6 +335,37 @@ class ASD20211002021326 extends Version
         $helper->Iblock()->saveGroupPermissions($iblockId, array(
             'administrators' => 'X',
             'everyone' => 'R',
+        ));
+        $helper->Iblock()->saveProperty($iblockId, array(
+            'NAME' => 'Создавать раздел в каталоге',
+            'ACTIVE' => 'Y',
+            'SORT' => '497',
+            'CODE' => 'CREATE_CATALOG',
+            'DEFAULT_VALUE' => 0,
+            'PROPERTY_TYPE' => 'N',
+            'ROW_COUNT' => '1',
+            'COL_COUNT' => '30',
+            'LIST_TYPE' => 'L',
+            'MULTIPLE' => 'N',
+            'XML_ID' => '',
+            'FILE_TYPE' => '',
+            'MULTIPLE_CNT' => '5',
+            'LINK_IBLOCK_ID' => '0',
+            'WITH_DESCRIPTION' => 'N',
+            'SEARCHABLE' => 'N',
+            'FILTRABLE' => 'N',
+            'IS_REQUIRED' => 'N',
+            'VERSION' => '2',
+            'USER_TYPE' => 'SASDCheckboxNum',
+            'USER_TYPE_SETTINGS' =>
+                array(
+                    'VIEW' =>
+                        array(
+                            0 => 'Нет',
+                            1 => 'Да',
+                        ),
+                ),
+            'HINT' => '',
         ));
         $helper->Iblock()->saveProperty($iblockId, array(
             'NAME' => 'Показывать акцию в баннере',
@@ -951,12 +982,14 @@ class ASD20211002021326 extends Version
                             'columns' =>
                                 array(
                                     0 => 'NAME',
-                                    1 => 'PROPERTY_IS_ACTION',
-                                    2 => 'ACTIVE',
-                                    3 => 'DATE_ACTIVE_FROM',
-                                    4 => 'DATE_ACTIVE_TO',
-                                    5 => 'PROPERTY_bestseller',
-                                    6 => 'PROPERTY_new',
+                                    1 => 'ACTIVE',
+                                    2 => 'PROPERTY_IS_ACTION',
+                                    3 => 'PROPERTY_SHOW_ACTION',
+                                    4 => 'DATE_ACTIVE_FROM',
+                                    5 => 'DATE_ACTIVE_TO',
+                                    6 => 'PROPERTY_bestseller',
+                                    7 => 'PROPERTY_new',
+                                    8 => 'ID',
                                 ),
                             'columns_sizes' =>
                                 array(
@@ -970,7 +1003,7 @@ class ASD20211002021326 extends Version
                                 array(
                                     'PROPERTY_2073' => 'Скидка при наценке >= 50%, но < 75%',
                                 ),
-                            'last_sort_by' => 'PROPERTY_66',
+                            'last_sort_by' => 'id',
                             'last_sort_order' => 'desc',
                             'page_size' => 500,
                         ),
