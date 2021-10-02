@@ -341,7 +341,7 @@ class sdf20211002170736 extends Version
             'ACTIVE' => 'Y',
             'SORT' => '497',
             'CODE' => 'CREATE_CATALOG',
-            'DEFAULT_VALUE' => 0,
+            'DEFAULT_VALUE' => 1,
             'PROPERTY_TYPE' => 'N',
             'ROW_COUNT' => '1',
             'COL_COUNT' => '30',
