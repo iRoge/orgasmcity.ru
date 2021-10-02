@@ -331,9 +331,6 @@ if (empty($aMenuLinksNew)) {
 
             $arSectionsToAdd = [];
             while ($arSection = $nav->Fetch()) {
-                if ($arSection['ID'] == 642) {
-                    continue 2;
-                }
                 if ($arSection['DEPTH_LEVEL'] == 4) {
                     continue;
                 }
