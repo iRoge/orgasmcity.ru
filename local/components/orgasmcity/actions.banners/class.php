@@ -24,6 +24,7 @@ class NewComponent extends \CBitrixComponent
         } elseif ($cache->StartDataCache()) {
             $CACHE_MANAGER->StartTagCache('/actionBanners');
             $CACHE_MANAGER->RegisterTag('catalogAll');
+            $CACHE_MANAGER->RegisterTag("groupsAll");
 
             $rsItems = CIBlockElement::GetList(
                 [],
