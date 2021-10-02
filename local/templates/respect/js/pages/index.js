@@ -19,7 +19,9 @@
         arrows: true,
         dots: true,
         mobileFirst: true,
-        lazyLoad: 'ondemand'
+        lazyLoad: 'ondemand',
+        autoplay: true,
+        autoplaySpeed: 10000,
       });
       $('#main-slider2').slick({
         arrows: true,
