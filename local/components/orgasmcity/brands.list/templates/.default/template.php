@@ -22,7 +22,7 @@ $this->setFrameMode(true);
                     <a href="<?=$arItem['SECTION_PAGE_URL'];?>" title="<?=$arItem['NAME'];?>" class="brand-card-wrapper" style="text-decoration: none">
                         <?php if ($arItem['PREVIEW_PICTURE']) { ?>
                             <div class="card__img-box">
-                                <img width="100%"  src="<?=$arItem['PREVIEW_PICTURE']?>" alt="<?=$arItem['NAME'];?>"/>
+                                <img width="100%" data-lazy="<?=$arItem['PREVIEW_PICTURE']?>" alt="<?=$arItem['NAME'];?>"/>
                             </div>
                         <?php } else { ?>
                             <div class="text-in-vendor">

@@ -24,7 +24,13 @@ if (!empty($arResult)) {?>
                     <? if (isset($arItem['PARAMS']['IMG_PATH'])) { ?>
                         <img width="20" height="20" src="<?=$arItem['PARAMS']['IMG_PATH']?>" alt="<?=$arItem['TEXT']?>">
                     <? } ?>
-                    <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
+                    <span
+                            class="sex-span"
+                            data-name="<?=$arItem['TEXT']?>"
+                            onclick="$('.sex-list[data-name=\'<?=$arItem['TEXT']?>\']').find('img.lazy-img-menu').lazyLoadXT({forceLoad: true, visibleOnly: false, throttle: 0})"
+                    >
+                        <?=$arItem['TEXT']?>
+                    </span>
                 </div>
             <?} elseif ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1) {?>
             <div class="sex-btn">
@@ -33,26 +39,35 @@ if (!empty($arResult)) {?>
                         <img width="20" height="20" src="<?=$arItem['PARAMS']['IMG_PATH']?>" alt="<?=$arItem['TEXT']?>">
                     </div>
                 <? } ?>
-                <span class="sex-span" data-name="<?= $arItem['TEXT'] ?>"><?= $arItem['TEXT'] ?></span>
+                <span
+                        class="sex-span"
+                      data-name="<?= $arItem['TEXT'] ?>"
+                      onclick="$('.sex-list[data-name=\'<?=$arItem['TEXT']?>\']').find('img.lazy-img-menu').lazyLoadXT({forceLoad: 1, visibleOnly: 0, throttle: 0})"
+                >
+                    <?=$arItem['TEXT']?>
+                </span>
             </div>
             <?}?>
         <? } ?>
     </div>
     <? foreach ($arResult as $arItem) { ?>
-        <?if ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1) {?>
+        <? if ($arItem['IS_PARENT'] && $arItem['DEPTH_LEVEL'] == 1) {?>
             <div class="sex-list col-sm-12" data-name="<?= $arItem['TEXT'] ?>">
                 <div class="topmenu">
-                    <?if ($arItem['IS_PARENT']) {?>
-                        <?if ($arItem['DEPTH_LEVEL'] != 1) { ?>
+                    <? if ($arItem['IS_PARENT']) {?>
+                        <? if ($arItem['DEPTH_LEVEL'] != 1) { ?>
                             <div>
                                 <span class="submenu-item submenu-item-main arrow arrow-down"><?=$arItem['TEXT']?></span>
                             </div>
                             <div class="sub-submenu">
-                        <?}?>
+                        <? } ?>
                             <? foreach ($arItem['ITEMS'] as $i => $arItem2Level) { ?>
                                 <? if ($arItem2Level['IS_PARENT']) {  ?>
                                 <div class="second-level-menu-wrapper">
-                                    <span class="submenu-level2-item submenu-item-main arrow arrow-down">
+                                    <span
+                                            class="submenu-level2-item submenu-item-main arrow arrow-down"
+                                            onclick="$(this).parent().find('img.lazy-img-menu').lazyLoadXT({forceLoad: 1, visibleOnly: 0, throttle: 0})"
+                                    >
                                         <?=$arItem2Level['TEXT']?>
                                     </span>
                                     <div class="sub-submenu">
@@ -76,7 +91,7 @@ if (!empty($arResult)) {?>
                                                         <div class="submenu-wrapper">
                                                             <a href="<?=$arItem4LevelChunks['LINK']?>">
                                                                 <div class="submenu-img-wrapper">
-                                                                    <img src="<?=$arItem4LevelChunks['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem4LevelChunks['TEXT']?>">
+                                                                    <img class="lazy-img-menu" data-src="<?=$arItem4LevelChunks['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem4LevelChunks['TEXT']?>">
                                                                 </div>
                                                                 <span class="submenu-item submenu-item-main">
                                                                     <?=$arItem4LevelChunks['TEXT']?>
@@ -90,7 +105,7 @@ if (!empty($arResult)) {?>
                                                 <div class="submenu-wrapper">
                                                     <a href="<?=$arItem3Level['LINK']?>">
                                                         <div class="submenu-img-wrapper">
-                                                            <img src="<?=$arItem3Level['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem3Level['TEXT']?>">
+                                                            <img class="lazy-img-menu" data-src="<?=$arItem3Level['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem3Level['TEXT']?>">
                                                         </div>
                                                         <span class="submenu-item submenu-item-main">
                                                             <?=$arItem3Level['TEXT']?>
@@ -106,7 +121,7 @@ if (!empty($arResult)) {?>
                                         <div class="submenu-wrapper">
                                             <a href="<?=$arItem2Level['LINK']?>">
                                                 <div class="submenu-img-wrapper">
-                                                    <img src="<?=$arItem2Level['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem2Level['TEXT']?>">
+                                                    <img class="lazy-img-menu" data-src="<?=$arItem2Level['PARAMS']['IMG_PATH_WEBP']?>" alt="<?=$arItem2Level['TEXT']?>">
                                                 </div>
                                                 <span class="submenu-item submenu-item-main arrow">
                                                     <?=$arItem2Level['TEXT']?>
@@ -115,9 +130,9 @@ if (!empty($arResult)) {?>
                                         </div>
                                 <? } ?>
                             <? } ?>
-                        <?if ($arItem['DEPTH_LEVEL']!= 1) { ?>
+                        <? if ($arItem['DEPTH_LEVEL']!= 1) { ?>
                             </div>
-                        <?}?>
+                        <? } ?>
                     <? } else {?>
                         <? if ($arItem['DEPTH_LEVEL']!= 1) { ?>
                         <div class="submenu-wrapper">
@@ -127,11 +142,11 @@ if (!empty($arResult)) {?>
                                 </span>
                             </a>
                         </div>
-                        <? }?>
-                    <? }?>
+                        <? } ?>
+                    <? } ?>
                 </div>
             </div>
-        <?}?>
+        <? } ?>
     <? } ?>
 </div>    
 <? } ?>
