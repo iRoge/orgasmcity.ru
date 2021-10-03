@@ -12,7 +12,7 @@ $counter = 0;
         <?php foreach ($arResult['ITEMS'] as $item) {
             $counter++;
             ?>
-            <a class="advantages-element col-lg-2 col-md-2 col-sm-4 col-xs-6" <?=!empty($item['CODE']) ? 'href="' . $item['CODE'] . '"' : '' ?>>
+            <a class="advantages-element col-lg-2 col-md-2 col-sm-4 col-xs-4" <?=!empty($item['CODE']) ? 'href="' . $item['CODE'] . '"' : '' ?>>
                 <img width="100%" class="lazy-img" data-src="<?=$arResult['IMG_SOURCES'][$item['PROPERTIES']['IMG']['VALUE']] ?>"
                      alt="<?=$item['DETAIL_TEXT']?>">
             </a>
