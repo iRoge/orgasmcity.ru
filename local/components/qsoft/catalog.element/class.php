@@ -621,7 +621,7 @@ class QsoftCatalogElement extends ComponentHelper
         $explode = explode(' ', $string);
         $additional = '';
         foreach ($explode as $key => $item) {
-            if ($item == '-' || preg_match("/[\d]+/im", $item)) {
+            if ($item == '-' || preg_match("/[\d]+/im", $item) || !$item) {
                 continue;
             }
             if (!in_array($item, ['без', 'на', 'из', 'к', 'в', 'с'])) {

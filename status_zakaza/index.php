@@ -60,6 +60,12 @@ $APPLICATION->SetPageProperty("description", "Узнать статус зака
         });
     });
 </script>
+<style>
+    .order-info {
+        float: left;
+        width: 100%;
+    }
+</style>
 <div class="order-info">
     <div class="order-info__fix">
         <div class="order-info__title">Для того, чтобы узнать статус заказа<br /> введите номер заказа и ваш номер телефона</div>
