@@ -69,7 +69,7 @@ function process404()
 if (!function_exists("pre")) {
     function pre($var)
     {
-        if (!in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1]) && $_SERVER['HTTP_HOST'] !== 'orgasmcitytest.ru') {
+        if (!in_array($_SESSION["SESS_AUTH"]["USER_ID"], [1])) {
             return;
         }
         ob_start();

@@ -28,13 +28,7 @@ class addMailEvents20210919211422 extends Version
                 #PRICE# - сумма заказа',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('ORDER_CREATE', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Ваш_заказ_доставлен.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -57,13 +51,7 @@ class addMailEvents20210919211422 extends Version
                 #PRICE# - сумма заказа',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('ORDER_CREATE_PREPAYMENT', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Заказ_оформлен_но_не_оплачен.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -86,13 +74,7 @@ class addMailEvents20210919211422 extends Version
                 #LOGIN# - логин',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('USER_REGISTRATION', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Спасибо_за_регистрацию.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -113,13 +95,7 @@ class addMailEvents20210919211422 extends Version
             'DESCRIPTION' => '#SERVER_NAME# - домен сайта',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('USER_SUBSCRIBE', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Спасибо_за_подписку.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -142,13 +118,7 @@ class addMailEvents20210919211422 extends Version
                 #PRICE# - сумма заказа',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('ORDER_PAID', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/заказ_оплачен.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -170,13 +140,7 @@ class addMailEvents20210919211422 extends Version
                 #SERVER_NAME# - домен сайта',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('ORDER_ASSEMBLY', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Заказ_в_статусе_комплектации.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -198,13 +162,7 @@ class addMailEvents20210919211422 extends Version
                 #SERVER_NAME# - домен сайта',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('ORDER_SEND', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Заказ_отправлен_курьерам.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',
@@ -226,13 +184,7 @@ class addMailEvents20210919211422 extends Version
                 #SERVER_NAME# - домен сайта',
             'SORT' => '150',
         ));
-        $helper->Event()->saveEventType('ORDER_DELIVERED', array(
-            'LID' => 'en',
-            'EVENT_TYPE' => 'email',
-            'NAME' => '',
-            'DESCRIPTION' => '',
-            'SORT' => '150',
-        ));
+
         $body = file_get_contents($_SERVER["DOCUMENT_ROOT"] . '/Ваш_заказ_доставлен.html');
         $arTemplate = Array(
             'ACTIVE'=> 'Y',

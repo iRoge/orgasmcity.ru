@@ -365,7 +365,6 @@ input[type="number"] {
     .checkbox4:hover + .cart-delivery__label:hover {
         filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
     }
-
 }
 
 .checkbox4:checked + .cart-delivery__label {

@@ -2079,7 +2079,7 @@ a.in-zagolovok {
 }
 
 .count {
-    background: linear-gradient(223.45deg, #AC32E4 16.22%, #7918F2 47.95%, #4801FF 82.34%);
+    background: linear-gradient(223.45deg, rgba(172, 50, 228, 0.7) 16.22%, rgba(121, 24, 242, 0.7) 47.95%, rgba(72, 1, 255, 0.7) 82.34%);
     line-height: 18px;
     font-family: 'gilroyRegular';
     font-size: 10px;
@@ -4708,8 +4708,8 @@ label.color-label {
     }
 
     .form-after-cart {
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 5px!important;
+        padding-right: 5px!important;
         /*padding-bottom: 5%;*/
         display: block;
     }
@@ -4813,7 +4813,8 @@ label.color-label {
         }
 
         .right-cartochka__inner-wrap {
-            margin-left: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
         }
 
         .after-hr-cart {
@@ -5833,10 +5834,6 @@ label.color-label {
         width: 100%;
     }
 
-    .form-after-cart {
-        /*margin-left: 5px !important;*/
-    }
-
     .right-cartochka {
         border: 0 !important;
         padding-left: 0 !important;
@@ -6096,8 +6093,8 @@ label.color-label {
     }
 
     .sex-btn {
-        padding-right: 0 !important;
-        padding-left: 0 !important;
+        padding-right: 3% !important;
+        padding-left: 3% !important;
         text-align: center;
         border-left-style: none;
         display: flex;
@@ -6108,6 +6105,14 @@ label.color-label {
         background: white;
         border-radius: 10px;
         margin-top: 10px;
+    }
+
+    .mob-catalog-img-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100%;
+        width: 15%;
     }
 
     .sex-btn:first-child {
@@ -6130,7 +6135,7 @@ label.color-label {
         display: block;
         font-family: 'gilroyMedium';
         font-size: 15px;
-        width: auto;
+        width: 85%;
         margin: 0 0 0 5px;
         padding: 10px 0;
     }
@@ -6461,7 +6466,7 @@ label.color-label {
     display: block;
     width: 20px;
     height: 20px;
-    background: linear-gradient(223.45deg, #AC32E4 16.22%, #7918F2 47.95%, #4801FF 82.34%);
+    background: linear-gradient(223.45deg, rgba(172, 50, 228, 0.7) 16.22%, rgba(121, 24, 242, 0.7) 47.95%, rgba(72, 1, 255, 0.7) 82.34%);
     border-radius: 50%;
 }
 

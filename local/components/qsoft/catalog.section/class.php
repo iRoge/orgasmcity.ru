@@ -277,7 +277,7 @@ class QsoftCatalogSection extends ComponentHelper
         $this->arResult['SHOW_CATALOGS_LINE'] = $this->type == self::TYPE_SECTION;
 
         $this->arResult['TIMER_DATE'] = null;
-        if ($this->type == self::TYPE_GROUP && $this->group['PROPERTY_IS_ACTION_VALUE'] == 1 && $this->group['ACTIVE'] == 'Y') {
+        if ($this->type == self::TYPE_GROUP && $this->group['PROPERTY_IS_ACTION_VALUE'] == 1) {
             $this->arResult['TIMER_DATE'] = $this->group['DATE_ACTIVE_TO'];
         }
 
@@ -767,6 +767,7 @@ class QsoftCatalogSection extends ComponentHelper
             $cache->StartDataCache();
             $CACHE_MANAGER->StartTagCache('/groups');
             $CACHE_MANAGER->RegisterTag("catalogAll");
+            $CACHE_MANAGER->RegisterTag("groupsAll");
 
             if (empty($group)) {
                 $CACHE_MANAGER->AbortTagCache();
@@ -796,7 +797,7 @@ class QsoftCatalogSection extends ComponentHelper
                 [
                     'IBLOCK_ID' => IBLOCK_GROUPS,
                     'CODE' => $this->code,
-                    'ACTIVE' => 'Y',
+                    'PROPERTY_CREATE_CATALOG' => 1,
                 ],
                 false,
                 false,
@@ -1018,14 +1019,15 @@ class QsoftCatalogSection extends ComponentHelper
         $cache = new CPHPCache();
 
         $cacheTag = 'products_group_' . $this->code;
-        if ($cache->InitCache(86400, $cacheTag, '/products')) {
+        if ($cache->InitCache(86400, $cacheTag, '/groups')) {
             $products = $cache->GetVars();
         }
         if (empty($products)) {
             $products = $this->loadProductsByFilter();
             $cache->StartDataCache();
-            $CACHE_MANAGER->StartTagCache('/products');
+            $CACHE_MANAGER->StartTagCache('/groups');
             $CACHE_MANAGER->RegisterTag("catalogAll");
+            $CACHE_MANAGER->RegisterTag("groupsAll");
             if (empty($products)) {
                 $CACHE_MANAGER->AbortTagCache();
                 $cache->AbortDataCache();
@@ -1059,15 +1061,16 @@ class QsoftCatalogSection extends ComponentHelper
 
         $offers = [];
 
-        if ($cache->InitCache(86400, 'offers_group_' . $this->code, '/offers')) {
+        if ($cache->InitCache(86400, 'offers_group_' . $this->code, '/groups')) {
             $offers = $cache->GetVars();
         }
         if (empty($offers)) {
             $offers = $this->loadOffersByFilter();
 
             $cache->StartDataCache();
-            $CACHE_MANAGER->StartTagCache('/offers');
+            $CACHE_MANAGER->StartTagCache('/groups');
             $CACHE_MANAGER->RegisterTag("catalogAll");
+            $CACHE_MANAGER->RegisterTag("groupsAll");
             if (empty($offers)) {
                 $CACHE_MANAGER->AbortTagCache();
                 $cache->AbortDataCache();
@@ -1629,12 +1632,14 @@ class QsoftCatalogSection extends ComponentHelper
         uasort($items, function ($a, $b) use ($middlePrice) {
             $aDiff = abs($a['PRICE'] - $middlePrice);
             $bDiff = abs($b['PRICE'] - $middlePrice);
+            $aHasDiscount = $a['DISCOUNT'] && $a['DISCOUNT_DATE_TO'];
+            $bHasDiscount = $b['DISCOUNT'] && $b['DISCOUNT_DATE_TO'];
             if (
                 ($aDiff < 75000 && $bDiff < 75000 || $aDiff > 75000 && $bDiff > 75000)
                 && (
                     $b['PROPERTY_BESTSELLER_VALUE'] != $a['PROPERTY_BESTSELLER_VALUE']
                     || $b['PROPERTY_NEW_VALUE'] != $a['PROPERTY_NEW_VALUE']
-                    || !!$b['DISCOUNT'] != !!$a['DISCOUNT']
+                    || $bHasDiscount != $aHasDiscount
                 )
             ) {
                 $countAdditionsA = (int)(bool)$a['PROPERTY_BESTSELLER_VALUE'] + (int)(bool)$a['PROPERTY_NEW_VALUE'];
@@ -1646,9 +1651,9 @@ class QsoftCatalogSection extends ComponentHelper
                     } elseif ($countAdditionsA < $countAdditionsB) {
                         return 1;
                     } else {
-                        if ($a['DISCOUNT'] && !$b['DISCOUNT']) {
+                        if ($aHasDiscount && !$bHasDiscount) {
                             return -1;
-                        } elseif ($b['DISCOUNT'] && !$a['DISCOUNT']) {
+                        } elseif ($bHasDiscount && !$aHasDiscount) {
                             return 1;
                         }
                     }
@@ -2029,10 +2034,10 @@ class QsoftCatalogSection extends ComponentHelper
             $APPLICATION->SetPageProperty("description", $description);
         }
 
-        if (!empty($seo['SECTION_PAGE_TITLE'])) {
-            $this->arResult['TITLE'] = $seo['SECTION_PAGE_TITLE'];
-        } elseif (!empty($seo['ELEMENT_PAGE_TITLE'])) {
+        if (!empty($seo['ELEMENT_PAGE_TITLE'])) {
             $this->arResult['TITLE'] = $seo['ELEMENT_PAGE_TITLE'];
+        } elseif (!empty($seo['SECTION_PAGE_TITLE'])) {
+            $this->arResult['TITLE'] = $seo['SECTION_PAGE_TITLE'];
         }
     }
 
@@ -2057,12 +2062,12 @@ class QsoftCatalogSection extends ComponentHelper
             }
         }
 
-        $title = 'Купить ' . ($this->type == self::TYPE_SALES ? 'со скидкой ' : '');
+        $title = ($this->type == self::TYPE_GROUP && !$this->isBrand ? '' : 'Купить ') . ($this->type == self::TYPE_SALES ? 'со скидкой ' : '');
         foreach ($chain as $item) {
             $APPLICATION->AddChainItem($item['title'], $item['url']);
         }
         $title .= mb_strtolower(implode(' ', array_column($chain, 'title')));
-        if ($this->isBrand) {
+        if ($this->type == self::TYPE_GROUP) {
             $title .= ' ' . $this->group['NAME'];
         }
         $title .= ' в интернет магазине Город Оргазма';

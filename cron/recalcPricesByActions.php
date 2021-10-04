@@ -44,4 +44,5 @@ while ($action = $rsItems->GetNext()) {
 \Qsoft\Helpers\PriceUtils::recalcPrices();
 global $CACHE_MANAGER;
 $CACHE_MANAGER->ClearByTag("pricesAll");
+$CACHE_MANAGER->ClearByTag("groupsAll");
 \Qsoft\Helpers\PriceUtils::getCachedPriceForUser(1);

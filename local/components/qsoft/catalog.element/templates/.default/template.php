@@ -72,7 +72,9 @@ foreach ($arResult['OFFERS'] as $offer) {
                         </div>
                     <?php endif; ?>
                     <div class="hidden-xs" style="margin-top: 40px">
-                        <?php $APPLICATION->IncludeComponent(
+                        <?php
+
+                        $APPLICATION->IncludeComponent(
                             "orgasmcity:feedback.list",
                             "product",
                             [
@@ -84,7 +86,9 @@ foreach ($arResult['OFFERS'] as $offer) {
                                 ],
                             ],
                             false
-                        ); ?>
+                        );
+
+                        ?>
                     </div>
                 </div>
 
@@ -131,7 +135,11 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     </p>
                                 <?php }?>
                                 <?php
-                                    if ($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO']) {
+                                    if (
+                                            $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO']
+                                            && strtotime(date('d.m.Y H:i:s')) < strtotime($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'])
+                                            && strtotime('01.01.2030 00:00:00') > strtotime($arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['DISCOUNT_DATE_TO'])
+                                    ) {
                                         $APPLICATION->IncludeComponent(
                                             'orgasmcity:timer',
                                             'card',
@@ -149,7 +157,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     <img class="advantage-image" src="<?= SITE_TEMPLATE_PATH; ?>/img/mostLowPrice.webp" alt="Самая низкая цена среди интернет магазинов">
                                 </div>
                                 <?php if ($USER->GetID() == 1 || $USER->GetID() == 15) {
-                                    $wholesaleprice = 0.9 * $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE'];
+                                    $wholesaleprice = $arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['WHOLEPRICE'];
                                     ?>
                                     Цена закупки <?=$wholesaleprice?> ₽
                                     <br>

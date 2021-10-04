@@ -31,6 +31,11 @@ $offers = Functions::filterOffersByRests($offers);
 foreach ($offers as $offer) {
     $price = \Qsoft\Helpers\PriceUtils::getCachedPriceForUser($offer['ID'])['PRICE'];
     $needChange = false;
+    // Получается, что в среднем будет такой расклад:
+    // До 500р товары покупают раз в 5 дней
+    // До 7500р товары покупают раз в 7 дней
+    // До 20000р товары покупают раз в 15 дней
+    // Более 20000р товары покупают раз в 30 дней
     if ($price < 500) {
         if (rand(1, 5*$mul) == 1) {
             $needChange = true;

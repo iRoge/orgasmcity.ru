@@ -141,6 +141,7 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
             'NAME',
             'DETAIL_TEXT',
             'DATE_CREATE',
+            'DATE_ACTIVE_FROM',
             'PROPERTY_GENDER',
             'PROPERTY_SCORE',
         ];
@@ -154,7 +155,7 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
         );
 
         while ($item = $result->GetNext()) {
-            $item['DATE_CREATE'] = FormatDate("x", MakeTimeStamp($item['DATE_CREATE']));
+            $item['DATE_CREATE'] = FormatDate("x", MakeTimeStamp($item['DATE_ACTIVE_FROM'] ?: $item['DATE_CREATE']));
             $arItems[$item['ID']] = $item;
         }
 

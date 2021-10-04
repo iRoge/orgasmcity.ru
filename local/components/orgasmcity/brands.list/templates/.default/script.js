@@ -15,6 +15,7 @@ $(document).ready(function() {
         autoplay: false,
         speed: 800,
         infinite: false,
+        lazyLoad: 'ondemand',
         responsive: [
             {
                 breakpoint: 1280,

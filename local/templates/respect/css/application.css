@@ -392,9 +392,12 @@ label.radio > span .input__color,
   background-repeat: no-repeat;
   outline: none;
 }
+
 .slider .slides-item img {
-  display: none;
+  height: 100%;
+  width: 100%;
 }
+
 @media (max-width: 991px) {
   .slider {
     padding: 0;
