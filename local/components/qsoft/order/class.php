@@ -1,8 +1,9 @@
-<?
+<?php
 
 use Bitrix\Highloadblock\HighloadBlockTable as HLBT;
 use Bitrix\Sale\BasketBase;
 use Bitrix\Sale\BasketItem;
+use Bitrix\Sale\Discount;
 use Bitrix\Sale\DiscountCouponsManagerBase;
 use Bitrix\Sale\Internals\CollectableEntity;
 use Likee\Site\Helpers\HL;
@@ -135,7 +136,7 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->returnError();
             }
             // применяем промокоды
-            $this->getCoupon();
+            $this->reapplyCoupon();
             // проверяем корзину
             if (!$this->checkBasket()) {
                 // при ошибке возвращаем её на фронт в виде JSON
@@ -224,7 +225,7 @@ class QsoftOrderComponent extends ComponentHelper
                 $this->returnError();
             }
             // применяем промокоды
-            $this->getCoupon();
+            $this->reapplyCoupon();
             // проверяем корзину
             if (!$this->checkBasket()) {
                 // при ошибке возвращаем её на фронт в виде JSON
@@ -339,7 +340,7 @@ class QsoftOrderComponent extends ComponentHelper
             $this->returnError();
         }
         // очищаем имеющиеся купоны
-        $this->delCoupon(true);
+        $this->delCoupons();
         // добавляем новый
         $res = DiscountCouponsManager::add($this->arResult["COUPON"]);
 
@@ -348,19 +349,15 @@ class QsoftOrderComponent extends ComponentHelper
             $arCoupon = array_shift($arCoupons);
             $this->checkCouponStatus($arCoupon);
         } else {
-            $this->arResult["ERRORS"][] = "Промокод не существует";
             $this->returnError();
         }
     }
 
-    private function delCoupon($check = false)
+    private function delCoupons()
     {
         $arCoupons = DiscountCouponsManager::get(true, array(), true, true);
         if (!empty($arCoupons)) {
             foreach ($arCoupons as $arCoupon) {
-                if ($check && $this->arResult["COUPON"] == $arCoupon["COUPON"]) {
-                    $this->checkCouponStatus($arCoupon);
-                }
                 DiscountCouponsManager::delete($arCoupon["COUPON"]);
             }
         }
@@ -378,25 +375,65 @@ class QsoftOrderComponent extends ComponentHelper
             || $arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_APPLYED
         ) {
             if ($this->loadBasket()) {
+                // Если промокод на подарок, то проверяем есть ли уже подарок в корзине
+                if (isset(COUPONS_FOR_GIFT[$arCoupon["COUPON"]])) {
+                    $basketItems = $this->basket->getBasketItems();
+                    // Если подарка нет, то добавляем
+                    /** @var BasketItem $item */
+                    $productExists = false;
+                    foreach ($basketItems as $item) {
+                        if ($item->getProductId() == COUPONS_FOR_GIFT[$arCoupon["COUPON"]]) {
+                            $productExists = true;
+                        }
+                    }
+                    if (!$productExists) {
+                        $this->createBasketItem(COUPONS_FOR_GIFT[$arCoupon["COUPON"]]);
+                    }
+                }
+
                 $this->applyCoupon();
-                $this->returnOk(
-                    [
-                        'text' => floor($this->basket->getPrice()),
-                        'isGift' => isset(COUPONS_FOR_GIFT[$this->arResult['COUPON']]) ? '1' : '0',
-                        'coupon' => $this->arResult['COUPON']
-                    ]
-                );
+
+                if (isset(COUPONS_FOR_GIFT[$arCoupon["COUPON"]])) {
+                    // Проверяем изменилась ли цена добавленного товара, если промокод на подарок. Если не изменилась - удаляем 1 штуку товара
+                    $basketItems = $this->basket->getBasketItems();
+                    foreach ($basketItems as $item) {
+                        if ($item->getProductId() == COUPONS_FOR_GIFT[$arCoupon["COUPON"]]) {
+                            // Если нет общей скидки по позиции, значит подарок не выдался и корзина не прошла условия промокода. Удаляем подарок
+                            if (!$item->getDiscountPrice()) {
+                                if ($item->getQuantity() == 1) {
+                                    $item->delete();
+                                } else {
+                                    $item->setField('QUANTITY', $item->getQuantity() - 1);
+                                }
+                                $this->arResult["ERRORS"][] = "Условия акции не соблюдены";
+                                break;
+                            }
+                        }
+                    }
+                }
+                $this->basket->save();
+                if (count($this->arResult["ERRORS"]) == 0) {
+                    $this->returnOk(
+                        [
+                            'text' => floor($this->basket->getPrice()),
+                            'isGift' => isset(COUPONS_FOR_GIFT[$arCoupon['COUPON']]) ? '1' : '0',
+                            'coupon' => $arCoupon['COUPON']
+                        ]
+                    );
+                }
             } else {
                 $this->arResult["ERRORS"][] = "Не удалось применить промокод";
             }
         }
+
         if (count($this->arResult["ERRORS"]) == 0) {
             $this->arResult["ERRORS"][] = "Неизвестная ошибка, попробуйте ещё раз";
         }
+        $this->delCoupons();
         $this->returnError();
     }
 
-    private function getCoupon()
+    private function reapplyCoupon()
     {
         $arCoupons = DiscountCouponsManager::get(true, array(), true, true);
         if (count($arCoupons) == 1) {
@@ -407,20 +444,6 @@ class QsoftOrderComponent extends ComponentHelper
 
     private function applyCoupon()
     {
-        if (isset(COUPONS_FOR_GIFT[$this->arResult["COUPON"]])) {
-            $basketItems = $this->basket->getBasketItems();
-            /** @var BasketItem $item */
-            $productExists = false;
-            foreach ($basketItems as $item) {
-                if ($item->getProductId() == COUPONS_FOR_GIFT[$this->arResult["COUPON"]]) {
-                    $productExists = true;
-                }
-            }
-            if (!$productExists) {
-                $this->createBasketItem(COUPONS_FOR_GIFT[$this->arResult["COUPON"]]);
-                $this->basket->save();
-            }
-        }
         $order = $this->createNewOrder();
         $order->setBasket($this->basket);
     }
@@ -433,7 +456,7 @@ class QsoftOrderComponent extends ComponentHelper
         }
         $this->checkOffersNum();
         $this->checkProps();
-        return empty($this->arResult["ERRORS"]) ? true : false;
+        return empty($this->arResult["ERRORS"]);
     }
 
     private function getPostProps()
@@ -858,7 +881,7 @@ class QsoftOrderComponent extends ComponentHelper
         $this->returnError();
     }
 
-    private function createBasketItem($offerId, $quantity = 1)
+    private function createBasketItem($offerId, $quantity = 1, $price = null)
     {
         $basketItem = $this->basket->createItem('catalog', $offerId);
         $arProps = $this->getOfferProps($offerId);
@@ -869,6 +892,11 @@ class QsoftOrderComponent extends ComponentHelper
             'PRODUCT_PRICE_ID' => $arProps["PRODUCT_ID"],
             'PRODUCT_PROVIDER_CLASS' => 'CCatalogProductProvider',
         ]);
+        if ($price !== null) {
+            $basketItem->setFields([
+                'PRICE' => $price,
+            ]);
+        }
         if (!empty($arProps['PROPS'])) {
             $prop = $basketItem->getPropertyCollection();
             $prop->setProperty($arProps['PROPS']);
@@ -1682,7 +1710,7 @@ class QsoftOrderComponent extends ComponentHelper
 
         if ($res->isSuccess()) {
             // очищаем купоны из сессии
-            $this->delCoupon();
+            $this->delCoupons();
             $_SESSION['NEW_ORDER_ID'] = $orderId;
             $_SESSION['CRITEO_NEW_ORDER_ID'] = $orderId;
             $this->returnOk(

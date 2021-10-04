@@ -265,6 +265,7 @@ $(document).ready(function(){
             cart_coupon_error.html("Введите промокод");
             return;
         }
+        console.log(213);
         $("#art__coupon-button").attr("disabled", "disabled");
         let currentBasketPrice = getItemsSumPrice();
         let data = {
@@ -296,14 +297,17 @@ $(document).ready(function(){
                     if (basketPrice < sum || data['isGift']) {
                         reloadProducts();
                         $("#cart__coupon-success").show().html("Промокод применен");
+                        $("#cart__coupon-error").hide();
                     } else {
                         if (basketPrice >= sum) {
                             if (coupon == data['coupon'] && $(".orders__price").find(".orders__old-price-num").data("price")) {
                                 $("#cart__coupon").addClass("form__error-border");
                                 $("#cart__coupon-error").show().html("Данный промокод уже применен к корзине");
+                                $("#cart__coupon-success").hide();
                             } else {
                                 $("#cart__coupon").addClass("form__error-border");
                                 $("#cart__coupon-error").show().html("Промокод не соответствует условиям");
+                                $("#cart__coupon-success").hide();
                             }
                         }
                         calculatePrice(basketPrice);
@@ -312,6 +316,7 @@ $(document).ready(function(){
                 }
                 $("#cart__coupon").addClass("form__error-border");
                 $("#cart__coupon-error").show().html(data['text']);
+                $("#cart__coupon-success").hide();
             },
             error: function(jqXHR, exception) {
                 $("#art__coupon-button").removeAttr("disabled");
@@ -562,10 +567,6 @@ $(document).ready(function(){
                 $('.is-pvz').removeAttr('disabled');
         },200);
 
-        // применение промокода
-        $(document).on('click', '#cart__coupon-button', function() {
-            applyCoupon();
-        });
         // submit
         $(document).on("submit", "#b-order", function(e) {
             e.preventDefault();
@@ -832,6 +833,10 @@ $(document).ready(function(){
         document.cookie = 'user_fio=' + $('#b-order').find($('[name = "PROPS[FIO]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
         document.cookie = 'user_email=' + $('#b-order').find($('[name = "PROPS[EMAIL]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
         document.cookie = 'user_phone=' + $('#b-order').find($('[name = "PROPS[PHONE]"]')).val() + ';domain=' + currentHost + ';path=/;max-age=3600;';
+    });
+    // применение промокода
+    $(document).on('click', '#cart__coupon-button', function() {
+        applyCoupon();
     });
 });
 

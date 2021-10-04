@@ -273,7 +273,7 @@ if (!$arResult['IS_AJAX']) {
                                             <div class="in-in-left"<?=$arResult['FILTER']['CHECKED'][$filterKey] ? ' style="display:flex"' : '' ?>>
                                                 <div class="from-filter">
                                                     <span>От:</span>
-                                                    <input id="min_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="min_<?=strtolower($filterKey)?>"
+                                                    <input id="min_<?=strtolower($filterKey)?>" class="js-number-filter" type="number" name="min_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MIN_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"
@@ -281,7 +281,7 @@ if (!$arResult['IS_AJAX']) {
                                                 </div>
                                                 <div class="to-filter">
                                                     <span>До:</span>
-                                                    <input id="max_<?=strtolower($filterKey)?>" class="js-number-filter" type="text" name="max_<?=strtolower($filterKey)?>"
+                                                    <input id="max_<?=strtolower($filterKey)?>" class="js-number-filter" type="number" name="max_<?=strtolower($filterKey)?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MAX_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
                                                            oninput="smartFilter.changedPriceFilter(this);return false;"

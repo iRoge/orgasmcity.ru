@@ -204,13 +204,15 @@
     background: #F8F3FB;
     border: transparent;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 0!important;
+    padding-right: 5px!important;
     text-align: right;
     font-family: 'gilroyRegular';
     font-size: 16px;
     color: #000000;
     width: 80%;
     height: 100%;
+    display: flex;
 }
 
 .in-in-left .from span, .in-in-left .to span {
@@ -1306,7 +1308,7 @@ footer .hide-block {
         top: 0;
         left: 0;
         height: 100vh;
-        padding: 0 5px 150px 5px!important;
+        padding: 0 5px 200px 5px!important;
         background-color: #fff5f7;
         overflow: auto;
         z-index: 99999999999;
