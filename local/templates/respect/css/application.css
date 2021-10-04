@@ -504,6 +504,7 @@ label.radio > span .input__color,
 
 .page--index .slider {
   position: initial;
+  margin: 15px 0;
 }
 
 .page--index .slider__arrow {

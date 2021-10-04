@@ -65,15 +65,6 @@ global $DEVICE;
             false
         );
     } else {
-
-        $APPLICATION->IncludeComponent(
-            "orgasmcity:actions.banners",
-            "",
-            [],
-            false
-        );
-
-
         $APPLICATION->IncludeComponent(
             "likee:slider",
             "home-mob",
@@ -91,6 +82,14 @@ global $DEVICE;
             ),
             false
         );
+
+        $APPLICATION->IncludeComponent(
+            "orgasmcity:actions.banners",
+            "",
+            [],
+            false
+        );
+
         $APPLICATION->IncludeComponent(
             "likee:slider",
             "home-mob",
