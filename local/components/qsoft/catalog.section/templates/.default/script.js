@@ -188,6 +188,7 @@ SmartFilter.prototype.doClick = function (url,request) {
                 }
                 $('.filter-btn-loader').hide();
             }
+            $('.lazy-img').lazyLoadXT();
         });
     }
 };
@@ -265,6 +266,7 @@ SmartFilter.prototype.nextPage = function (btn) {
             $navigation.empty();
         }
         lds_ring.css('visibility', 'hidden');
+        $('.lazy-img').lazyLoadXT();
     });
 };
 
@@ -285,7 +287,6 @@ SmartFilter.prototype.goToPageNum = function (btn) {
             $navigation.empty();
         }
         lds_ring.css('visibility', 'hidden');
-
         $('.lazy-img').lazyLoadXT();
     });
 };

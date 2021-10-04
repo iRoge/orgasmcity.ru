@@ -279,7 +279,7 @@ $(document).ready(function(){
             success: function(data) {
                 $("#art__coupon-button").removeAttr("disabled");
                 if (data.status == "ok") {
-                    let basketPrice = parseInt(data.text);
+                    let basketPrice = parseInt(data['text']);
                     // Если сумма изменилась до такой сетпени, что доставка стала платной,
                     // то перезагружаем весь блок корзины
                     if (
@@ -293,12 +293,12 @@ $(document).ready(function(){
                     $(".orders__price-num").each(function() {
                         sum += parseInt($(this).data("price"));
                     });
-                    if (basketPrice < sum) {
+                    if (basketPrice < sum || data['isGift']) {
                         reloadProducts();
                         $("#cart__coupon-success").show().html("Промокод применен");
                     } else {
                         if (basketPrice >= sum) {
-                            if (coupon == data.coupon && $(".orders__price").find(".orders__old-price-num").data("price")) {
+                            if (coupon == data['coupon'] && $(".orders__price").find(".orders__old-price-num").data("price")) {
                                 $("#cart__coupon").addClass("form__error-border");
                                 $("#cart__coupon-error").show().html("Данный промокод уже применен к корзине");
                             } else {
@@ -311,7 +311,7 @@ $(document).ready(function(){
                     return;
                 }
                 $("#cart__coupon").addClass("form__error-border");
-                $("#cart__coupon-error").show().html(data.text);
+                $("#cart__coupon-error").show().html(data['text']);
             },
             error: function(jqXHR, exception) {
                 $("#art__coupon-button").removeAttr("disabled");
