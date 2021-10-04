@@ -295,20 +295,10 @@ class QsoftOrderComponent extends ComponentHelper
         $this->returnJSON($arResult);
     }
 
-    private function returnOk($text = null, $coupon = null, $info = null)
+    private function returnOk($arResult)
     {
-        $arResult = [
-            "status" => "ok",
-        ];
-        if ($info !== null) {
-            $arResult["info"] = $info;
-        }
-        if ($text !== null) {
-            $arResult["text"] = $text;
-        }
-        if ($coupon !== null) {
-            $arResult["coupon"] = $coupon;
-        }
+        $arResult["status"] = "ok";
+
         $this->returnJSON($arResult);
     }
 
@@ -382,13 +372,20 @@ class QsoftOrderComponent extends ComponentHelper
             $this->arResult["ERRORS"][] = "Промокод не существует";
         } elseif ($arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_FREEZE) {
             $this->arResult["ERRORS"][] = "Промокод использован максимальное количество раз";
-        } elseif ($arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_ENTERED
+        } elseif (
+            $arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_ENTERED
             || $arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_NOT_APPLYED
             || $arCoupon["STATUS"] == DiscountCouponsManagerBase::STATUS_APPLYED
         ) {
             if ($this->loadBasket()) {
                 $this->applyCoupon();
-                $this->returnOk(floor($this->basket->getPrice()), $this->arResult["COUPON"]);
+                $this->returnOk(
+                    [
+                        'text' => floor($this->basket->getPrice()),
+                        'isGift' => isset(COUPONS_FOR_GIFT[$this->arResult['COUPON']]) ? '1' : '0',
+                        'coupon' => $this->arResult['COUPON']
+                    ]
+                );
             } else {
                 $this->arResult["ERRORS"][] = "Не удалось применить промокод";
             }
@@ -804,7 +801,11 @@ class QsoftOrderComponent extends ComponentHelper
         $res = $this->basket->save();
         if ($res->isSuccess()) {
             $basketSum += $basketItem->getPrice() * $quantity;
-            $this->returnOk($basketSum);
+            $this->returnOk(
+                [
+                    'text' => $basketSum
+                ]
+            );
         }
 
         $this->arResult["ERRORS"][] = "Не удалось добавить или обновить товар в коризне";
@@ -845,7 +846,12 @@ class QsoftOrderComponent extends ComponentHelper
             if (!empty($this->arResult['ERRORS'])) {
                 $this->returnError($this->arResult['ERRORS'][0]);
             } else {
-                $this->returnOk($price, null, $offerQuantityInBasket);
+                $this->returnOk(
+                    [
+                        'text' => $price,
+                        'info' => $offerQuantityInBasket
+                    ],
+                );
             }
         }
         $this->arResult["ERRORS"][] = "Не удалось удалить товар из корзины";
@@ -1679,7 +1685,12 @@ class QsoftOrderComponent extends ComponentHelper
             $this->delCoupon();
             $_SESSION['NEW_ORDER_ID'] = $orderId;
             $_SESSION['CRITEO_NEW_ORDER_ID'] = $orderId;
-            $this->returnOk($orderId, null, $this->offers);
+            $this->returnOk(
+                [
+                    'text' => $orderId,
+                    'info' => $this->offers
+                ]
+            );
         } else {
             $this->arResult["ERRORS"][] = $res->getErrorMessages();
             $this->returnError();
