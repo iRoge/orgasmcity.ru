@@ -131,7 +131,6 @@ SmartFilter.prototype.click = function (checkbox) {
     var $filterSection = jqCheckbox.closest('.in-left-catalog');
     $('.filter-btn-loader').show();
     this.setFilterSectionStyle($filterSection);
-    ym(82799680,'reachGoal','filter');
     SmartFilter.prototype.doClick(this.getUrl(),'filter');
 };
 

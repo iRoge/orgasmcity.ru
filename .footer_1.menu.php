@@ -30,4 +30,11 @@ $aMenuLinks = array(
         array(),
         ''
     ),
+    array(
+        'Отзывы',
+        '/feedback/',
+        array(),
+        array(),
+        ''
+    )
 );
