@@ -30,15 +30,16 @@ if (!$orderId || !$order) {
         $orderType = 'default';
     }
     Asset::getInstance()->addCss('/order-success/style.css');
+    $countOrder = 0;
     $arFilter = Array("USER_ID" => $USER->GetID());
     $sql = CSaleOrder::GetList(["DATE_INSERT" => "ASC"], $arFilter);
-    $countOrder = 0;
+
     while ($result = $sql->Fetch())
     {
         $countOrder++;
     }
-    $countOrder = 2;
-    if ($orderType !== 'default') {
+    
+    if ($orderType == 'default') {
         ?>
         <div class="success-block-wrapper main<?=$countOrder > 1 ? ' no-auth' : ''?>">
             <div class="success-second-block-wrapper">
