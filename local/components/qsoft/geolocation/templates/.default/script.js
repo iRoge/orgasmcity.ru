@@ -98,7 +98,7 @@ function updateUserLocality(localityCode) {
                         dataLayer.push(oPush);
 
                         $(window).scrollTop(0);
-                        popup.css('top', '');
+                        $('.geoposition').css('top', '');
                         document.location.href = document.location.href;
                     }
                     break;
