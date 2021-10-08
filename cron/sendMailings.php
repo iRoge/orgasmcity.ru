@@ -7,13 +7,14 @@ while (ob_get_level()) {
 ob_start();
 use PHPMailer\PHPMailer\Exception;
 
-// 1 - яндекс, 2 - майл, 3 - gmail, 4 - rambler, 5 - other
+// 1 - яндекс, 2 - майл, 3 - gmail, 4 - rambler, 5 - other, 6 - icloud
 $limitsForDomainsTypesPerScript = [
     1 => 5,
     2 => 5,
     3 => 5,
     4 => 5,
     5 => 0,
+    6 => 5,
 ];
 
 $mailing = CIBlockElement::GetList(
@@ -95,6 +96,7 @@ function getDomainType($email)
         '@inbox.ru' => 2,
         '@gmail.com' => 3,
         '@rambler.ru' => 4,
+        '@icloud.ru' => 6,
     ];
 
     foreach ($domainsTypes as $domain => $type) {
