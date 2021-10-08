@@ -431,13 +431,28 @@ if (in_array($GLOBALS['device_type'], ['mobile', 'tablet']) && $bMainPage) {
 <?
 $bShowTitle = !CSite::InDir(SITE_DIR . 'faq/')
     && !CSite::InDir(SITE_DIR . 'index.php')
-    && !(defined('HIDE_TITLE') && HIDE_TITLE === true);
+    && !(defined('HIDE_TITLE') && HIDE_TITLE === true)
+    && !CSite::InDir(SITE_DIR . 'company_about/')
+    && !CSite::InDir(SITE_DIR . 'company_anonymity/')
+    && !CSite::InDir(SITE_DIR . 'company_bonus/')
+    && !CSite::InDir(SITE_DIR . 'company_contacts/')
+    && !CSite::InDir(SITE_DIR . 'company_delivery/')
+    && !CSite::InDir(SITE_DIR . 'company_price_garanty/')
+    && !CSite::InDir(SITE_DIR . 'company_repayment/')
+    && !CSite::InDir(SITE_DIR . 'company_payment/');
 
 $bContentContainer = $bShowTitle
     && !CSite::InDir(SITE_DIR . 'personal/')
     && !CSite::InDir(SITE_DIR . 'brands/')
     && !CSite::InDir(SITE_DIR . 'refund/')
-    && !CSite::InDir(SITE_DIR . 'order-success/');
+    && !CSite::InDir(SITE_DIR . 'company_about/')
+    && !CSite::InDir(SITE_DIR . 'company_anonymity/')
+    && !CSite::InDir(SITE_DIR . 'company_bonus/')
+    && !CSite::InDir(SITE_DIR . 'company_contacts/')
+    && !CSite::InDir(SITE_DIR . 'company_delivery/')
+    && !CSite::InDir(SITE_DIR . 'company_price_garanty/')
+    && !CSite::InDir(SITE_DIR . 'company_repayment/')
+    && !CSite::InDir(SITE_DIR . 'company_payment/');
 
 ?>
 

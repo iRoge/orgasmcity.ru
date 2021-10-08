@@ -24,13 +24,6 @@ $aMenuLinks = array(
         ''
     ),
     array(
-        'Защита анонимности',
-        '/company_anonymity/',
-        array(),
-        array(),
-        ''
-    ),
-    array(
         'Отзывы',
         '/feedback/',
         array(),

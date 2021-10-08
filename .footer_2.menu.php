@@ -14,18 +14,18 @@ $aMenuLinks = Array(
         array(),
         ''
     ),
-    Array(
-        'Карта сайта',
-        '/search/map.php',
+    array(
+        'Защита анонимности',
+        '/company_anonymity/',
         array(),
         array(),
         ''
     ),
-    Array(
-        'Наши сексологи',
-        '#',
-        array(),
-        array(),
-        ''
-    ),
+//    Array(
+//        'Наши сексологи',
+//        '#',
+//        array(),
+//        array(),
+//        ''
+//    ),
 );
