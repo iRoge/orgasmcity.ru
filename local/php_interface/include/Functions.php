@@ -829,7 +829,7 @@ class Functions
     public static function insertFields($message, $fields)
     {
         foreach ($fields as $field => $value) {
-            $message = str_replace('##' . $field . '##', $value, $message);
+            $message = str_replace('#' . $field . '#', $value, $message);
         }
 
         return $message;

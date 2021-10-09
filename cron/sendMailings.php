@@ -13,7 +13,7 @@ $limitsForDomainsTypesPerScript = [
     2 => 5,
     3 => 5,
     4 => 5,
-    5 => 0,
+    5 => 5,
     6 => 5,
 ];
 
@@ -59,6 +59,7 @@ if ($mailing) {
             'SECOND_NAME' => $subscriber['PROPERTY_SECOND_NAME_VALUE'],
             'MIDDLE_NAME' => $subscriber['PROPERTY_MIDDLE_NAME_VALUE'],
             'SUBSCRIBER_ID' => $subscriber['ID'],
+            'SERVER_NAME' => DOMAIN_NAME,
             'TITLE' => $mailing['PREVIEW_TEXT'],
             'DATE_ACTION_END' => getActionDateEnd(),
         ];
@@ -72,8 +73,8 @@ if ($mailing) {
             $props = [];
             $props['RECEIVED_EMAILS'] = json_encode($receivedEmails, JSON_FORCE_OBJECT);
             CIBlockElement::SetPropertyValuesEx($mailing['ID'], IBLOCK_MAILINGS, $props);
-            $el = new CIBlockElement();
-            $el->Update($subscriber['ID'], ['ACTIVE' => 'N']);
+//            $el = new CIBlockElement();
+//            $el->Update($subscriber['ID'], ['ACTIVE' => 'N']);
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$e->getMessage()}" . PHP_EOL;
         }
