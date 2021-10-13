@@ -48,10 +48,10 @@ $(function() {
 
     $(document).on('click', '.js-feedback-btn', function (e) {
         var arr = {
-            "form_text_1":"",
-            "form_textarea_2":"",
-            "form_text_3":"*Тема сообщения",
-            "form_text_4":"",
+            "form_textarea_4":"*Сообщение",
+            "form_text_2":"*Тема сообщения",
+            "form_email_1":"*Ваш email",
+            "form_text_3":"*Ваше имя",
         };
 
         var cou_err = 0;
@@ -89,10 +89,10 @@ $(function() {
             $('#feedback-file-div').removeClass("red_border");
         }
 
-        if (!($("#feedback_checkbox_policy_checked").prop('checked'))) {
-            text_html += "<p>Необходимо согласие с политикой конфиденциальности</p>";
-            cou_err++;
-        }
+        // if (!($("#feedback_checkbox_policy_checked").prop('checked'))) {
+        //     text_html += "<p>Необходимо согласие с политикой конфиденциальности</p>";
+        //     cou_err++;
+        // }
 
         $("#after-feedback-in-err").html(text_html);
         if (cou_err > 0) {

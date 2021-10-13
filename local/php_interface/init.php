@@ -14,7 +14,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/constants
 CIBlock::disableTagCache(IBLOCK_CATALOG);
 CIBlock::disableTagCache(IBLOCK_OFFERS);
 
-CJSCore::Init(['fx']);
+//CJSCore::Init(['fx']);
 EventManager::getInstance()->addEventHandler('main', 'onBeforeUserLoginByHttpAuth', function (&$arAuth) {
     return false;
 });

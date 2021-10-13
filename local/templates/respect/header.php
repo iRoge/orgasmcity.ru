@@ -1,4 +1,6 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+<? use Bitrix\Main\Page\Asset;
+
+if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 /** @global CMain $APPLICATION */
@@ -30,85 +32,62 @@
 
     $APPLICATION->ShowHead();
     $bMainPage = $APPLICATION->GetCurDir() == '/';
-    CJSCore::Init(['ajax']);
+//    CJSCore::Init(['ajax']);
 
-    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.css');
-    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
-    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.css');
-    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.css');
-    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.css');
-    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/fixes.css');
-//    \Bitrix\Main\Page\Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/swiper.css');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.css');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.css');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.css');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.css');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/fixes.css');
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/js/select2/select2.min.css");
+//    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/swiper.css');
 
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-3.3.1.min.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/bootstrap.min.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/slick.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-ui.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.zoom.min.js');
+    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-3.3.1.min.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/bootstrap.min.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-ui.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.zoom.min.js');
 
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/underscore.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/index.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/microplugin.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/sifter.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/selectize.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/wNumb.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/nouislider.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/index.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/microplugin.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/sifter.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/selectize.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/wNumb.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/nouislider.js');
 
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inputmask.bundle.min.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.validate.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/messages_ru.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/slick.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tooltipster.bundle.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/bowser.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/clipboard.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tinycolor.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inview.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/swiper.js');
-      \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/lazy.min.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inputmask.bundle.min.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/messages_ru.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/slick.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tooltipster.bundle.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/bowser.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/clipboard.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/tinycolor.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.inview.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/swiper.js');
 
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/ajax.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/popup.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/tabs.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/subscribe.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/shop-list.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/vacancy.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/dropdown.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/to-top.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/map.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart-item.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/toggle.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product-gallery.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/animate-scroll.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/ajax.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/tabs.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/subscribe.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/shop-list.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/vacancy.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/dropdown.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/map.js');
+//    \Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/cart-item.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/toggle.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/product-gallery.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/animate-scroll.js');
 
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/toggle.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/counter.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/clearable.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/phone.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/datetime.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/jquery.maskedinput.min.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/size.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/sku.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/inputs/toggle.js');
 
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/_default.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/index.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/product.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/cart.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/shop.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/order-pickup.js');
-//    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/bonuses.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/product.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/cart.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/shop.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/order-pickup.js');
+//    Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/pages/bonuses.js');
 
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/application.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/show-more.js');
-
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/global/device.min.js');
-
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/custom.js');
-    \Bitrix\Main\Page\Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/script.js?up=1');
     // Получаем количество избранных товаров
     $favoritesCount = 0;
     if ($USER->IsAuthorized()) {
@@ -120,7 +99,32 @@
         }
     }
     ?>
-    <script type="text/javascript" data-skip-moving="true" >
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/global/popup.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/global/to-top.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/global/cart.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/counter.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/clearable.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/phone.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/jquery.maskedinput.min.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/size.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/sku.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/global/application.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/global/show-more.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/custom.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/script.js?up=1'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/lib/underscore.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/lib/lazy.min.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/slick.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . "/js/select2/select2.min.js"?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . "/js/select2/select2.ru.min.js"?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/lib/jquery.validate.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/datetime.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/pages/_default.js'?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/pages/index.js'?>" defer></script>
+
+
+    <script type="text/javascript" data-skip-moving="true" async>
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -156,8 +160,8 @@
             return base + '?' + res;
         }
     </script>
-    <script data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/device.js' ?>"></script>
-    <script data-skip-moving="true">
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/device.js' ?>"></script>
+    <script type="text/javascript" data-skip-moving="true" async>
         let phpDeviceType = '<?= $GLOBALS['device_type'] ?>';
         let targetDeviceType = '';
         if (device.tablet() === true) {
@@ -185,7 +189,7 @@
             clickmap:true,
             trackLinks:true,
             accurateTrackBounce:true,
-            webvisor:true,
+            webvisor: false,
             ecommerce:"metrikaData"
         });
     </script>

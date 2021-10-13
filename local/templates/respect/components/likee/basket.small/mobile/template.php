@@ -18,9 +18,3 @@ $this->setFrameMode(true);
 	<p class="shortcut-informer count"><?= $arResult['COUNT']; ?></p>
 	<img class="header-icon" src="<?= SITE_TEMPLATE_PATH; ?>/img/svg/cart.svg"  alt="Корзина"/>
 </a>
-
-<script style="display: none;">
-    BX.message({
-        'BASKET_SMALL_AJAX_PATH': '<?= $templateFolder; ?>/ajax.php'
-    });
-</script>

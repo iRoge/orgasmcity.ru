@@ -21,9 +21,3 @@ $iCount = count($arResult['ITEMS']);
         <span class="shortcut-informer"><?= $iCount; ?></span>
     <? endif; ?>
 </a>
-
-<script style="display: none;">
-    BX.message({
-        'BASKET_SMALL_AJAX_PATH': '<?= $templateFolder; ?>/ajax.php'
-    });
-</script>

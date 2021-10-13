@@ -3,9 +3,6 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 global $LOCATION;
-$this->addExternalJS("/local/templates/respect/js/select2/select2.min.js");
-$this->addExternalJS("/local/templates/respect/js/select2/select2.ru.min.js");
-$this->addExternalCss("/local/templates/respect/js/select2/select2.min.css");
 ?>
 <div class="col-sm-5 col-xs-9 from">
     <div class="tooltip-window" style="display: <?= $LOCATION->isStranger ? 'flex' : 'none' ?>">

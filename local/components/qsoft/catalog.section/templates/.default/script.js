@@ -145,49 +145,55 @@ SmartFilter.prototype.doClick = function (url,request) {
         SmartFilter.prototype.nextAjax[0] = url;
         SmartFilter.prototype.nextAjax[1] = request;
     } else {
-        SmartFilter.prototype.currentAjax = BX.ajax.get(url, params, function (data) {
-            SmartFilter.prototype.currentAjax = null;
-            //переходим к следующему в очереди, если есть
-            if (SmartFilter.prototype.nextAjax[0] != null) {
-                SmartFilter.prototype.doClick(SmartFilter.prototype.nextAjax[0],SmartFilter.prototype.nextAjax[1]);
-                SmartFilter.prototype.nextAjax = [];
-            } else {
-                let newFilter = $(data).find(SmartFilter.prototype.filter);
-                if (request !== 'sort') {
-                    SmartFilter.prototype.newResult = data;
-                    $('label').each(function () {
-                        let $this = $(this);
-                        if (!$this.prop('for')) {
-                            return;
-                        }
-                        let newInput = newFilter.find('#' + $this.prop('for'));
-                        let currentInput = $(SmartFilter.prototype.filter).find('#' + $this.prop('for'));
-                        if (newInput.prop('disabled')){
-                            $this.addClass('mydisabled');
-                            currentInput.prop('disabled', true);
-                        } else {
-                            $this.removeClass('mydisabled');
-                            currentInput.prop('disabled', false);
-                        }
-                    });
-                    $('#min_price').attr('placeholder', newFilter.find('#min_price').attr('placeholder'));
-                    $('#max_price').attr('placeholder', newFilter.find('#max_price').attr('placeholder'));
-                    $('#min_diameter').attr('placeholder', newFilter.find('#min_diameter').attr('placeholder'));
-                    $('#max_diameter').attr('placeholder', newFilter.find('#max_diameter').attr('placeholder'));
-                    $('#min_length').attr('placeholder', newFilter.find('#min_length').attr('placeholder'));
-                    $('#max_length').attr('placeholder', newFilter.find('#max_length').attr('placeholder'));
+        $.ajax({
+            method: 'get',
+            url: url,
+            data: params,
+            success: function (data) {
+                SmartFilter.prototype.currentAjax = null;
+                //переходим к следующему в очереди, если есть
+                if (SmartFilter.prototype.nextAjax[0] != null) {
+                    SmartFilter.prototype.doClick(SmartFilter.prototype.nextAjax[0],SmartFilter.prototype.nextAjax[1]);
+                    SmartFilter.prototype.nextAjax = [];
+                } else {
+                    let newFilter = $(data).find(SmartFilter.prototype.filter);
+                    if (request !== 'sort') {
+                        SmartFilter.prototype.newResult = data;
+                        $('label').each(function () {
+                            let $this = $(this);
+                            if (!$this.prop('for')) {
+                                return;
+                            }
+                            let newInput = newFilter.find('#' + $this.prop('for'));
+                            let currentInput = $(SmartFilter.prototype.filter).find('#' + $this.prop('for'));
+                            if (newInput.prop('disabled')){
+                                $this.addClass('mydisabled');
+                                currentInput.prop('disabled', true);
+                            } else {
+                                $this.removeClass('mydisabled');
+                                currentInput.prop('disabled', false);
+                            }
+                        });
+                        $('#min_price').attr('placeholder', newFilter.find('#min_price').attr('placeholder'));
+                        $('#max_price').attr('placeholder', newFilter.find('#max_price').attr('placeholder'));
+                        $('#min_diameter').attr('placeholder', newFilter.find('#min_diameter').attr('placeholder'));
+                        $('#max_diameter').attr('placeholder', newFilter.find('#max_diameter').attr('placeholder'));
+                        $('#min_length').attr('placeholder', newFilter.find('#min_length').attr('placeholder'));
+                        $('#max_length').attr('placeholder', newFilter.find('#max_length').attr('placeholder'));
 
-                    SmartFilter.prototype.sortFilterListByActive();
+                        SmartFilter.prototype.sortFilterListByActive();
 
+                    }
+                    $('.items-count').text(newFilter.find('.all-items-count').val());
+                    if(SmartFilter.prototype.applyFilter){
+                        SmartFilter.prototype.applyFilter = false;
+                        SmartFilter.prototype.updateCatalog(url,params, request, data);
+                    }
+                    $('.filter-btn-loader').hide();
                 }
-                $('.items-count').text(newFilter.find('.all-items-count').val());
-                if(SmartFilter.prototype.applyFilter){
-                    SmartFilter.prototype.applyFilter = false;
-                    SmartFilter.prototype.updateCatalog(url,params, request, data);
-                }
-                $('.filter-btn-loader').hide();
-            }
-            $('.lazy-img').lazyLoadXT();
+                $('.lazy-img').lazyLoadXT();
+
+            },
         });
     }
 };
@@ -252,21 +258,27 @@ SmartFilter.prototype.nextPage = function (btn) {
     lds_ring.css('visibility', 'visible');
     $(".load-more-btn-main").hide();
     $(".load-more-btn-loader:not(.filter-btn-loader)").addClass("load-more-btn-loader-visible");
-    BX.ajax.get(btn.data('href'), { 'load_more': 'Y' }, function (data) {
-        $("html, body").animate({scrollTop: $('.catalog__main').offset().top - 55}, 500);
-        let $catalog = $(SmartFilter.prototype.cards);
-        history.pushState(null, null, btn.data('href'));
-        $catalog.html('');
-        $catalog.append($(data).find(SmartFilter.prototype.cards).html());
-        let $navigation = $(SmartFilter.prototype.navigation);
-        let $navString = $(data).find(SmartFilter.prototype.navigation);
-        if ($navString.length > 0) {
-            $navigation.html($navString.html());
-        } else {
-            $navigation.empty();
-        }
-        lds_ring.css('visibility', 'hidden');
-        $('.lazy-img').lazyLoadXT();
+
+    $.ajax({
+        method: 'get',
+        url: btn.data('href'),
+        data: { 'load_more': 'Y' },
+        success: function (data) {
+            $("html, body").animate({scrollTop: $('.catalog__main').offset().top - 55}, 500);
+            let $catalog = $(SmartFilter.prototype.cards);
+            history.pushState(null, null, btn.data('href'));
+            $catalog.html('');
+            $catalog.append($(data).find(SmartFilter.prototype.cards).html());
+            let $navigation = $(SmartFilter.prototype.navigation);
+            let $navString = $(data).find(SmartFilter.prototype.navigation);
+            if ($navString.length > 0) {
+                $navigation.html($navString.html());
+            } else {
+                $navigation.empty();
+            }
+            lds_ring.css('visibility', 'hidden');
+            $('.lazy-img').lazyLoadXT();
+        },
     });
 };
 
@@ -274,20 +286,26 @@ SmartFilter.prototype.goToPageNum = function (btn) {
     btn = $(btn);
     let lds_ring = $('.lds-ring--settings');
     lds_ring.css('visibility', 'visible');
-    BX.ajax.post(btn.data('url'), { 'load_more': 'Y' }, function (data) {
-        $("html, body").animate({scrollTop: $('.catalog__main').offset().top - 55}, 500);
-        let $catalog = $(SmartFilter.prototype.cards);
-        history.pushState(null, null, btn.data('url'));
-        $catalog.html($(data).find(SmartFilter.prototype.cards).html());
-        let $navigation = $(SmartFilter.prototype.navigation);
-        let $navString = $(data).find(SmartFilter.prototype.navigation);
-        if ($navString.length > 0) {
-            $navigation.html($navString.html());
-        } else {
-            $navigation.empty();
-        }
-        lds_ring.css('visibility', 'hidden');
-        $('.lazy-img').lazyLoadXT();
+
+    $.ajax({
+        method: 'get',
+        url: btn.data('url'),
+        data: { 'load_more': 'Y' },
+        success: function (data) {
+            $("html, body").animate({scrollTop: $('.catalog__main').offset().top - 55}, 500);
+            let $catalog = $(SmartFilter.prototype.cards);
+            history.pushState(null, null, btn.data('url'));
+            $catalog.html($(data).find(SmartFilter.prototype.cards).html());
+            let $navigation = $(SmartFilter.prototype.navigation);
+            let $navString = $(data).find(SmartFilter.prototype.navigation);
+            if ($navString.length > 0) {
+                $navigation.html($navString.html());
+            } else {
+                $navigation.empty();
+            }
+            lds_ring.css('visibility', 'hidden');
+            $('.lazy-img').lazyLoadXT();
+        },
     });
 };
 
@@ -594,17 +612,23 @@ $(document).ready(function() {
 
     let params = SmartFilter.prototype.processSearch();
     params.getFilters = 'Y';
-    BX.ajax.post($(location).attr('href'), params, function (data) {
-        $(SmartFilter.prototype.filter).html($(data).find(SmartFilter.prototype.filter).html());
-        resetHandlers();
-        smartFilter.sortFilterListByActive();
-        smartFilter.setFilterButtonsStyle('new');
-        $('.name-h3').each(function () {
-            if ($(this).hasClass('active-name-h3') && !$(this).parent().hasClass('subsections-block')) {
-                smartFilter.clickOnSectionFilter(this);
-            }
-        });
-        $('.lds-ring-container-first').css('display', 'none');
+
+    $.ajax({
+        method: 'post',
+        url: $(location).attr('href'),
+        data: params,
+        success: function (response) {
+            $(SmartFilter.prototype.filter).html($(response).find(SmartFilter.prototype.filter).html());
+            resetHandlers();
+            smartFilter.sortFilterListByActive();
+            smartFilter.setFilterButtonsStyle('new');
+            $('.name-h3').each(function () {
+                if ($(this).hasClass('active-name-h3') && !$(this).parent().hasClass('subsections-block')) {
+                    smartFilter.clickOnSectionFilter(this);
+                }
+            });
+            $('.lds-ring-container-first').css('display', 'none');
+        },
     });
 
     if (targetDeviceType === 'mobile') {

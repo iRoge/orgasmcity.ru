@@ -1,9 +1,20 @@
 function goToPageNum(btn) {
     $("html, body").animate({scrollTop: 0}, 500);
-    BX.ajax.post($(btn).data('url'), '', function (data) {
-        $('.js-event-container').html($(data));
-        trText();
-        history.pushState(null, null, $(btn).data('url'));
+    $.ajax({
+        method: "POST",
+        url: $(btn).data('url'),
+        data: data,
+        dataType: "json",
+        success: function (data) {
+            $('.js-event-container').html($(data));
+            trText();
+            history.pushState(null, null, $(btn).data('url'));
+        },
+        error: function (data) {
+            $('.js-event-container').html($(data));
+            trText();
+            history.pushState(null, null, $(btn).data('url'));
+        }
     });
 }
 

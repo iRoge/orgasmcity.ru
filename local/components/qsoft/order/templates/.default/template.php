@@ -6,7 +6,6 @@ use Bitrix\Main\Config\Option;
 
 $this->addExternalJS("/local/templates/respect/js/jquery.suggestions.js");
 $this->addExternalCss("https://cdn.jsdelivr.net/npm/suggestions-jquery@19.8.0/dist/css/suggestions.min.css");
-$this->addExternalJS("/local/templates/respect/js/select2/select2.min.js");
 
 global $LOCATION;
 $cookieAddress = false;

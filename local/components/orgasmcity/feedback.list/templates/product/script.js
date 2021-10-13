@@ -7,22 +7,28 @@ $(document).ready(function() {
         event.preventDefault();
         let form = $(this);
         let data = form.serialize();
-        BX.ajax.loadJSON('/local/ajax/sendFeedback.php?' + data, function (response) {
-            let errorsWrapper = $('.feedback-errors-wrapper');
-            let successWrapper = $('.feedback-success-wrapper');
-            let errorMessageBlock = $('.js-error-message');
-            let successMessageBlock = $('.js-success-message');
-            let formWrapper = $('.feedback-form-wrapper');
-            if (response['SUCCESS']) {
-                errorsWrapper.hide();
-                successWrapper.show();
-                successMessageBlock.html('Ваш отзыв успешно отправлен' + (response['HAS_ORDER'] ? '!' : ' на модерацию и скоро будет опубликован!'));
-                formWrapper.hide();
-            } else {
-                let errors = response['ERRORS'];
-                errorsWrapper.show();
-                errorMessageBlock.html(errors.join('<br>'));
-            }
+        $.ajax({
+            method: 'get',
+            url: '/local/ajax/sendFeedback.php?' + data,
+            data: {},
+            success: function (response) {
+                response = JSON.parse(response);
+                let errorsWrapper = $('.feedback-errors-wrapper');
+                let successWrapper = $('.feedback-success-wrapper');
+                let errorMessageBlock = $('.js-error-message');
+                let successMessageBlock = $('.js-success-message');
+                let formWrapper = $('.feedback-form-wrapper');
+                if (response['SUCCESS']) {
+                    errorsWrapper.hide();
+                    successWrapper.show();
+                    successMessageBlock.html('Ваш отзыв успешно отправлен' + (response['HAS_ORDER'] ? '!' : ' на модерацию и скоро будет опубликован!'));
+                    formWrapper.hide();
+                } else {
+                    let errors = response['ERRORS'];
+                    errorsWrapper.show();
+                    errorMessageBlock.html(errors.join('<br>'));
+                }
+            },
         });
         return false;
     })

@@ -1,6 +1,6 @@
 $(function () {
     $(document).on('update-basket-small', function () {
-        $.ajax(BX.message('BASKET_SMALL_AJAX_PATH'), {
+        $.ajax('/local/templates/respect/components/likee/basket.small/.default/ajax.php', {
             dataType: 'json',
             success: function (response) {
                 var basket = $('#basket-small');

@@ -11,7 +11,7 @@ $APPLICATION->SetAdditionalCss("/local/templates/respect/css/application.css");
 Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
 ?>
 <div class="main">
-    <? $APPLICATION->IncludeComponent(
+    <?php $APPLICATION->IncludeComponent(
         "bitrix:breadcrumb",
         "",
         array(
@@ -22,7 +22,7 @@ Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
     ); ?>
     <div class="zagolovok-wrapper">
         <div class="zagolovok-background">
-            <h1 class="zagolovok"><? $APPLICATION->ShowTitle(false); ?></h1>
+            <h1 class="zagolovok"><?php $APPLICATION->ShowTitle(false); ?></h1>
         </div>
     </div>
     <div class="info-page-wrapper">
@@ -42,4 +42,4 @@ Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
     </div>
 </div>
 
-<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

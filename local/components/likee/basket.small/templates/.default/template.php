@@ -20,9 +20,3 @@ $this->setFrameMode(true);
         <span class="shortcut-informer"><?= $arResult['COUNT']; ?></span>
     <? endif; ?>
 </a>
-
-<script style="display: none;">
-    BX.message({
-        'BASKET_SMALL_AJAX_PATH': '<?= $templateFolder; ?>/ajax.php'
-    });
-</script>

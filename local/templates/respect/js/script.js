@@ -96,6 +96,26 @@ $(function () {
 });
 
 $(document).ready(function () {
+    let getUrlParameter = function getUrlParameter(sParam) {
+        let sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+    let showFeedbackForm = getUrlParameter('WEB_FORM_ID') && getUrlParameter('RESULT_ID');
+    if (showFeedbackForm) {
+        $('.mail-div').toggle(0);
+        $('.podlozhka').toggle(0);
+        $('.mail-div .popup').show(0);
+    }
     $('.lazy-img').lazyLoadXT();
 
     let regForm = $('#reg-form-popup'),
@@ -413,20 +433,27 @@ $(document).ready(function () {
     $(document).on('click', '.js-favour-heart', function () {
         let button = $(this);
         button.toggleClass('active');
-        BX.ajax.post('/catalog/favorites/', 'changeFavourite=Y&ID=' + $(this).data('id'), function (response) {
-            response = JSON.parse(response);
-            if (response.res == 'error') {
-                button.toggleClass('active');
-                Popup.show('<div style="text-align: center; padding: 0 40px;"><article style="font-size: 1.4em;">' + response.text + '</article></div>');
-            } else {
-                let count = Number($('.count--heart.in-full').text());
-                if (response.res == 'add') {
-                    $('.count--heart').text(++count);
-                    ym(82799680, 'reachGoal', 'favourite_add');
+        $.ajax({
+            method: 'post',
+            url: '/catalog/favorites/',
+            data: {
+                changeFavourite: 'Y',
+                ID: $(this).data('id'),
+            },
+            success: function (response) {
+                if (response['res'] === 'error') {
+                    button.toggleClass('active');
+                    Popup.show('<div style="text-align: center; padding: 0 40px;"><article style="font-size: 1.4em;">' + response.text + '</article></div>');
                 } else {
-                    $('.count--heart').text(--count);
+                    let count = Number($('.count--heart.in-full').text());
+                    if (response['res'] == 'add') {
+                        $('.count--heart').text(++count);
+                        ym(82799680, 'reachGoal', 'favourite_add');
+                    } else {
+                        $('.count--heart').text(--count);
+                    }
                 }
-            }
+            },
         });
     });
 });

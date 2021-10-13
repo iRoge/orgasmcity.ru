@@ -5,14 +5,20 @@ $(function () {
         var btn = $(this);
         btn.addClass('shortcut--active');
 
-        BX.ajax.loadJSON(btn.attr('href'), {ajax_basket: 'Y'}, function (response) {
-            if (response.STATUS && response.STATUS == 'OK') {
-                btn.addClass('shortcut--active');
-            } else {
-                btn.removeClass('shortcut--active');
-            }
+        $.ajax({
+            method: 'get',
+            url: '/local/ajax/sendFeedback.php?' + data,
+            data: {},
+            success: function (response) {
+                response = JSON.parse(response);
+                if (response.STATUS && response.STATUS == 'OK') {
+                    btn.addClass('shortcut--active');
+                } else {
+                    btn.removeClass('shortcut--active');
+                }
 
-            $(document).trigger('update-basket-small', response);
+                $(document).trigger('update-basket-small', response);
+            },
         });
     });
 });
