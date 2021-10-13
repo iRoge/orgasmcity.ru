@@ -1,5 +1,6 @@
 <?php
 
+use Bitrix\Sale\Internals\OrderCouponsTable;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -62,6 +63,7 @@ if ($_POST['download'] == 'Скачать' && empty($errors)) {
     $optSum = 0;
     $arProfitByCampaigns = [];
     $arProfitBySources = [];
+    $arProfitByCoupons = [];
     while ($order = $rsOrders->GetNext()) {
         $dbOrderProps = CSaleOrderPropsValue::GetList(
             [],
@@ -78,6 +80,11 @@ if ($_POST['download'] == 'Скачать' && empty($errors)) {
         $optSum += $arProps['SUPPLIER_COST'];
         $agentSum += $agentsMoney;
         $deliverySum += $order['PRICE_DELIVERY'];
+        $coupon = OrderCouponsTable::getList([
+            'select' => ['COUPON'],
+            'filter' => ['=ORDER_ID' => $order['ID']]
+        ])->fetch();
+        $couponName = $coupon ? $coupon['COUPON'] : '';
         $worksheet->setCellValueExplicit('A' . $currentRow, $order['ID'], 's');
         $worksheet->setCellValueExplicit('B' . $currentRow, round($order['PRICE'], 2), 's');
         $worksheet->setCellValueExplicit('C' . $currentRow, round($order['PRICE_DELIVERY'], 2), 's');
@@ -86,6 +93,17 @@ if ($_POST['download'] == 'Скачать' && empty($errors)) {
         $worksheet->setCellValueExplicit('F' . $currentRow, $arProps['UTM_CAMPAIGN'], 's');
         $worksheet->setCellValueExplicit('G' . $currentRow, $arProps['UTM_SOURCE'], 's');
         $worksheet->setCellValueExplicit('H' . $currentRow,  round($profit, 2), 's');
+        $worksheet->setCellValueExplicit('I' . $currentRow,  $couponName, 's');
+        if ($couponName) {
+            if (!isset($arProfitByCoupons[$couponName])) {
+                $arProfitByCoupons[$couponName] = [
+                    'COUNT' => 0,
+                    'PROFIT' => 0,
+                ];
+            }
+            $arProfitByCoupons[$couponName]['COUNT']++;
+            $arProfitByCoupons[$couponName]['PROFIT'] += $profit;
+        }
         if (!isset($arProfitBySources[$arProps['UTM_SOURCE']])) {
             $arProfitBySources[$arProps['UTM_SOURCE']] = [
                 'COUNT' => 0,
@@ -110,6 +128,18 @@ if ($_POST['download'] == 'Скачать' && empty($errors)) {
     $worksheet->setCellValueExplicit('D' . $currentRow, round($agentSum, 2), 's');
     $worksheet->setCellValueExplicit('E' . $currentRow, round($optSum, 2), 's');
     $worksheet->setCellValueExplicit('H' . $currentRow,  round($profitSum, 2), 's');
+
+    // Прибыль по купонам
+    $worksheet->setCellValueExplicit('U1',  'Купон', 's');
+    $worksheet->setCellValueExplicit('V1',  'Кол-во заказов', 's');
+    $worksheet->setCellValueExplicit('W1',  'Прибыль', 's');
+    $currentRow = 2;
+    foreach ($arProfitByCoupons as $coupon => $data) {
+        $worksheet->setCellValueExplicit('U' . $currentRow, $coupon, 's');
+        $worksheet->setCellValueExplicit('V' . $currentRow, round($data['COUNT'], 2), 's');
+        $worksheet->setCellValueExplicit('W' . $currentRow,  round($data['PROFIT'], 2), 's');
+        $currentRow++;
+    }
 
     // Прибыль по utm_campaign
     $worksheet->setCellValueExplicit('M1',  'Кампания', 's');
