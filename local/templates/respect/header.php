@@ -189,7 +189,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             clickmap:true,
             trackLinks:true,
             accurateTrackBounce:true,
-            webvisor: false,
+            webvisor: true,
             ecommerce:"metrikaData"
         });
     </script>
