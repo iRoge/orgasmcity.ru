@@ -3789,10 +3789,13 @@ input::-webkit-inner-spin-button {
     top: -41px;
     width: 100px;
     padding: 13px 10px 13px 0;
+    background-size: cover;
+}
+
+.opisanie-after h2 {
     font-family: 'gilroyMedium';
     text-align: center;
     color: #000000;
-    background-size: cover;
     font-size: 23px;
     line-height: 27px;
     font-weight: 600;

@@ -1338,7 +1338,7 @@ a.footer-element:hover {
     text-decoration: none;
 }
 
-.footer-block h4 {
+.footer-block h3 {
     font-weight: 600;
     font-size: 18px;
     line-height: 21px;
@@ -1390,7 +1390,7 @@ a.footer-element:hover {
         text-align: center;
     }
 
-    .footer-block h4 {
+    .footer-block h3 {
         text-align: center;
         width: 100%;
     }

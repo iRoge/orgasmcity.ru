@@ -14,7 +14,7 @@
 
 ?>
 <div class="left-block-title">
-    Отзывы о товаре:
+    <h2>Отзывы о товаре:</h2>
 </div>
 <div class="product-feedback-wrapper">
     <?php if (!empty($arResult['ITEMS'])) { ?>
@@ -53,7 +53,7 @@
 </div>
 <div class="feedback-form-wrapper">
     <div class="left-block-title">
-        Оставить отзыв:
+        <h2>Оставить отзыв:</h2>
     </div>
     <form method="post" class="feedback-form" action="" enctype="multipart/form-data">
         <input hidden name="PRODUCT_ID" type="text" value="<?=$arResult['PRODUCT_ID']?>">

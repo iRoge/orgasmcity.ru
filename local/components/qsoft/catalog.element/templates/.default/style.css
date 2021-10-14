@@ -587,16 +587,19 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
-    line-height: 31px;
-    font-family: gilroyMedium;
-    color: #FFFFFF;
     width: 278px;
     height: 50px;
     background: linear-gradient(82.67deg, #A18CD1 9.66%, #FBC2EB 102.17%);
     border-bottom-right-radius: 35px;
     border-top-left-radius: 35px;
     margin: 40px 0 20px 0;
+}
+
+.left-block-title h2 {
+    font-size: 26px;
+    line-height: 31px;
+    font-family: gilroyMedium;
+    color: #FFFFFF;
 }
 
 .left-block-title-revert {
@@ -634,5 +637,5 @@ input[type="number"] {
 }
 
 .product-detail-card-price-wrapper {
-    width: 40%;
+    width: 50%;
 }

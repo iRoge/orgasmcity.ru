@@ -65,7 +65,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                     </div>
                     <?php if ($arResult['DETAIL_TEXT']) :?>
                         <div class="hidden-xs left-block-title left-block-title-revert">
-                            Описание товара:
+                            <h2>Описание товара:</h2>
                         </div>
                         <div class="hidden-xs detail-element-text">
                             <?=$arResult['DETAIL_TEXT']?>
@@ -296,7 +296,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                     </div>
                                 <?php endif; ?>
                             <?php endforeach; ?>
-                            <div class="opisanie-after"><?= Loc::getMessage("DESCRIPTION_HEADER") ?></div>
+                            <div class="opisanie-after"><h2><?=Loc::getMessage("DESCRIPTION_HEADER")?></h2></div>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -330,7 +330,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                         <?php endforeach; ?>
                         <?php if ($arResult['DETAIL_TEXT']) :?>
                             <div class="left-block-title left-block-title-revert">
-                                Описание товара:
+                                <h2>Описание товара:</h2>
                             </div>
                             <div class="detail-element-text">
                                 <?=$arResult['DETAIL_TEXT']?>
