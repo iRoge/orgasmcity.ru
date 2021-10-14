@@ -569,7 +569,7 @@ class QsoftCatalogElement extends ComponentHelper
             if ($this->arResult["META_TAGS"]["KEYWORDS"]) {
                 $APPLICATION->SetPageProperty("keywords", $this->arResult["META_TAGS"]["KEYWORDS"]);
             } else {
-                $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS . ', ' . $this->getKeywordsByString($this->arResult['NAME']));
+                $APPLICATION->SetPageProperty("keywords", 'секс, шоп, ' . $this->getKeywordsByString($this->arResult['NAME']));
             }
         }
 
@@ -577,7 +577,15 @@ class QsoftCatalogElement extends ComponentHelper
             if ($this->arResult["META_TAGS"]["DESCRIPTION"]) {
                 $APPLICATION->SetPageProperty("description", $this->arResult["META_TAGS"]["DESCRIPTION"]);
             } else {
-                $APPLICATION->SetPageProperty("description", mb_strimwidth($this->arResult["NAME"] . '. ' . $this->arResult['DETAIL_TEXT'], 0, 150, "..."));
+                $APPLICATION->SetPageProperty(
+                    "description",
+                    "Купить товар "
+                    . $this->arResult["NAME"] . ". Цена " . $this->arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] . " рублей."
+                    . ($this->arResult["DISPLAY_PROPERTIES"]["vendor"]["VALUE"] ? " Бренд - " . $this->arResult["DISPLAY_PROPERTIES"]["vendor"]["VALUE"] . "." : "")
+                    . ($this->arResult["DISPLAY_PROPERTIES"]["country"]["VALUE"] ? " Страна производства - " . $this->arResult["DISPLAY_PROPERTIES"]["country"]["VALUE"] . "." : "")
+                    . ($this->arResult["DISPLAY_PROPERTIES"]["year"]["VALUE"] ? " Год - " . $this->arResult["DISPLAY_PROPERTIES"]["year"]["VALUE"] . "." : "")
+                    . " Анонимная доставка по всей России."
+                );
             }
         }
 
