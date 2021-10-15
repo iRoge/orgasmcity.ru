@@ -1689,7 +1689,7 @@ class QsoftOrderComponent extends ComponentHelper
         $orderId = $order->getId();
 
         if (!$this->checkType(["1click"]) && $paymentWay && $paymentWay['PREPAYMENT'] == 'Y') {
-            CEvent::Send("ORDER_CREATE", SITE_ID,
+            CEvent::Send("ORDER_CREATE_PREPAYMENT", SITE_ID,
                 [
                     "EMAIL_TO" => $this->postProps['EMAIL'],
                     "ORDER_ID" => $orderId,
@@ -1698,7 +1698,7 @@ class QsoftOrderComponent extends ComponentHelper
                 ]
             );
         } else {
-            CEvent::Send("ORDER_CREATE_PREPAYMENT", SITE_ID,
+            CEvent::Send("ORDER_CREATE", SITE_ID,
                 [
                     "EMAIL_TO" => $this->postProps['EMAIL'],
                     "ORDER_ID" => $orderId,

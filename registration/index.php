@@ -1,7 +1,9 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Регистрация");
-$APPLICATION->SetPageProperty('HIDE_INSTAGRAM', 'Y');
+$APPLICATION->SetPageProperty("keywords", 'город, оргазм, регистрация, секс, шоп');
+$APPLICATION->SetPageProperty("description", "Регистрация в Городе Оргазма за 20 секунд");
+$APPLICATION->SetPageProperty("title", 'Регистрация. Город Оргазма');
 
 global $USER;
 if ($USER->IsAuthorized()) {
