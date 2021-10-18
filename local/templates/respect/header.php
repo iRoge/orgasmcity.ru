@@ -456,7 +456,8 @@ $bContentContainer = $bShowTitle
     && !CSite::InDir(SITE_DIR . 'company_delivery/')
     && !CSite::InDir(SITE_DIR . 'company_price_garanty/')
     && !CSite::InDir(SITE_DIR . 'company_repayment/')
-    && !CSite::InDir(SITE_DIR . 'company_payment/');
+    && !CSite::InDir(SITE_DIR . 'company_payment/')
+    && !CSite::InDir(SITE_DIR . 'order-success/');
 
 ?>
 
