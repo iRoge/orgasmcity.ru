@@ -39,7 +39,7 @@ if ($success == 'true') {
                 $onePayment->setPaid("Y"); // выставляем оплату
                 CEvent::Send("ORDER_PAID", SITE_ID,
                     [
-                        "EMAIL_TO" => $this->request->get('EMAIL'),
+                        "EMAIL_TO" => $order->getField('EMAIL'),
                         "SERVER_NAME" => DOMAIN_NAME,
                         "ORDER_ID" => $order->getId(),
                         "PRICE" => $order->getPrice()

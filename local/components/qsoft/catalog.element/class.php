@@ -577,10 +577,11 @@ class QsoftCatalogElement extends ComponentHelper
             if ($this->arResult["META_TAGS"]["DESCRIPTION"]) {
                 $APPLICATION->SetPageProperty("description", $this->arResult["META_TAGS"]["DESCRIPTION"]);
             } else {
+                $price = $this->arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'];
                 $APPLICATION->SetPageProperty(
                     "description",
                     "Купить товар "
-                    . $this->arResult["NAME"] . ". Цена " . $this->arResult['MIN_PRICE_OFFER']['PROPERTIES']['PRICE']['VALUE'] . " рублей."
+                    . $this->arResult["NAME"] . ($price ? ". Цена " . $price . " рублей." : "")
                     . ($this->arResult["DISPLAY_PROPERTIES"]["vendor"]["VALUE"] ? " Бренд - " . $this->arResult["DISPLAY_PROPERTIES"]["vendor"]["VALUE"] . "." : "")
                     . ($this->arResult["DISPLAY_PROPERTIES"]["country"]["VALUE"] ? " Страна производства - " . $this->arResult["DISPLAY_PROPERTIES"]["country"]["VALUE"] . "." : "")
                     . ($this->arResult["DISPLAY_PROPERTIES"]["year"]["VALUE"] ? " Год - " . $this->arResult["DISPLAY_PROPERTIES"]["year"]["VALUE"] . "." : "")
