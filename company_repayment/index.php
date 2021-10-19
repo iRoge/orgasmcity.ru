@@ -1,10 +1,6 @@
 <?php
 use Bitrix\Main\Page\Asset;
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetTitle("Возврат товаров");
-$APPLICATION->SetPageProperty("title", 'Возврат. Город Оргазма');
-$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
-$APPLICATION->SetPageProperty("description", "Информация о совершении возврата в городе оргазма. Если у Вас имеются претензии к качеству товара, купленного в нашем интернет-магазине, или возникла необходимость его возврата/обмена по каким-либо причинам, вы можете написать нам на почту return@orgasmcity.ru");
 Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
 ?>
 <div class="main">
@@ -39,4 +35,10 @@ Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
         </div>
     </div>
 </div>
-<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+<?php
+$APPLICATION->SetTitle("Возврат товаров");
+$APPLICATION->SetPageProperty("title", 'Возврат. Город Оргазма');
+$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
+$APPLICATION->SetPageProperty("description", "Информация о совершении возврата в городе оргазма. Если у Вас имеются претензии к качеству товара, купленного в нашем интернет-магазине, или возникла необходимость его возврата/обмена по каким-либо причинам, вы можете написать нам на почту return@orgasmcity.ru");
+
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
