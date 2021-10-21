@@ -53,7 +53,10 @@ while ($arOrder = $rsOrders->GetNext())
 		array(
 			"ORDER_ID" => $arOrder["ID"],
 			"CODE" => "P5S_ID"
-		)
+		),
+        false,
+        false,
+        ['*']
 	);
 	if ($arProp = $dbProps->Fetch())
 	{
@@ -97,12 +100,18 @@ while ($arOrder = $rsOrders->GetNext())
 						$order_status = intval($xml->Orders->Orders_Item->status);
 						if ($status_arr[$order_status] != "" and $status_arr[$order_status] != $arOrder["STATUS_ID"])
 						{
-							//echo $status_arr[$order_status]."<br>";
+                            $email = CSaleOrderPropsValue::GetList(
+                                array("SORT" => "ASC"),
+                                array(
+                                    "ORDER_ID" => $arOrder["ID"],
+                                    "CODE" => "EMAIL"
+                                )
+                            )->GetNext()['VALUE'];
 							CSaleOrder::StatusOrder($arOrder["ID"], $status_arr[$order_status]);
 							if (in_array($order_status, [6, 11])) {
                                 CEvent::Send("ORDER_SEND", SITE_ID,
                                     [
-                                        "EMAIL_TO" => $arOrder['EMAIL'],
+                                        "EMAIL_TO" => $email,
                                         "SERVER_NAME" => DOMAIN_NAME,
                                         "ORDER_ID" => $arOrder["ID"],
                                     ]
@@ -111,7 +120,7 @@ while ($arOrder = $rsOrders->GetNext())
                             if ($order_status == 9) {
                                 CEvent::Send("ORDER_ASSEMBLY", SITE_ID,
                                     [
-                                        "EMAIL_TO" => $arOrder['EMAIL'],
+                                        "EMAIL_TO" => $email,
                                         "SERVER_NAME" => DOMAIN_NAME,
                                         "ORDER_ID" => $arOrder["ID"],
                                     ]
@@ -120,7 +129,7 @@ while ($arOrder = $rsOrders->GetNext())
                             if ($status_arr[$order_status] == 7) {
                                 CEvent::Send("ORDER_DELIVERED", SITE_ID,
                                     [
-                                        "EMAIL_TO" => $arOrder['EMAIL'],
+                                        "EMAIL_TO" => $email,
                                         "SERVER_NAME" => DOMAIN_NAME,
                                         "ORDER_ID" => $arOrder["ID"],
                                     ]
