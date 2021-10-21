@@ -53,11 +53,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['OFFERS'][] = $offer;
         }
 
-        if ($GLOBALS['device_type'] == 'mobile') {
-            $numImgs = 12;
-        } else {
-            $numImgs = 15;
-        }
+        $numImgs = 5;
         if (count($arItems) > $numImgs) {
             $randKeys = array_rand($arItems, $numImgs);
             $arRandItems = [];

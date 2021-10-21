@@ -16,7 +16,7 @@ $this->setFrameMode(true);
 <?php if (!empty($arResult['ITEMS'])) {?>
     <div class="default-section">
         <h2 class="default-header">Наши бренды</h2>
-        <div id="brands-list" class="main">
+        <div class="brands-list main">
             <?php foreach ($arResult['ITEMS'] as $arItem) { ?>
                 <div class="brand-card">
                     <a href="<?=$arItem['SECTION_PAGE_URL'];?>" title="<?=$arItem['NAME'];?>" class="brand-card-wrapper" style="text-decoration: none">

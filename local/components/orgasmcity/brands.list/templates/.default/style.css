@@ -1,3 +1,11 @@
+.brands-list {
+    display: flex!important;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0 15px;
+}
+
 .brand-card-wrapper {
     background: #FFFFFF;
     position: relative;
@@ -16,7 +24,8 @@
 }
 
 .brand-card {
-    margin: 0 15px;
+    width: 18%;
+    margin: 15px;
 }
 
 .card__img-box {

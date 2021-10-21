@@ -12,7 +12,7 @@ class BrandsList extends \CBitrixComponent
     {
         $allBrands = Functions::getAllBrands();
 
-        $this->arResult['ITEMS'] = array_slice($allBrands, 0, 18);
+        $this->arResult['ITEMS'] = array_slice($allBrands, 0, 15);
 
         $this->includeComponentTemplate();
     }
