@@ -99,7 +99,7 @@ while ($arOrder = $rsOrders->GetNext())
 						{
 							//echo $status_arr[$order_status]."<br>";
 							CSaleOrder::StatusOrder($arOrder["ID"], $status_arr[$order_status]);
-							if (in_array($status_arr[$order_status], ['SP', 'SC'])) {
+							if (in_array($order_status, [6, 11])) {
                                 CEvent::Send("ORDER_SEND", SITE_ID,
                                     [
                                         "EMAIL_TO" => $arOrder['EMAIL'],
@@ -108,7 +108,7 @@ while ($arOrder = $rsOrders->GetNext())
                                     ]
                                 );
                             }
-                            if ($status_arr[$order_status] == "IC") {
+                            if ($order_status == 9) {
                                 CEvent::Send("ORDER_ASSEMBLY", SITE_ID,
                                     [
                                         "EMAIL_TO" => $arOrder['EMAIL'],
@@ -117,7 +117,7 @@ while ($arOrder = $rsOrders->GetNext())
                                     ]
                                 );
                             }
-                            if ($status_arr[$order_status] == "F") {
+                            if ($status_arr[$order_status] == 7) {
                                 CEvent::Send("ORDER_DELIVERED", SITE_ID,
                                     [
                                         "EMAIL_TO" => $arOrder['EMAIL'],
