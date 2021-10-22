@@ -414,14 +414,14 @@ if (!$arResult['IS_AJAX']) {
                                                 <div class="product-icons-wrap">
                                                     <!--                            <img src="" alt="">-->
                                                     <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
-                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
+                                                        <img height="100%" width="100%" style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
                                                     <?php } ?>
                                                     <?php if ($arItem['PROPERTY_NEW_VALUE']) { ?>
-                                                        <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
+                                                        <img height="100%" width="100%" style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
                                                     <?php } ?>
                                                     <?php if ($arItem['DISCOUNT']) { ?>
                                                         <?php if ($arItem['DISCOUNT_DATE_TO']) { ?>
-                                                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                                                            <img height="100%" width="100%" style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
                                                         <?php } ?>
                                                         <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                                                     <?php } ?>
@@ -433,7 +433,7 @@ if (!$arResult['IS_AJAX']) {
                                                 </button>
                                                 <a target="_blank" class="product-href-wrapper" href="<?=$arItem["DETAIL_PAGE_URL"]?>">
                                                     <div class="product-img-wrapper">
-                                                        <img class="product-img lazy-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
+                                                        <img height="100%" width="100%" class="product-img lazy-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
                                                     </div>
                                                     <span class="product-title"><?=$arItem['NAME']?></span>
                                                 </a>

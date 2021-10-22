@@ -10,12 +10,15 @@
     width: 207px;
     height: 44px;
 }
+
 .load-more-btn-main {
     display:inline-block;
 }
+
 .load-more-btn {
     cursor: pointer;
 }
+
 .load-more-btn-loader-visible {
     display:inline-block !important;
     vertical-align: middle !important;

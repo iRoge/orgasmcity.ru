@@ -4,7 +4,6 @@ $(function () {
 
         var form = $(this),
             data = form.serializeArray();
-
         $.post(form.attr('action'), data);
     });
 });

@@ -14,7 +14,7 @@ global $LOCATION;
         </div>
     </div>
     <span class="user-region">Ваш регион <br> для доставки: </span>
-    <img class="location-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/svg/placeholder.svg"/>
+    <img height="31px" width="31px" class="location-icon" src="<?= SITE_TEMPLATE_PATH ?>/img/svg/placeholder.svg"/>
     <span class="current-locality"><?= $arResult['LOCATION_NAME'] ?></span>
 </div>
 

@@ -7,7 +7,6 @@ $(document).ready(function(){
     if (arOnlinePaymentIds) {
         arOnlinePaymentIdsInt = arOnlinePaymentIds.map(item => parseInt(item));
     }
-
     function basketAddProd(el, quantity) {
         let productData = el.data();
         let data = {

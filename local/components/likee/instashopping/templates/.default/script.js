@@ -8,7 +8,6 @@
                 + '</div>'
                 + '<div class="column-5 column-md-2">' + $media.find('.lis__media-full').html() + '</div>'
                 + '</div>';
-
             Popup.show(html);
         });
         $('.js-lis-section').on('click', ' .js-load-more-btn', function (e) {

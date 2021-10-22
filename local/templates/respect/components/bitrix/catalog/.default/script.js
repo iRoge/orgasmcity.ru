@@ -15,6 +15,7 @@ $(function () {
     $(document).ready(function (){
         window.changeNameSel();
     });
+    
     $('.tiles-icons').on('click', function(){
         two_column_change.toggleClass('active');
         one_column_change.toggleClass('active');

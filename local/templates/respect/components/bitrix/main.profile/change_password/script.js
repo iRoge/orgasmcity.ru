@@ -3,7 +3,6 @@ $(function () {
 
     form.on('submit', function (e) {
         e.preventDefault();
-
         var th = $(this),
             data = th.serializeArray(),
             button = th.find('button[type=submit]');

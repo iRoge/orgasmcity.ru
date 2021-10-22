@@ -16,7 +16,6 @@
         this.loadList();
       }
     }
-
     ShopList.prototype.loadList = function(url) {
       if (url == null) {
         url = window.application.getUrl('shopList');

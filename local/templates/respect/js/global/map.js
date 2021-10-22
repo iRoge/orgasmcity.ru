@@ -11,7 +11,6 @@
         zoom: 8
       }
     };
-
     function GoogleMapView(wrapper, options) {
       var bounds, i, item, len, marker, page, ref;
       if (options == null) {

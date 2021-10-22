@@ -7,7 +7,6 @@
     };
 
     Popup.timeout = 0;
-
     Popup.init = function() {
       $(document).on('mouseup', (function(_this) {
         return function(event) {

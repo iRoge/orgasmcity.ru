@@ -9,7 +9,6 @@ $(function () {
 
             BX.ajax.get(btn.attr('href'), {action: 'get_buy_modal'}, function (response) {
                 var form = $(response);
-
                 Popup.show(form, {
                     className: 'popup--size',
                     title: 'Выберите размер',

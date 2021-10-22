@@ -11,6 +11,5 @@ $(document).on('click', '.js-load-more-btn', function (e) {
         section.append(html);
         section.find('.news-container').removeClass('in-view');
     });
-
     $('.js-news-section').removeClass('catalog-preloader');
 });

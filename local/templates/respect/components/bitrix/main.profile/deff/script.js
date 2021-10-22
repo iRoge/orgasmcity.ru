@@ -8,7 +8,6 @@ function removeElement(arr, sElement)
 	tmp = null;
 	return arr;
 }
-
 function SectionClick(id)
 {
 	var div = document.getElementById('user_div_'+id);

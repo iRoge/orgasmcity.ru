@@ -9,7 +9,6 @@
     flex-wrap: wrap;
     padding: 12px 25px;
 }
-
 @media (max-width: 767px) {
     .default-header {
         margin-top: 20px;

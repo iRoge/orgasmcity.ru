@@ -18,7 +18,6 @@
         slidesToShow: 1
       });
     };
-
     BonusesPage.prototype._fromMobile = function() {
       return $('.bonuses-items').slick('unslick');
     };

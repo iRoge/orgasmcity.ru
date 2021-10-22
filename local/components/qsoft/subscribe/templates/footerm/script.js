@@ -12,6 +12,7 @@ $(function () {
                 errCount += 1;
             }
         } else {
+
             $email.before('<p class="error">Поле Email обязательно для заполнения.</p>');
             $email.addClass("red_border_sub");
             errCount += 1;

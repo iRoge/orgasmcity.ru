@@ -11,6 +11,7 @@ $(function () {
         })
     })
 });
+
 $('#purchase-show').click(function(){
     $(".bonus-check").toggle();
 });  

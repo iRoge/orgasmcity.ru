@@ -9,7 +9,6 @@ function horizontalWheel(eve) {
   }
   this.scrollLeft += eve.deltaY;
 }
-
 /**
  * Scroll horizontally with mouse wheel over a given Node Element.
  * @param {Node Element} [node] - A Node Element.

@@ -10,7 +10,6 @@ filtered_form = {
         } else {
             filtered_form.havepaysystem = 2;
         }
-
         filtered_form.pvz = [];
         if (filtered_form.filter_form.elements.pvz.length > 0) {
             filtered_form.filter_form.elements.pvz.forEach(function (item) {

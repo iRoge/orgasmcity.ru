@@ -24,7 +24,6 @@ function change(select) {
 }
 
 let blockResizeText = false;
-
 (function ($) {
     let truncate = function (el) {
         let text = el.text(),

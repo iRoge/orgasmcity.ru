@@ -11,7 +11,6 @@
         return new SkuPopup(element);
       });
     };
-
     function SkuPopup(element) {
       this._element = $(element);
       this._element.data('sku-popup', this);

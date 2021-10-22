@@ -21,7 +21,6 @@
 }(this, function ($) {
 
 // This file will be UMDified by a build task.
-
 var defaults = {
 		animation: 'fade',
 		animationDuration: 350,

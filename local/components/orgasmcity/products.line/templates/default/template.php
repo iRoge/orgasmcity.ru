@@ -22,13 +22,13 @@ $this->setFrameMode(true);
                 <div class="product-card-wrapper">
                     <div class="product-icons-wrap">
                         <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
-                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
+                            <img height="100%" width="100%" style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
                         <?php } ?>
                         <?php if ($arItem['PROPERTY_NEW_VALUE']) { ?>
-                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
+                            <img height="100%" width="100%" style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
                         <?php } ?>
                         <?php if ($arItem['DISCOUNT']) { ?>
-                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                            <img height="100%" width="100%" style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
                             <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                         <?php } ?>
                     </div>

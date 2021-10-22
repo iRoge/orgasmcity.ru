@@ -10,6 +10,7 @@ input#EMAIL.red_border_sub {
     pointer-events: auto;
 }
 
+
 #subscribe-message a {
     color: #fd7778;
     transition: opacity 300ms;

@@ -1,26 +1,31 @@
 @font-face {
     src: url('../fonts/gilroy-bold.woff2');
     font-family: 'gilroyBold';
+    font-display: swap;
 }
 
 @font-face {
     src: url('../fonts/gilroy-semibold.woff2');
     font-family: 'gilroySemiBold';
+    font-display: swap;
 }
 
 @font-face {
     src: url('../fonts/gilroy-regular.woff2');
     font-family: 'gilroyRegular';
+    font-display: swap;
 }
 
 @font-face {
     src: url('../fonts/gilroy-medium.woff2');
     font-family: 'gilroyMedium';
+    font-display: swap;
 }
 
 @font-face {
     src: url('../fonts/gilroy-thin.woff2');
     font-family: 'gilroyThin';
+    font-display: swap;
 }
 
 
@@ -2686,7 +2691,7 @@ a {
     display: block;
 }
 
-.blue-menu-div-div ul {
+.blue-menu-div-div .blue-menu-div-hidden {
     margin-top: 10px;
     padding: 0 20px;
     margin-left: 0;
@@ -2694,26 +2699,22 @@ a {
     display: none;
 }
 
-.blue-menu-div-div > ul a /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden a /* Anatoliy Mitrofanov 2019-01-15 */
 {
     color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
-.blue-menu-div-div > ul > li /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element /* Anatoliy Mitrofanov 2019-01-15 */
 {
     display: block;
-}
-
-.blue-menu-div-div > ul > li > a /* Anatoliy Mitrofanov 2019-01-15 */
-{
     position: relative;
     padding: 5px 0;
     display: block;
 }
 
-.blue-menu-div-div > ul > li > a > img /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element > img /* Anatoliy Mitrofanov 2019-01-15 */
 {
     position: absolute;
     top: calc(50% - 20px);
@@ -2722,7 +2723,7 @@ a {
     width: 10%;
 }
 
-.blue-menu-div-div > ul > li > a > img /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element > img /* Anatoliy Mitrofanov 2019-01-15 */
 {
     position: absolute;
     top: calc(50% - 20px);
@@ -2731,35 +2732,35 @@ a {
     width: 10%;
 }
 
-.blue-menu-div-div > ul > li.active-a-li > a /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element.active-a-li /* Anatoliy Mitrofanov 2019-01-15 */
 {
     color: #654670 !important;
     font-family: 'firamedium';
 }
 
-.blue-menu-div-div > ul > li.active-a-li > img.img-b /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element.active-a-li > img.img-b /* Anatoliy Mitrofanov 2019-01-15 */
 {
     display: block;
     float: right;
 }
 
-.blue-menu-div-div > ul > li.active-a-li > img.img-g /* Anatoliy Mitrofanov 2019-01-15 */
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element.active-a-li > img.img-g /* Anatoliy Mitrofanov 2019-01-15 */
 {
     display: none;
     float: right;
 }
 
-.blue-menu-div-div > ul > a {
+.blue-menu-div-div > .blue-menu-div-hidden {
     color: #000000;
     font-family: 'gilroyRegular';
     font-size: 16px;
 }
 
-.blue-menu-div-div > ul > a > li {
-    margin: 15px 0;
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element {
+    margin: 10px 0;
 }
 
-.blue-menu-div-div > ul > a > li.active-a-li {
+.blue-menu-div-div > .blue-menu-div-hidden > .blue-menu-div-element.active-a-li {
     color: #654670 !important;
     font-family: 'firamedium';
 }
@@ -7093,7 +7094,6 @@ label.color-label {
 .lazy-hidden {
     opacity: 0
 }
-
 .lazy-loaded {
     -webkit-transition: opacity .3s;
     -moz-transition: opacity .3s;

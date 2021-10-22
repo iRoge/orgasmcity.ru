@@ -11,7 +11,6 @@
         return new SizeInput(element);
       });
     };
-
     function SizeInput(element) {
       this._element = $(element);
       this._element.data('size-input', this);

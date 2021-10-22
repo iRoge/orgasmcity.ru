@@ -17,6 +17,7 @@
     width: max-content;
     white-space: nowrap;
 }
+
 .events-link-btn:hover{
     color: white;
     text-decoration: none;

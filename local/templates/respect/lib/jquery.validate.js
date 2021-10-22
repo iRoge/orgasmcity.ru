@@ -16,6 +16,7 @@
 	}
 }(function( $ ) {
 
+
 $.extend( $.fn, {
 
 	// http://jqueryvalidation.org/validate/

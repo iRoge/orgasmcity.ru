@@ -13,7 +13,6 @@
     ListPage.prototype.initialize = function() {
       return this._initFilters();
     };
-
     ListPage.prototype._initFilters = function() {
       var from, max, min, to;
       from = window.filterPriceFrom || 0;

@@ -15,7 +15,6 @@ $(function(){
 
         processChunk();
     });
-
     var processChunk =  function (start = 0, end = 100) {
         var request = BX.ajax.runComponentAction('qsoft:csv.import', 'processChunk', {data: {start: start, end: end, tmpFile: $('#tmp_file').val()}});
         request.then(function (response) {

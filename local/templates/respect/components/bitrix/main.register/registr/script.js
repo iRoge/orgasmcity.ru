@@ -14,7 +14,6 @@ $(document).ready(function () {
         var date_val = $(this).parent().parent().find('.reg_date').val();
         $(this).parent().parent().find('.reg_date_value').val(date_val);
     });
-
     var charCheckFunc = function () {
         var $th = $(this);
         $th.val($th.val().replace(/[^ёЁа-яА-Яa-zA-Z\-'` ]/g, ''));

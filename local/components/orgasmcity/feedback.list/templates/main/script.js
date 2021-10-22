@@ -3,6 +3,7 @@ $(document).ready(function() {
         device.tablet() !== true
         && device.mobile() !== true
     ) {
+        
         $('#feedback-list').slick({
             arrows: true,
             mobileFirst: true,

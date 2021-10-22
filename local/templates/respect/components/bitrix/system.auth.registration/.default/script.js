@@ -8,8 +8,10 @@ function personalCheckbox(personalCheckbox) {
                 submit.prop('disabled', !$(element).prop("checked"))
             });
         }
-    };
-    personalCheckbox('.personal-checkbox__input');
-    $('.personal-checkbox__input').on('change', function () {
-        personalCheckbox(this);
-    });
+};
+
+personalCheckbox('.personal-checkbox__input');
+
+$('.personal-checkbox__input').on('change', function () {
+    personalCheckbox(this);
+});

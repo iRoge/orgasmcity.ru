@@ -17,6 +17,7 @@
         // Browser globals
         window.noUiSlider = factory();
     }
+    
 
 }(function( ){
 

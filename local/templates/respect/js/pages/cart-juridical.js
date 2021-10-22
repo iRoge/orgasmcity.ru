@@ -14,7 +14,6 @@
       SizeInput.init();
       return this._initCartItems();
     };
-
     CartJuridicalPage.prototype._initCartItems = function() {
       return $('.cart-item').each(function(index, cartItem) {
         return new window.CartItem(cartItem);

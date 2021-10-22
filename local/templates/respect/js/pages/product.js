@@ -15,7 +15,6 @@
       this._initSlider();
       return this._initShopList();
     };
-
     ProductPage.prototype._initGallery = function() {
       this._gallery = new ProductGallery('.product-page__left .product-gallery', {
         onClickLarge: (function(_this) {

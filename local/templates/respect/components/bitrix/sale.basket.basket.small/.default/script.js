@@ -15,6 +15,7 @@ $(function () {
                     basket.find('.shortcut-informer').text(0).hide();
                 }
             }
+            
         });
     });
 });

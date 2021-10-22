@@ -9,6 +9,7 @@ $(document).ready(function () {
         var userEmail = emailElem.val().trim();
         var errSpan = $('.err-phone-email');
 
+        
         if (userEmail == "") {
             errSpan.html('Необходимо ввести email');
             cou_err = 'all-error';

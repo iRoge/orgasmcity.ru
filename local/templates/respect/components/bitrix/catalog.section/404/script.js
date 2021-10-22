@@ -16,7 +16,6 @@ $(function () {
                 } else {
                     btn.removeClass('shortcut--active');
                 }
-
                 $(document).trigger('update-basket-small', response);
             },
         });

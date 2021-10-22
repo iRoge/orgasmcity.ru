@@ -8,6 +8,7 @@ $(document).ready(function () {
 
     $('input.fio').keyup(charCheckFunc).keydown(charCheckFunc).change(charCheckFunc);
 
+
     $('form#reg-form3').submit(function (e) {
         var arr = {
             "REGISTER[NAME]-reg-form3": "Необходимо заполнить поле Имя",

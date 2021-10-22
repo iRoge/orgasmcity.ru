@@ -11,6 +11,7 @@ $('.sellerPlane ').click(function () {
 });
 
 $('.storeSellerSelect').on('change', function () {
+
     $(".storeSellerSelect option:selected").each(function () {
         let currentSellerElem = $(this);
         let currentSeller = currentSellerElem.text();

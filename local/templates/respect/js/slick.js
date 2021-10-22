@@ -12,7 +12,6 @@
     Docs: http://kenwheeler.github.io/slick
     Repo: http://github.com/kenwheeler/slick
   Issues: http://github.com/kenwheeler/slick/issues
-
  */
 /* global window, document, define, jQuery, setInterval, clearInterval */
 ;(function(factory) {

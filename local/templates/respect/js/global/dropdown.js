@@ -9,7 +9,6 @@
         };
       })(this));
     };
-
     function Dropdown(element) {
       this._element = $(element);
       this._target = $(this._element.attr('href'));

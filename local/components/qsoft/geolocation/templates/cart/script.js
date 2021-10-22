@@ -16,4 +16,5 @@ $(document).ready(function() {
     close.click(function () {
         popup.css('top', '');
     });
+
 });

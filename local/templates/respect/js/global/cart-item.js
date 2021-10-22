@@ -10,7 +10,6 @@
       $('.cart-item__toggle', this._el).on('click', _.bind(this._toggleClickHandler, this));
       return $('.js-params-toggle', this._el).on('click', _.bind(this._paramClickHandler, this));
     };
-
     CartItem.prototype._toggleClickHandler = function() {
       return this._el.toggleClass('cart-item--expanded');
     };

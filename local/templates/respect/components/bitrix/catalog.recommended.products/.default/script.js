@@ -17,6 +17,7 @@ $(function () {
                 if (response.STATUS && response.STATUS == 'OK') {
                     //btn.addClass();
                 }
+
             }, 'json');
         });
     });

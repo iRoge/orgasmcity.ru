@@ -12,7 +12,6 @@ $('.button-vacancies').click(function () {
     vacanciesText += '\n\nСодержание вакансии\n*******************************\n' + $('#' + $(this).data('id')).children('article').text().trim();
 
     $("html, body").animate({scrollTop: 0},500);
-
     $('.mail-div').toggle(0);
     $('.podlozhka').toggle(0);
     $('.mail-div .popup').show(0);

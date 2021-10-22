@@ -11,7 +11,6 @@
 				return new CountInput(input);
 			});
 		};
-
 		function CountInput(input) {
 			this._input = $(input);
 			this._input.data('counter', this);

@@ -15,7 +15,6 @@ function hide_wait () {
         this.element = {
             root: root,
         }
-
         this.prop = {
             priority: priority,
         }

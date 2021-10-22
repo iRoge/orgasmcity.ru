@@ -11,9 +11,11 @@
   display: flex;
   align-items: center;
 }
+
 .zagolovok-hide-menu a {
   margin:0;
 }
+
 .zagolovok-hide-menu p {
   padding-top:15px;
   line-height:22px;

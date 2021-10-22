@@ -18,7 +18,6 @@
         };
       })(this));
     };
-
     ShopsPage.prototype.showMap = function(url) {
       if (url == null) {
         url = '/shops/?show_map=y';

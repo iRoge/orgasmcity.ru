@@ -12,7 +12,6 @@ SmartFilter.prototype = {
     nextAjax: [],
     applyFilter: false,
 };
-
 SmartFilter.prototype.getFormData = function () {
     let formData = {};
 

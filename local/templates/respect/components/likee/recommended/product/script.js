@@ -4,7 +4,6 @@ $(function () {
 
         $('.js-add-to-basket', component).on('click', function (e) {
             e.preventDefault();
-
             var btn = $(this);
 
             BX.ajax.get(btn.attr('href'), {action: 'get_buy_modal'}, function (response) {

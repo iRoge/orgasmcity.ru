@@ -19,7 +19,6 @@
       alias = matches[1];
       return window.currentPage = Pages._pages[alias] ? new Pages._pages[alias](alias, options) : new _Page(alias, options);
     };
-
     Pages.register = function(alias, pageClass) {
       return Pages._pages[alias] = pageClass;
     };

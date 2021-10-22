@@ -14,7 +14,6 @@
       this._initInputs();
       return this._initOneClick();
     };
-
     CartPage.prototype._initInputs = function() {
       var b_slider_init, bonusInput, cartCurBonuses, cartUserBonuses, range;
       bonusInput = $('#bonus-input');

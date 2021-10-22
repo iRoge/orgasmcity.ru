@@ -6,7 +6,6 @@
       $('.js-cart-button').on('click', this._buttonClickHandler.bind(this));
       this._colors();
     }
-
     ProductItem.prototype._colors = function() {
       return $('.products-item__colors a', this._el).on('click', _.bind(this._colorChangeHandler, this));
     };

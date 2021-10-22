@@ -10,7 +10,6 @@
         return new DatetimeInput(input);
       });
     };
-
     function DatetimeInput(input) {
       this._input = $(input);
       this._input.datetimepicker({

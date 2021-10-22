@@ -10,6 +10,7 @@ $(function () {
             },
             500);
     });
+
     mainSearchForm.on('focus', 'input', function() {
         var q = $(this).val();
         var searchSuggestBlock = $('.header__search .search-suggest');

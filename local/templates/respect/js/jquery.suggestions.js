@@ -14,7 +14,6 @@
             })), 1 === o.length ? o[0] : -1
         }
     }
-
     function n(e, t) {
         var n = e.data && e.data[t];
         return n && new RegExp("^" + k.escapeRegExChars(n) + "([" + w + "]|$)", "i").test(e.value)

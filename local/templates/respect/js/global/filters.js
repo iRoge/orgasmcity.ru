@@ -11,7 +11,6 @@
     rect2 = second.getBoundingClientRect();
     return !(rect1.right < rect2.left || rect1.left > rect2.right);
   };
-
   window.Filters = (function() {
     var from, max, min, to;
 

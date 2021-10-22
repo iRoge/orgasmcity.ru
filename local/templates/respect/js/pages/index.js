@@ -13,7 +13,6 @@
     IndexPage.prototype.initialize = function() {
       return this._initSliders();
     };
-
     IndexPage.prototype._initSliders = function() {
       $('#main-slider').slick({
         arrows: true,
