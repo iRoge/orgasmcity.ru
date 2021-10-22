@@ -15,8 +15,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     <meta charset="UTF-8">
     <title><? $APPLICATION->ShowTitle(); ?></title>
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon_new.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/favicon_new.svg" type="image/svg+xml">
 
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
