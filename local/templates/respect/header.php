@@ -34,13 +34,14 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     $bMainPage = $APPLICATION->GetCurDir() == '/';
 //    CJSCore::Init(['ajax']);
 
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/fixes.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/js/select2/select2.min.css");
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/style.css');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/bootstrap.css');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/slick.css');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/slick-theme.css');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/fixes.css');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/js/select2/select2.min.css");
+    $APPLICATION->ShowCSS(true, false);
 //    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/swiper.css');
 
     Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/jquery-3.3.1.min.js');
@@ -118,8 +119,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . "/js/select2/select2.min.js"?>" defer></script>
     <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . "/js/select2/select2.ru.min.js"?>" defer></script>
     <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/lib/jquery.validate.js'?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js'?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/inputs/datetime.js'?>" defer></script>
+<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//=SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js'?><!--" defer></script>-->
+<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//=SITE_TEMPLATE_PATH . '/js/inputs/datetime.js'?><!--" defer></script>-->
     <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/pages/_default.js'?>" defer></script>
     <script type="text/javascript" data-skip-moving="true" src="<?=SITE_TEMPLATE_PATH . '/js/pages/index.js'?>" defer></script>
 

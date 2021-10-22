@@ -399,6 +399,9 @@ $(document).ready(function () {
         e.preventDefault();
         that.next('.blue-menu-div-div ul').toggle('200');
         that.toggleClass('open-ul');
+        setTimeout(function () {
+            that.parent().find('.lazy-img-menu').lazyLoadXT({forceLoad: 1, visibleOnly: 0, throttle: 0})
+        }, 500);
     });
 
     $('.order-info-grid').click(function () {

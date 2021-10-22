@@ -53,7 +53,7 @@ class OrgasmCityRecommendedComponent extends CBitrixComponent
             $arItems[$offer['PROPERTY_CML2_LINK_VALUE']]['OFFERS'][] = $offer;
         }
 
-        $numImgs = 5;
+        $numImgs = 6;
         if (count($arItems) > $numImgs) {
             $randKeys = array_rand($arItems, $numImgs);
             $arRandItems = [];

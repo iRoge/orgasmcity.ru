@@ -63,7 +63,7 @@ $this->setFrameMode(true);
                                     <li>
                                         <div class="mobile-menu-img-wrapper">
                                             <?php if (isset($arItem3LevelChunks["PARAMS"]["IMG_PATH"])) { ?>
-                                                <img style="max-width: 100%; height: 100%" src="<?=$arItem3LevelChunks["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem3LevelChunks['TEXT']?>">
+                                                <img class="lazy-img-menu" style="max-width: 100%; height: 100%" data-src="<?=$arItem3LevelChunks["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem3LevelChunks['TEXT']?>">
                                             <?php } ?>
                                         </div>
                                         <?= $arItem3LevelChunks['TEXT']; ?>
@@ -77,7 +77,7 @@ $this->setFrameMode(true);
                                 <li>
                                     <div class="mobile-menu-img-wrapper">
                                         <?php if (isset($arItem2Level["PARAMS"]["IMG_PATH"])) { ?>
-                                            <img style="max-width: 100%; height: 100%" src="<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem2Level['TEXT']?>">
+                                            <img class="lazy-img-menu" style="max-width: 100%; height: 100%" data-src="<?=$arItem2Level["PARAMS"]["IMG_PATH"]?>" alt="<?=$arItem2Level['TEXT']?>">
                                         <?php } ?>
                                     </div>
                                     <span><?=$arItem2Level['TEXT'];?></span>

@@ -16,19 +16,19 @@ $this->setFrameMode(true);
 <?php if (!empty($arResult['ITEMS'])) {?>
 <div class="default-section">
     <h2 class="default-header"><?=$arParams['TITLE']?></h2>
-    <div id="recommendeds-slider" class="main">
+    <div class="main product-list-wrapper">
         <?php foreach ($arResult['ITEMS'] as $arItem) { ?>
-            <div class="product-card">
+            <div class="product-card col-lg-2 col-md-4 col-sm-4 col-xs-6">
                 <div class="product-card-wrapper">
                     <div class="product-icons-wrap">
                         <?php if ($arItem['PROPERTY_BESTSELLER_VALUE']) { ?>
-                            <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
+                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/hitProduct.svg" alt="Sale">
                         <?php } ?>
                         <?php if ($arItem['PROPERTY_NEW_VALUE']) { ?>
-                            <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
+                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/newProduct.svg" alt="Sale">
                         <?php } ?>
                         <?php if ($arItem['DISCOUNT']) { ?>
-                            <img style="margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
+                            <img style="max-width: 100%;margin-top: 5px" src="<?=SITE_TEMPLATE_PATH?>/img/svg/saleProduct.svg" alt="Sale">
                             <div class="sale-tooltip" title="Размер скидки"><?=-$arItem['DISCOUNT']?>%</div>
                         <?php } ?>
                     </div>
@@ -39,7 +39,7 @@ $this->setFrameMode(true);
                     </button>
                     <a target="_blank" class="product-href-wrapper" href="<?=$arItem["DETAIL_PAGE_URL"]?>">
                         <div class="product-img-wrapper">
-                            <img class="product-img" data-lazy="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
+                            <img class="lazy-img product-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
                         </div>
                         <span class="product-title"><?=$arItem['NAME']?></span>
                     </a>

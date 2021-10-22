@@ -17,15 +17,8 @@
     flex-wrap: wrap;
 }
 
-@media (max-width: 767px) {
-    .default-header {
-        margin-top: 20px;
-    }
-}
-
 .brand-card {
-    width: 18%;
-    margin: 15px;
+    padding: 10px 15px!important;
 }
 
 .card__img-box {
@@ -41,4 +34,27 @@
     font-size: 18px;
     padding: 0 5px!important;
     text-align: center;
+}
+
+@media (max-width: 767px) {
+    .default-header {
+        margin-top: 20px;
+    }
+
+    .brands-list {
+        padding: 0;
+    }
+
+    .brand-card {
+        padding: 5px 0!important;
+        width: 50%;
+    }
+
+    .brand-card:nth-child(2n+1) {
+        padding-right: 5px!important;
+    }
+
+    .brand-card:nth-child(2n) {
+        padding-left: 5px!important;
+    }
 }

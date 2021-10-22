@@ -18,11 +18,11 @@ $this->setFrameMode(true);
         <h2 class="default-header">Наши бренды</h2>
         <div class="brands-list main">
             <?php foreach ($arResult['ITEMS'] as $arItem) { ?>
-                <div class="brand-card">
+                <div class="brand-card col-lg-2 col-md-4 col-sm-4 col-xs-6">
                     <a href="<?=$arItem['SECTION_PAGE_URL'];?>" title="<?=$arItem['NAME'];?>" class="brand-card-wrapper" style="text-decoration: none">
                         <?php if ($arItem['PREVIEW_PICTURE']) { ?>
                             <div class="card__img-box">
-                                <img width="100%" data-lazy="<?=$arItem['PREVIEW_PICTURE']?>" alt="<?=$arItem['NAME'];?>"/>
+                                <img class="lazy-img" width="100%" data-src="<?=$arItem['PREVIEW_PICTURE']?>" alt="<?=$arItem['NAME'];?>"/>
                             </div>
                         <?php } else { ?>
                             <div class="text-in-vendor">

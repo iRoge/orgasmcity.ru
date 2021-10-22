@@ -151,6 +151,15 @@ a.feedback-button:active {
     .feedback-card-title {
         font-size: 13px;
     }
+
+    .feedback-card {
+        margin: 0;
+        padding: 5px 0;
+    }
+
+    .feedback-card-wrapper {
+        height: 250px!important;
+    }
 }
 
 @media (max-width: 767px) {
