@@ -86,3 +86,9 @@
         background-repeat: no-repeat;
     }
 }
+
+.mob-only {
+    display: none;
+}
+
+

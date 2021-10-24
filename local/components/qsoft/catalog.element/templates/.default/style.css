@@ -1,8 +1,61 @@
+.table-size__row td {
+    border: 0;
+    border-bottom: 1px solid #eeeeef;
+}
+
+.table-size__row th {
+    border-right: 1px solid #eeeeef;
+    border-bottom: 1px solid #eeeeef;
+    background-color: none;
+    padding: 10px 10px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.table-size__row td:hover,
+.table-size__row:hover {
+    background-color: rgba(9, 62, 113, 0.4);
+}
+
+.table-size__row:hover th {
+    border-right-color: rgba(9, 62, 113, 0.1);
+}
+
+.table-size__row--w td:hover,
+.table-size__row--w:hover {
+    background-color: rgba(242, 219, 166, 0.4);
+}
+
+.table-size__row--w:hover th {
+    border-right-color: rgba(242, 219, 166, 0.1);
+}
+
+.table-size__body {
+    border: 0;
+    display: block;
+    overflow: auto;
+    max-width: 100%;
+}
+
+.table-size__active {
+    background-color: rgba(9, 62, 113, 0.4);
+}
+
+.table-size__active--w {
+    background-color: rgba(242, 219, 166, 0.4);
+}
+
+
+
 .sp-vertical {
     padding-left: 94px !important;
 }
 
 @media (min-width: 768px) {
+    .popup--size-tab {
+        width: 60%;
+    }
+
     .col-image {
         margin-top: 20px;
     }
@@ -20,12 +73,6 @@
     border: 2px solid #A18CD1!important;
 }
 
-/*.sp-image {
-    position: relative;
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-}*/
 .sp-image:before {
     color:transparent;
     content: "";
@@ -393,6 +440,20 @@ input[type="number"] {
     .quantity-arrow-plus:hover {
         background-color: grey;
     }
+
+    .col-sm-6.right-cartochka__container {
+        padding-bottom: 20px;
+        padding-left: 10px;
+        width: 39%;
+    }
+
+    .col-sm-6.slider-pro-container {
+        width: 61%;
+    }
+
+    .popup--size-tab {
+        width: 50%;
+    }
 }
 
 .quantity-arrow-plus span,
@@ -577,6 +638,13 @@ input[type="number"] {
     }
 }
 
+@media (min-width: 1280px) {
+    .popup--size-tab {
+        width: 38%;
+    }
+}
+
+
 .heart-btn svg path {
     height: 25px;
     fill: #c6c1c1;
@@ -609,6 +677,10 @@ input[type="number"] {
 @media (max-width: 767px) {
     .left-block-title {
         width: 100%;
+    }
+
+    .right-cartochka__container {
+        padding: 0 !important;
     }
 }
 
