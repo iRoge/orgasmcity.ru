@@ -70,3 +70,19 @@
     border: 1px solid #fff;
     display: none;
 }
+
+.home-bg__item {
+    display: none;
+}
+@media (min-width: 600px) {
+    .home-bg__item {
+        display: block;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        background-size: 100% auto;
+        background-position: center top;
+        background-repeat: no-repeat;
+    }
+}

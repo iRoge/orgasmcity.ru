@@ -433,7 +433,7 @@ if (!$arResult['IS_AJAX']) {
                                                 </button>
                                                 <a target="_blank" class="product-href-wrapper" href="<?=$arItem["DETAIL_PAGE_URL"]?>">
                                                     <div class="product-img-wrapper">
-                                                        <img height="100%" width="100%" class="product-img lazy-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
+                                                        <img class="product-img lazy-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
                                                     </div>
                                                     <span class="product-title"><?=$arItem['NAME']?></span>
                                                 </a>

@@ -38,8 +38,10 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.min.css');
     $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/application.min.css?up=1');
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.min.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.min.css');
-    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.min.css');
+    if (!($DEVICE->isTablet() || $DEVICE->isMobile())) {
+        Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.min.css');
+        Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.min.css');
+    }
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/fixes.min.css');
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/js/select2/select2.min.css");
     //    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/swiper.css');
@@ -113,12 +115,14 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/show-more.min.js' ?>" defer></script>
     <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/custom.min.js' ?>" defer></script>
     <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/script.min.js?up=1' ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/underscore.min.js' ?>" defer></script>
     <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/lazy.min.js' ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/slick.min.js' ?>" defer></script>
-<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//= SITE_TEMPLATE_PATH . "/js/select2/select2.min.js" ?><!--" defer></script>-->
-<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//= SITE_TEMPLATE_PATH . "/js/select2/select2.ru.min.js" ?><!--" defer></script>-->
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/jquery.validate.min.js' ?>" defer></script>
+    <?php if (!($DEVICE->isTablet() || $DEVICE->isMobile())) { ?>
+        <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/slick.min.js' ?>" defer></script>
+    <?php } ?>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . "/js/select2/select2.min.js" ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . "/js/select2/select2.ru.min.js" ?>" defer></script>
+<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//= SITE_TEMPLATE_PATH . '/lib/jquery.validate.min.js' ?><!--" defer></script>-->
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/underscore.min.js' ?>" defer></script>
     <!--    <script type="text/javascript" data-skip-moving="true" src="-->
     <? //=SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js'?><!--" defer></script>-->
     <!--    <script type="text/javascript" data-skip-moving="true" src="-->
@@ -183,7 +187,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     </script>
 
     <!-- Jivosite -->
-    <!--    <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async defer></script>-->
+        <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async defer></script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" async defer>
         (function (m, e, t, r, i, k, a) {
@@ -199,7 +203,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             clickmap: true,
             trackLinks: true,
             accurateTrackBounce: true,
-            // webvisor: true,
+            webvisor: true,
             ecommerce: "metrikaData"
         });
     </script>
@@ -237,7 +241,7 @@ if (!$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
 <div class="body-settings">
     <div class="podlozhka"></div>
     <?php
-    if (($DEVICE->isTablet() || $DEVICE->isMobile()) && $bMainPage) {
+    if ($DEVICE->isTablet() || $DEVICE->isMobile()) {
         $APPLICATION->IncludeComponent(
             'bitrix:menu',
             'mobile',
