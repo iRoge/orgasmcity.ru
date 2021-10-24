@@ -36,7 +36,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     //    CJSCore::Init(['ajax']);
 
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/style.min.css');
-    //    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/application.css?up=1');
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . '/css/application.min.css?up=1');
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.min.css');
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick.min.css');
     Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/slick-theme.min.css');
@@ -100,44 +100,25 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         }
     }
     ?>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/popup.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/to-top.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/cart.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/counter.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . '/js/inputs/clearable.min.js' ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/phone.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . '/js/inputs/jquery.maskedinput.min.js' ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/size.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/sku.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . '/js/global/application.min.js' ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . '/js/global/show-more.min.js' ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/custom.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/script.min.js?up=1' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/underscore.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/lazy.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/slick.min.js' ?>"
-            defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . "/js/select2/select2.min.js" ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . "/js/select2/select2.ru.min.js" ?>" defer></script>
-    <script type="text/javascript" data-skip-moving="true"
-            src="<?= SITE_TEMPLATE_PATH . '/lib/jquery.validate.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/popup.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/to-top.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/cart.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/counter.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/clearable.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/phone.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/jquery.maskedinput.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/size.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/inputs/sku.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/application.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/global/show-more.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/custom.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/script.min.js?up=1' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/underscore.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/lazy.min.js' ?>" defer></script>
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/slick.min.js' ?>" defer></script>
+<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//= SITE_TEMPLATE_PATH . "/js/select2/select2.min.js" ?><!--" defer></script>-->
+<!--    <script type="text/javascript" data-skip-moving="true" src="--><?//= SITE_TEMPLATE_PATH . "/js/select2/select2.ru.min.js" ?><!--" defer></script>-->
+    <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/lib/jquery.validate.min.js' ?>" defer></script>
     <!--    <script type="text/javascript" data-skip-moving="true" src="-->
     <? //=SITE_TEMPLATE_PATH . '/lib/jquery.datetimepicker.full.min.js'?><!--" defer></script>-->
     <!--    <script type="text/javascript" data-skip-moving="true" src="-->
@@ -148,7 +129,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             defer></script>
 
 
-    <script type="text/javascript" data-skip-moving="true" async>
+    <script type="text/javascript" data-skip-moving="true" async defer>
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -185,7 +166,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         }
     </script>
     <script type="text/javascript" data-skip-moving="true" src="<?= SITE_TEMPLATE_PATH . '/js/device.js' ?>"></script>
-    <script type="text/javascript" data-skip-moving="true" async>
+    <script type="text/javascript" data-skip-moving="true">
         let phpDeviceType = '<?= $GLOBALS['device_type'] ?>';
         let targetDeviceType = '';
         if (device.tablet() === true) {
@@ -202,9 +183,9 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     </script>
 
     <!-- Jivosite -->
-    <!--    <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async></script>-->
+    <!--    <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async defer></script>-->
     <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" async>
+    <script type="text/javascript" async defer>
         (function (m, e, t, r, i, k, a) {
             m[i] = m[i] || function () {
                 (m[i].a = m[i].a || []).push(arguments)
@@ -226,7 +207,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         <div><img src="https://mc.yandex.ru/watch/82799680" style="position:absolute; left:-9999px;" alt=""/></div>
     </noscript>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1" async></script>
+    <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1" async defer></script>
     <script type="text/javascript" async>
         window.metrikaData = window.metrikaData || [];
         window.dataLayer = window.dataLayer || [];
@@ -378,7 +359,7 @@ if (!$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
                     </div>
                     <div class="col-md-8 menu-div">
                         <?php
-                        if (!($DEVICE->isTablet() || $DEVICE->isMobile()) && $bMainPage) {
+                        if (!($DEVICE->isTablet() || $DEVICE->isMobile())) {
                             $APPLICATION->IncludeComponent(
                                 'bitrix:menu',
                                 'top',

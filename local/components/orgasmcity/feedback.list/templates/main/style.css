@@ -152,12 +152,11 @@ a.feedback-button:active {
     }
 
     .feedback-card {
-        margin: 0;
-        padding: 5px 0;
+        margin: 10px 0!important;
     }
 
     .feedback-card-wrapper {
-        height: 250px!important;
+        height: auto!important;
     }
 }
 
