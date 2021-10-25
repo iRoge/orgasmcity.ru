@@ -386,8 +386,7 @@ $(document).ready(function () {
         if (e_target.is('.submenu-level2-item')) {
             let that = $(this);
             (e_target).siblings().slideToggle();
-            that.toggleClass('arrow-down');
-            that.toggleClass('arrow-up');
+            that.toggleClass('arrow-down-hidden');
         }
     });
 

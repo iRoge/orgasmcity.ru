@@ -59,7 +59,23 @@ if (!empty($arResult)) { ?>
                         <? if ($arItem['IS_PARENT']) { ?>
                             <? if ($arItem['DEPTH_LEVEL'] != 1) { ?>
                                 <div>
-                                    <span class="submenu-item submenu-item-main arrow arrow-down"><?= $arItem['TEXT'] ?></span>
+                                    <span class="submenu-item submenu-item-main arrow-down-hidden">
+                                        <span><?= $arItem['TEXT'] ?></span>
+                                        <svg class="submenu-arrow-down" width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20.6628 11.0189L10.7753 1.08008L0.887695 11.0189" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <svg class="submenu-arrow-up" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="23" height="12">
+                                            <defs>
+                                                <clipPath id="1">
+                                                <path id=""  clip-rule="evenodd" transform="matrix(1 0 0 1 0 0)"  d="M16.5 0L16.5 9L16.5 9L0 9L0 9L0 0L0 0L16.5 0z" />    </clipPath>
+                                            </defs>
+                                            <g transform="matrix(1.3333 0 0 1.3333 0 0)">
+                                                <g clip-path="url(#1)">
+                                                <path id="" transform="matrix(1 0 0 -1 0 9)"  d="M1.0029001 8.264175L1.0029001 8.264175L1.0029001 8.264175L8.418525 0.81006L8.418525 0.81006L15.8342285 8.264175" stroke="#000000" stroke-width="1" stroke-linecap="square" fill="none" />
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </span>
                                 </div>
                                 <div class="sub-submenu">
                             <? } ?>
@@ -67,10 +83,24 @@ if (!empty($arResult)) { ?>
                                 <? if ($arItem2Level['IS_PARENT']) { ?>
                                     <div class="second-level-menu-wrapper">
                                         <span
-                                                class="submenu-level2-item submenu-item-main arrow arrow-down"
+                                                class="submenu-level2-item submenu-item-main"
                                                 onclick="$(this).parent().find('img.lazy-img-menu').lazyLoadXT({forceLoad: 1, visibleOnly: 0, throttle: 0})"
                                         >
-                                            <?= $arItem2Level['TEXT'] ?>
+                                            <span><?=$arItem2Level['TEXT']?></span>
+                                            <svg class="submenu-arrow-down" width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20.6628 11.0189L10.7753 1.08008L0.887695 11.0189" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            <svg class="submenu-arrow-up" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="23" height="12">
+                                                <defs>
+                                                    <clipPath id="1">
+                                                    <path id=""  clip-rule="evenodd" transform="matrix(1 0 0 1 0 0)"  d="M16.5 0L16.5 9L16.5 9L0 9L0 9L0 0L0 0L16.5 0z" />    </clipPath>
+                                                </defs>
+                                                <g transform="matrix(1.3333 0 0 1.3333 0 0)">
+                                                    <g clip-path="url(#1)">
+                                                    <path id="" transform="matrix(1 0 0 -1 0 9)"  d="M1.0029001 8.264175L1.0029001 8.264175L1.0029001 8.264175L8.418525 0.81006L8.418525 0.81006L15.8342285 8.264175" stroke="#000000" stroke-width="1" stroke-linecap="square" fill="none" />
+                                                    </g>
+                                                </g>
+                                            </svg>
                                         </span>
                                         <div class="sub-submenu">
                                             <div style="margin-bottom: 10px">
@@ -83,11 +113,9 @@ if (!empty($arResult)) { ?>
                                                     <? if ($arItem3Level['IS_PARENT']) { ?>
                                                         <span class="submenu-item arrow arrow-down"> <?= $arItem3Level['TEXT'] ?></span>
                                                         <div class="sub-submenu">
-                                                            <div class="submenu-wrapper">
-                                                                <a href="<?= $arItem3Level['LINK'] ?>">
-                                                                    <?= GetMessage("SHOW_ALL_ITEMS") ?>
-                                                                </a>
-                                                            </div>
+                                                            <a class="submenu-wrapper" href="<?= $arItem3Level['LINK'] ?>">
+                                                                <?= GetMessage("SHOW_ALL_ITEMS") ?>
+                                                            </a>
                                                             <? foreach ($arItem3Level['ITEMS'] as $arItem4LevelChunks) { ?>
 
                                                                     <a class="submenu-wrapper" href="<?= $arItem4LevelChunks['LINK'] ?>">
@@ -121,18 +149,16 @@ if (!empty($arResult)) { ?>
                                         </div>
                                     </div>
                                 <? } else { ?>
-                                    <div class="submenu-wrapper">
-                                        <a href="<?= $arItem2Level['LINK'] ?>">
-                                            <div class="submenu-img-wrapper">
-                                                <img class="lazy-img-menu"
-                                                     data-src="<?= $arItem2Level['PARAMS']['IMG_PATH_WEBP'] ?>"
-                                                     alt="<?= $arItem2Level['TEXT'] ?>">
-                                            </div>
-                                            <span class="submenu-item submenu-item-main arrow">
-                                                    <?= $arItem2Level['TEXT'] ?>
-                                            </span>
-                                        </a>
-                                    </div>
+                                    <a class="submenu-wrapper" href="<?= $arItem2Level['LINK'] ?>">
+                                        <div class="submenu-img-wrapper">
+                                            <img class="lazy-img-menu"
+                                                 data-src="<?= $arItem2Level['PARAMS']['IMG_PATH_WEBP'] ?>"
+                                                 alt="<?= $arItem2Level['TEXT'] ?>">
+                                        </div>
+                                        <span class="submenu-item submenu-item-main arrow">
+                                                <?= $arItem2Level['TEXT'] ?>
+                                        </span>
+                                    </a>
                                 <? } ?>
                             <? } ?>
                             <? if ($arItem['DEPTH_LEVEL'] != 1) { ?>
@@ -140,13 +166,11 @@ if (!empty($arResult)) { ?>
                             <? } ?>
                         <? } else { ?>
                             <? if ($arItem['DEPTH_LEVEL'] != 1) { ?>
-                                <div class="submenu-wrapper">
-                                    <a href="<?= $arItem['LINK'] ?>">
-                                        <span class="submenu-item submenu-item-main arrow arrow-down">
-                                            <?= $arItem['TEXT'] ?>
-                                        </span>
-                                    </a>
-                                </div>
+                                <a class="submenu-wrapper" href="<?= $arItem['LINK'] ?>">
+                                    <span class="submenu-item submenu-item-main arrow arrow-down">
+                                        <?= $arItem['TEXT'] ?>
+                                    </span>
+                                </a>
                             <? } ?>
                         <? } ?>
                     </div>

@@ -1,4 +1,90 @@
-.submenu-wrapper {
+.topmenu {
+    clear: both;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    padding-top: 5px;
+}
+
+.topmenu li {
+    padding: 10px 0;
+}
+
+.topmenu a {
+    color: #000000;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.topmenu a:focus {
+    color: #000000;
+    text-decoration: none;
+}
+
+.submenu {
+    display: none;
+}
+
+.submenu a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topmenu a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.submenu img {
+    width: 30px;
+}
+
+.sub-submenu {
+    display: none;
+}
+
+.sub-submenu a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.submenu-arrow-up {
+    display: none;
+}
+
+.arrow-down-hidden .submenu-arrow-up {
+    display: block;
+}
+
+.arrow-down-hidden .submenu-arrow-down {
+    display: none;
+}
+
+.submenu-item {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    font-family: gilroyMedium;
+}
+
+a.submenu-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     width: 48%;
     height: 130px;
     padding: 10px;
@@ -7,12 +93,6 @@
     margin-top: 10px;
 }
 
-.submenu-wrapper a {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
 .submenu-img-wrapper {
     height: 60%;
     width: 100%;
@@ -45,7 +125,7 @@
     text-align: left;
     font-size: 15px;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     height: 40px;
     width: 100%;
     display: flex;
