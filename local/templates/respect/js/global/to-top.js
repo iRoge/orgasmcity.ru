@@ -4,7 +4,10 @@
 
     function ToTop() {
       this._toggle = $('<a href="#" class="to-top-toggle js-scroll">').appendTo($('body'));
-      this._toggle.append($('<img height="100%" width="100%" src="/img/upArrow.svg" alt="Поднять вверх">'));
+      this._toggle.append($('<svg width="100%" height="100%" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+          '<path d="M30.6628 25.0189L20.7753 15.0801L10.8877 25.0189" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>\n' +
+          '<path d="M20.7751 1C9.85761 1 1 9.9035 1 20.8776C1 31.8517 9.85761 40.7552 20.7751 40.7552C31.6926 40.7552 40.5503 31.8517 40.5503 20.8776C40.5503 9.9035 31.6926 1 20.7751 1Z" stroke="black" stroke-miterlimit="10"/>\n' +
+          '</svg>'));
       $(window).on('scroll', _.bind(this._scrollHandler, this));
       this._scrollHandler();
 

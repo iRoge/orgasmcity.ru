@@ -126,7 +126,12 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 
 <?php $APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
 <div class="auth-div-full">
-    <div class="cls-mail-div"></div>
+    <div class="cls-mail-div">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="1.93934" y1="20.4462" x2="20.4461" y2="1.93942" stroke="black" stroke-width="3"/>
+            <line x1="2.06066" y1="1.93934" x2="20.5674" y2="20.4461" stroke="black" stroke-width="3"/>
+        </svg>
+    </div>
     <div class="popup-title">
         <input type="radio" name="odin2" id="vkl10"/>
         <label for="vkl10" class="in-auth"><span>Вход</span></label>

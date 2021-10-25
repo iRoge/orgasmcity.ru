@@ -15,10 +15,14 @@
 
 $this->setFrameMode(true);
 ?>
-
 <?php if (!empty($arResult)) { ?>
     <div class="blue-menu-div">
-        <span class="cls-blue-menu" style="display: inline-block;"></span>
+        <span class="cls-blue-menu" style="display: flex;">
+            <svg width="65%" height="65%" viewBox="0 0 22 22" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <line x1="1.93934" y1="20.4462" x2="20.4461" y2="1.93948" stroke="white" stroke-width="3"/>
+                <line x1="2.06066" y1="1.93934" x2="20.5674" y2="20.4461" stroke="white" stroke-width="3"/>
+            </svg>
+        </span>
         <?php foreach ($arResult as $arItem) { ?>
             <?php
             $sClassLi = 'menu-ul-li';
@@ -46,7 +50,21 @@ $this->setFrameMode(true);
             <?php if ($arItem['IS_PARENT']) { ?>
                 <div class="blue-menu-div-div">
                 <span class="more-span">
-                    <?= $arItem['TEXT'] ?>
+                    <span><?= $arItem['TEXT'] ?></span>
+                    <svg class="more-arrow-down" width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.6628 11.0189L10.7753 1.08008L0.887695 11.0189" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="more-arrow-up" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="23" height="12">
+                        <defs>
+                            <clipPath id="1">
+                            <path id=""  clip-rule="evenodd" transform="matrix(1 0 0 1 0 0)"  d="M16.5 0L16.5 9L16.5 9L0 9L0 9L0 0L0 0L16.5 0z" />    </clipPath>
+                        </defs>
+                        <g transform="matrix(1.3333 0 0 1.3333 0 0)">
+                            <g clip-path="url(#1)">
+                            <path id="" transform="matrix(1 0 0 -1 0 9)"  d="M1.0029001 8.264175L1.0029001 8.264175L1.0029001 8.264175L8.418525 0.81006L8.418525 0.81006L15.8342285 8.264175" stroke="#000000" stroke-width="1" stroke-linecap="square" fill="none" />
+                            </g>
+                        </g>
+                    </svg>
                 </span>
                     <div class="blue-menu-div-hidden">
                         <?php foreach ($arItem['ITEMS'] as $i => $arItem2Level) { ?>

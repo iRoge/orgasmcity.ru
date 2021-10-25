@@ -260,8 +260,9 @@ html, body {
 }
 
 .cls-mail-div {
-    display: inline-block;
-    background: url(../img/svg/close-black.svg) no-repeat 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 50px;
     height: 45px;
     right: 0;
@@ -2355,18 +2356,22 @@ a {
 }
 
 .more-span {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 15px 20px;
 }
 
-.blue-menu-div-div > span {
-    background: url('../img/arrow-down.png') no-repeat 95% 50%;
+.more-arrow-up {
+    display: none;
 }
 
-.open-ul {
-    background-image: url('../img/arrow-up.png') !important;
-    background-position: 95% 50% !important;
+.open-ul .more-arrow-up {
     display: block;
+}
+
+.open-ul .more-arrow-down {
+    display: none;
 }
 
 .blue-menu-div-div .blue-menu-div-hidden {
@@ -4210,13 +4215,15 @@ label.color-label {
 
     .cls-blue-menu {
         display: none;
-        background: #654670 url('../img/cls-white.png') no-repeat 50%;
+        background: #654670 no-repeat 50%;
         width: 50px;
         position: relative;
         z-index: 99999999;
         height: 45px;
         float: right;
         margin-top: 0;
+        justify-content: center;
+        align-items: center;
     }
 
     .bottom-mob {
@@ -6194,17 +6201,8 @@ label.color-label {
     color: #fff;
 }
 
-.logo-small {
-    display: none;
-}
-
 @media (max-width: 359px) {
     .logo {
-        display: none;
-    }
-
-    .logo-small {
-        display: block;
         width: 80px;
     }
 }
