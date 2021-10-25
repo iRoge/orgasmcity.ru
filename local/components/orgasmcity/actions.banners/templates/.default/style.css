@@ -10,6 +10,7 @@
     .action-banners-list-element {
         padding: 0!important;
         margin: 10px 0;
+        width: 100%;
     }
 
     .action-banners-list-main {
