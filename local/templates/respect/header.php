@@ -187,7 +187,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     </script>
 
     <!-- Jivosite -->
-        <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async defer></script>
+<!--        <script type="text/javascript" src="//code-ya.jivosite.com/widget/IanrVwAEsl" async defer></script>-->
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" async defer>
         (function (m, e, t, r, i, k, a) {
@@ -203,7 +203,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
             clickmap: true,
             trackLinks: true,
             accurateTrackBounce: true,
-            webvisor: true,
+            webvisor: false,
             ecommerce: "metrikaData"
         });
     </script>
