@@ -473,12 +473,6 @@ if (!$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
                                  height="20px">
                             <span>Каталог</span>
                         </div>
-                        <div class="cls-blue-menu">
-                            <svg width="65%" height="65%" viewBox="0 0 22 22" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="1.93934" y1="20.4462" x2="20.4461" y2="1.93948" stroke="white" stroke-width="3"/>
-                                <line x1="2.06066" y1="1.93934" x2="20.5674" y2="20.4461" stroke="white" stroke-width="3"/>
-                            </svg>
-                        </div>
                     </div>
                 </div>
             </div>
