@@ -5,7 +5,6 @@
 // http://matthewhudson.me/projects/device.js/
 
 (function() {
-
   var device,
     previousDevice,
     addClass,

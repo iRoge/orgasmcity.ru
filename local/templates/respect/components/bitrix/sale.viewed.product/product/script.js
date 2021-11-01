@@ -10,7 +10,6 @@ userHistory.prototype = {
         if (opt == null) {
             opt = {};
         }
-
         for (var i in opt) {
             this.options[i] = opt[i];
         }

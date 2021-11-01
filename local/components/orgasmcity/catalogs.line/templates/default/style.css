@@ -27,7 +27,6 @@
     flex-wrap: wrap;
     overflow: auto;
 }
-
 .catalog-list-element {
     display: flex !important;
     flex-wrap: wrap;

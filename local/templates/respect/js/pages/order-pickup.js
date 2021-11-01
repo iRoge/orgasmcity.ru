@@ -18,7 +18,6 @@
         };
       })(this));
     };
-
     OrderPickupPage.prototype.showMap = function(url) {
       if (url == null) {
         url = window.application.getUrl('product');

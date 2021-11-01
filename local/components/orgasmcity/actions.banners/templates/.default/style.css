@@ -1,7 +1,7 @@
 .action-banners-list-main {
     display: flex!important;
     justify-content: center;
-    align-items: center;
+    align-items: end;
     margin: 25px 0;
     padding: 0 15px;
 }
@@ -10,6 +10,7 @@
     .action-banners-list-element {
         padding: 0!important;
         margin: 10px 0;
+        width: 100%;
     }
 
     .action-banners-list-main {
@@ -27,9 +28,9 @@
         padding-left: 0!important;
     }
     .action-banners-list-main {
-        margin: 0!important;
-        padding: 0!important;
-        margin-left: 1.5%!important;
-        width: 97%!important;
+        margin: 0 !important;
+        padding: 0 !important;
+        margin-left: 1.5% !important;
+        width: 97% !important;
     }
 }

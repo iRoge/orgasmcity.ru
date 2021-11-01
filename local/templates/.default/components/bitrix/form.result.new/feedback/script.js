@@ -69,7 +69,6 @@ $(function() {
                 $("[name='" + key + "']").removeClass("red_border");
             }
         });
-
         if (document.getElementById("feedback-file").files[0] !== undefined) {
             var validExpansions = ['doc', 'docx', 'xls', 'xlsx', 'jpeg', 'jpg', 'pdf', 'ppt', 'pptx'];
             var file = document.getElementById("feedback-file").files[0];

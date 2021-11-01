@@ -11,7 +11,6 @@
                 playVideo($(this).prev('video'));
             });
 
-
             $('[data-play="yes"]').each(function () {
                 var videoBlock = $(this);
                 var iconBlock = videoBlock.next('.play-ico');

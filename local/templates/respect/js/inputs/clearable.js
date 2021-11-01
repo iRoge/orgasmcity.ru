@@ -11,7 +11,6 @@
         return new ClearableInput(input);
       });
     };
-
     function ClearableInput(input) {
       this._input = $(input);
       this._input.data('clearable', this);

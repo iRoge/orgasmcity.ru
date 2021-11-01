@@ -14,29 +14,14 @@
       this._initInputs();
       return this._initOneClick();
     };
-
     CartPage.prototype._initInputs = function() {
-      var b_slider_init, bonusInput, cartCurBonuses, cartUserBonuses, range;
+      var b_slider_init, bonusInput, cartCurBonuses, cartUserBonuses;
       bonusInput = $('#bonus-input');
-      range = $('#bonus-slider')[0];
       cartUserBonuses = window.cartUserBonuses || 0;
       cartCurBonuses = window.cartCurBonuses || 0;
       if (cartUserBonuses === 0) {
         return;
       }
-      noUiSlider.create(range, {
-        start: cartCurBonuses,
-        connect: [true, false],
-        tooltips: true,
-        format: wNumb({
-          decimals: 0
-        }),
-        step: 1,
-        range: {
-          min: 0,
-          max: cartUserBonuses
-        }
-      });
       b_slider_init = true;
       setTimeout(function() {
         return b_slider_init = false;

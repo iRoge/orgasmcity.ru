@@ -13,7 +13,6 @@
     CartPage.prototype.initialize = function() {
       return this._initOneClick();
     };
-
     CartPage.prototype._initOneClick = function() {
       return $('.js-one-click-short').on('click', function(event) {
         event.preventDefault();

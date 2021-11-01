@@ -20,7 +20,6 @@ $(document).ready(function () {
 
     $('.form-in-after-lk-sub').on('click', function (e) {
         var cou_err = 0;
-
         let birthElem = $("#PERSONAL_BIRTHDAY");
         if (birthElem.length > 0) {
             let errBirthElem = $("#err-personal-birthday");

@@ -5,6 +5,7 @@ $(document).ready(function() {
     });
 });
 
+
 function updateHasOrderBlock() {
     let elem = $('.haveOrder-input');
     let hasOrderBlock = elem.parent().find('.haveOrder-closed');

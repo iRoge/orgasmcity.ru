@@ -14,6 +14,7 @@ $(document).ready(function () {
             } else {
                 $curentInput.prop("checked", false);
             }
+
         });
     });
 });

@@ -19,7 +19,6 @@
       alias = matches[1];
       return window.currentPage = Pages._pages[alias] ? new Pages._pages[alias](alias, options) : new _Page(alias, options);
     };
-
     Pages.register = function(alias, pageClass) {
       return Pages._pages[alias] = pageClass;
     };
@@ -35,7 +34,6 @@
       }
       this.options = options;
       this._className = "page--" + alias;
-      this._defaultEvents();
       this._scroll();
       this.init();
       if (this.initialize) {
@@ -50,37 +48,6 @@
 
     _Page.prototype._isMobile = function() {
       return $(window).width() <= 600;
-    };
-
-    _Page.prototype._defaultEvents = function() {
-      $('.js-auth-toggle').on('click', function(event) {
-        event.preventDefault();
-        return $('body').toggleClass('body--auth');
-      });
-      $(window).on('resize', (function(_this) {
-        return function() {
-          return _this.resize();
-        };
-      })(this));
-      return $(window).on('load', function() {
-        return $(window).trigger('resize');
-      });
-    };
-
-    _Page.prototype.resize = function() {
-      var isMobile;
-      isMobile = this._isMobile();
-      if (isMobile && !this._isMobileFlag) {
-        if (_.isFunction(this._toMobile)) {
-          this._toMobile();
-        }
-      }
-      if (!isMobile && this._isMobileFlag) {
-        if (_.isFunction(this._fromMobile)) {
-          this._fromMobile();
-        }
-      }
-      return this._isMobileFlag = isMobile;
     };
 
     _Page.prototype._inputs = function(container) {
@@ -101,7 +68,7 @@
       CountInput.init(container);
       ClearableInput.init(container);
       PhoneInput.init(container);
-      DatetimeInput.init(container);
+      // DatetimeInput.init(container);
       return SkuPopup.init();
     };
 

@@ -8,7 +8,6 @@ $(function () {
                 if (basket.find('.shortcut-informer').length == 0) {
                     basket.append('<span class="shortcut-informer count"></span>');
                 }
-
                 if (response.COUNT && response.COUNT > 0) {
                     basket.find('.shortcut-informer').text(response.COUNT).show();
                 } else {

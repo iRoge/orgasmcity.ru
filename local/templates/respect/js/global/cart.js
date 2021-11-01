@@ -15,7 +15,6 @@
         });
         this._scrollHandler();
       }
-  
       Cart.prototype._scrollHandler = function(event) {
         if ($(window).scrollTop() >= Cart.threshold && $('.shortcut-informer.count').html() !== '0') {
           return this._element.addClass('cart-button--visible'), this._element.find('.cart-button__counter').text($('.shortcut-informer.count').html());

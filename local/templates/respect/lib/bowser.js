@@ -10,6 +10,7 @@
   else root[name] = definition()
 }(this, 'bowser', function () {
   /**
+   * 
     * See useragents.js for examples of navigator.userAgent
     */
 

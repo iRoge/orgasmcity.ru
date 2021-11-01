@@ -10,6 +10,7 @@ $(function () {
             },
             500);
     });
+
     mobSearchForm.on('focus', 'input', function() {
         var q = $(this).val();
         var searchSuggestBlock = $('.poisk-div .search-suggest');

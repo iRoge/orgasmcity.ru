@@ -15,7 +15,6 @@
         // Browser globals
         window.wNumb = factory();
     }
-
 }(function(){
 
 	'use strict';

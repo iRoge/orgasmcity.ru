@@ -2,7 +2,6 @@
     var LikeeBasket = function () {
         this.basket = [];
     };
-
     LikeeBasket.prototype = {
         btnClass: '.js-add-to-favorites',
         path: '/catalog/basket/#ID#/',

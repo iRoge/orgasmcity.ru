@@ -8,6 +8,7 @@ $(function() {
             $("#forgotten_password").addClass("red_border");
             cou_err++;
         }
+
         if ($("#forgotten_confirm").val().trim().length < 6) {
             text_html += "<p>Подтверждение пароля должно быть не менее 6 символов длиной</p>";
             $("#forgotten_confirm").addClass("red_border");

@@ -6,7 +6,6 @@ $(document).ready(function () {
         const year = parseInt(tarDate[2]);
         let tarTime = $(_config.target).data('time');
         let tarhour, tarmin;
-
         if (tarTime != null) {
             tarTime = tarTime.split(':');
             tarhour = parseInt(tarTime[0]);

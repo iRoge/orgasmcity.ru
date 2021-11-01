@@ -10,6 +10,7 @@ $(document).ready(function () {
             }
         }
     });
+    
     //функция для клика на кнопку "Купить в 1 клик"
     function oneClickHandler() {
         let offerId = $('#one-click-btn').data('offer-id');

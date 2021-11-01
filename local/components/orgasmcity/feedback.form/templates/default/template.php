@@ -61,18 +61,16 @@
         <h2 class="default-header">Последние отзывы</h2>
         <div class="all-feedbacks-wrapper">
             <?php foreach ($arResult['ITEMS'] as $item) { ?>
-                <div class="feedback-block-wrapper">
-                    <div class="product-feedback-item-title-wrapper">
-                        <div class="product-feedback-item-title">@<?=$item['NAME']?></div>
-                        <div class="product-feedback-item-score-wrapper" title="Оценка <?=$item['PROPERTY_SCORE_VALUE']?> из 5">
-                            <?php for ($i = 1; $i <= 5; $i++) { ?>
-                                <div class="product-feedback-item-heart-wrapper">
-                                    <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path style="fill: <?=$item['PROPERTY_SCORE_VALUE'] >= $i ? '#D18C8C' : '#E4E4E4'?>" d="M0.0595703 4.97532C0.0595703 -0.373625 7.1161 -2.356 9.28738 3.83611C11.4587 -2.356 18.5152 -0.373625 18.5152 4.97532C18.5152 10.7869 9.28738 18.1553 9.28738 18.1553C9.28738 18.1553 0.0595703 10.7869 0.0595703 4.97532Z" fill="#E4E4E4"/>
-                                    </svg>
-                                </div>
-                            <?php } ?>
-                        </div>
+                <div class="feedback-block-wrapper product-feedback-item-title-wrapper">
+                    <div class="product-feedback-item-title">@<?=$item['NAME']?></div>
+                    <div class="product-feedback-item-score-wrapper" title="Оценка <?=$item['PROPERTY_SCORE_VALUE']?> из 5">
+                        <?php for ($i = 1; $i <= 5; $i++) { ?>
+                            <div class="product-feedback-item-heart-wrapper">
+                                <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path style="fill: <?=$item['PROPERTY_SCORE_VALUE'] >= $i ? '#D18C8C' : '#E4E4E4'?>" d="M0.0595703 4.97532C0.0595703 -0.373625 7.1161 -2.356 9.28738 3.83611C11.4587 -2.356 18.5152 -0.373625 18.5152 4.97532C18.5152 10.7869 9.28738 18.1553 9.28738 18.1553C9.28738 18.1553 0.0595703 10.7869 0.0595703 4.97532Z" fill="#E4E4E4"/>
+                                </svg>
+                            </div>
+                        <?php } ?>
                     </div>
                     <span class="feedback-date"><?=$item['DATE_CREATE']?></span>
                     <div class="product-feedback-item-detail-text"><?=$item['DETAIL_TEXT']?></div>

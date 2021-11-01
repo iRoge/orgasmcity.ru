@@ -17,6 +17,7 @@ var DateFormatter;
     var _compare, _lpad, _extend, _indexOf, defaultSettings, DAY, HOUR;
     DAY = 1000 * 60 * 60 * 24;
     HOUR = 3600;
+    
 
     _compare = function (str1, str2) {
         return typeof(str1) === 'string' && typeof(str2) === 'string' && str1.toLowerCase() === str2.toLowerCase();

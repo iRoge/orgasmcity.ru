@@ -2,6 +2,7 @@ $(function () {
     $(document).on('submit', '#subscribe-form_mobile', function (e) {
         e.preventDefault();
         var errCount = 0;
+
         $('.error').remove();
         var $email = $(this).find('.js-footer-email');
         if ($email.val().trim() != "") {

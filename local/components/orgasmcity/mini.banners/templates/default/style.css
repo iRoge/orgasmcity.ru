@@ -6,10 +6,6 @@
     padding: 0 15px;
 }
 
-.banners-list-element {
-
-}
-
 @media (min-width: 768px) and (max-width:992px) {
     .banners-list-element:last-child {
         padding-right: 0!important;

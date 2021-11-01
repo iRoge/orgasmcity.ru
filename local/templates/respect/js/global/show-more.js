@@ -10,7 +10,6 @@ $(document).on('click', '[data-show-more]', function(){
 
 	var container_class=".cnt_"+bx_ajax_id;	
     var append= (btn.data('append')==true)?true:false;
-
     var data = {};
     data['bxajaxid'] = bx_ajax_id;
     data['PAGEN_'+id] = page;

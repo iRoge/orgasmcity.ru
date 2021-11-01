@@ -10,7 +10,6 @@ $(document).on('click', '.contest-rules-popup-open', function (e) {
     if ($container.length) {
         $('.popup').hide(0);
         $('body').removeClass('with--popup');
-
         Popup.show($container.html(), {
             title: ($(this).attr('title') || ''),
             className: ($(this).attr('data-class') || '')

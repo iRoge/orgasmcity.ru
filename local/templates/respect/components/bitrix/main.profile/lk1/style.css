@@ -18,7 +18,6 @@
     height: 20px;
     margin-left: 20px;
 }
-
 .error-personal-fields.actual + input,
 .error-personal-fields.actual + span {
     margin-top: 0 !important;
@@ -29,4 +28,22 @@
     text-align: center;
     font-weight: bolder;
     font-size: 24px;
+}
+
+@media (min-width: 768px) {
+    .form-in-after-lk > div {
+        margin-bottom: 30px;
+    }
+}
+
+.lk-form-wrapper {
+    margin-bottom: 15px;
+}
+
+.lk-gender-field {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    border: 1px solid rgba(200, 200, 200, .5);
+    margin-top: 20px;
 }

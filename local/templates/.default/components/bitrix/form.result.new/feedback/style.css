@@ -14,6 +14,7 @@ input[name=form_file_14].inputfile{
 #24{
     display: none;
 }
+
 input[type=checkbox]:not(.checkbox3){
     display: none;
 }

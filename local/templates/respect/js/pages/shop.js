@@ -9,7 +9,6 @@
     function ShopPage() {
       return ShopPage.__super__.constructor.apply(this, arguments);
     }
-
     ShopPage.prototype.initialize = function() {
       $('#shop-photo-slider').slick({
         arrows: true,

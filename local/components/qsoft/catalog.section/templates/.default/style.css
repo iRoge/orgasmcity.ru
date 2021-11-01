@@ -934,12 +934,6 @@ footer .hide-block {
     max-height: none!important;
 }
 
-.page-massage.recomendation {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-
 @media (max-width: 991px) {
     .filter__displayed {
         display: none;

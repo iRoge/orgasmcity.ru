@@ -15,6 +15,7 @@ $(function () {
             $email.addClass("red_border_sub");
             errCount += 1;
         }
+
         if (errCount == 0) {
             var form = $(this),
                 data = form.serializeArray();

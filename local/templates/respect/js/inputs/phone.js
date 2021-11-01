@@ -11,7 +11,6 @@
         return new PhoneInput(input);
       });
     };
-
     function PhoneInput(input) {
       this._input = $(input);
       this._input.data('phone', this);

@@ -74,6 +74,7 @@ $(document).ready(function () {
     });
 });
 
+
 function ajaxAuthPhoneCheck() {
     var flag = {
         'errorText': null,

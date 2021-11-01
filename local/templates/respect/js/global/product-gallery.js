@@ -21,7 +21,6 @@
         }
       ]
     };
-
     function ProductGallery(container, options) {
       if (options == null) {
         options = {};

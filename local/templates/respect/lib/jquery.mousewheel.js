@@ -17,6 +17,7 @@
         // Browser globals
         factory(jQuery);
     }
+    
 }(function ($) {
 
     var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],

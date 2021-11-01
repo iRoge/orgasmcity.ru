@@ -13,7 +13,6 @@ var trimLeft = /^\s+/,
     mathRandom = Math.random;
 
 function tinycolor (color, opts) {
-
     color = (color) ? color : '';
     opts = opts || { };
 

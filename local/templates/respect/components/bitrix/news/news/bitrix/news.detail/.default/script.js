@@ -5,4 +5,5 @@
             adaptiveHeight: true 
         }); 
     });
+
 })(jQuery);

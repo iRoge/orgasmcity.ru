@@ -5,3 +5,16 @@
     background-size: contain;
     margin: 0;
 }
+
+.view-mobile {
+    display: none;
+}
+
+.view-desktop {
+    display: inline-block;
+}
+
+.navigation-row {
+    margin-top: 20px;
+    text-align: center;
+}

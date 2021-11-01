@@ -17,7 +17,6 @@
         }
       });
     }
-
     Subscribe.prototype._submit = function(form) {
       this._container.addClass('subscribe--success');
       return true;

@@ -12,6 +12,7 @@ $(document).ready(function () {
         $("#phone").attr('placeholder', '+7 (___) ___-__-__');
     });
 
+
     $("#phone").mouseout(function () {
         $("#phone").attr('placeholder', 'Телефон');
     });

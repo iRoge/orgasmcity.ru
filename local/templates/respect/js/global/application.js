@@ -5,7 +5,6 @@
     function Application() {
       this.api = {};
     }
-
     Application.prototype.init = function() {
       return this._currentPage = window.Pages.init();
     };

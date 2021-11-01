@@ -1,4 +1,4 @@
-$(function () {
+$(document).ready(function () {
     const MAX_MOBILE_WIDTH = 768;
     const ANIMATION_DURATION = 300;
     const HIDE_SEARCH_BREAK_POINT = 130;
@@ -14,7 +14,6 @@ $(function () {
     let searchFirstActive = false;
 
     let scrollTop;
-
     $(window).on('scroll', function () {
         windowWidth = $(window).width();
         scrollTop = $(window).scrollTop();
@@ -93,9 +92,7 @@ $(function () {
             }
         }
     });
-});
 
-$(document).ready(function () {
     let getUrlParameter = function getUrlParameter(sParam) {
         let sPageURL = decodeURIComponent(window.location.search.substring(1)),
             sURLVariables = sPageURL.split('&'),
@@ -389,16 +386,18 @@ $(document).ready(function () {
         if (e_target.is('.submenu-level2-item')) {
             let that = $(this);
             (e_target).siblings().slideToggle();
-            that.toggleClass('arrow-down');
-            that.toggleClass('arrow-up');
+            that.toggleClass('arrow-down-hidden');
         }
     });
 
     $('.more-span').click(function (e) {
         let that = $(this);
         e.preventDefault();
-        that.next('.blue-menu-div-div ul').toggle('200');
+        that.next('.blue-menu-div-div .blue-menu-div-hidden').toggle('200');
         that.toggleClass('open-ul');
+        setTimeout(function () {
+            that.parent().find('.lazy-img-menu').lazyLoadXT({forceLoad: 1, visibleOnly: 0, throttle: 0})
+        }, 500);
     });
 
     $('.order-info-grid').click(function () {

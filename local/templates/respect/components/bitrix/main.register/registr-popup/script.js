@@ -7,7 +7,6 @@ $(document).ready(function () {
     };
 
     $('#REGISTER\\[NAME\\]-reg-form-popup').keyup(charCheckFunc).keydown(charCheckFunc).change(charCheckFunc);
-
     $('form#reg-form-popup').submit(function (e) {
         var arr = {
             "REGISTER[NAME]": "Необходимо заполнить поле Имя",

@@ -1,10 +1,6 @@
 <?php
 use Bitrix\Main\Page\Asset;
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetTitle("Контакты");
-$APPLICATION->SetPageProperty("title", 'Контакты. Город Оргазма');
-$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
-$APPLICATION->SetPageProperty("description", "Информация о контактах в Городе Оргазма");
 Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
 ?>
     <div class="main">
@@ -39,4 +35,10 @@ Asset::getInstance()->addCss('/local/templates/respect/infopageStyles.css');
             </div>
         </div>
     </div>
-<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
+<?php
+$APPLICATION->SetTitle("Контакты");
+$APPLICATION->SetPageProperty("title", 'Контакты. Город Оргазма');
+$APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
+$APPLICATION->SetPageProperty("description", "Информация о контактах в Городе Оргазма");
+
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");

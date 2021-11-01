@@ -7,7 +7,6 @@ $(function () {
         select_city[0].selectize.isRequired = false;
         select_city[0].selectize.$control_input.prop('required', false).prop('placeholder', 'Город');
     }
-
     select_region.on('change', function (e) {
         var region_name = $.trim($(this).val()),
             data = {

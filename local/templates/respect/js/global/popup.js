@@ -7,7 +7,6 @@
     };
 
     Popup.timeout = 0;
-
     Popup.init = function() {
       $(document).on('mouseup', (function(_this) {
         return function(event) {
@@ -103,7 +102,12 @@
     Popup.prototype._template = function() {
       return _.template(`<div class="popup">
         <div class="popup__wrapper !auth-div-full">
-          <div class="cls-mail-div"></div>
+          <div class="cls-mail-div">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="1.93934" y1="20.4462" x2="20.4461" y2="1.93942" stroke="black" stroke-width="3"/>
+              <line x1="2.06066" y1="1.93934" x2="20.5674" y2="20.4461" stroke="black" stroke-width="3"/>
+            </svg>
+          </div>
           <div class="popup__container"></div>
         </div>
       </div>`);

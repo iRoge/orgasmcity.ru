@@ -12,7 +12,6 @@ $(function () {
             if ($(window).width() < 600)
                 e.preventDefault();
         });
-
         item.on('mouseover', function () {
             child.addClass('open');
             if (timeout)

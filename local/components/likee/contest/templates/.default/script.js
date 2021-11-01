@@ -9,7 +9,6 @@
                 .addClass('container text--center')
                 .append('<div class="column-8 column-center"><button type="button" class="button button--primary button--xl button--bigger js-contest-go">Приступить</button></div>');
         }
-
         $('.js-contest-go').on('click', function(e) {
             e.preventDefault();
 

@@ -10,6 +10,7 @@
 //     })
 // })
 
+
 // function getResultSearch(q) {
 //     var searchSuggestBlock = $('.header__search .search-suggest');
 //     //очищаем результаты поиска

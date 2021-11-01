@@ -65,6 +65,77 @@ $APPLICATION->SetPageProperty("description", "Узнать статус зака
         float: left;
         width: 100%;
     }
+
+    .order-info__title{
+        font-size: 19px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .order-info__row{
+        margin-bottom: 15px;
+    }
+
+    .order-info__row:after{
+        display: table;
+        clear: both;
+        content: '';
+    }
+
+    .order-info__col {
+        float: left;
+        width: calc(50% - 20px)!important;
+        margin: 0 10px!important;
+    }
+
+    .order-info__input {
+        height: 51px!important;
+        font-size: 17px!important;
+    }
+
+    .order-info__result {
+        margin: 25px 10px 0;
+        font-size: 16px;
+    }
+
+    .order-info__submit,.order-info__sub {
+        width: 50%;
+        margin: 20px auto 0;
+    }
+
+    @media(min-width: 550px){
+        .order-info__fix{
+            width: 500px;
+            margin: 30px auto;
+        }
+    }
+    @media(max-width: 550px){
+        .order-info__fix{
+            width: 100%;
+            margin: 30px auto;
+        }
+        .order-info__col:not(.order-info_captcha-img){
+            margin: 0 0 11px!important;
+            width: 100%!important;
+            float: none;
+        }
+        .order-info__row{
+            margin: 0 auto;
+            width: 80%;
+        }
+        .order-info__captcha .order-info__col{
+            margin: 0 0 11px!important;
+            height: 50px;
+        }
+        .order-info__captcha .inputtext{
+            /*float: right;
+            width: 50%!important;*/
+        }
+        .order-info__col{
+            float: none;
+            width: 100%!important;
+        }
+    }
 </style>
 <div class="order-info">
     <div class="order-info__fix">

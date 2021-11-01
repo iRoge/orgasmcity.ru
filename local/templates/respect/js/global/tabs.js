@@ -15,7 +15,6 @@
       this._element.data('tabs', this);
       this._initTabs();
     }
-
     Tabs.prototype._initTabs = function() {
       this._links = [];
       this._targets = {};
