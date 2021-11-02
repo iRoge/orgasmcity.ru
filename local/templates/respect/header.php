@@ -212,18 +212,14 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
         <div><img src="https://mc.yandex.ru/watch/82799680" style="position:absolute; left:-9999px;" alt=""/></div>
     </noscript>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-202524127-1" async defer></script>
-    <script type="text/javascript" async>
-        window.metrikaData = window.metrikaData || [];
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-203302487-1">
+    </script>
+    <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
+        function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'UA-202524127-1');
+        gtag('config', 'UA-203302487-1');
     </script>
 
     <? $GLOBALS["PAGE"] = explode("/", $APPLICATION->GetCurPage()); ?>
