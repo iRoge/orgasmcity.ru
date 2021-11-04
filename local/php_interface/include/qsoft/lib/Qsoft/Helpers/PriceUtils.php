@@ -252,15 +252,15 @@ class PriceUtils
         if ($markupPercent >= 150) {
             $price = self::calculatePrice($rrcPrice, 25);
         } elseif ($markupPercent >= 135) {
-            $price = self::calculatePrice($rrcPrice, 20);
+            $price = self::calculatePrice($rrcPrice, 25);
         } elseif ($markupPercent >= 120) {
-            $price = self::calculatePrice($rrcPrice, 15);
+            $price = self::calculatePrice($rrcPrice, 20);
         } elseif ($markupPercent >= 85) {
-            $price = self::calculatePrice($rrcPrice, 10);
+            $price = self::calculatePrice($rrcPrice, 15);
         } elseif ($markupPercent >= 65) {
-            $price = self::calculatePrice($rrcPrice, 5);
+            $price = self::calculatePrice($rrcPrice, 10);
         } else {
-            $price = self::calculatePrice($rrcPrice, 0);
+            $price = self::calculatePrice($rrcPrice, 5);
         }
 
         return $price;
