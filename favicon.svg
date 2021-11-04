@@ -1,7 +1,7 @@
-<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+<svg version="1.2" baseProfile="tiny-ps" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
 	<title>Новый проект</title>
 	<defs>
-		<image  width="120" height="120" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4AQMAAAADqqSRAAAAAXNSR0IB2cksfwAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAAXSURBVHicY2AYBaNgFIyCUTAKRgG9AQAHgAABOU2EIgAAAABJRU5ErkJggg=="/>
+		<image  width="120" height="120" id="img1" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4AQMAAAADqqSRAAAAAXNSR0IB2cksfwAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAAXSURBVHicY2AYBaNgFIyCUTAKRgG9AQAHgAABOU2EIgAAAABJRU5ErkJggg=="/>
 		<linearGradient id="grd1" gradientUnits="userSpaceOnUse"  x1="1" y1="58.818" x2="52.236" y2="58.818">
 			<stop offset="0" stop-color="#667eea"  />
 			<stop offset="1" stop-color="#764ba2"  />
@@ -26,7 +26,7 @@
 		.shp2 { fill: url(#grd3) } 
 		.shp3 { fill: url(#grd4) } 
 	</style>
-	<use id="Background" href="#img1" x="0" y="0" />
+	<use id="Background" xlink:href="#img1" x="0" y="0" />
 	<path id="Layer" class="shp0" d="M52.24 42.09C52.24 55.95 52.24 74.71 52.24 100.64C23.31 78.05 1 55.95 1 42.09C1 28.23 12.47 17 26.62 17C40.77 17 52.24 28.23 52.24 42.09Z" />
 	<path id="Layer" class="shp1" d="M100.26 42.61C100.26 56.47 65.59 88.61 52.33 99.49C52.33 89.45 49.02 56.47 49.02 42.61C49.02 28.76 60.49 17.52 74.64 17.52C88.79 17.52 100.26 28.76 100.26 42.61Z" />
 	<path id="Layer" class="shp2" d="M80.08 58.65C80.08 70.57 80.08 86.7 80.08 109C55.96 89.58 37.36 70.57 37.36 58.65C37.36 46.73 46.92 37.07 58.72 37.07C70.51 37.07 80.08 46.73 80.08 58.65Z" />

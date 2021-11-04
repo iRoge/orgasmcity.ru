@@ -16,6 +16,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     <title><? $APPLICATION->ShowTitle(); ?></title>
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/favicon.svg" type="image/svg+xml">
 
     <meta name="referrer" content="no-referrer-when-downgrade">

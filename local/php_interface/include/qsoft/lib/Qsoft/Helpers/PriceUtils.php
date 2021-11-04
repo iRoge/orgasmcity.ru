@@ -250,7 +250,7 @@ class PriceUtils
 
         $price = null;
         if ($markupPercent >= 150) {
-            $price = self::calculatePrice($rrcPrice, 25);
+            $price = self::calculatePrice($rrcPrice, 35);
         } elseif ($markupPercent >= 135) {
             $price = self::calculatePrice($rrcPrice, 25);
         } elseif ($markupPercent >= 120) {
