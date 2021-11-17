@@ -147,7 +147,10 @@ class OrgasmCityFeedbackFormComponent extends CBitrixComponent
         ];
 
         $result = CIBlockElement::GetList(
-            ["ID" => "DESC"],
+            [
+                "DATE_ACTIVE_FROM" => "DESC",
+                "ID" => "DESC",
+            ],
             $arFilter,
             false,
             ["nTopCount" => 40],
