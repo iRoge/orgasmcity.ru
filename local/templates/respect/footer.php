@@ -25,7 +25,7 @@
                     "INSTAGRAM" => "https://www.instagram.com/orgasmcity.ru/",
                     "VK.COM" => "https://vk.com/club205704529",
                     "TELEGRAM" => "https://t.me/Orgasmcity",
-                    "WhatsApp" => "https://wa.me/79601452548",
+                    "WhatsApp" => "https://wa.me/79998526016",
 //                    "Spotify" => "#",
                     "COMPONENT_TEMPLATE" => "footer",
                 ],
