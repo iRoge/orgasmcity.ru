@@ -839,11 +839,11 @@ $(document).ready(function(){
     });
 });
 
-var jivo_onLoadCallback = function() {
-    setTimeout(function () {
-        jivo_api.showProactiveInvitation("Трудности с оформлением заказа? Спросите у меня!");
-    }, 20000);
-}
+// var jivo_onLoadCallback = function() {
+//     setTimeout(function () {
+//         jivo_api.showProactiveInvitation("Трудности с оформлением заказа? Спросите у меня!");
+//     }, 20000);
+// }
 
 // форматирование цены
 function formatPrice(num) {

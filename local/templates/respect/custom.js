@@ -151,28 +151,28 @@ function hide_wait () {
 
 		// Jivosite
 
-		if (window.matchMedia('(max-width: 767px)').matches) {
-			window.jivo_onLoadCallback = function () {
-				let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
-
-				if (jivositeButtonElement) {
-					let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
-
-					jivositeButton.init();
-				}
-			}
-			window.jivo_onClose = function () {
-				setTimeout(function () {
-					let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
-
-					if (jivositeButtonElement) {
-						let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
-
-						jivositeButton.init();
-					}
-				}, 200);
-			}
-		}
+		// if (window.matchMedia('(max-width: 767px)').matches) {
+		// 	window.jivo_onLoadCallback = function () {
+		// 		let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
+		//
+		// 		if (jivositeButtonElement) {
+		// 			let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
+		//
+		// 			jivositeButton.init();
+		// 		}
+		// 	}
+		// 	window.jivo_onClose = function () {
+		// 		setTimeout(function () {
+		// 			let jivositeButtonElement = document.querySelector('.__jivoMobileButton');
+		//
+		// 			if (jivositeButtonElement) {
+		// 				let jivositeButton = new StickyButton(jivositeButtonElement, 3, null, true);
+		//
+		// 				jivositeButton.init();
+		// 			}
+		// 		}, 200);
+		// 	}
+		// }
 
 
 		// // Mango
