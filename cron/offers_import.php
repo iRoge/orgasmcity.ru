@@ -83,7 +83,12 @@ if (CModule::IncludeModule("catalog"))
 		die('No Base Price!');
 
 	$success = false;
-	$import_data = fopen($import_url, 'r');
+    $context = stream_context_create(array(
+        'http'=>array(
+            'timeout' => 300
+        )
+    ));
+    $import_data = fopen($import_url, 'r', false, $context);
 	$data_file = $_SERVER["DOCUMENT_ROOT"].$profile_params['URL_DATA_FILE'];
 	if ($import_data) {
 		$fp = @fopen($data_file, 'wb');

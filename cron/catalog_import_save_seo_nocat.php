@@ -59,7 +59,12 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock"))
 		die("Wrong import profile");
 
 	$success = false;
-	$import_data = fopen($import_url, 'r');
+    $context = stream_context_create(array(
+        'http'=>array(
+            'timeout' => 300
+        )
+    ));
+	$import_data = fopen($import_url, 'r', false, $context);
 	$data_file = $_SERVER["DOCUMENT_ROOT"]."/import/catalog_save_seo.csv";
 	
 	//fda2000 update flags

@@ -52,7 +52,12 @@ $BaseID = $BaseID['ID'];
 if(!$BaseID)
 	die('No Base Price!');
 
-$import_data = fopen($import_url, 'r');
+$context = stream_context_create(array(
+    'http'=>array(
+        'timeout' => 300
+    )
+));
+$import_data = fopen($import_url, 'r', false, $context);
 if(!$import_data)
 	die('Error get feed!');
 $upd = $head = [];

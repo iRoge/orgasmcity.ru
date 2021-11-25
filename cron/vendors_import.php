@@ -1,7 +1,7 @@
 <?
 include("config.php");
 
-//Импорт производителей
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 
 
@@ -40,7 +40,12 @@ if (CModule::IncludeModule("catalog"))
 	$ar_profile = CCatalogImport::GetByID($profile_id);
 	if (!$ar_profile) die("No profile");
 
-	$import_data = fopen($import_url, 'r');
+    $context = stream_context_create(array(
+        'http'=>array(
+            'timeout' => 300
+        )
+    ));
+    $import_data = fopen($import_url, 'r', false, $context);
 	$fp = @fopen($_SERVER["DOCUMENT_ROOT"]."/import/vendors.csv","wb");
 	if ($import_data && $fp) {
 		while (($str_data = fgets($import_data)) !== false) {

@@ -11,6 +11,9 @@ define("BX_CAT_CRON", true);
 define('NO_AGENT_CHECK', true);
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+while (ob_get_level()) {
+    ob_end_flush();
+}
 \Bitrix\Main\IO\Directory::deleteDirectory($_SERVER['DOCUMENT_ROOT'].'/upload/tmp');
 CModule::IncludeModule('fire.main');
 $catalog_url = Fire_Settings::getOption('SETTINGS_CATALOG_IMPORT_URL');
@@ -46,7 +49,7 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 	if (!$ar_profile)
 		die("No profile");
 	parse_str($ar_profile["SETUP_VARS"], $profile_params);
-	
+
 	$IBLOCK_ID = intval($profile_params["IBLOCK_ID"]);
 	if ($IBLOCK_ID <= 0)
 		die("No IBLOCK ID");
@@ -96,7 +99,7 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 			$sect = array_diff_key($sect, array_flip($Select));
 			$catalog_base[$xml_id] = $sect;
 		}
-	
+
 	$import_data = fopen($catalog_url, 'r');
 	$head = [];
 	if($import_data)
@@ -139,7 +142,6 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 			$sect = array_diff_key($sect, array_flip($head));
 			$catalog_base[$key] = $sect;
 		}
-	
 	unset($catalog_base_all);
 	unset($catalog);
 	
@@ -148,9 +150,13 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 	
 	$success = false;
 	$head = $head_remap = [];
-	$import_data = fopen($import_url, 'r');
+    $context = stream_context_create(array(
+        'http'=>array(
+            'timeout' => 300
+        )
+    ));
+	$import_data = fopen($import_url,'r', false, $context);
 	$data_file = $_SERVER["DOCUMENT_ROOT"].$profile_params['URL_DATA_FILE'];
-	
 	//fda2000 update flags
 	$new = $bestseller = array();
 	$property_enums = CIBlockPropertyEnum::GetList(Array(), Array("IBLOCK_ID"=>$IBLOCK_ID, "CODE"=>"new"));
@@ -349,7 +355,6 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 			CIBlockElement::Delete($arItem['ID']);
 	}
 	//
-	
 	@copy($_SERVER["DOCUMENT_ROOT"]."/import/catalog_save_seo.csv", $_SERVER["DOCUMENT_ROOT"]."/import/catalog_save_seo/catalog_".date("d.m.Y H i").".csv");
 	
 	$timestamp = time() - 7 * 86400;
