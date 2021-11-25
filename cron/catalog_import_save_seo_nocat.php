@@ -131,6 +131,8 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock"))
 			@fclose($fp);
 			$success = true;
 		}
+	} else {
+		die('Wrong fopen');
 	}
 	if ($success === false)
 		exit;

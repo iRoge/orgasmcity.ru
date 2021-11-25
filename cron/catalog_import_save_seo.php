@@ -36,7 +36,7 @@ else
 if (!defined('LANGUAGE_ID') || preg_match('/^[a-z]{2}$/i', LANGUAGE_ID) !== 1)
 	die('Language id is absent - defined site is bad');
 
-set_time_limit(0);
+set_time_limit (0);
 
 if (!defined("CATALOG_LOAD_NO_STEP"))
 	define("CATALOG_LOAD_NO_STEP", true);
@@ -114,7 +114,6 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 		}
 	if(!$catalog)
 		die('No catalog in URL');
-	
 	foreach($catalog as $key=>$sect)
 		if(!$catalog_base[$key]) {
 			$parents = [];
@@ -239,44 +238,46 @@ if (CModule::IncludeModule("catalog") && CModule::IncludeModule("iblock")) {
 				$csv_data = array_combine($head, $csv_data);
 				
 				$xml_id = trim($csv_data_remap['IE_XML_ID']);
-				if ($xml_id != '')
-					if ($arItem = $xmls[$xml_id]) {
-						//fda2000 update flags
-						$upd = array();
-						$val = $bestseller[trim($csv_data['bestseller'])];
-						if($val && $arItem['PROPERTY_BESTSELLER_ENUM_ID']!=$val)
-							$upd['bestseller'] = $val;
-						$val = $new[trim($csv_data['new'])];
-						if($val && $arItem['PROPERTY_NEW_ENUM_ID']!=$val)
-							$upd['new'] = $val;
-						$val = trim($csv_data['img_status']);
-						if($val && $arItem['PROPERTY_IMG_STATUS_VALUE']!=$val)
-							$upd['img_status'] = $val;
-						if($upd)
-							CIBlockElement::SetPropertyValuesEx($arItem['ID'], $arItem['IBLOCK_ID'], $upd);
-						//
-					} else {
-						if(!$csv_data_remap['IE_DETAIL_TEXT_TYPE']) {
-							$csv_data_remap['IE_DETAIL_TEXT_TYPE'] = 'html';
-							if(mb_strpos($csv_data_remap['IE_DETAIL_TEXT'], "\n")!==false && mb_stripos($csv_data_remap['IE_DETAIL_TEXT'], '<br>')===false)
-								$csv_data_remap['IE_DETAIL_TEXT_TYPE'] = 'text';
-						}
-						if($csv_data_remap['IE_DETAIL_TEXT_TYPE']=='text')
-							$csv_data_remap['IE_DETAIL_TEXT'] = str_replace("\t", "\n", $csv_data_remap['IE_DETAIL_TEXT']);
-						$csv_data_remap['IE_ACTIVE'] = $deactivate? 'N' : 'Y';
-						$csv_data_remap['IE_ACTIVE_TO'] = $deactivate;
-						$csv_data_remap['IE_DETAIL_PICTURE'] = $csv_data['img1'];
-						
-						if($catalog_base[$csv_data['categoryId']])
-							$csv_data_remap+= $catalog_base[$csv_data['categoryId']];
-						
-						$data = [];
-						foreach($profile_fileds as $val)
-							$data[] = $csv_data_remap[$val];
-						
-						fputcsv($fp, $data, ';');
-						$addedXML[$xml_id] = $xml_id;
+				if ((int)$xml_id<1)
+					die('Wrong format file!');
+
+				if ($arItem = $xmls[$xml_id]) {
+					//fda2000 update flags
+					$upd = array();
+					$val = $bestseller[trim($csv_data['bestseller'])];
+					if($val && $arItem['PROPERTY_BESTSELLER_ENUM_ID']!=$val)
+						$upd['bestseller'] = $val;
+					$val = $new[trim($csv_data['new'])];
+					if($val && $arItem['PROPERTY_NEW_ENUM_ID']!=$val)
+						$upd['new'] = $val;
+					$val = trim($csv_data['img_status']);
+					if($val && $arItem['PROPERTY_IMG_STATUS_VALUE']!=$val)
+						$upd['img_status'] = $val;
+					if($upd)
+						CIBlockElement::SetPropertyValuesEx($arItem['ID'], $arItem['IBLOCK_ID'], $upd);
+					//
+				} else {
+					if(!$csv_data_remap['IE_DETAIL_TEXT_TYPE']) {
+						$csv_data_remap['IE_DETAIL_TEXT_TYPE'] = 'html';
+						if(mb_strpos($csv_data_remap['IE_DETAIL_TEXT'], "\n")!==false && mb_stripos($csv_data_remap['IE_DETAIL_TEXT'], '<br>')===false)
+							$csv_data_remap['IE_DETAIL_TEXT_TYPE'] = 'text';
 					}
+					if($csv_data_remap['IE_DETAIL_TEXT_TYPE']=='text')
+						$csv_data_remap['IE_DETAIL_TEXT'] = str_replace("\t", "\n", $csv_data_remap['IE_DETAIL_TEXT']);
+					$csv_data_remap['IE_ACTIVE'] = $deactivate? 'N' : 'Y';
+					$csv_data_remap['IE_ACTIVE_TO'] = $deactivate;
+					$csv_data_remap['IE_DETAIL_PICTURE'] = $csv_data['img1'];
+
+					if($catalog_base[$csv_data['categoryId']])
+						$csv_data_remap+= $catalog_base[$csv_data['categoryId']];
+
+					$data = [];
+					foreach($profile_fileds as $val)
+						$data[] = $csv_data_remap[$val];
+
+					fputcsv($fp, $data, ';');
+					$addedXML[$xml_id] = $xml_id;
+				}
 			}
 			@fclose($fp);
 			$success = true;

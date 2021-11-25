@@ -171,8 +171,8 @@ if($upd) {
                     }
                 }
                 if ($catalog_props['BASEWHOLEPRICE']) {
-                    if ($arItem['PROPERTY_BASEWHOLEPRICE_VALUE'] != $data['basewholeprice']) {
-                        $props['BasewholePrice'] = $data['basewholeprice'];
+                    if ($arItem['PROPERTY_BASEWHOLEPRICE_VALUE'] != $data['WholePrice']) {
+                        $props['BasewholePrice'] = $data['WholePrice'];
                     }
                 }
 

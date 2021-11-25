@@ -1,4 +1,4 @@
-<?
+<?php
 include("config.php");
 
 $start_time = time();
@@ -60,7 +60,7 @@ if (CModule::IncludeModule("catalog"))
 	$IBLOCK_ID = intval($profile_params["IBLOCK_ID"]);
 	if ($IBLOCK_ID <= 0)
 		die("No IBLOCK ID");
-
+	
 	$catalog = $catalog_props = $profile_fileds = $head = $head_remap = [];
 	for($i=0; $i<1000; $i++)
 		if(!$profile_params['field_'.$i])
@@ -72,11 +72,11 @@ if (CModule::IncludeModule("catalog"))
 				$add++;
 			$profile_fileds[$i] = $val.($add? '+'.$add : $add);
 		}
-
+	
 	$res = CIBlock::GetProperties($IBLOCK_ID);
 	while($arr = $res->Fetch())
 		$catalog_props[mb_strtoupper($arr['CODE'])] = $arr['ID'];
-
+	
 	$BaseID = CCatalogGroup::GetBaseGroup();
 	$BaseID = $BaseID['ID'];
 	if(!$BaseID)
@@ -89,10 +89,8 @@ if (CModule::IncludeModule("catalog"))
 		$fp = @fopen($data_file, 'wb');
 		if ($fp) {
 			$import_price_type = Fire_Settings::getOption('IMPORT_PRICE_TYPE');
-			if ($import_price_type != 1 and $import_price_type != 2)
-				$import_price_type = 1;
 			$import_rrc = Fire_Settings::getOption('IMPORT_PRODUCT_RRC');
-
+			
 			$csv_data = '';
 			while (($str_data = fgets($import_data)) !== false) {
 				$csv_data = str_getcsv($str_data, ';');
@@ -121,6 +119,9 @@ if (CModule::IncludeModule("catalog"))
 						'p5s_stock'=>'P5S_STOCK',
 						'qty'=>'CP_QUANTITY',
 						'weight'=>'CP_WEIGHT',
+						'bruttoWidth'=>'CP_WIDTH',
+						'bruttoHeight'=>'CP_HEIGHT',
+						'bruttoLength'=>'CP_LENGTH',
 						'basewholeprice'=>'CP_PURCHASING_PRICE'
 					];
 					foreach($head as $key=>$val)
@@ -133,7 +134,7 @@ if (CModule::IncludeModule("catalog"))
 								$add++;
 							$head_remap[$key] = $val.($add? '+'.$add : $add);
 						}
-
+					
 					if($profile_params['first_names_r']==='Y') {
 						$fileds = [];
 						foreach($profile_fileds as $val) {
@@ -148,19 +149,36 @@ if (CModule::IncludeModule("catalog"))
 					if($cont)
 						continue;
 				}
+
 				$csv_data_remap = array_combine($head_remap, $csv_data);
 				$csv_data = array_combine($head, $csv_data);
+				if ((int)$csv_data['prodid']<1 || (int)$csv_data['sku']<1)
+					die('Wrong format file!');
+
+				$csv_data['currency'] = $csv_data_remap['CV_CURRENCY_'.$BaseID] = $csv_data['currency']?: 'RUB';
+				if ($csv_data_remap['CP_WIDTH'])
+					$csv_data_remap['CP_WIDTH']*= 10;
+				if ($csv_data_remap['CP_HEIGHT'])
+					$csv_data_remap['CP_HEIGHT']*= 10;
+				if ($csv_data_remap['CP_LENGTH'])
+					$csv_data_remap['CP_LENGTH']*= 10;
 
 				//fda2000 MS
 				if($exclude[$csv_data['sku']])
 					continue;
 				//
-
+				
 				$exclude[$csv_data['sku']] = $csv_data['sku'];
 				$csv_data_remap['IP_PROP'.$catalog_props['SUPPLIER']] = 'p5s';
 
 				$opt_price = isset($csv_data['WholePrice'])? $csv_data['WholePrice'] : $csv_data['basewholeprice'];
-				$price = $import_price_type!=1? $opt_price : $csv_data['price'];
+				if($import_price_type==2)
+					$price = $opt_price;
+				elseif($import_price_type==3)
+					$price = $csv_data['basewholeprice'];
+				else
+					$price = $csv_data['price'];
+
 				foreach($import_nacenka as $p=>$d)
 					if((float)$p<=$price) {
 						$price+= $price * $d/100;
@@ -168,14 +186,14 @@ if (CModule::IncludeModule("catalog"))
 					}
 				if($import_rrc && $csv_data['StopPromo'] && $price<$csv_data['price']) //fda2000 RRC
 					$price = $csv_data['price'];
-
+				
 				/*if($val = $exclude[$data['sku']]) {
 					$data[4] = $val[0];
 					$price = $val[1];
 				}*/
 				$price = round($price, 2);
 				//
-
+				
 				if($shipping24) {
 					$t = MakeTimeStamp($csv_data_remap['IP_PROP'.$catalog_props['SHIPPING_DATE']]);
 					if(!$csv_data_remap['IP_PROP'.$catalog_props['SHIPPING_DATE']] || !$t || ($t-time())/60/60 > 28)
@@ -183,7 +201,7 @@ if (CModule::IncludeModule("catalog"))
 				}
 				if($minstock>0 && $csv_data_remap['CP_QUANTITY']<$minstock)
 					$csv_data_remap['CP_QUANTITY'] = 0;
-
+				
 				$csv_data_remap['CV_PRICE_'.$BaseID] = $price;
 				$csv_data_remap['CP_PURCHASING_PRICE'] = $opt_price;
 				$csv_data_remap['CP_PURCHASING_CURRENCY'] = $csv_data['currency'];
@@ -191,7 +209,7 @@ if (CModule::IncludeModule("catalog"))
 					$csv_data_remap['IP_PROP'.$catalog_props['BASEPRICE']] = $price;
 				if($catalog_props['BASEWHOLEPRICE'])
 					$csv_data_remap['IP_PROP'.$catalog_props['BASEWHOLEPRICE']] = $opt_price;
-
+				
 				$data = [];
 				foreach($profile_fileds as $val)
 					$data[] = $csv_data_remap[$val];
@@ -209,12 +227,12 @@ if (CModule::IncludeModule("catalog"))
 	//remove not exist in import
 	if($profile_params['outFileAction']=='F') {
 		$rsItems = CIBlockElement::GetList([], ['IBLOCK_ID' => $IBLOCK_ID, /*'!XML_ID'=>$exclude,*/ '=PROPERTY_supplier_VALUE'=>'p5s'], false, false, array('ID', 'XML_ID'));
-		while($arItem = $rsItems->Fetch())
+		while($arItem = $rsItems->Fetch()) 
 			if(!$exclude[$arItem['XML_ID']])
 				CIBlockElement::Delete($arItem['ID']);
 	}
 	//
-
+	
 	$strFile = CATALOG_PATH2IMPORTS.$ar_profile["FILE_NAME"]."_run.php";
 	if (!file_exists($_SERVER["DOCUMENT_ROOT"].$strFile))
 	{
@@ -271,7 +289,7 @@ if (CModule::IncludeModule("catalog"))
 		)
 	);
 	@copy($data_file, $_SERVER["DOCUMENT_ROOT"]."/import/offers/offers_".date("d.m.Y H i").".csv");
-
+	
 	//fda2000 MS Profile deactivate void
 	foreach($restore as $ID=>$QUANTITY)
 		CCatalogProduct::Update($ID, array('QUANTITY'=>$QUANTITY));
@@ -297,43 +315,14 @@ if (CModule::IncludeModule("catalog"))
 		@fwrite($fp, date("d.m.Y H:i:s"));
 		fclose($fp);
 	}
-}
 
-// Чистим кэш и отправляем запрос на каждую страницу каталога для автогенерации кеша
-$CACHE_MANAGER->ClearByTag("catalogAll");
+    // Чистим кэш и отправляем запрос на каждую страницу каталога для автогенерации кеша
+    global $CACHE_MANAGER;
+    $CACHE_MANAGER->ClearByTag("catalogAll");
 
-// Собираем кеш главной страницы
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-curl_setopt($ch, CURLOPT_HEADER, 0);
-
-$output = curl_exec($ch);
-curl_close($ch);
-
-// Собираем кеш по каталогам
-$mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
-$res = CIBlockSection::GetList(
-    [
-        "SORT" => "ASC",
-    ],
-    [
-        "IBLOCK_ID" => IBLOCK_CATALOG,
-        ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
-        "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
-    ],
-    false,
-    [
-        "ID",
-        "NAME",
-        "SECTION_PAGE_URL",
-    ]
-);
-while ($arItem = $res->GetNext()) {
+    // Собираем кеш главной страницы
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . $arItem['SECTION_PAGE_URL']);
+    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
@@ -341,46 +330,77 @@ while ($arItem = $res->GetNext()) {
 
     $output = curl_exec($ch);
     curl_close($ch);
-}
+
+    // Собираем кеш по каталогам
+    $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
+    $res = CIBlockSection::GetList(
+        [
+            "SORT" => "ASC",
+        ],
+        [
+            "IBLOCK_ID" => IBLOCK_CATALOG,
+            ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
+            "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
+        ],
+        false,
+        [
+            "ID",
+            "NAME",
+            "SECTION_PAGE_URL",
+        ]
+    );
+    while ($arItem = $res->GetNext()) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . $arItem['SECTION_PAGE_URL']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        $output = curl_exec($ch);
+        curl_close($ch);
+    }
 
 // Собираем кеш раздела избранных
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/favorites');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-curl_setopt($ch, CURLOPT_HEADER, 0);
-$output = curl_exec($ch);
-curl_close($ch);
-
-// Собираем кеш группировок
-$res = CIBlockElement::GetList(
-    [
-        "SORT" => "ASC",
-    ],
-    [
-        "IBLOCK_ID" => IBLOCK_GROUPS,
-        "ACTIVE" => "Y",
-    ],
-    false,
-    false,
-    [
-        "ID",
-        "NAME",
-        "CODE",
-    ]
-);
-while ($arItem = $res->GetNext()) {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/groups/' . $arItem['CODE']);
+    curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/favorites');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
     curl_setopt($ch, CURLOPT_HEADER, 0);
-
     $output = curl_exec($ch);
     curl_close($ch);
+
+// Собираем кеш группировок
+    $res = CIBlockElement::GetList(
+        [
+            "SORT" => "ASC",
+        ],
+        [
+            "IBLOCK_ID" => IBLOCK_GROUPS,
+            "ACTIVE" => "Y",
+        ],
+        false,
+        false,
+        [
+            "ID",
+            "NAME",
+            "CODE",
+        ]
+    );
+    while ($arItem = $res->GetNext()) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, DOMAIN_NAME . '/catalog/groups/' . $arItem['CODE']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        $output = curl_exec($ch);
+        curl_close($ch);
+    }
 }
 
 $end_time = time();
 echo "work_time ".ceil(($end_time - $start_time)/60)." minutes\n";
+?>
