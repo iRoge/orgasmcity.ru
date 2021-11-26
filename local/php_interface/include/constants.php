@@ -15,9 +15,8 @@ const IBLOCK_GROUPS = 64;
 const IBLOCK_BLOG = 62;
 const IBLOCK_FEEDBACK = 63;
 
-const MAIN_SECTION_ID = 574;
+const MAIN_SECTION_ID = 1092;
 
-const HL_ARTICLES_SKU = 217;
 define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'] . '/local/logs/log.log');
 const OFFER_FILENAME = '/upload/files/offer.pdf'; // Путь к файлу с политикой конфиденциальности
 

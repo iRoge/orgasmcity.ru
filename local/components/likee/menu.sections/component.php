@@ -25,8 +25,8 @@ $arParams['ID'] = intval($arParams['ID']);
 $arParams['IBLOCK_ID'] = intval($arParams['IBLOCK_ID']);
 
 $arParams['DEPTH_LEVEL'] = intval($arParams['DEPTH_LEVEL']);
-if ($arParams['DEPTH_LEVEL'] <= 1) {
-    $arParams['DEPTH_LEVEL'] = 1;
+if ($arParams['DEPTH_LEVEL'] <= 0) {
+    $arParams['DEPTH_LEVEL'] = 0;
 }
 
 global $CACHE_MANAGER;
@@ -47,12 +47,15 @@ if (empty($aMenuLinksNew)) {
         return [];
     }
 
+	$mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
     $res = CIBlockSection::GetList(
         [
             "SORT" => "ASC",
         ],
         [
             "IBLOCK_ID" => IBLOCK_CATALOG,
+			">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
+			"<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
         ],
         false,
         [
@@ -174,6 +177,7 @@ if (empty($aMenuLinksNew)) {
         'GLOBAL_ACTIVE' => 'Y',
         'IBLOCK_ACTIVE' => 'Y',
         '<=DEPTH_LEVEL' => $arParams['DEPTH_LEVEL'],
+		'>=DEPTH_LEVEL' => 2
     );
 
     $arOrder = ['LEFT_MARGIN' => 'ASC'];
@@ -199,7 +203,7 @@ if (empty($aMenuLinksNew)) {
             'ID' => $arSection['ID'],
             'CODE' => $arSection['CODE'],
             'XML_ID' => $arSection['XML_ID'],
-            'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
+            'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
             '~NAME' => $arSection['~NAME'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
         );
