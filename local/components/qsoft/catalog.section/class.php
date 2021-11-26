@@ -497,12 +497,11 @@ class QsoftCatalogSection extends ComponentHelper
         );
 
         while ($arItem = $res->GetNext(true, false)) {
-            if (strpos($this->arParams['SECTION_URL'], $arItem["SECTION_PAGE_URL"]) !== false) {
+            if (stristr($arItem["SECTION_PAGE_URL"], $this->arParams['SECTION_URL']) !== false) {
+                $arSection = $arItem;
                 if ($this->arParams['SECTION_URL'] == $arItem["SECTION_PAGE_URL"]) {
-                    $arSection = $arItem;
                     break;
                 }
-                $arSection = $arItem;
             }
         }
 
@@ -2092,9 +2091,6 @@ class QsoftCatalogSection extends ComponentHelper
         $chain = [];
         $rsPath = CIBlockSection::GetNavChain(IBLOCK_CATALOG, $this->section['ID'], ['NAME', 'SECTION_PAGE_URL', 'DEPTH_LEVEL']);
         while ($arPath = $rsPath->GetNext(true, false)) {
-            if ($arPath['DEPTH_LEVEL'] == 1) {
-                continue;
-            }
 //            $ipropValues = new SectionValues(IBLOCK_CATALOG, $arPath["ID"]);
             $chain[] = [
                 'title' => $this->type == self::TYPE_SALES ? 'Скидки: ' . $arPath['NAME'] : $arPath['NAME'],

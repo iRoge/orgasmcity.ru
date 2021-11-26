@@ -48,15 +48,15 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
                 ['SORT' => 'ASC'],
                 $arFilter,
                 false,
-                ['ID', 'CODE', 'NAME', 'SECTION_PAGE_URL']
+                ['ID', 'CODE', 'NAME', 'SECTION_PAGE_URL', 'XML_ID']
             );
 
             $count = 0;
             $maxCount = $this->arParams['MAX_COUNT'] ?? 12;
             while ($arSection = $rsSections->GetNext())
             {
-                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/' . $arSection['ID'] . '.webp' : '/img/svg/catalogs/empty/' . $arSection['ID'] .'.svg');
-                $imgPath = SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/' . $arSection['ID'] . '.webp' : '/img/svg/catalogs/empty/' . $arSection['ID'] .'.svg');
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/' . $arSection['XML_ID'] . '.webp' : '/img/svg/catalogs/empty/' . $arSection['XML_ID'] .'.svg');
+                $imgPath = SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/' . $arSection['XML_ID'] . '.webp' : '/img/svg/catalogs/empty/' . $arSection['XML_ID'] .'.svg');
                 $arSection['IMG_PATH'] = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/question.png';
                 $arSections[] = $arSection;
                 $count++;
@@ -65,14 +65,15 @@ class OrgasmCityCatalogsLineComponent extends CBitrixComponent
                 }
             }
 
-            if (isset($arFilter['SECTION_ID']) && $arFilter['SECTION_ID'] == 581) {
-                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/789' . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
-                $imgPath = SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/789.webp' : '/img/svg/catalogs/empty/789.svg');
+            if (isset($arFilter['SECTION_ID']) && $arFilter['SECTION_ID'] == 990) {
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/1288' . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '.webp' : '.svg');
+                $imgPath = SITE_TEMPLATE_PATH . ($this->arParams['ICONS_TYPE'] == 'COLORED' ? '/img/svg/catalogs/789.webp' : '/img/svg/catalogs/empty/1288.svg');
                 $imgPath = is_file($filePath) ? $imgPath : SITE_TEMPLATE_PATH . '/img/question.png';
                 $arSections[] = [
-                    'ID' => 789,
+                    'ID' => 995,
+                    'XML_ID' => 995,
                     'CODE' => 'analnye-igrushki',
-                    'SECTION_PAGE_URL' => '/18/woman/analnye-igrushki/',
+                    'SECTION_PAGE_URL' => '/woman/analnye-igrushki/',
                     'NAME' => 'Анальные игрушки',
                     'IMG_PATH' => $imgPath
                 ];

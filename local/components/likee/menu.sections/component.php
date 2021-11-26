@@ -362,7 +362,7 @@ if (empty($aMenuLinksNew)) {
                     $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.svg';
                     $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.webp';
                     $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.webp';
-                    $catalogPathCode = '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
+                    $catalogPathCode = '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
                     $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . $catalogPathCode;
                     $arMenuLinkSales[] = array(
                         $arSalesSection3['NAME'],

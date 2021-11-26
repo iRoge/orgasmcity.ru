@@ -24,6 +24,7 @@ global $DEVICE;
                 'FILTERS' => [
                     'IBLOCK_ID' => IBLOCK_CATALOG,
                     "ACTIVE" => "Y",
+                    "XML_ID" => [1263, 1272, 1288, 1304, 1306, 1312, 1329, 1330, 1343, 1344, 1345, 1346]
                 ],
                 'SHOW_BACKGROUND' => false,
                 'SHOW_SLIDER' => false,
