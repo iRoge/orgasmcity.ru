@@ -46,6 +46,7 @@ $import_url = Fire_Settings::getOption('SETTINGS_OFFERS_IMPORT_PRICE_URL');
 $shipping24 = Fire_Settings::getOption('IMPORT_PRODUCT_SHIPPING24');
 $minstock = (int)Fire_Settings::getOption('IMPORT_PRODUCT_MINSTOCK');
 set_time_limit (0);
+ini_set('memory_limit', '2048M');
 
 $BaseID = CCatalogGroup::GetBaseGroup();
 $BaseID = $BaseID['ID'];

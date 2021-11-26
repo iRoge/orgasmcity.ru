@@ -31,6 +31,7 @@ else
 }
 
 set_time_limit (0);
+ini_set('memory_limit', '2048M');
 
 if (!defined("CATALOG_LOAD_NO_STEP"))
 	define("CATALOG_LOAD_NO_STEP", true);

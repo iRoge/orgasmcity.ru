@@ -14,6 +14,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 while (ob_get_level()) {
     ob_end_flush();
 }
+ini_set('memory_limit', '2048M');
 \Bitrix\Main\IO\Directory::deleteDirectory($_SERVER['DOCUMENT_ROOT'].'/upload/tmp');
 CModule::IncludeModule('fire.main');
 $catalog_url = Fire_Settings::getOption('SETTINGS_CATALOG_IMPORT_URL');
