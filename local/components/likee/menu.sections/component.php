@@ -25,7 +25,7 @@ $arParams['ID'] = intval($arParams['ID']);
 $arParams['IBLOCK_ID'] = intval($arParams['IBLOCK_ID']);
 
 $arParams['DEPTH_LEVEL'] = intval($arParams['DEPTH_LEVEL']);
-if ($arParams['DEPTH_LEVEL'] <= 0) {
+if ($arParams['DEPTH_LEVEL'] <= 1) {
     $arParams['DEPTH_LEVEL'] = 1;
 }
 
@@ -47,15 +47,12 @@ if (empty($aMenuLinksNew)) {
         return [];
     }
 
-    $mainSection = CIBlockSection::GetByID(MAIN_SECTION_ID)->GetNext();
     $res = CIBlockSection::GetList(
         [
             "SORT" => "ASC",
         ],
         [
             "IBLOCK_ID" => IBLOCK_CATALOG,
-            ">LEFT_MARGIN" => $mainSection["LEFT_MARGIN"],
-            "<RIGHT_MARGIN" => $mainSection["RIGHT_MARGIN"],
         ],
         false,
         [
@@ -177,7 +174,6 @@ if (empty($aMenuLinksNew)) {
         'GLOBAL_ACTIVE' => 'Y',
         'IBLOCK_ACTIVE' => 'Y',
         '<=DEPTH_LEVEL' => $arParams['DEPTH_LEVEL'],
-        '>=DEPTH_LEVEL' => 2
     );
 
     $arOrder = ['LEFT_MARGIN' => 'ASC'];
@@ -192,6 +188,7 @@ if (empty($aMenuLinksNew)) {
             'NAME',
             'SECTION_PAGE_URL',
             'CODE',
+            'XML_ID'
         ]
     );
 
@@ -201,7 +198,8 @@ if (empty($aMenuLinksNew)) {
         $arResult['SECTIONS'][] = array(
             'ID' => $arSection['ID'],
             'CODE' => $arSection['CODE'],
-            'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'] - 1,
+            'XML_ID' => $arSection['XML_ID'],
+            'DEPTH_LEVEL' => $arSection['DEPTH_LEVEL'],
             '~NAME' => $arSection['~NAME'],
             '~SECTION_PAGE_URL' => $arSection['~SECTION_PAGE_URL'],
         );
@@ -271,10 +269,10 @@ if (empty($aMenuLinksNew)) {
 
         $arResult['ELEMENT_LINKS'][$arSection['ID']][] = urldecode($arSection['~SECTION_PAGE_URL']);
 
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
-        $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.svg';
-        $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.webp';
-        $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['ID'] . '.webp';
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['XML_ID'] . '.svg';
+        $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['XML_ID'] . '.svg';
+        $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['XML_ID'] . '.webp';
+        $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSection['XML_ID'] . '.webp';
         $aMenuLinksNew[$menuIndex++] = array(
             htmlspecialcharsbx($arSection['~NAME']),
             $arSection['~SECTION_PAGE_URL'],
@@ -360,10 +358,10 @@ if (empty($aMenuLinksNew)) {
                     continue;
                 }
                 if ($arSalesSection3['IBLOCK_SECTION_ID'] == $arSalesSection2['ID']) {
-                    $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.svg';
-                    $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.svg';
-                    $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.webp';
-                    $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['ID'] . '.webp';
+                    $imgPath = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.svg';
+                    $filePath = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.svg';
+                    $filePathWebp = $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.webp';
+                    $imgPathWebp = SITE_TEMPLATE_PATH . '/img/svg/catalogs/' . $arSalesSection3['XML_ID'] . '.webp';
                     $catalogPathCode = '/' . reset($arSalesSections[1])['CODE'] . '/' . $arSalesSection2['CODE'] . '/' . $arSalesSection3['CODE'] . '/';
                     $sPath = '/catalog/' . $arResult['SALES']['UF_CODE'] . $catalogPathCode;
                     $arMenuLinkSales[] = array(

@@ -1,10 +1,6 @@
 <?
 include("config.php");
 
-//������ ��������������
-
-
-
 define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS",true);
 define("BX_CAT_CRON", true);
