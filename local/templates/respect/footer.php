@@ -117,12 +117,12 @@ $waAllowShow = COption::GetOptionString('respect', 'whatsapp_allowShow');
 
 <?php endif; ?>
 
-<?php $APPLICATION->IncludeComponent(
-    'qsoft:subscribe',
-    'popupBanner',
-    array(),
-    false
-); ?>
+<?php //$APPLICATION->IncludeComponent(
+//    'qsoft:subscribe',
+//    'popupBanner',
+//    array(),
+//    false
+//); ?>
 
 <?php $APPLICATION->IncludeComponent("bitrix:main.include", "", array("AREA_FILE_SHOW" => "file", "PATH" => SITE_DIR."includes/options.php"), false);?>
 <div class="auth-div-full">
