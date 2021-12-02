@@ -34,7 +34,7 @@
             <img height="56px" width="68px" src="<?=SITE_TEMPLATE_PATH?>/img/designedBy.webp" alt="Designed by Grape.ov">
         </div>
         <div class="footer-block footer-information-block col-lg-2 col-md-2 col-sm-2">
-            <h3>Информация</h3>
+            <h2>Информация</h2>
             <?php $APPLICATION->IncludeComponent(
                 'bitrix:menu',
                 'footer',
@@ -54,7 +54,7 @@
             ); ?>
         </div>
         <div class="footer-block col-lg-2 col-md-2 col-sm-2">
-            <h3>Поддержка</h3>
+            <h2>Поддержка</h2>
             <?php $APPLICATION->IncludeComponent(
                 'bitrix:menu',
                 'footer',
@@ -74,7 +74,7 @@
             ); ?>
         </div>
         <div class="footer-block col-lg-2 col-md-2 col-sm-2">
-            <h3>Дополнительно</h3>
+            <h2>Дополнительно</h2>
             <?php $APPLICATION->IncludeComponent(
                 'bitrix:menu',
                 'footer',
@@ -94,7 +94,7 @@
             ); ?>
         </div>
         <div class="footer-block footer-right-block col-lg-3 col-md-3 col-sm-3">
-            <h3>Контактные данные</h3>
+            <h2>Контактные данные</h2>
             <div class="footer-element right-footer-element"><a href="mailto:support@orgasmcity.ru">support@orgasmcity.ru</a></div>
             <div class="footer-element right-footer-element"><a style="width: 100%;" href="tel:<?=SUPPORT_PHONE?>"><?=SUPPORT_PHONE?></a><br><span>Круглосуточно</span></div>
             <div class="footer-element right-footer-element" style="height: auto; padding-bottom: 5px"><span>г. Москва ул. Автозаводская д.16 к.2 стр.8 "Поставщик счастья"</span></div>
