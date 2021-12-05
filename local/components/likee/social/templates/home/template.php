@@ -36,5 +36,15 @@ $this->setFrameMode(true);
                 <a target="_blank" href="<?= $arResult['TELEGRAM_LINK']; ?>"><i class="icon icon-telegram line"></i><span>Telegram</span></a>
             </div>
         <? endif; ?>
+        <? if (!empty($arResult['FACEBOOK_LINK'])): ?>
+            <div class="column-15">
+                <a target="_blank" href="<?= $arResult['FACEBOOK_LINK']; ?>"><i class="icon icon-telegram line"></i><span>Telegram</span></a>
+            </div>
+        <? endif; ?>
+        <? if (!empty($arResult['TWITTER_LINK'])): ?>
+            <div class="column-15">
+                <a target="_blank" href="<?= $arResult['TWITTER_LINK']; ?>"><i class="icon icon-telegram line"></i><span>Telegram</span></a>
+            </div>
+        <? endif; ?>
     </div>
 </div>

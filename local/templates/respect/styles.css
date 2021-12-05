@@ -1330,6 +1330,10 @@ jdiv[class^="popupBlock_"] {
     width: 100%;
 }
 
+.social-element {
+    height: 40px;
+}
+
 a.footer-element:hover {
     text-underline: none;
     text-decoration: none;

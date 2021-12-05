@@ -31,4 +31,12 @@ $this->setFrameMode(true);
     <? if (!empty($arResult['TELEGRAM_LINK'])): ?>
         <a title="Telegram" target="_blank" href="<?= $arResult['TELEGRAM_LINK']; ?>"><i class="icon icon-telegram tele-foot"></i></a>
     <? endif; ?>
+
+    <? if (!empty($arResult['FACEBOOK_LINK'])): ?>
+        <a title="Telegram" target="_blank" href="<?= $arResult['FACEBOOK_LINK']; ?>"><i class="icon icon-telegram tele-foot"></i></a>
+    <? endif; ?>
+
+    <? if (!empty($arResult['TWITTER_LINK'])): ?>
+        <a title="Telegram" target="_blank" href="<?= $arResult['TWITTER_LINK']; ?>"><i class="icon icon-telegram tele-foot"></i></a>
+    <? endif; ?>
 </div>

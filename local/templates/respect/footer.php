@@ -26,12 +26,14 @@
                     "VK.COM" => "https://vk.com/club205704529",
                     "TELEGRAM" => "https://t.me/Orgasmcity",
                     "WhatsApp" => "https://wa.me/79998526016",
+                    "FACEBOOK" => "https://www.facebook.com/groups/885185518825530",
+                    "TWITTER" => "https://twitter.com/orgasmcityRu",
 //                    "Spotify" => "#",
                     "COMPONENT_TEMPLATE" => "footer",
                 ],
                 false
             ); ?>
-            <img height="56px" width="68px" src="<?=SITE_TEMPLATE_PATH?>/img/designedBy.webp" alt="Designed by Grape.ov">
+<!--            <img height="56px" width="68px" src="--><?//=SITE_TEMPLATE_PATH?><!--/img/designedBy.webp" alt="Designed by Grape.ov">-->
         </div>
         <div class="footer-block footer-information-block col-lg-2 col-md-2 col-sm-2">
             <h2>Информация</h2>

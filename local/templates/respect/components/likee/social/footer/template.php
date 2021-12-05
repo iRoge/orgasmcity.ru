@@ -39,6 +39,16 @@ $icons = [
         'icon' => 'Spotifi.svg',
         'color' => '#63B861'
     ],
+    [
+        'name' => 'FACEBOOK',
+        'icon' => 'Facebook.svg',
+        'color' => '#1877F2'
+    ],
+    [
+        'name' => 'TWITTER',
+        'icon' => 'Twitter.svg',
+        'color' => '#1d9bf0'
+    ],
 ];
 ?>
 
