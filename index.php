@@ -11,8 +11,12 @@ global $LOCATION;
 global $DEVICE;
 ?>
 <div class="front-blocks">
+    <div class="main" style="margin-bottom: 20px">
+        <h1 class="main-zagolovok">
+            Город Оргазма - анонимный онлайн секс шоп (sex shop)
+        </h1>
+    </div>
     <?php
-
     if (!$DEVICE->isMobile()) {
         ?>
         <div class="main" style="display: flex">

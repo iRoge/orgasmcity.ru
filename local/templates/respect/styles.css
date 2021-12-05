@@ -1451,3 +1451,8 @@ a.footer-element:hover {
     align-items: center;
     justify-content: space-between;
 }
+.main-zagolovok {
+    width: 100%;
+    text-align: center;
+    font-family: 'gilroyBold';
+}
