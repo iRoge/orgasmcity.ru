@@ -4,7 +4,7 @@ $APPLICATION->SetPageProperty("tags", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("keywords_inner", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("title", "Город Оргазма. Секс шоп в России с доставкой на дом. Анонимно. Более 16 тысяч товаров");
 $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
-$APPLICATION->SetPageProperty("description", "Город Оргазма - это лучший секс-шоп в Москве с ассортиментом более 16 тысяч товаров для взрослых. Продажа секс товаров с бесплатной доставкой на дом. Огромный выбор продуктов: вибраторы, фаллоимитаторы, вибропули, мастурбаторы, секс-куклы, вакуумные помпы и многое другое");
+$APPLICATION->SetPageProperty("description", "Город Оргазма - это лучший секс-шоп в Москве с ассортиментом более 16 тысяч товаров для взрослых. Продажа интим товаров с бесплатной и АНОНИМНОЙ доставкой на дом. Огромный выбор продуктов: вибраторы, фаллоимитаторы, вибропули, мастурбаторы, секс-куклы, вакуумные помпы и многое другое");
 $APPLICATION->SetTitle("Главная страница");
 \Likee\Site\Helper::addBodyClass('page--index');
 global $LOCATION;
