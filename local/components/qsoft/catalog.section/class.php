@@ -327,6 +327,7 @@ class QsoftCatalogSection extends ComponentHelper
     {
         switch ($this->type) {
             case self::TYPE_SECTION:
+            case self::TYPE_SALES:
                 $this->loadProducts();
                 if (empty($this->section)) {
                     return Functions::abort404();
@@ -361,7 +362,6 @@ class QsoftCatalogSection extends ComponentHelper
                 $this->loadOffers();
                 $this->getFavoritesProductsAndOffers();
                 break;
-            case self::TYPE_SALES:
             default:
                 $this->loadProducts();
                 $this->loadOffers();
