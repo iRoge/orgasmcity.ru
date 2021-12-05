@@ -478,7 +478,7 @@ if (!$arResult['IS_AJAX']) {
                                                     <div class="product-img-wrapper">
                                                         <img class="product-img lazy-img" data-src="<?=$arItem["DETAIL_PICTURE"]?>" alt="<?=$arItem['NAME']?>">
                                                     </div>
-                                                    <span class="product-title"><?=$arItem['NAME']?></span>
+                                                    <h3 class="product-title"><?=$arItem['NAME']?></h3>
                                                 </a>
                                                 <div class="product-card-bottom">
                                                     <div class="product-card-price-wrapper">
