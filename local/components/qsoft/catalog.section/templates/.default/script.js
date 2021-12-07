@@ -226,7 +226,6 @@ SmartFilter.prototype.updateCatalog = function (url, params = {}, request,data) 
         $navigation.empty();
     }
     SmartFilter.prototype.setFilterButtonsStyle('new');
-    truncateItemTitle();
     lds_ring.css('visibility', 'hidden');
     $('.lds-ring-container').hide();
     $('.filter-btn-loader').hide();
@@ -513,23 +512,6 @@ if (swiperContainer) {
     });
 }
 
-function truncateItemTitle () {
-    if ($(window).width() < 768) {
-        $('.card__title').ellipsis({
-            lines: 3,
-            responsive: true
-        });
-    } else {
-        $('.card__title').ellipsis({
-            lines: 2,
-            responsive: true
-        });
-    }
-}
-
-//хендлеры статичной части витрины
-truncateItemTitle();
-
 function saveSettingsInCookie(sortMobile){
     let sort = $('html').find('.sort__items').find('.sort__text--active').parent().data('sort');
     if (sortMobile){
@@ -624,16 +606,9 @@ $(document).ready(function() {
             $('.name-h3').each(function () {
                 let sectionInFilter = $(this);
                 if (sectionInFilter.hasClass('active-name-h3') && !sectionInFilter.parent().hasClass('subsections-block')) {
-                    sectionInFilter.next('.in-in-left').toggle('fast');
-                    sectionInFilter.find(".plus").toggle(0);
-                    sectionInFilter.find(".minus").toggle(0);
-                    if ($('.podlozhka').css('display') === 'block' && sectionInFilter.hasClass('active-name-h3')){
-                        $('.js-filter-col').animate({
-                            scrollTop: sectionInFilter.offset().top - 45
-                        }, 800);
-                    }
-                    console.log(sectionInFilter.find('.filter-name').html());
-                    console.log(sectionInFilter.next('.in-in-left').html());
+                    sectionInFilter.next('.in-in-left').css('display', 'flex');
+                    sectionInFilter.find(".plus").hide();
+                    sectionInFilter.find(".minus").show();
                 }
             });
             $('.lds-ring-container-first').css('display', 'none');
@@ -708,8 +683,6 @@ $(document).ready(function() {
             smartFilter.hideFilter();
         }
     });
-
-    $(window).on('resize', truncateItemTitle);
 
     $(window).on('scroll', function () {
         if ( $(window).scrollTop() > $('div.cards').offset().top - 50){

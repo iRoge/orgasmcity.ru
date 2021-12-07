@@ -2,7 +2,7 @@
 const DOMAIN_NAME = 'orgasmcity.ru';
 const BX_DISABLE_INDEX_PAGE = true;
 
-const DEFAULT_KEYWORDS = 'купить секс игрушки в москве, секс шоп, москва, магазин эротики, интим товары, интим магазин, город, оргазм, город оргазма';
+const DEFAULT_KEYWORDS = 'секс игрушки, секс шоп в москве, магазин эротики, интим товары, интим магазин, город оргазма';
 
 // ID инфоблоков
 const IBLOCK_CATALOG = 5;

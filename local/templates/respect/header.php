@@ -394,30 +394,28 @@ if (!$USER->IsAuthorized() && ($bShowAuth || $bShowRegister)) {
                     </svg>
                 </a>
             </div>
-            <div class="col-md-8 menu-div">
-                <?php
-                if (!($DEVICE->isTablet() || $DEVICE->isMobile())) {
-                    $APPLICATION->IncludeComponent(
-                        'bitrix:menu',
-                        'top',
-                        array(
-                            'COMPONENT_TEMPLATE' => '.default',
-                            'ROOT_MENU_TYPE' => 'top',
-                            'MENU_CACHE_TYPE' => 'N',
-                            'MENU_CACHE_TIME' => '604800',
-                            'MENU_CACHE_USE_GROUPS' => 'Y',
-                            'MENU_CACHE_GET_VARS' => [],
-                            'MAX_LEVEL' => '3',
-                            'CHILD_MENU_TYPE' => '',
-                            'USE_EXT' => 'Y',
-                            'DELAY' => 'N',
-                            'ALLOW_MULTI_SELECT' => 'N',
-                            'MAIN_MENU' => 'Y'
-                        )
-                    );
-                }
-                ?>
-            </div>
+            <?php
+            if (!($DEVICE->isTablet() || $DEVICE->isMobile())) {
+                $APPLICATION->IncludeComponent(
+                    'bitrix:menu',
+                    'top',
+                    array(
+                        'COMPONENT_TEMPLATE' => '.default',
+                        'ROOT_MENU_TYPE' => 'top',
+                        'MENU_CACHE_TYPE' => 'N',
+                        'MENU_CACHE_TIME' => '604800',
+                        'MENU_CACHE_USE_GROUPS' => 'Y',
+                        'MENU_CACHE_GET_VARS' => [],
+                        'MAX_LEVEL' => '3',
+                        'CHILD_MENU_TYPE' => '',
+                        'USE_EXT' => 'Y',
+                        'DELAY' => 'N',
+                        'ALLOW_MULTI_SELECT' => 'N',
+                        'MAIN_MENU' => 'Y'
+                    )
+                );
+            }
+            ?>
             <div class="col-md-2 col-sm-10 col-xs-9 search-div header__search" style="padding-left: 0">
                 <? $APPLICATION->IncludeComponent(
                     "bitrix:search.form",
