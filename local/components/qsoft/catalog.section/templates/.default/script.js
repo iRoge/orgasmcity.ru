@@ -487,30 +487,6 @@ JsPaginate.prototype.change = function (select) {
 
 var jsPaginate = new JsPaginate();
 
-var swiperContainer = document.querySelector('.swiper-container');
-
-if (swiperContainer) {
-    var mySwiper = new Swiper(swiperContainer, {
-        speed: 100,
-        spaceBetween: 15,
-        freeMode: true,
-        mousewheel: {
-            releaseOnEdges: true,
-        },
-        slidesPerView: 'auto',
-        scrollbar: {
-            el: '.swiper-scrollbar',
-            hide: false,
-            draggable: true
-        },
-        navigation: {
-            nextEl: '.tags-arrow--next',
-            prevEl: '.tags-arrow--prev',
-            disabledClass: 'tags-arrow--disabled'
-        },
-    });
-}
-
 function saveSettingsInCookie(sortMobile){
     let sort = $('html').find('.sort__items').find('.sort__text--active').parent().data('sort');
     if (sortMobile){
