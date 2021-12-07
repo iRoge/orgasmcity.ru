@@ -296,7 +296,7 @@ Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js', 
                                                            name="min_<?= strtolower($filterKey) ?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MIN_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
-                                                           oninput="smartFilter.changedPriceFilter(this);return false;"
+                                                           oninput="smartFilter.changedNumberFilter(this);return false;"
                                                            placeholder="<?= $arResult['FILTER']['MIN_' . $filterKey] ?>">
                                                 </div>
                                                 <div class="to-filter">
@@ -306,7 +306,7 @@ Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/lib/jquery.ellipsis.min.js', 
                                                            name="max_<?= strtolower($filterKey) ?>"
                                                            value="<?= $arResult['FILTER']['CHECKED']['MAX_' . $filterKey] ?>"
                                                            autocomplete="off" autofocus="" spellcheck="false"
-                                                           oninput="smartFilter.changedPriceFilter(this);return false;"
+                                                           oninput="smartFilter.changedNumberFilter(this);return false;"
                                                            placeholder="<?= $arResult['FILTER']['MAX_' . $filterKey] ?>">
                                                 </div>
                                                 <div style="clear: both"></div>

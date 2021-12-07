@@ -309,10 +309,10 @@ SmartFilter.prototype.goToPageNum = function (btn) {
 
 SmartFilter.prototype.resetFilterSection = function ($filterSection) {
     let $checkboxes = $filterSection.find('input[type="checkbox"]');
-    let $inputs = $filterSection.find('input[type="text"]');
 
     if ($filterSection.hasClass('in-left-catalog--price')) {
-        $inputs.val('');
+        let $inputs = $filterSection.find('input[type="number"]');
+        $inputs.val('')
         $filterSection.find('.in-in-left').hide();
         $filterSection.find(".plus").show();
         $filterSection.find(".minus").hide();
@@ -328,30 +328,32 @@ SmartFilter.prototype.resetFilterSection = function ($filterSection) {
     SmartFilter.prototype.doClick(SmartFilter.prototype.getUrl(),'reset');
 };
 
-SmartFilter.prototype.setFilterSectionStyle = function ($filterSection) {
-
+SmartFilter.prototype.setFilterSectionStyle = function (filterSection) {
     let isChanged = false;
 
-    if ($filterSection.hasClass('in-left-catalog--price')) {
-        let $inputs = $filterSection.find('input[type="text"]');
-        for (let i = 0; i < $inputs.length; i++) {
-            if ($inputs[i].value !== '') {
+    if (filterSection.hasClass('in-left-catalog--price')) {
+        let inputs = filterSection.find('input[type="number"]');
+        for (let i = 0; i < inputs.length; i++) {
+            let input = $(inputs[i]);
+            let prevNumber = input.data('prevNumber');
+            if (input.val() && input.val() != prevNumber) {
                 isChanged = true;
+                input.data('prevNumber', input.val());
                 break;
             }
         }
     } else {
-        if ($filterSection.find('input[type="checkbox"]').filter(':checked').length > 0) {
+        if (filterSection.find('input[type="checkbox"]').filter(':checked').length > 0) {
             isChanged = true;
         }
     }
 
     if (isChanged) {
-        $filterSection.removeClass('in-left-catalog--unchecked');
-        $filterSection.addClass('in-left-catalog--checked')
+        filterSection.removeClass('in-left-catalog--unchecked');
+        filterSection.addClass('in-left-catalog--checked')
     } else {
-        $filterSection.addClass('in-left-catalog--unchecked');
-        $filterSection.removeClass('in-left-catalog--checked');
+        filterSection.addClass('in-left-catalog--unchecked');
+        filterSection.removeClass('in-left-catalog--checked');
     }
 };
 
@@ -363,8 +365,6 @@ SmartFilter.prototype.setFilterButtonsStyle = function (request) {
     let filters_btn_submit = $('.filters__btn--submit');
     if (request === 'filter' || request === 'reset') {
         filter_status_area.text('показать');
-        filter_reset_btn.removeClass('filter__disabled-reset-btn').prop('disabled', false);
-        filters_btn_reset.prop('disabled', false);
         filters_status_text_btn.prop('disabled', false);
         filters_status_text_btn.addClass('filter__status-text-btn-active');
         filters_btn_submit.removeClass('filters__btn--disabled').prop('disabled', false);
@@ -451,13 +451,12 @@ SmartFilter.prototype.sortFilterListByActive = function () {
     });
 };
 
-SmartFilter.prototype.changedPriceFilter = function (input) {
+SmartFilter.prototype.changedNumberFilter = function (input) {
     clearTimeout(this.timerChangedPriceFilter);
     let that = this;
     this.timerChangedPriceFilter = setTimeout(function () {
         $('.filter-btn-loader').show();
         smartFilter.click(input);
-        smartFilter.doClick(that.getUrl(), 'filter');
     }, 1000);
 };
 
@@ -670,9 +669,6 @@ $(document).ready(function() {
         $('.filter-btn-loader').show();
         $('.filters__btn')
             .addClass('filters__btn--disabled')
-            .prop('disabled', true);
-        $('.filter-reset-btn')
-            .addClass('filter__disabled-reset-btn')
             .prop('disabled', true);
         if(SmartFilter.prototype.currentAjax){
             SmartFilter.prototype.applyFilter = true;
