@@ -622,8 +622,18 @@ $(document).ready(function() {
             smartFilter.sortFilterListByActive();
             smartFilter.setFilterButtonsStyle('new');
             $('.name-h3').each(function () {
-                if ($(this).hasClass('active-name-h3') && !$(this).parent().hasClass('subsections-block')) {
-                    smartFilter.clickOnSectionFilter(this);
+                let sectionInFilter = $(this);
+                if (sectionInFilter.hasClass('active-name-h3') && !sectionInFilter.parent().hasClass('subsections-block')) {
+                    sectionInFilter.next('.in-in-left').toggle('fast');
+                    sectionInFilter.find(".plus").toggle(0);
+                    sectionInFilter.find(".minus").toggle(0);
+                    if ($('.podlozhka').css('display') === 'block' && sectionInFilter.hasClass('active-name-h3')){
+                        $('.js-filter-col').animate({
+                            scrollTop: sectionInFilter.offset().top - 45
+                        }, 800);
+                    }
+                    console.log(sectionInFilter.find('.filter-name').html());
+                    console.log(sectionInFilter.next('.in-in-left').html());
                 }
             });
             $('.lds-ring-container-first').css('display', 'none');

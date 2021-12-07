@@ -2,9 +2,9 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetPageProperty("tags", DEFAULT_KEYWORDS);
 $APPLICATION->SetPageProperty("keywords_inner", DEFAULT_KEYWORDS);
-$APPLICATION->SetPageProperty("title", "Город Оргазма. Секс шоп в России с доставкой на дом. Анонимно. Более 16 тысяч товаров");
+$APPLICATION->SetPageProperty("title", "Город Оргазма. Анонимный онлайн секс шоп в Москве с доставкой по всей России");
 $APPLICATION->SetPageProperty("keywords", DEFAULT_KEYWORDS);
-$APPLICATION->SetPageProperty("description", "Город Оргазма - это лучший секс-шоп в Москве с ассортиментом более 16 тысяч товаров для взрослых. Продажа интим товаров с бесплатной и АНОНИМНОЙ доставкой на дом. Огромный выбор продуктов: вибраторы, фаллоимитаторы, вибропули, мастурбаторы, секс-куклы, вакуумные помпы и многое другое");
+$APPLICATION->SetPageProperty("description", "Лучший интим магазин для взрослых в Москве с ассортиментом более 16 тысяч товаров для взрослых. Продажа секс товаров с бесплатной и АНОНИМНОЙ доставкой на дом. Огромный выбор продуктов: вибраторы, фаллоимитаторы, вибропули, мастурбаторы, секс куклы, вакуумные помпы и многое другое");
 $APPLICATION->SetTitle("Главная страница");
 \Likee\Site\Helper::addBodyClass('page--index');
 global $LOCATION;
@@ -13,7 +13,7 @@ global $DEVICE;
 <div class="front-blocks">
     <div class="main" style="margin-bottom: 20px">
         <h1 class="main-zagolovok">
-            Город Оргазма - анонимный онлайн секс шоп (sex shop)
+            Город Оргазма - анонимный онлайн секс шоп в Москве (sex shop)
         </h1>
     </div>
     <?php

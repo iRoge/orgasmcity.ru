@@ -46,155 +46,6 @@ label.radio > span .input__color,
     max-width: 2000px;
     margin: 0 auto;
 }
-.icon-lg {
-    font-size: 1.3333333333333333em;
-    line-height: 0.75em;
-    vertical-align: -15%;
-}
-
-.icon-2x {
-    font-size: 2em;
-}
-
-.icon-3x {
-    font-size: 3em;
-}
-
-.icon-4x {
-    font-size: 4em;
-}
-
-
-.icon-fw {
-    width: 1.2857142857142858em;
-    text-align: center;
-}
-
-.icon-arrow-bottom:before {
-    content: "";
-}
-
-.icon-arrow-left:before {
-    content: "";
-}
-
-.icon-arrow-right:before,
-.breadcrumbs li:not(:first-child):before {
-    content: "";
-}
-.icon-arrow-up:before {
-    content: "";
-}
-
-.icon-big-tiles:before {
-    content: "";
-}
-
-.icon-burger:before {
-    content: "";
-}
-
-.icon-calendar:before {
-    content: "";
-}
-
-.icon-cart:before {
-    content: "";
-}
-
-.icon-check:before {
-    content: "";
-}
-
-.icon-clock:before {
-    content: "";
-}
-
-.icon-envelope:before {
-    content: "";
-}
-
-.icon-facebook:before {
-    content: "";
-}
-
-.icon-heart-filled:before {
-    content: "";
-}
-
-.icon-heart:before {
-    content: "";
-}
-
-.icon-instagram:before {
-    content: "";
-}
-
-.icon-metro:before {
-    content: "";
-}
-
-.icon-telegram {
-    background:url('../images/teleg_line.png') 0 0 no-repeat;
-    background-size:contain;
-}
-.icon-telegram.line {
-    width:24px;
-    height:24px;
-}
-.icon-telegram.tele-foot {
-    background-size:80% 80%;
-    background-position:center center;
-}
-
-.icon-octavius:before {
-    content: "";
-}
-
-.icon-phone:before {
-    content: "";
-}
-
-.icon-question-circle:before {
-    content: "";
-}
-
-.icon-readmore:before {
-    content: "";
-}
-
-.icon-search:before {
-    content: "";
-}
-
-.icon-small-tiles:before {
-    content: "";
-}
-
-.icon-times-thin:before {
-    content: "";
-}
-
-.icon-times:before {
-    content: "";
-}
-
-.icon-twitter:before {
-    content: "";
-}
-
-.icon-user:before {
-    content: "";
-}
-
-.icon-vk:before {
-    content: "";
-}
-.icon-square-tiles:before {
-    content: "■";
-    font-size: 200%;
-    line-height: 0;
-}
 .clearfix:after{
     display: table;
     clear: both;
@@ -1354,6 +1205,12 @@ a.footer-element:hover {
     justify-content: flex-end;
 }
 
+.main-zagolovok {
+    width: 100%;
+    text-align: center;
+    font-family: 'gilroyBold';
+}
+
 @media (max-width: 767px) {
     .footer-wrapper {
         display: flex;
@@ -1421,6 +1278,10 @@ a.footer-element:hover {
     .footer-information-block h4 {
         text-align: end;
     }
+
+    .main-zagolovok {
+        margin-top: 20px;
+    }
 }
 
 .right-footer-element, .right-footer-element a {
@@ -1454,9 +1315,4 @@ a.footer-element:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-.main-zagolovok {
-    width: 100%;
-    text-align: center;
-    font-family: 'gilroyBold';
 }

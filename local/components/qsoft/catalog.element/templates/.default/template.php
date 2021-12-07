@@ -185,7 +185,7 @@ foreach ($arResult['OFFERS'] as $offer) {
                                         <div style="clear: both"></div>
                                     </div>
                                     <?php endif; ?>
-                                    <?php if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS'])) : ?>
+                                    <?php if (!empty($arResult['AVAILABLE_OFFER_PROPS']['COLORS']) && count($arResult['AVAILABLE_OFFER_PROPS']['COLORS']) > 1) : ?>
                                     <h3 class="after-hr-cart"><?= Loc::getMessage("COLOR") ?></h3>
                                     <div style="display: block; width: 100%;" class="js-color-selector">
                                         <?php foreach ($arResult['AVAILABLE_OFFER_PROPS']['COLORS'] as $colorCode => $color) : ?>

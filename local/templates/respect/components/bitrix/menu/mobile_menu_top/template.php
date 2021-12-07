@@ -86,7 +86,7 @@ if (!empty($arResult)) { ?>
                                                 class="submenu-level2-item submenu-item-main"
                                                 onclick="$(this).parent().find('img.lazy-img-menu').lazyLoadXT({forceLoad: 1, visibleOnly: 0, throttle: 0})"
                                         >
-                                            <span><?=$arItem2Level['TEXT']?></span>
+                                            <?=$arItem2Level['TEXT']?>
                                             <svg class="submenu-arrow-down" width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M20.6628 11.0189L10.7753 1.08008L0.887695 11.0189" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>

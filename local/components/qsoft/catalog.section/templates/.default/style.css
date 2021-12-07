@@ -1070,8 +1070,8 @@ footer .hide-block {
     margin-left: 0;
 }
 
-.view__item--active {
-    color: #A48ED2;
+span.view__item--active svg {
+    fill: #a48ed2!important;
 }
 
 .view__item:hover {

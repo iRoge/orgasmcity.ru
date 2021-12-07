@@ -310,9 +310,9 @@ if (empty($aMenuLinksNew)) {
     if (!empty($arResult['SALES'])) {
         $arMenuLinkSales[] = array(
             $arResult['SALES']['UF_NAME'],
-            '/catalog/' . $arResult['SALES']['UF_CODE'] . '/',
+            '/catalog/' . $arResult['SALES']['UF_CODE'] . '/18/',
             array(
-                '/catalog/' . $arResult['SALES']['UF_CODE'] . '/',
+                '/catalog/' . $arResult['SALES']['UF_CODE'] . '/18/',
             ),
             array(
                 'HIGHLIGHT' => 'Y',
