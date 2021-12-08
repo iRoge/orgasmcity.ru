@@ -8,7 +8,7 @@ ini_set('max_execution_time', 0);
 ignore_user_abort(true);
 set_time_limit(0);
 Loader::includeModule('iblock');
-// composer autoloader
+require_once($_SERVER['DOCUMENT_ROOT'] . '/local/src/config.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/constants.php');
 CIBlock::disableTagCache(IBLOCK_CATALOG);

@@ -1,2 +1,0 @@
-<?
-$PERM['PayAnyWay.php']['*'] = 'R';

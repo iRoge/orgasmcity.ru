@@ -9,6 +9,7 @@ $APPLICATION->SetTitle("Главная страница");
 \Likee\Site\Helper::addBodyClass('page--index');
 global $LOCATION;
 global $DEVICE;
+
 ?>
 <div class="front-blocks">
     <div class="main" style="margin-bottom: 20px">

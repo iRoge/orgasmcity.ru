@@ -6,6 +6,7 @@
 /cron/orders_status_logs
 /local/vendor
 /local/php_interface/.env
+/local/src/config.inc.php
 /import
 /vendor
 /bin
