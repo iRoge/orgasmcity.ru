@@ -26,7 +26,7 @@
                     "VK.COM" => "https://vk.com/club205704529",
                     "TELEGRAM" => "https://t.me/Orgasmcity",
                     "WhatsApp" => "https://wa.me/79998526016",
-                    "FACEBOOK" => "https://www.facebook.com/groups/885185518825530",
+                    "FACEBOOK" => "https://www.facebook.com/0rgasmcity.ru/",
                     "TWITTER" => "https://twitter.com/orgasmcityRu",
 //                    "Spotify" => "#",
                     "COMPONENT_TEMPLATE" => "footer",
